@@ -1,3 +1,4 @@
+/* global m */
 var mainScreen = {
     view: function() {
         return m("ul", [
