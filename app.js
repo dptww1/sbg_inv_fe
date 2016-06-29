@@ -1,4 +1,6 @@
 /* global m */
+var API_URL = "http://127.0.0.1:4000/api";
+
 var mainScreen = {
     view: function() {
         return m("ul", [
@@ -9,11 +11,26 @@ var mainScreen = {
 };
 
 var scenarioListScreen = {
-    view: function() {
-        return m("table", [
-            m("tr", [m("td", "Scenario 1")]),
-            m("tr", [m("td", "Scenario 2")]),
-                  ]);
+    data: m.prop(false),
+
+    click: function() {
+        m.request({method: "GET", url: API_URL + "/scenarios"}).then(scenarioListScreen.data).then(function() { m.redraw(); });
+    },
+
+    view: function(ctrl) {
+        return [
+            m("h3", "Scenarios"),
+            scenarioListScreen.data() ? scenarioListScreen.drawTable(scenarioListScreen.data().data)
+                                      : m("button", {onclick: scenarioListScreen.click}, "Load")
+        ];
+    },
+
+    drawTable: function(rawData) {
+        var rows = [];
+        rawData.forEach(function(scenario) {
+            rows.push(m("tr", [m("td", scenario.name)]));
+        });
+        return m("table", rows);
     }
 };
 
