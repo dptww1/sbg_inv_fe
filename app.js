@@ -13,15 +13,14 @@ var mainScreen = {
 var scenarioListScreen = {
     data: m.prop(false),
 
-    click: function() {
+    controller: function() {
         m.request({method: "GET", url: API_URL + "/scenarios"}).then(scenarioListScreen.data).then(function() { m.redraw(); });
     },
 
     view: function(ctrl) {
         return [
             m("h3", "Scenarios"),
-            scenarioListScreen.data() ? scenarioListScreen.drawTable(scenarioListScreen.data().data)
-                                      : m("button", {onclick: scenarioListScreen.click}, "Load")
+            scenarioListScreen.data() ? scenarioListScreen.drawTable(scenarioListScreen.data().data) : "nope"
         ];
     },
 
