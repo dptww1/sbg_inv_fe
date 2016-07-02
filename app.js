@@ -45,9 +45,15 @@ var ScenarioDetailScreen = {
     },
 
     view: function(ctrl) {
+        var scenario = ScenarioDetailScreen.data().data;
+
         return [
-            m("h3", "Scenario Details"),
-            m("div", ScenarioDetailScreen.data().data.name)
+            m("div.scenario-title", scenario.name),
+            m("div.date", [
+                m("div.date-age", ["", "FA", "SA", "TA"][scenario.date_age || 0]),
+                m("div.date-year", scenario.date_year)
+            ]),
+            m("div.blurb", scenario.blurb)
         ];
     }
 }
