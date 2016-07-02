@@ -28,14 +28,30 @@ var ScenarioListScreen = {
     drawTable: function(rawData) {
         var rows = [];
         rawData.forEach(function(scenario) {
-            rows.push(m("tr", [m("td", scenario.name)]));
+            rows.push(m("tr", [m("td", m("a", {config: m.route, href: "/scenarios/" + scenario.id}, scenario.name))]));
         });
         return m("table", rows);
     }
 };
 
+var ScenarioDetailScreen = {
+    data: m.prop(false),
+
+    controller: function() {
+        m.request({method: "GET", url: API_URL + "/scenarios/" + m.route.param("id")}).then(ScenarioDetailScreen.data).then(function() { m.redraw(); });
+    },
+
+    view: function(ctrl) {
+        return [
+            m("h3", "Scenario Details"),
+            m("div", ScenarioDetailScreen.data().data.name)
+        ];
+    }
+}
+
 m.route.mode = "hash";
 m.route(document.getElementById("mainDiv"), "/", {
     "/": MainScreen,
+    "/scenarios/:id": ScenarioDetailScreen,
     "/scenarios": ScenarioListScreen
 });
