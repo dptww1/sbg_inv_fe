@@ -2,6 +2,7 @@
 var API_URL = "http://127.0.0.1:4000/api";
 
 var mainScreen = {
+var MainScreen = {
     view: function() {
         return m("ul", [
                    m("li", m("a[href='#']", {config: m.route}, "Figures")),
@@ -10,17 +11,17 @@ var mainScreen = {
     }
 };
 
-var scenarioListScreen = {
+var ScenarioListScreen = {
     data: m.prop(false),
 
     controller: function() {
-        m.request({method: "GET", url: API_URL + "/scenarios"}).then(scenarioListScreen.data).then(function() { m.redraw(); });
+        m.request({method: "GET", url: API_URL + "/scenarios"}).then(ScenarioListScreen.data).then(function() { m.redraw(); });
     },
 
     view: function(ctrl) {
         return [
             m("h3", "Scenarios"),
-            scenarioListScreen.data() ? scenarioListScreen.drawTable(scenarioListScreen.data().data) : "nope"
+            ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
         ];
     },
 
@@ -35,6 +36,6 @@ var scenarioListScreen = {
 
 m.route.mode = "hash";
 m.route(document.getElementById("mainDiv"), "/", {
-    "/": mainScreen,
-    "/scenarios": scenarioListScreen
+    "/": MainScreen,
+    "/scenarios": ScenarioListScreen
 });
