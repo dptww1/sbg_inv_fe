@@ -1,7 +1,6 @@
 /* global m */
 var API_URL = "http://127.0.0.1:4000/api";
 
-var mainScreen = {
 //==================================================================================================================================
 var MainScreen = {
     view: function() {
@@ -53,8 +52,34 @@ var ScenarioDetailScreen = {
                 m("div.date-age", ["", "FA", "SA", "TA"][scenario.date_age || 0]),
                 m("div.date-year", scenario.date_year)
             ]),
-            m("div.blurb", scenario.blurb)
+            m("div.blurb", scenario.blurb),
+            m("div.factions", ScenarioDetailScreen.factionsRollup(scenario)),
+            ScenarioDetailScreen.resourcesRollup(scenario)
         ];
+    },
+
+    factionsRollup: function(scenario) {
+        if (!scenario.scenario_factions) {
+            return "XXX";
+        }
+
+        f = [];
+        scenario.scenario_factions.forEach(function(faction) {
+            f.push(m("div", faction.faction));
+        });
+        return f;
+    },
+
+    resourcesRollup: function(scenario) {
+        if (!scenario.scenario_resources) {
+            return null;
+        }
+
+        r = [];
+        scenario.scenario_resources.forEach(function(resource) {
+            r.push(m("div", resource.resource_type));
+        });
+        return r;
     }
 }
 
