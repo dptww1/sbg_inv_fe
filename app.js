@@ -29,9 +29,18 @@ var ScenarioListScreen = {
     drawTable: function(rawData) {
         var rows = [];
         rawData.forEach(function(scenario) {
-            rows.push(m("tr", [m("td", m("a", {config: m.route, href: "/scenarios/" + scenario.id}, scenario.name))]));
+            rows.push(m("tr", [m("td.name", m("a", {config: m.route, href: "/scenarios/" + scenario.id}, scenario.name)),
+                               m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
+                               m("td.date-year", scenario.date_year)]));
         });
-        return m("table", rows);
+        return m("table.scenario-list", rows);
+    },
+
+    ageAbbrev: function(ageNumber) {
+        if (1 <= ageNumber && ageNumber <= 3) {
+            return ["?", "FA", "SA", "TA"][ageNumber];
+        }
+        return "??";
     }
 };
 
