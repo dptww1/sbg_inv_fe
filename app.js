@@ -1,6 +1,10 @@
 /* global m */
 var API_URL = "http://127.0.0.1:4000/api";
 
+var BOOK_NAMES = {
+    site: "A Shadow in the East"
+}
+
 //==================================================================================================================================
 var MainScreen = {
     view: function() {
@@ -87,10 +91,20 @@ var ScenarioDetailScreen = {
         }
 
         r = [ m("div.scenario-details-section-title", "Resources") ];
-        scenario.scenario_resources.forEach(function(resource) {
-            r.push(m("div.scenario-resource", resource.resource_type));
-        });
+        ScenarioDetailScreen.resourcesRollupAddSource(r, scenario.scenario_resources);
         return m("div.scenario-resources", r);
+    },
+
+    resourcesRollupAddSource: function(eltArray, scenarioResources) {
+        scenarioResources.forEach(function(resource) {
+            if (resource.resource_type === "source") {
+                eltArray.push(m("div.scenario-source", [
+                    m("span.scenario-source-title", "Source: "),
+                    m("span.scenario-source-book-title", BOOK_NAMES[resource.book]),
+                    m("span.scenario-source-book-page", ", page " + resource.page)
+                ]));
+            }
+        });
     }
 }
 
