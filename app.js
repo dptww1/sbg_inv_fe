@@ -56,27 +56,29 @@ var ScenarioDetailScreen = {
         var scenario = ScenarioDetailScreen.data().data;
 
         return [
-            m("div.scenario-title", scenario.name),
-            m("div.date", [
-                m("div.date-age", ["", "FA", "SA", "TA"][scenario.date_age || 0]),
-                m("div.date-year", scenario.date_year)
-            ]),
-            m("div.blurb", scenario.blurb),
-            m("div.factions", ScenarioDetailScreen.factionsRollup(scenario)),
-            ScenarioDetailScreen.resourcesRollup(scenario)
+            m("div.scenario-details", [
+                m("div.scenario-title", scenario.name),
+                m("div.scenario-date", [
+                    m("div.date-age", ["", "FA", "SA", "TA"][scenario.date_age || 0]),
+                    m("div.date-year", scenario.date_year)
+                ]),
+                m("div.scenario-blurb", scenario.blurb),
+                m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
+                m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
+            ])
         ];
     },
 
     factionsRollup: function(scenario) {
         if (!scenario.scenario_factions) {
-            return "XXX";
+            return null;
         }
 
-        f = [];
+        f = [ m("div.scenario-details-section-title", "Participants") ];
         scenario.scenario_factions.forEach(function(faction) {
-            f.push(m("div", faction.faction));
+            f.push(m("div.faction", faction.faction));
         });
-        return f;
+        return m("div.scenario-factions", f);
     },
 
     resourcesRollup: function(scenario) {
@@ -84,11 +86,11 @@ var ScenarioDetailScreen = {
             return null;
         }
 
-        r = [];
+        r = [ m("div.scenario-details-section-title", "Resources") ];
         scenario.scenario_resources.forEach(function(resource) {
-            r.push(m("div", resource.resource_type));
+            r.push(m("div.scenario-resource", resource.resource_type));
         });
-        return r;
+        return m("div.scenario-resources", r);
     }
 }
 

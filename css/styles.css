@@ -1,0 +1,39 @@
+body {
+    font-family: Georgia, serif;
+}
+
+/* ===== Scenario List ===== */
+
+table.scenario-list a.scenario-detail-link {
+    text-decoration: none;
+}
+
+table.scenario-list a.scenario-detail-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== Scenario Details ===== */
+
+.scenario-details .scenario-title {
+    font-weight: bold;
+    font-size: 150%;
+}
+
+.scenario-details .scenario-blurb {
+    font-style: italic;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+.scenario-details .scenario-date .date-age {
+    display: inline;
+}
+
+.scenario-details .scenario-date .date-year {
+    display: inline;
+}
+
+.scenario-details .scenario-details-section-title {
+    font-weight: bold;
+    margin-top: 0.75em;
+}
