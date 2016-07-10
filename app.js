@@ -93,6 +93,7 @@ var ScenarioDetailScreen = {
 
         r = [ m("div.scenario-details-section-title", "Resources") ];
         ScenarioDetailScreen.resourcesRollupAddSource(r, scenario.scenario_resources);
+        ScenarioDetailScreen.resourcesRollupAddVideoReplays(r, scenario.scenario_resources);
         ScenarioDetailScreen.resourcesRollupAddWebReplays(r, scenario.scenario_resources);
         return m("div.scenario-resources", r);
     },
@@ -109,13 +110,26 @@ var ScenarioDetailScreen = {
         });
     },
 
+    resourcesRollupAddVideoReplays: function(eltArray, scenarioResources) {
+        scenarioResources.forEach(function(resource) {
+            if (resource.resource_type == "video_replay") {
+                eltArray.push(m("div.video-replay", [
+                    m("span.scenario-video-replay-title", "Video Replay: "),
+                    m("span.scenario-video-replay-url", [
+                        m("a", { href: resource.url }, resource.title || resource.url)
+                    ])
+                ]));
+            }
+        });
+    },
+
     resourcesRollupAddWebReplays: function(eltArray, scenarioResources) {
         scenarioResources.forEach(function(resource) {
             if (resource.resource_type == "web_replay") {
                 eltArray.push(m("div.web-replay", [
                     m("span.scenario-web-replay-title", "Web Replay: "),
                     m("span.scenario-web-replay-url", [
-                        m("a", { href: resource.url }, resource.url)
+                        m("a", { href: resource.url }, resource.title || resource.url)
                     ])
                 ]));
             }
