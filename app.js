@@ -2,6 +2,7 @@
 var API_URL = "http://127.0.0.1:4000/api";
 
 var BOOK_NAMES = {
+    fotn: "Fall of the Necromancer",
     site: "A Shadow in the East"
 }
 
