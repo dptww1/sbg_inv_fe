@@ -93,6 +93,7 @@ var ScenarioDetailScreen = {
 
         r = [ m("div.scenario-details-section-title", "Resources") ];
         ScenarioDetailScreen.resourcesRollupAddSource(r, scenario.scenario_resources);
+        ScenarioDetailScreen.resourcesRollupAddWebReplays(r, scenario.scenario_resources);
         return m("div.scenario-resources", r);
     },
 
@@ -103,6 +104,19 @@ var ScenarioDetailScreen = {
                     m("span.scenario-source-title", "Source: "),
                     m("span.scenario-source-book-title", BOOK_NAMES[resource.book]),
                     m("span.scenario-source-book-page", ", page " + resource.page)
+                ]));
+            }
+        });
+    },
+
+    resourcesRollupAddWebReplays: function(eltArray, scenarioResources) {
+        scenarioResources.forEach(function(resource) {
+            if (resource.resource_type == "web_replay") {
+                eltArray.push(m("div.web-replay", [
+                    m("span.scenario-web-replay-title", "Web Replay: "),
+                    m("span.scenario-web-replay-url", [
+                        m("a", { href: resource.url }, resource.url)
+                    ])
                 ]));
             }
         });
