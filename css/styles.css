@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "sbg";
+    src: url("../sbg_font.ttf") format("truetype");
+}
+
 body {
     font-family: Georgia, serif;
 }
@@ -10,6 +15,13 @@ table.scenario-list a.scenario-detail-link {
 
 table.scenario-list a.scenario-detail-link:hover {
     text-decoration: underline;
+}
+
+table.scenario-list td.faction {
+    font-family: "sbg";
+    font-weight: normal;
+    font-style: normal;
+    color: #333;
 }
 
 /* ===== Scenario Details ===== */

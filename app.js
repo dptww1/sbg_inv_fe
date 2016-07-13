@@ -6,6 +6,39 @@ var BOOK_NAMES = {
     site: "A Shadow in the East"
 }
 
+// courtesy http://ratfactor.com/daves-guide-to-mithril-js
+var requestWrapper = function(opts) {
+    return new function() {
+        var me = this;
+        me.opts = opts;
+        me.success = me.loading = me.failed = false;
+        me.errorStatus = me.errorBody = "";
+        me.data = null;
+        me.opts.background = true;
+        me.opts.extract = function(xhr) {
+            if (xhr.status >= 300) {
+                me.failed = true;
+                me.success = me.loading = false;
+                me.errorStatus = xhr.status;
+                me.errorBody = xhr.responseText;
+                m.redraw();
+            }
+            return xhr.responseText;
+        };
+        me.go = function() {
+            me = me;
+            me.loading = true;
+            me.success = me.failed = false;
+            m.request(me.opts).then(function(mydata) {
+                me.success = true;
+                me.failed = me.loading = false;
+                me.data = mydata;
+                m.redraw();
+            });
+        };
+    };
+};
+
 //==================================================================================================================================
 var MainScreen = {
     view: function() {
@@ -38,7 +71,9 @@ var ScenarioListScreen = {
                 m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
                 m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
                 m("td.date-year", scenario.date_year),
-                m("td.size", scenario.size)
+                m("td.size", scenario.size),
+                m("td.faction faction1", "g"),
+                m("td.faction faction2", "e")
             ]));
         });
         return m("table.scenario-list", rows);
