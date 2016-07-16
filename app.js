@@ -67,7 +67,15 @@ var ScenarioListScreen = {
     },
 
     drawTable: function(rawData) {
-        var rows = [];
+        var rows = [
+            m("tr", [
+                m("th.name", "Scenario"),
+                m("th.date[colspan=2]", "Date"),
+                m("th.size", "Size"),
+                m("th.factions[colspan=2]", "Factions"),
+                m("th.resources", "Resources")
+            ])];
+
         rawData.forEach(function(scenario) {
             rows.push(m("tr", [
                 m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
@@ -75,7 +83,8 @@ var ScenarioListScreen = {
                 m("td.date-year", scenario.date_year),
                 m("td.size", scenario.size),
                 m("td.faction faction1", "g"),
-                m("td.faction faction2", "e")
+                m("td.faction faction2", "e"),
+                m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
             ]));
         });
         return m("table.scenario-list", rows);
@@ -86,6 +95,20 @@ var ScenarioListScreen = {
             return ["?", "FA", "SA", "TA"][ageNumber];
         }
         return "??";
+    },
+
+    resourceIcons: function(resources) {
+        var r = [];
+        if (resources.web_replay != null && resources.web_replay.length > 0) {
+            r.push(m("span", "W"));
+        }
+        if (resources.video_replay != null && resources.video_replay.length > 0) {
+            r.push(m("span", "V"));
+        }
+        if (resources.podcast != null && resources.podcast.length > 0) {
+            r.push(m("span", "P"));
+        }
+        return r;
     }
 };
 
