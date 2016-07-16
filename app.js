@@ -2,8 +2,9 @@
 var API_URL = "http://127.0.0.1:4000/api";
 
 var BOOK_NAMES = {
-    saf:  "Shadow & Flame",
     fotn: "Fall of the Necromancer",
+    saf:  "Shadow & Flame",
+    sog:  "Siege of Gondor",
     site: "A Shadow in the East"
 }
 
