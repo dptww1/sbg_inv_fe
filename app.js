@@ -137,42 +137,42 @@ var ScenarioDetailScreen = {
         return m("div.scenario-resources", r);
     },
 
-    resourcesRollupAddSource: function(eltArray, scenarioResources) {
-        scenarioResources.forEach(function(resource) {
-            if (resource.resource_type === "source") {
+    resourcesRollupAddSource: function(eltArray, resources) {
+        if (resources.source) {
+            resources.source.forEach(function(resource) {
                 eltArray.push(m("div.scenario-source", [
                     m("span.scenario-source-title", "Source: "),
                     m("span.scenario-source-book-title", BOOK_NAMES[resource.book]),
                     m("span.scenario-source-book-page", ", page " + resource.page)
                 ]));
-            }
-        });
+            });
+        }
     },
 
-    resourcesRollupAddVideoReplays: function(eltArray, scenarioResources) {
-        scenarioResources.forEach(function(resource) {
-            if (resource.resource_type == "video_replay") {
+    resourcesRollupAddVideoReplays: function(eltArray, resources) {
+        if (resources.video_replay) {
+            resources.video_replay.forEach(function(resource) {
                 eltArray.push(m("div.video-replay", [
                     m("span.scenario-video-replay-title", "Video Replay: "),
                     m("span.scenario-video-replay-url", [
                         m("a", { href: resource.url }, resource.title || resource.url)
                     ])
                 ]));
-            }
-        });
+            });
+        }
     },
 
-    resourcesRollupAddWebReplays: function(eltArray, scenarioResources) {
-        scenarioResources.forEach(function(resource) {
-            if (resource.resource_type == "web_replay") {
+    resourcesRollupAddWebReplays: function(eltArray, resources) {
+        if (resources.web_replay) {
+            resources.web_replay.forEach(function(resource) {
                 eltArray.push(m("div.web-replay", [
                     m("span.scenario-web-replay-title", "Web Replay: "),
                     m("span.scenario-web-replay-url", [
                         m("a", { href: resource.url }, resource.title || resource.url)
                     ])
                 ]));
-            }
-        });
+            });
+        }
     }
 }
 
