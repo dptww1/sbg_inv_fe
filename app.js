@@ -159,7 +159,7 @@ var ScenarioDetailScreen = {
             figuresList.forEach(function(f) {
                 figs.push(m("div.figure-line", [
                     m("div.figure-line-amount", f.amount),
-                    m("div.figure-line-name", f.id)
+                    m("div.figure-line-name", f.name)
                 ]));
             });
         }
