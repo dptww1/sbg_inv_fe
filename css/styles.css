@@ -49,3 +49,21 @@ table.scenario-list td.faction {
     font-weight: bold;
     margin-top: 0.75em;
 }
+
+.scenario-details .scenario-factions .factions-container {
+    width: 100%;
+    overflow:auto;
+}
+
+.scenario-details .scenario-factions .faction {
+    float: left;
+}
+
+.figure-line .figure-line-amount {
+    display: inline;
+    margin-right: 0.5em;
+}
+
+.figure-line .figure-line-name {
+    display: inline;
+}

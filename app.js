@@ -6,7 +6,7 @@ var BOOK_NAMES = {
     saf:  "Shadow & Flame",
     sog:  "Siege of Gondor",
     site: "A Shadow in the East"
-}
+};
 
 // courtesy http://ratfactor.com/daves-guide-to-mithril-js
 var requestWrapper = function(opts) {
@@ -142,11 +142,28 @@ var ScenarioDetailScreen = {
             return null;
         }
 
-        f = [ m("div.scenario-details-section-title", "Participants") ];
+        var f = [ m("div.scenario-details-section-title", "Participants") ];
         scenario.scenario_factions.forEach(function(faction) {
-            f.push(m("div.faction", faction.faction));
+            f.push(ScenarioDetailScreen.factionRollup(faction));
         });
-        return m("div.scenario-factions", f);
+        return m("div.factions-container", f);
+    },
+
+    factionRollup: function(faction) {
+        return m("div.faction", [ m("div.faction-name", faction.faction)].concat(ScenarioDetailScreen.figuresRollup(faction.figures)));
+    },
+
+    figuresRollup: function(figuresList) {
+        var figs = [];
+        if (figuresList != null) {
+            figuresList.forEach(function(f) {
+                figs.push(m("div.figure-line", [
+                    m("div.figure-line-amount", f.amount),
+                    m("div.figure-line-name", f.id)
+                ]));
+            });
+        }
+        return figs;
     },
 
     resourcesRollup: function(scenario) {
@@ -154,7 +171,7 @@ var ScenarioDetailScreen = {
             return null;
         }
 
-        r = [ m("div.scenario-details-section-title", "Resources") ];
+        var r = [ m("div.scenario-details-section-title", "Resources") ];
         ScenarioDetailScreen.resourcesRollupAddSource(r, scenario.scenario_resources);
         ScenarioDetailScreen.resourcesRollupAddVideoReplays(r, scenario.scenario_resources);
         ScenarioDetailScreen.resourcesRollupAddWebReplays(r, scenario.scenario_resources);
@@ -198,7 +215,7 @@ var ScenarioDetailScreen = {
             });
         }
     }
-}
+};
 
 m.route.mode = "hash";
 m.route(document.getElementById("mainDiv"), "/", {
