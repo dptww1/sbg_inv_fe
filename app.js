@@ -71,6 +71,7 @@ var ScenarioListScreen = {
             m("tr", [
                 m("th.name", "Scenario"),
                 m("th.date[colspan=2]", "Date"),
+                m("th.source", "Source"),
                 m("th.size", "Size"),
                 m("th.factions[colspan=2]", "Factions"),
                 m("th.resources", "Resources")
@@ -81,6 +82,7 @@ var ScenarioListScreen = {
                 m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
                 m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
                 m("td.date-year", scenario.date_year),
+                m("td.source", scenario.scenario_resources["source"][0].title),
                 m("td.size", scenario.size),
                 m("td.faction faction1", "g"),
                 m("td.faction faction2", "e"),
