@@ -1,12 +1,30 @@
 /* global m */
 var API_URL = "http://127.0.0.1:4000/api";
 
+var MONTH_NAMES = [
+    "", "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
+
 var BOOK_NAMES = {
     fotn: "Fall of the Necromancer",
     saf:  "Shadow & Flame",
     sog:  "Siege of Gondor",
     site: "A Shadow in the East"
 };
+
+function formatDate(age, year, month, day) {
+
+    var a = [ ["", "FA", "SA", "TA"][age || 0] ];
+    if (day) {
+        a.push(day);
+    }
+    if (month) {
+        a.push(MONTH_NAMES[month]);
+    }
+    a.push(year);
+    return a.join(" ");
+}
 
 // courtesy http://ratfactor.com/daves-guide-to-mithril-js
 var requestWrapper = function(opts) {
@@ -128,10 +146,7 @@ var ScenarioDetailScreen = {
         return [
             m("div.scenario-details", [
                 m("div.scenario-title", scenario.name),
-                m("div.scenario-date", [
-                    m("div.date-age", ["", "FA", "SA", "TA"][scenario.date_age || 0]),
-                    m("div.date-year", scenario.date_year)
-                ]),
+                m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
                 m("div.scenario-blurb", scenario.blurb),
                 m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
                 m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
