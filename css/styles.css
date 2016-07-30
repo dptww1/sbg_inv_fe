@@ -24,6 +24,11 @@ table.scenario-list td.faction {
     color: #333;
 }
 
+.sort-arrow {
+    font-size: 40%;
+    color: #999;
+}
+
 /* ===== Scenario Details ===== */
 
 .scenario-details .scenario-title {

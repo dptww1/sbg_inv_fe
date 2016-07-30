@@ -14,7 +14,6 @@ var BOOK_NAMES = {
 };
 
 function formatDate(age, year, month, day) {
-
     var a = [ ["", "FA", "SA", "TA"][age || 0] ];
     if (day) {
         a.push(day);
@@ -24,6 +23,10 @@ function formatDate(age, year, month, day) {
     }
     a.push(year);
     return a.join(" ");
+}
+
+function cmp(a, b) {
+    return a > b ? 1 : a < b ? -1 : 0;
 }
 
 // courtesy http://ratfactor.com/daves-guide-to-mithril-js
@@ -87,10 +90,10 @@ var ScenarioListScreen = {
     drawTable: function(rawData) {
         var rows = [
             m("tr", [
-                m("th.name", "Scenario"),
-                m("th.date[colspan=2]", "Date"),
-                m("th.source", "Source"),
-                m("th.size", "Size"),
+                m("th.name[data-sort-by=name]", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
+                m("th.date[data-sort-by=date][colspan=2]", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
+                m("th.source[data-sort-by=source]", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
+                m("th.size[data-sort-by=size]", m.trust("Size<span class='sort-arrow'>&nbsp;</span>")),
                 m("th.factions[colspan=2]", "Factions"),
                 m("th.resources", "Resources")
             ])];
@@ -107,7 +110,7 @@ var ScenarioListScreen = {
                 m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
             ]));
         });
-        return m("table.scenario-list", rows);
+        return m("table.scenario-list", ScenarioListScreen.tableSorter(rawData), rows);
     },
 
     ageAbbrev: function(ageNumber) {
@@ -129,6 +132,52 @@ var ScenarioListScreen = {
             r.push(m("span", "P"));
         }
         return r;
+    },
+
+    tableSorter: function(list) {
+        return {
+            onclick: function(ev) {
+                var prop = ev.target.getAttribute("data-sort-by");
+                if (prop) {
+                    var sorters = {
+                        name: function(a, b) {
+                            return cmp(a[prop], b[prop]);
+                        },
+
+                        date: function(a, b) { // TODO: handle dates of same year with month,day = (0,0) & non-TA dates
+                            return cmp(a.date_year, b.date_year) ||
+                                   cmp(a.date_month, b.date_month) ||
+                                   cmp(a.date_day, b.date_day);
+                        },
+
+                        size: function(a, b) {
+                            return cmp(a[prop], b[prop]);  // TODO: tiebreaker
+                        },
+
+                        source: function(a, b) {
+                            var a_src = a.scenario_resources["source"][0];
+                            var b_src = b.scenario_resources["source"][0];
+                            return cmp(a_src.title, b_src.title) ||
+                                   cmp(a_src.sort_order, b_src.sort_order);
+                        }
+                    };
+
+                    var arrowNodes = document.getElementsByClassName("sort-arrow");
+                    for (var i = 0; i < arrowNodes.length; ++i) {
+                        arrowNodes[i].innerHTML = "&nbsp;";
+                    }
+
+                    var arrowChar = "&#9650;";   // ^
+                    var firstId = list[0].id;
+                    list.sort(sorters[prop]);
+                    if (firstId === list[0].id) {
+                        list.reverse();
+                        arrowChar = "&#9660;";   // v
+                    }
+                    ev.target.getElementsByClassName("sort-arrow")[0].innerHTML = arrowChar;
+                }
+            }
+        };
     }
 };
 
