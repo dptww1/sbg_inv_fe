@@ -246,7 +246,7 @@ var ScenarioDetailScreen = {
         if (figuresList != null) {
             figuresList.forEach(function(f) {
                 figs.push(m("div.figure-line", [
-                    m("div.figure-line-amount", f.amount > 1 ? f.amount : ""),
+                    f.amount > 1 ? m("div.figure-line-amount", f.amount) : null,
                     m("div.figure-line-name", f.name)
                 ]));
             });
