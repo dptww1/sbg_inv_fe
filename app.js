@@ -237,7 +237,7 @@ var ScenarioDetailScreen = {
 
     factionRollup: function(faction) {
         return m("div.faction", [
-            m("div.faction-name", FACTION_NAMES[faction.faction])
+            m("div.faction-name", FACTION_INFO[faction.faction].name)
         ].concat(ScenarioDetailScreen.figuresRollup(faction.figures)));
     },
 
