@@ -13,6 +13,24 @@ var BOOK_NAMES = {
     site: "A Shadow in the East"
 };
 
+var FACTION_INFO = {
+    angmar:        { name: "Angmar",        letter: "a" },
+    dol_guldur:    { name: "Dol Guldur",    letter: "x" },
+    dwarves:       { name: "Dwarves",       letter: "d" },
+    easterlings:   { name: "Easterlings",   letter: "e" },
+    fellowship:    { name: "Fellowship",    letter: "f" },
+    free_peoples:  { name: "Free Peoples",  letter: "F" },
+    gondor:        { name: "Gondor",        letter: "g" },
+    isengard:      { name: "Isengard",      letter: "i" },
+    lothlorien:    { name: "Lothlorien",    letter: "l" },
+    mirkwood:      { name: "Mirkwood",      letter: "w" },
+    moria:         { name: "Moria",         letter: "m" },
+    mordor:        { name: "Mordor",        letter: "M" },
+    rivendell:     { name: "Rivendell",     letter: "R" },
+    rohan:         { name: "Rohan",         letter: "r" },
+    white_council: { name: "White Council", letter: "w" }
+};
+
 function formatDate(age, year, month, day) {
     var a = [ ["", "FA", "SA", "TA"][age || 0] ];
     if (day) {
@@ -99,14 +117,16 @@ var ScenarioListScreen = {
             ])];
 
         rawData.forEach(function(scenario) {
+            var f1 = FACTION_INFO[scenario.scenario_factions[0].faction];
+            var f2 = FACTION_INFO[scenario.scenario_factions[1].faction];
             rows.push(m("tr", [
                 m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
                 m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
                 m("td.date-year", scenario.date_year),
                 m("td.source", scenario.scenario_resources["source"][0].title),
                 m("td.size", scenario.size),
-                m("td.faction faction1", "g"),
-                m("td.faction faction2", "e"),
+                m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
+                m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
                 m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
             ]));
         });
@@ -216,7 +236,9 @@ var ScenarioDetailScreen = {
     },
 
     factionRollup: function(faction) {
-        return m("div.faction", [ m("div.faction-name", faction.faction)].concat(ScenarioDetailScreen.figuresRollup(faction.figures)));
+        return m("div.faction", [
+            m("div.faction-name", FACTION_NAMES[faction.faction])
+        ].concat(ScenarioDetailScreen.figuresRollup(faction.figures)));
     },
 
     figuresRollup: function(figuresList) {
@@ -224,7 +246,7 @@ var ScenarioDetailScreen = {
         if (figuresList != null) {
             figuresList.forEach(function(f) {
                 figs.push(m("div.figure-line", [
-                    m("div.figure-line-amount", f.amount),
+                    m("div.figure-line-amount", f.amount > 1 ? f.amount : ""),
                     m("div.figure-line-name", f.name)
                 ]));
             });
