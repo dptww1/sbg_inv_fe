@@ -206,7 +206,11 @@ var ScenarioDetailScreen = {
     data: m.prop(false),
 
     controller: function() {
-        m.request({method: "GET", url: API_URL + "/scenarios/" + m.route.param("id")}).then(ScenarioDetailScreen.data).then(function() { m.redraw(); });
+        m.request({
+            method: "GET",
+            url: API_URL + "/scenarios/" + m.route.param("id")
+        }).then(ScenarioDetailScreen.data)
+          .then(function() { m.redraw(); });
     },
 
     view: function(ctrl) {
