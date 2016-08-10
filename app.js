@@ -165,6 +165,7 @@ var ScenarioListScreen = {
             var f1 = FACTION_INFO[scenario.scenario_factions[0].faction];
             var f2 = FACTION_INFO[scenario.scenario_factions[1].faction];
             rows.push(m("tr", [
+                m(Pie, 24, scenario.size, scenario.user_scenario.painted, scenario.user_scenario.owned),
                 m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
                 m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
                 m("td.date-year", scenario.date_year),
