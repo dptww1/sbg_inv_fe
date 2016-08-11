@@ -93,7 +93,7 @@ var Pie = {
             circleAttrs.fill = '#cc0';
         }
 
-        return m("svg", { width: size, height: size}, [
+        return m("svg", { width: size, height: size }, [
             m("circle", circleAttrs),
             Pie.slice(circleAttrs, 0, pctPainted, "#0c0"),
             Pie.slice(circleAttrs, pctPainted, pctOwned, "#dd0")
