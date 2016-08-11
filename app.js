@@ -153,6 +153,7 @@ var ScenarioListScreen = {
     drawTable: function(rawData) {
         var rows = [
             m("tr", [
+                m("th.completion[data-sort-by=completion]", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
                 m("th.name[data-sort-by=name]", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
                 m("th.date[data-sort-by=date][colspan=2]", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
                 m("th.source[data-sort-by=source]", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
@@ -206,6 +207,14 @@ var ScenarioListScreen = {
                 var prop = ev.target.getAttribute("data-sort-by");
                 if (prop) {
                     var sorters = {
+                        completion: function(a, b) {
+                            var d = cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size);
+                            if (d == 0) {
+                                d = cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size);
+                            }
+                            return d;
+                        },
+
                         name: function(a, b) {
                             return cmp(a[prop], b[prop]);
                         },
