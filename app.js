@@ -33,10 +33,10 @@ var FACTION_INFO = {
 
 function formatDate(age, year, month, day) {
     var a = [ ["", "FA", "SA", "TA"][age || 0] ];
-    if (day) {
+    if (day > 0) {
         a.push(day);
     }
-    if (month) {
+    if (month > 0) {
         a.push(MONTH_NAMES[month]);
     }
     a.push(year);
