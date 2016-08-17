@@ -212,6 +212,12 @@ var ScenarioListScreen = {
                             if (d == 0) {
                                 d = cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size);
                             }
+                            if (d == 0) {
+                                d = cmp(b.size, a.size);
+                                if (d == 0) {
+                                    d = cmp(a.name, b.name);
+                                }
+                            }
                             return d;
                         },
 
