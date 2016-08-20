@@ -7,6 +7,16 @@ body {
     font-family: Georgia, serif;
 }
 
+/* ===== Left-hand Nav ===== */
+
+.nav {
+    float: left;
+}
+
+.main-content {
+    float: left;
+}
+
 /* ===== Scenario List ===== */
 
 table.scenario-list a.scenario-detail-link {

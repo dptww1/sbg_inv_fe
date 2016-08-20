@@ -126,10 +126,31 @@ var Pie = {
 };
 
 //==================================================================================================================================
+var Nav = {
+    view: function(ctl, which) {
+        var inventoryActive = which == "Inventory";
+        var scenariosActive = which == "Scenarios";
+
+        return m("div.nav", [
+            m("div.nav-header", [
+                m("a",
+                  { href: "/inventory", config: m.route, class: inventoryActive ? "nav-content-selected" : "nav-content-unselected" },
+                  "Inventory")
+            ]),
+            m("div.nav-header", [
+                m("a",
+                  { href: "/scenarios", config: m.route, class: scenariosActive ? "nav-content-selected" : "nav-content-unselected" },
+                  "Scenarios")
+            ])
+        ]);
+    }
+};
+
+//==================================================================================================================================
 var MainScreen = {
     view: function() {
         return m("ul", [
-                   m("li", m("a[href='#']", {config: m.route}, "Figures")),
+                   m("li", m("a[href='/inventory']", {config: m.route}, "Figures")),
                    m("li", m("a[href='/scenarios']", {config: m.route}, "Scenarios")),
                  ]);
     }
@@ -145,8 +166,11 @@ var ScenarioListScreen = {
 
     view: function(ctrl) {
         return [
-            m("h3", "Scenarios"),
-            ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
+            m(Nav, "Scenarios"),
+            m("div.main-content", [
+                m("h3", "Scenarios"),
+                ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
+            ])
         ];
     },
 
@@ -278,12 +302,15 @@ var ScenarioDetailScreen = {
         var scenario = ScenarioDetailScreen.data().data;
 
         return [
-            m("div.scenario-details", [
-                m("div.scenario-title", scenario.name),
-                m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
-                m("div.scenario-blurb", scenario.blurb),
-                m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
-                m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
+            m(Nav, "Scenarios"),
+            m("div.main-content", [
+                m("div.scenario-details", [
+                    m("div.scenario-title", scenario.name),
+                    m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
+                    m("div.scenario-blurb", scenario.blurb),
+                    m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
+                    m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
+                ])
             ])
         ];
     },
@@ -371,9 +398,20 @@ var ScenarioDetailScreen = {
     }
 };
 
+//==================================================================================================================================
+var InventoryScreen = {
+    view: function() {
+        return [
+            m(Nav, "Inventory"),
+            m("div.main-content", "*** Inventory ***")
+        ];
+    }
+};
+
 m.route.mode = "hash";
 m.route(document.getElementById("mainDiv"), "/", {
     "/": MainScreen,
     "/scenarios/:id": ScenarioDetailScreen,
-    "/scenarios": ScenarioListScreen
+    "/scenarios": ScenarioListScreen,
+    "/inventory": InventoryScreen
 });
