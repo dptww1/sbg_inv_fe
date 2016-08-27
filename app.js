@@ -330,21 +330,35 @@ var ScenarioDetailScreen = {
     factionRollup: function(faction) {
         return m("div.faction", [
             m("div.faction-name", FACTION_INFO[faction.faction].name)
-        ].concat(ScenarioDetailScreen.figuresRollup(faction.figures)));
+        ].concat(ScenarioDetailScreen.rolesRollup(faction.roles)));
+    },
+
+    rolesRollup: function(rolesList) {
+        var roles = [];
+        if (rolesList != null) {
+            rolesList.forEach(function(r) {
+                roles.push(m("div.role-line", [
+                    m(Pie, 24, r.amount, r.num_painted, r.num_owned),
+                    r.amount > 1 ? m("div.role-line-amount", r.amount) : null,
+                    m("div.role-line-name", r.name)
+                ].concat(ScenarioDetailScreen.figuresRollup(r.figures))));
+            });
+        }
+        return roles;
     },
 
     figuresRollup: function(figuresList) {
-        var figs = [];
-        if (figuresList != null) {
+        var figures = [];
+        if (figuresList.length > 1) {
             figuresList.forEach(function(f) {
-                figs.push(m("div.figure-line", [
-                    m(Pie, 24, f.amount, f.num_painted, f.num_owned),
-                    f.amount > 1 ? m("div.figure-line-amount", f.amount) : null,
+                figures.push(m("div.figure-line", [
+                    m(Pie, 24, f.owned, f.painted, f.owned),
+                    f.owned > 1 ? m("div.figure-line-amount", f.owned) : null,
                     m("div.figure-line-name", f.name)
                 ]));
             });
         }
-        return figs;
+        return figures;
     },
 
     resourcesRollup: function(scenario) {

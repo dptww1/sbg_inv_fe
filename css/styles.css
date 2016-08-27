@@ -74,10 +74,24 @@ table.scenario-list td.faction {
     float: left;
 }
 
-.figure-line .pie {
+.pie {
     display: inline;
     height: 24px;
     width: 24px;
+}
+
+.role-line .role-line-amount {
+    display: inline;
+    margin-right: 0.5em;
+}
+
+.role-line .role-line-name {
+    display: inline;
+}
+
+.figure-line {
+    padding-left: 24px;
+    color: #999;
 }
 
 .figure-line .figure-line-amount {
