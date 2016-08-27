@@ -7,10 +7,21 @@ var MONTH_NAMES = [
 ];
 
 var BOOK_NAMES = {
-    fotn: "Fall of the Necromancer",
-    saf:  "Shadow & Flame",
-    sog:  "Siege of Gondor",
-    site: "A Shadow in the East"
+    bpf:     "Battle of the Pelennor Fields",
+    fotn:    "Fall of the Necromancer",
+    fotr:    "The Fellowship of the Ring",
+    fotr_jb: "The Fellowship of the Ring (Journey Book)",
+    harad:   "Harad",
+    kd:      "Khazad-dûm",
+    roa:     "The Ruin of Arnor",
+    rotk:    "The Return of the King",
+    rotk_jb: "The Return of the King (Journey Book)",
+    saf:     "Shadow & Flame",
+    site:    "A Shadow in the East",
+    sog:     "Siege of Gondor",
+    sots:    "The Scouring of the Shire",
+    ttt:     "The Two Towers",
+    ttt_jb:  "The Two Towers (Journey Book)"
 };
 
 var FACTION_INFO = {
