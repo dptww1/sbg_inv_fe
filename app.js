@@ -137,22 +137,61 @@ var Pie = {
 };
 
 //==================================================================================================================================
+var Header = {
+    view: function(ctl) {
+        return m(".page-header", [
+            m(".title", "ME SBG Inventory")
+        ]);
+    }
+};
+
+//==================================================================================================================================
 var Nav = {
     view: function(ctl, which) {
-        var inventoryActive = which == "Inventory";
-        var scenariosActive = which == "Scenarios";
+        var loginActive           = which == "Login";
+        var inventoryActive       = which == "Inventory";
+        var scenariosActive       = which == "Scenario List";
+        var scenarioDetailsActive = which == "Scenario Details";
 
         return m("div.nav", [
             m("div.nav-header", [
+                m("a[href=/login]", { config: m.route }, "Login/Register")
+            ]),
+
+            m("div.nav-header", [
                 m("a",
                   { href: "/inventory", config: m.route, class: inventoryActive ? "nav-content-selected" : "nav-content-unselected" },
-                  "Inventory")
+                  "Inventory"),
+                m("br"),
             ]),
+
             m("div.nav-header", [
                 m("a",
                   { href: "/scenarios", config: m.route, class: scenariosActive ? "nav-content-selected" : "nav-content-unselected" },
                   "Scenarios")
-            ])
+            ]),
+            m("div.filter-group-header", ""),
+
+            ScenarioListScreen.getSetFilters(null) > 1
+                ? m("ul.filter-group", [ m("li", { onclick: () => ScenarioListScreen.unsetAllFilters() }, "Remove all") ])
+                : null,
+
+            m("select[name=source]", {
+                onchange: function(ev) { ScenarioListScreen.setFilter("source", ev.target.value); }
+              }, [
+                  m("option[value=]", "... by Source"),
+                  ScenarioListScreen.isFilterActive("source", "fotn")   ? null : m("option[value=fotn]", "Fall of the Necromancer"),
+                  ScenarioListScreen.isFilterActive("source", "site")   ? null : m("option[value=site]", "A Shadow in the East"),
+                  ScenarioListScreen.isFilterActive("source", "ttt_jb") ? null : m("option[value=ttt_jb]", "The Two Towers Journeybook")
+            ]),
+            m("ul.filter-group", ScenarioListScreen.getSetFilters("source").map((f) => {
+                return f.state ? m("li", {
+                                            onclick: (ev) =>
+                                               ScenarioListScreen.unsetFilter("source", Object.keys(BOOK_NAMES).find((bk) => BOOK_NAMES[bk] == ev.target.textContent))
+                                       },
+                                       BOOK_NAMES[f.name])
+                               : null;
+            }))
         ]);
     }
 };
@@ -168,134 +207,211 @@ var MainScreen = {
 };
 
 //==================================================================================================================================
-var ScenarioListScreen = {
-    data: m.prop(false),
-
-    controller: function() {
-        m.request({method: "GET", url: API_URL + "/scenarios"}).then(ScenarioListScreen.data).then(function() { m.redraw(); });
-    },
-
-    view: function(ctrl) {
-        return [
-            m(Nav, "Scenarios"),
-            m("div.main-content", [
-                m("h3", "Scenarios"),
-                ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
-            ])
-        ];
-    },
-
-    drawTable: function(rawData) {
-        var rows = [
-            m("tr", [
-                m("th.completion[data-sort-by=completion]", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
-                m("th.name[data-sort-by=name]", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
-                m("th.date[data-sort-by=date][colspan=2]", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
-                m("th.source[data-sort-by=source]", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
-                m("th.size[data-sort-by=size]", m.trust("Size<span class='sort-arrow'>&nbsp;</span>")),
-                m("th.factions[colspan=2]", "Factions"),
-                m("th.resources", "Resources")
-            ])];
-
-        rawData.forEach(function(scenario) {
-            var f1 = FACTION_INFO[scenario.scenario_factions[0].faction];
-            var f2 = FACTION_INFO[scenario.scenario_factions[1].faction];
-            rows.push(m("tr", [
-                m("td.completion", [m(Pie, 24, scenario.size, scenario.user_scenario.painted, scenario.user_scenario.owned)]),
-                m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
-                m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
-                m("td.date-year", scenario.date_year),
-                m("td.source", scenario.scenario_resources["source"][0].title),
-                m("td.size", scenario.size),
-                m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
-                m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
-                m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
-            ]));
-        });
-        return m("table.scenario-list", ScenarioListScreen.tableSorter(rawData), rows);
-    },
-
-    ageAbbrev: function(ageNumber) {
-        if (1 <= ageNumber && ageNumber <= 3) {
-            return ["?", "FA", "SA", "TA"][ageNumber];
+var LoginScreen = function() {
+    return {
+        view(ctrl) {
+            return [
+                m(Header),
+                m(Nav, "Login"),
+                m("div.main-content", [
+                    m("table", [
+                        m("tr", [ m("td", "Username"), m("td", [ m("input[type=text][name=username]") ]) ]),
+                        m("tr", [ m("td", "Password"), m("td", [ m("input[type=password][name=password]") ]) ]),
+                        m("tr", [ m("td", ""),         m("button[value=Sign In][name=signin]", { onclick: () => alert("foo") }, "Sign In!") ])
+                    ])
+                ])
+            ];
         }
-        return "??";
-    },
+    };
+}();
 
-    resourceIcons: function(resources) {
-        var r = [];
-        if (resources.web_replay != null && resources.web_replay.length > 0) {
-            r.push(m("span", "W"));
-        }
-        if (resources.video_replay != null && resources.video_replay.length > 0) {
-            r.push(m("span", "V"));
-        }
-        if (resources.podcast != null && resources.podcast.length > 0) {
-            r.push(m("span", "P"));
-        }
-        return r;
-    },
+//==================================================================================================================================
+var ScenarioListScreen = function() {
+    var filters = {
+        source: {
+            data: [
+                { name: "fotn",   state: false },
+                { name: "site",   state: false },
+                { name: "ttt_jb", state: false }
+            ],
 
-    tableSorter: function(list) {
-        return {
-            onclick: function(ev) {
-                var prop = ev.target.getAttribute("data-sort-by");
-                if (prop) {
-                    var sorters = {
-                        completion: function(a, b) {
-                            var d = cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size);
-                            if (d == 0) {
-                                d = cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size);
-                            }
-                            if (d == 0) {
-                                d = cmp(b.size, a.size);
-                                if (d == 0) {
-                                    d = cmp(a.name, b.name);
-                                }
-                            }
-                            return d;
-                        },
-
-                        name: function(a, b) {
-                            return cmp(a[prop], b[prop]);
-                        },
-
-                        date: function(a, b) { // TODO: handle dates of same year with month,day = (0,0) & non-TA dates
-                            return cmp(a.date_year, b.date_year) ||
-                                   cmp(a.date_month, b.date_month) ||
-                                   cmp(a.date_day, b.date_day);
-                        },
-
-                        size: function(a, b) {
-                            return cmp(a[prop], b[prop]);  // TODO: tiebreaker
-                        },
-
-                        source: function(a, b) {
-                            var a_src = a.scenario_resources["source"][0];
-                            var b_src = b.scenario_resources["source"][0];
-                            return cmp(a_src.title, b_src.title) ||
-                                   cmp(a_src.sort_order, b_src.sort_order);
-                        }
-                    };
-
-                    var arrowNodes = document.getElementsByClassName("sort-arrow");
-                    for (var i = 0; i < arrowNodes.length; ++i) {
-                        arrowNodes[i].innerHTML = "&nbsp;";
-                    }
-
-                    var arrowChar = "&#9650;";   // ^
-                    var firstId = list[0].id;
-                    list.sort(sorters[prop]);
-                    if (firstId === list[0].id) {
-                        list.reverse();
-                        arrowChar = "&#9660;";   // v
-                    }
-                    ev.target.getElementsByClassName("sort-arrow")[0].innerHTML = arrowChar;
-                }
+            evalFn(rec) {
+                var activeFilters = filters.source.data.filter((f) => f.state);
+                return activeFilters.length == 0 ? true : activeFilters.find((s) => s.name === rec.scenario_resources.source[0].book);  // TODO: non-book sources
             }
-        };
-    }
-};
+        }
+    };
+
+    return {
+        data: m.prop(false),
+
+        filter(rec) { return Object.keys(filters).reduce((acc, v) => filters[v].evalFn(rec) && acc, true); },
+
+        getSetFilters(filterClass) {
+            if (filterClass == null) {
+                return Object.keys(filters).reduce((acc, v) => acc += ScenarioListScreen.getSetFilters(v).length, 0);
+            }
+            return filters[filterClass].data.filter((elt) => elt.state);
+        },
+
+        getUnsetFilters(filterClass) {
+            return filters[filterClass].data.filter((elt) => !elt.state);
+        },
+
+        isFilterActive(filterClass, name) {
+            return filters[filterClass].data.find((elt) => elt.name == name).state;
+        },
+
+        setFilter(filterClass, name) {
+            var filter = filters[filterClass].data.find((elt) => elt.name == name);
+            if (filter != null) {
+                filter.state = true;
+            }
+        },
+
+        unsetAllFilters() {
+            for (var filterClass in filters) {
+                filters[filterClass].data.forEach(f => f.state = false);
+            }
+        },
+
+        unsetFilter(filterClass, name) {
+            var filter = filters[filterClass].data.find((elt) => elt.name == name);
+            if (filter != null) {
+                filter.state = false;
+            }
+        },
+
+        controller: function() {
+            m.request({method: "GET", url: API_URL + "/scenarios"}).then(ScenarioListScreen.data).then(function() { m.redraw(); });
+        },
+
+        view: function(ctrl) {
+            return [
+                m(Header),
+                m(Nav, "Scenario List"),
+                m("div.main-content", [
+                    ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
+                ])
+            ];
+        },
+
+        drawTable: function(rawData) {
+            var rows = [
+                m("tr", [
+                    m("th.completion[data-sort-by=completion]", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.name[data-sort-by=name]", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.date[data-sort-by=date][colspan=2]", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
+                    m("th.source[data-sort-by=source]", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.size[data-sort-by=size]", m.trust("Size<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.factions[colspan=2]", "Factions"),
+                    m("th.resources", "Resources")
+                ])];
+
+            rawData.forEach(scenario => {
+                var f1 = FACTION_INFO[scenario.scenario_factions[0].faction];
+                var f2 = FACTION_INFO[scenario.scenario_factions[1].faction];
+                if (ScenarioListScreen.filter(scenario)) {
+                    rows.push(m("tr", [
+                        m("td.completion", [m(Pie, 24, scenario.size, scenario.user_scenario.painted, scenario.user_scenario.owned)]),
+                        m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
+                        m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
+                        m("td.date-year", scenario.date_year),
+                        m("td.source", scenario.scenario_resources["source"][0].title),
+                        m("td.size", scenario.size),
+                        m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
+                        m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
+                        m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
+                    ]));
+                }
+            });
+
+
+            return m("table.scenario-list", ScenarioListScreen.tableSorter(rawData), rows);
+        },
+
+        ageAbbrev: function(ageNumber) {
+            if (1 <= ageNumber && ageNumber <= 3) {
+                return ["?", "FA", "SA", "TA"][ageNumber];
+            }
+            return "??";
+        },
+
+        resourceIcons: function(resources) {
+            var r = [];
+            if (resources.web_replay != null && resources.web_replay.length > 0) {
+                r.push(m("span", "W"));
+            }
+            if (resources.video_replay != null && resources.video_replay.length > 0) {
+                r.push(m("span", "V"));
+            }
+            if (resources.podcast != null && resources.podcast.length > 0) {
+                r.push(m("span", "P"));
+            }
+            return r;
+        },
+
+        tableSorter: function(list) {
+            return {
+                onclick: function(ev) {
+                    var prop = ev.target.getAttribute("data-sort-by");
+                    if (prop) {
+                        var sorters = {
+                            completion: function(a, b) {
+                                var d = cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size);
+                                if (d == 0) {
+                                    d = cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size);
+                                }
+                                if (d == 0) {
+                                    d = cmp(b.size, a.size);
+                                    if (d == 0) {
+                                        d = cmp(a.name, b.name);
+                                    }
+                                }
+                                return d;
+                            },
+
+                            name: function(a, b) {
+                                return cmp(a[prop], b[prop]);
+                            },
+
+                            date: function(a, b) { // TODO: handle dates of same year with month,day = (0,0) & non-TA dates
+                                return cmp(a.date_year, b.date_year) ||
+                                    cmp(a.date_month, b.date_month) ||
+                                    cmp(a.date_day, b.date_day);
+                            },
+
+                            size: function(a, b) {
+                                return cmp(a[prop], b[prop]);  // TODO: tiebreaker
+                            },
+
+                            source: function(a, b) {
+                                var a_src = a.scenario_resources["source"][0];
+                                var b_src = b.scenario_resources["source"][0];
+                                return cmp(a_src.title, b_src.title) ||
+                                    cmp(a_src.sort_order, b_src.sort_order);
+                            }
+                        };
+
+                        var arrowNodes = document.getElementsByClassName("sort-arrow");
+                        for (var i = 0; i < arrowNodes.length; ++i) {
+                            arrowNodes[i].innerHTML = "&nbsp;";
+                        }
+
+                        var arrowChar = "&#9650;";   // ^
+                        var firstId = list[0].id;
+                        list.sort(sorters[prop]);
+                        if (firstId === list[0].id) {
+                            list.reverse();
+                            arrowChar = "&#9660;";   // v
+                        }
+                        ev.target.getElementsByClassName("sort-arrow")[0].innerHTML = arrowChar;
+                    }
+                }
+            };
+        }
+    };
+}();
 
 //==================================================================================================================================
 var ScenarioDetailScreen = {
@@ -313,7 +429,8 @@ var ScenarioDetailScreen = {
         var scenario = ScenarioDetailScreen.data().data;
 
         return [
-            m(Nav, "Scenarios"),
+            m(Header),
+            m(Nav, "Scenario Details"),
             m("div.main-content", [
                 m("div.scenario-details", [
                     m("div.scenario-title", scenario.name),
@@ -427,6 +544,7 @@ var ScenarioDetailScreen = {
 var InventoryScreen = {
     view: function() {
         return [
+            m(Header),
             m(Nav, "Inventory"),
             m("div.main-content", "*** Inventory ***")
         ];
@@ -438,5 +556,6 @@ m.route(document.getElementById("mainDiv"), "/", {
     "/": MainScreen,
     "/scenarios/:id": ScenarioDetailScreen,
     "/scenarios": ScenarioListScreen,
-    "/inventory": InventoryScreen
+    "/inventory": InventoryScreen,
+    "/login": LoginScreen
 });

@@ -7,6 +7,13 @@ body {
     font-family: Georgia, serif;
 }
 
+/* ===== Header ===== */
+
+.page-header .title {
+    text-align: center;
+    font: 32pt bolder;
+}
+
 /* ===== Left-hand Nav ===== */
 
 .nav {
@@ -15,6 +22,29 @@ body {
 
 .main-content {
     float: left;
+}
+
+ul.filter-group {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul.filter-group li {
+  border-radius: 3px;
+  border: 1px gray solid;
+  background-color: white;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+ul.filter-group li::before {
+  font-family: sans-serif;
+  content: "x";
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  margin-right: 0.3em;
+  background-color: gray;
+  color: white;
 }
 
 /* ===== Scenario List ===== */
