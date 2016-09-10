@@ -185,6 +185,7 @@ var Nav = {
               }, [
                   m("option[value=]", "... by Source"),
                   ScenarioListScreen.isFilterActive("source", "fotn")   ? null : m("option[value=fotn]", "Fall of the Necromancer"),
+                  ScenarioListScreen.isFilterActive("source", "saf")    ? null : m("option[value=saf]", "Shadow and Flame"),
                   ScenarioListScreen.isFilterActive("source", "site")   ? null : m("option[value=site]", "A Shadow in the East"),
                   ScenarioListScreen.isFilterActive("source", "ttt_jb") ? null : m("option[value=ttt_jb]", "The Two Towers Journeybook")
             ]),
@@ -286,6 +287,7 @@ var ScenarioListScreen = function() {
         source: {
             data: [
                 { name: "fotn",   state: false },
+                { name: "saf",    state: false },
                 { name: "site",   state: false },
                 { name: "ttt_jb", state: false }
             ],
