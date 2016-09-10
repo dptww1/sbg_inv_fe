@@ -7,6 +7,11 @@ body {
     font-family: Georgia, serif;
 }
 
+.errors {
+    font-size: 9pt;
+    color: red;
+}
+
 /* ===== Header ===== */
 
 .page-header .title {

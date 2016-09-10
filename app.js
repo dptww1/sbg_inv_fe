@@ -32,6 +32,7 @@ var FACTION_INFO = {
     fellowship:    { name: "Fellowship",    letter: "f" },
     free_peoples:  { name: "Free Peoples",  letter: "F" },
     gondor:        { name: "Gondor",        letter: "g" },
+    harad:         { name: "Harad",         letter: "h" },
     isengard:      { name: "Isengard",      letter: "i" },
     lothlorien:    { name: "Lothlorien",    letter: "l" },
     mirkwood:      { name: "Mirkwood",      letter: "w" },
@@ -208,16 +209,67 @@ var MainScreen = {
 
 //==================================================================================================================================
 var LoginScreen = function() {
+    var errors = m.prop("");
+
+    var register = () => {
+        m.request({
+            method: "POST",
+            url: API_URL + "/sessions",
+            data: { user: { email: LoginScreen.email(), password: LoginScreen.password() } }
+        })
+       .then((resp) => {
+                 console.log(resp.data.token);
+                 m.route("/scenarios");
+             },
+             errors);
+    };
+
+    var login = () => {
+        m.request({
+            method: "POST",
+            url: API_URL + "/users",
+            data: { user: { email: LoginScreen.email(), password: LoginScreen.password() } }
+        })
+        .then(register, errors);
+    };
+
+    var errorText = () => {
+        var msgs = [];
+        var errObj = errors().errors;
+        for (var key in errObj) {
+            msgs.push(key + ": " + errObj[key].join(", "));
+        }
+        return m.trust(msgs.join("<br/>"));
+    };
+
     return {
+        email: m.prop(),
+
+        password: m.prop(),
+
         view(ctrl) {
             return [
                 m(Header),
                 m(Nav, "Login"),
+                errors() ? m("div.errors", errorText()) : null,
                 m("div.main-content", [
                     m("table", [
-                        m("tr", [ m("td", "Username"), m("td", [ m("input[type=text][name=username]") ]) ]),
-                        m("tr", [ m("td", "Password"), m("td", [ m("input[type=password][name=password]") ]) ]),
-                        m("tr", [ m("td", ""),         m("button[value=Sign In][name=signin]", { onclick: () => alert("foo") }, "Sign In!") ])
+                        m("tr", [
+                            m("td", "Username"),
+                            m("td", [
+                                m("input[type=text][name=username]", { onchange: m.withAttr("value", LoginScreen.email) })
+                            ])
+                        ]),
+                        m("tr", [
+                            m("td", "Password"),
+                            m("td", [
+                                m("input[type=password][name=password]", { onchange: m.withAttr("value", LoginScreen.password) })
+                            ])
+                        ]),
+                        m("tr", [
+                            m("td", ""),
+                            m("button[value=Sign In][name=signin]", { onclick: () => login() }, "Sign In!")
+                        ])
                     ])
                 ])
             ];
