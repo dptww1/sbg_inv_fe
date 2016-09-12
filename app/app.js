@@ -159,7 +159,8 @@ var Nav = {
 
         return m("div.nav", [
             m("div.nav-header", [
-                m("a[href=/login]", { config: m.route }, "Login/Register")
+                Credentials.token() ? m("div.login-name", Credentials.name(), m("br"), m("a[href=/logout]", { config: m.route }, "Log out"))
+                                    : m("a[href=/login]", { config: m.route }, "Login/Register")
             ]),
 
             m("div.nav-header", [
@@ -212,6 +213,48 @@ var MainScreen = {
 };
 
 //==================================================================================================================================
+var Cookie = {
+    read: function(name) {
+        var cookies = document.cookie.split(/\s*;\s*/);
+        for (var i = 0; i < cookies.length; ++i) {
+            if (cookies[i].indexOf(name) == 0) {
+//                console.log("*** READ COOKIE " + cookies[i].substring(name.length + 1));
+                return cookies[i].substring(name.length + 1);
+            }
+        }
+        return null;
+    },
+
+    write: function(name, value) {
+        var d = new Date();
+        d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
+        document.cookie = name + '=' + value + "; expires = " + d.toUTCString();
+//        console.log("*** WRITE COOKIE " + document.cookie);
+    }
+}
+
+//==================================================================================================================================
+var Credentials = function() {
+    var propCookie = function(cookieName) {
+        return function() {
+            if (arguments.length > 0) {
+                Cookie.write(cookieName, arguments[0]);
+                return arguments[0];
+            } else {
+                return Cookie.read(cookieName);
+            }
+        };
+    };
+
+    return {
+        name: propCookie("name"),
+        email: m.prop(),
+        password: m.prop(),
+        token: propCookie("token")
+    };
+}();
+
+//==================================================================================================================================
 var LoginScreen = function() {
     var errors = m.prop("");
 
@@ -219,20 +262,19 @@ var LoginScreen = function() {
         m.request({
             method: "POST",
             url: API_URL + "/sessions",
-            data: { user: { email: LoginScreen.email(), password: LoginScreen.password() } }
-        })
-       .then((resp) => {
-                 console.log(resp.data.token);
-                 m.route("/scenarios");
-             },
-             errors);
+            data: { user: { email: Credentials.email(), password: Credentials.password() } }
+        }).then((resp) => {
+                  Credentials.token(resp.data.token);
+                  console.log(resp.data.token);
+                  m.route("/scenarios");
+                }, errors);
     };
 
     var login = () => {
         m.request({
             method: "POST",
             url: API_URL + "/users",
-            data: { user: { email: LoginScreen.email(), password: LoginScreen.password() } }
+            data: { user: { name: Credentials.name(), email: Credentials.email(), password: Credentials.password() } }
         })
         .then(register, errors);
     };
@@ -247,9 +289,10 @@ var LoginScreen = function() {
     };
 
     return {
+        name: m.prop(),
         email: m.prop(),
-
         password: m.prop(),
+        token: m.prop(),
 
         view(ctrl) {
             return [
@@ -259,15 +302,21 @@ var LoginScreen = function() {
                 m("div.main-content", [
                     m("table", [
                         m("tr", [
-                            m("td", "Username"),
+                            m("td", "Name"),
                             m("td", [
-                                m("input[type=text][name=username]", { onchange: m.withAttr("value", LoginScreen.email) })
+                                m("input[type=text][name=name]", { onchange: m.withAttr("value", Credentials.name) })
+                            ])
+                        ]),
+                        m("tr", [
+                            m("td", "Email"),
+                            m("td", [
+                                m("input[type=text][name=email]", { onchange: m.withAttr("value", Credentials.email) })
                             ])
                         ]),
                         m("tr", [
                             m("td", "Password"),
                             m("td", [
-                                m("input[type=password][name=password]", { onchange: m.withAttr("value", LoginScreen.password) })
+                                m("input[type=password][name=password]", { onchange: m.withAttr("value", Credentials.password) })
                             ])
                         ]),
                         m("tr", [
