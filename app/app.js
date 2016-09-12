@@ -159,7 +159,7 @@ var Nav = {
 
         return m("div.nav", [
             m("div.nav-header", [
-                Credentials.token() ? m("div.login-name", Credentials.name(), m("br"), m("a[href=/logout]", { config: m.route }, "Log out"))
+                Credentials.token() ? m("div.login-name", Credentials.name(), m("br"), m("a", { onclick: function() { Credentials.clear(); } }, "Log out"))
                                     : m("a[href=/login]", { config: m.route }, "Login/Register")
             ]),
 
@@ -214,11 +214,16 @@ var MainScreen = {
 
 //==================================================================================================================================
 var Cookie = {
+    delete: function(name) {
+        //console.log("*** DELETE COOKIE " + name);
+        document.cookie = name + "=; expires=Wed, 01 Jan 1970";
+    },
+
     read: function(name) {
         var cookies = document.cookie.split(/\s*;\s*/);
         for (var i = 0; i < cookies.length; ++i) {
             if (cookies[i].indexOf(name) == 0) {
-//                console.log("*** READ COOKIE " + cookies[i].substring(name.length + 1));
+                //console.log("*** READ COOKIE " + cookies[i].substring(name.length + 1));
                 return cookies[i].substring(name.length + 1);
             }
         }
@@ -229,7 +234,7 @@ var Cookie = {
         var d = new Date();
         d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
         document.cookie = name + '=' + value + "; expires = " + d.toUTCString();
-//        console.log("*** WRITE COOKIE " + document.cookie);
+        //console.log("*** WRITE COOKIE " + document.cookie);
     }
 }
 
@@ -238,7 +243,11 @@ var Credentials = function() {
     var propCookie = function(cookieName) {
         return function() {
             if (arguments.length > 0) {
-                Cookie.write(cookieName, arguments[0]);
+                if (arguments[0] === undefined) {
+                    Cookie.delete(cookieName);
+                } else {
+                    Cookie.write(cookieName, arguments[0]);
+                }
                 return arguments[0];
             } else {
                 return Cookie.read(cookieName);
@@ -250,7 +259,12 @@ var Credentials = function() {
         name: propCookie("name"),
         email: m.prop(),
         password: m.prop(),
-        token: propCookie("token")
+        token: propCookie("token"),
+
+        clear: function() {
+            Credentials.name(undefined);
+            Credentials.token(undefined);
+        }
     };
 }();
 
