@@ -52,6 +52,58 @@ ul.filter-group li::before {
   color: white;
 }
 
+/* ===== Star Ratings ===== */
+
+div.rating {
+  display: inline;
+}
+
+div.rating-star-container {
+  display: inline;
+}
+
+div.rating-star-inner {
+  /*margin-left: -16px;*/
+  position: absolute;
+  left: 0;
+  top: -3px;
+  color: #e7c344;
+  overflow: hidden;
+  text-shadow: none;
+  transition:all .4s ease-out;
+  cursor:pointer;
+}
+
+div.rating-star-inner:hover {
+  color: #ff8400;
+}
+
+div.rating-star {
+  display: inline;
+  position: relative;
+  text-shadow: 0 2px 2px #ceceCe;
+  transition:all .4s ease-out;
+}
+
+div.rating-star:hover {
+  color: #ff8400;
+  cursor: pointer;
+}
+
+div.rating-star-highlight {
+  color: #ff8400;
+}
+
+div.rating {
+  margin: 0;
+  padding: 0;
+}
+
+span.votes {
+  padding-left: 3px;
+  font-size: 66%;
+}
+
 /* ===== Scenario List ===== */
 
 table.scenario-list a.scenario-detail-link {

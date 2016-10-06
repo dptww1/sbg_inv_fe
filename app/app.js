@@ -1,4 +1,4 @@
-/* global m */
+/* global m, require */
 
 var m = require("mithril");
 
@@ -61,6 +61,26 @@ function formatDate(age, year, month, day) {
 function cmp(a, b) {
     return a > b ? 1 : a < b ? -1 : 0;
 }
+
+var Request = (function() {
+    return {
+        get: function(url) {
+            var opts = { method: "GET", url: url };
+            if (Credentials.token()) {
+                opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
+            }
+            return m.request(opts);
+        },
+
+        post: function(url, data) {
+            var opts = { method: "POST", url: url, data: data };
+            if (Credentials.token()) {
+                opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
+            }
+            return m.request(opts);
+        }
+    };
+}());
 
 // courtesy http://ratfactor.com/daves-guide-to-mithril-js
 var requestWrapper = function(opts) {
@@ -236,7 +256,7 @@ var Cookie = {
         document.cookie = name + '=' + value + "; expires = " + d.toUTCString();
         //console.log("*** WRITE COOKIE " + document.cookie);
     }
-}
+};
 
 //==================================================================================================================================
 var Credentials = function() {
@@ -264,6 +284,66 @@ var Credentials = function() {
         clear: function() {
             Credentials.name(undefined);
             Credentials.token(undefined);
+        }
+    };
+}();
+
+//==================================================================================================================================
+var StarRating = function() {
+    var CELL_WIDTH = 16;
+
+    var highlightClassName = function(idx, userRating) {
+        return idx == userRating ? "rating-star-highlight" : "";
+    };
+
+    var ratingSpanWidth = function(idx, rating) {
+        if (idx <= rating) {
+            return "100%";
+        }
+        return Math.min(1 + ((rating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH);
+    };
+
+    var updateRating = function(ctrl, newRating) {
+        Request.post(API_URL + "/userscenarios", {
+                                 user_scenario: { scenario_id: ctrl.id(), rating: newRating }
+                             }).then(resp => {
+                                 ctrl.rating(resp.avg_rating);
+                                 ctrl.userRating(resp.rating);
+                                 ctrl.votes(resp.num_votes);
+                             },
+                             resp => {
+                                 alert("Fail!");
+                             });
+    };
+
+    return {
+        controller: function(id, rating, userRating, votes) {
+            return {
+                id: m.prop(id),
+                rating: m.prop(rating),
+                userRating: m.prop(userRating),
+                votes: m.prop(votes)
+            };
+        },
+
+        view: function(ctrl) {
+            var rating = Math.max(Math.min(ctrl.rating(), 5), 0);
+            var ratingCeiling = Math.ceil(rating);
+            return m("div.rating", { key: ctrl.id() }, [1, 2, 3, 4, 5].map(function(n) {
+                return m("div.rating-star-container",
+                         { onclick: function(ev) { updateRating(ctrl, n); } },
+                         [
+                             m("div", { class: "rating-star " + highlightClassName(n, ctrl.userRating()) }, [
+                                 m.trust("&#9734;"),
+                                 n <= ratingCeiling ? m("div", {
+                                                          class: "rating-star-inner " + highlightClassName(n, ctrl.userRating()),
+                                                          style: "width:" + ratingSpanWidth(n, rating) + "px"
+                                                        },
+                                                        m.trust("&#9733;"))
+                                                    : null
+                             ])
+                         ]);
+            }).concat(ctrl.votes() > 0 ? m("span.votes", "(" + ctrl.votes() + ")") : null));
         }
     };
 }();
@@ -403,7 +483,7 @@ var ScenarioListScreen = function() {
         },
 
         controller: function() {
-            m.request({method: "GET", url: API_URL + "/scenarios"}).then(ScenarioListScreen.data).then(function() { m.redraw(); });
+            Request.get(API_URL + "/scenarios").then(ScenarioListScreen.data).then(function() { m.redraw(); });
         },
 
         view: function(ctrl) {
@@ -424,6 +504,7 @@ var ScenarioListScreen = function() {
                     m("th.date[data-sort-by=date][colspan=2]", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
                     m("th.source[data-sort-by=source]", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.size[data-sort-by=size]", m.trust("Size<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.rating[data-sort-by=rating]", m.trust("Rating<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.factions[colspan=2]", "Factions"),
                     m("th.resources", "Resources")
                 ])];
@@ -439,6 +520,7 @@ var ScenarioListScreen = function() {
                         m("td.date-year", scenario.date_year),
                         m("td.source", scenario.scenario_resources["source"][0].title),
                         m("td.size", scenario.size),
+                        m("td.rating", m(StarRating, scenario.id, scenario.rating, scenario.user_scenario.rating, scenario.num_votes)),
                         m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
                         m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
                         m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
@@ -501,6 +583,10 @@ var ScenarioListScreen = function() {
                                     cmp(a.date_day, b.date_day);
                             },
 
+                            rating: function(a, b) {
+                                return cmp(a.rating, b.rating);  // TODO: tiebreaker
+                            },
+
                             size: function(a, b) {
                                 return cmp(a[prop], b[prop]);  // TODO: tiebreaker
                             },
@@ -538,11 +624,7 @@ var ScenarioDetailScreen = {
     data: m.prop(false),
 
     controller: function() {
-        m.request({
-            method: "GET",
-            url: API_URL + "/scenarios/" + m.route.param("id")
-        }).then(ScenarioDetailScreen.data)
-          .then(function() { m.redraw(); });
+        Request.get(API_URL + "/scenarios/" + m.route.param("id")).then(ScenarioDetailScreen.data).then(function() { m.redraw(); });
     },
 
     view: function(ctrl) {
