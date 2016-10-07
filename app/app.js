@@ -303,13 +303,14 @@ var StarRating = function() {
         return Math.min(1 + ((rating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH);
     };
 
-    var updateRating = function(ctrl, newRating) {
+    var updateRating = function(id, newRating) {
         Request.post(API_URL + "/userscenarios", {
-                                 user_scenario: { scenario_id: ctrl.id(), rating: newRating }
+                                 user_scenario: { scenario_id: id, rating: newRating }
                              }).then(resp => {
-                                 ctrl.rating(resp.avg_rating);
-                                 ctrl.userRating(resp.rating);
-                                 ctrl.votes(resp.num_votes);
+                                 var scenario = ScenarioListScreen.data().data.find(elt => elt.id == id);
+                                 scenario.rating = resp.avg_rating;
+                                 scenario.user_scenario.rating = newRating;
+                                 scenario.num_votes = resp.num_votes;
                              },
                              resp => {
                                  alert("Fail!");
@@ -317,33 +318,25 @@ var StarRating = function() {
     };
 
     return {
-        controller: function(id, rating, userRating, votes) {
-            return {
-                id: m.prop(id),
-                rating: m.prop(rating),
-                userRating: m.prop(userRating),
-                votes: m.prop(votes)
-            };
-        },
-
-        view: function(ctrl) {
-            var rating = Math.max(Math.min(ctrl.rating(), 5), 0);
+        view: function(ctrl, id, rating, userRating, votes) {
+            console.log("id: " + id + ", rating: " + rating + ", userRating: " + userRating + ", votes: " + votes);
+            rating = Math.max(Math.min(rating, 5), 0);
             var ratingCeiling = Math.ceil(rating);
-            return m("div.rating", { key: ctrl.id() }, [1, 2, 3, 4, 5].map(function(n) {
+            return m("div.rating", [1, 2, 3, 4, 5].map(function(n) {
                 return m("div.rating-star-container",
-                         { onclick: function(ev) { updateRating(ctrl, n); } },
+                         { onclick: function(ev) { updateRating(id, n); } },
                          [
-                             m("div", { class: "rating-star " + highlightClassName(n, ctrl.userRating()) }, [
+                             m("div", { class: "rating-star " + highlightClassName(n, userRating) }, [
                                  m.trust("&#9734;"),
                                  n <= ratingCeiling ? m("div", {
-                                                          class: "rating-star-inner " + highlightClassName(n, ctrl.userRating()),
+                                                          class: "rating-star-inner " + highlightClassName(n, userRating),
                                                           style: "width:" + ratingSpanWidth(n, rating) + "px"
                                                         },
                                                         m.trust("&#9733;"))
                                                     : null
                              ])
                          ]);
-            }).concat(ctrl.votes() > 0 ? m("span.votes", "(" + ctrl.votes() + ")") : null));
+            }).concat(votes > 0 ? m("span.votes", "(" + votes + ")") : null));
         }
     };
 }();
