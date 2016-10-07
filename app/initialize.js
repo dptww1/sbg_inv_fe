@@ -1,4 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
     var m = require('mithril');
-    require('app.js');
+    require('sbg.js');
 });
