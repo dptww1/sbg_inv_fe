@@ -303,11 +303,10 @@ var StarRating = function() {
         return Math.min(1 + ((rating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH);
     };
 
-    var updateRating = function(id, newRating) {
+    var updateRating = function(scenario, newRating) {
         Request.post(API_URL + "/userscenarios", {
-                                 user_scenario: { scenario_id: id, rating: newRating }
+                                 user_scenario: { scenario_id: scenario.id, rating: newRating }
                              }).then(resp => {
-                                 var scenario = ScenarioListScreen.data().data.find(elt => elt.id == id);
                                  scenario.rating = resp.avg_rating;
                                  scenario.user_scenario.rating = newRating;
                                  scenario.num_votes = resp.num_votes;
@@ -318,13 +317,17 @@ var StarRating = function() {
     };
 
     return {
-        view: function(ctrl, id, rating, userRating, votes) {
+        view: function(ctrl, scenario) {
+            var id = scenario.id;
+            var rating = scenario.rating;
+            var userRating = scenario.user_scenario.rating;
+            var votes = scenario.num_votes;
             console.log("id: " + id + ", rating: " + rating + ", userRating: " + userRating + ", votes: " + votes);
             rating = Math.max(Math.min(rating, 5), 0);
             var ratingCeiling = Math.ceil(rating);
             return m("div.rating", [1, 2, 3, 4, 5].map(function(n) {
                 return m("div.rating-star-container",
-                         { onclick: function(ev) { updateRating(id, n); } },
+                         { onclick: function(ev) { updateRating(scenario, n); } },
                          [
                              m("div", { class: "rating-star " + highlightClassName(n, userRating) }, [
                                  m.trust("&#9734;"),
@@ -513,7 +516,7 @@ var ScenarioListScreen = function() {
                         m("td.date-year", scenario.date_year),
                         m("td.source", scenario.scenario_resources["source"][0].title),
                         m("td.size", scenario.size),
-                        m("td.rating", m(StarRating, scenario.id, scenario.rating, scenario.user_scenario.rating, scenario.num_votes)),
+                        m("td.rating", m(StarRating, scenario)),
                         m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
                         m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
                         m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
@@ -629,6 +632,7 @@ var ScenarioDetailScreen = {
             m("div.main-content", [
                 m("div.scenario-details", [
                     m("div.scenario-title", scenario.name),
+                    m("div.scenario-rating", m(StarRating, scenario)),
                     m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
                     m("div.scenario-blurb", scenario.blurb),
                     m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
