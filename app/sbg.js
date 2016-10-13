@@ -322,7 +322,7 @@ var StarRating = function() {
             var rating = scenario.rating;
             var userRating = scenario.user_scenario.rating;
             var votes = scenario.num_votes;
-            console.log("id: " + id + ", rating: " + rating + ", userRating: " + userRating + ", votes: " + votes);
+            //console.log("id: " + id + ", rating: " + rating + ", userRating: " + userRating + ", votes: " + votes);
             rating = Math.max(Math.min(rating, 5), 0);
             var ratingCeiling = Math.ceil(rating);
             return m("div.rating", [1, 2, 3, 4, 5].map(function(n) {
