@@ -538,13 +538,13 @@ var ScenarioListScreen = function() {
         resourceIcons: function(resources) {
             var r = [];
             if (resources.web_replay != null && resources.web_replay.length > 0) {
-                r.push(m("span", "W"));
+                r.push(m("span", "\ue922"));
             }
             if (resources.video_replay != null && resources.video_replay.length > 0) {
-                r.push(m("span", "V"));
+                r.push(m("span", "\uea9d"));
             }
             if (resources.podcast != null && resources.podcast.length > 0) {
-                r.push(m("span", "P"));
+                r.push(m("span", "\uea27"));
             }
             return r;
         },

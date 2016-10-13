@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "sbg";
-    src: url("../sbg_font.ttf") format("truetype");
+    font-family: "sbg-resources";
+    src: url("../sbg-resources.ttf") format("truetype");
 }
 
 body {
@@ -81,17 +81,17 @@ div.rating-star-inner:hover {
 div.rating-star {
   display: inline;
   position: relative;
-  text-shadow: 0 2px 2px #ceceCe;
+  text-shadow: 0 2px 2px #cecece;
   transition:all .4s ease-out;
 }
 
 div.rating-star:hover {
-  color: #ff8400;
+  color: #a4b;
   cursor: pointer;
 }
 
 div.rating-star-highlight {
-  color: #ff8400;
+  color: #a4b;
 }
 
 div.rating {
@@ -115,7 +115,10 @@ table.scenario-list a.scenario-detail-link:hover {
 }
 
 table.scenario-list td.faction {
-    font-family: "sbg";
+}
+
+table.scenario-list td.resources {
+    font-family: "sbg-resources";
     font-weight: normal;
     font-style: normal;
     color: #333;
