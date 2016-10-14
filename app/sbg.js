@@ -178,10 +178,14 @@ var Nav = {
         var scenarioDetailsActive = which == "Scenario Details";
 
         return m("div.nav", [
-            m("div.nav-header", [
-                Credentials.token() ? m("div.login-name", Credentials.name(), m("br"), m("a", { onclick: function() { Credentials.clear(); } }, "Log out"))
-                                    : m("a[href=/login]", { config: m.route }, "Login/Register")
-            ]),
+            m("div.nav-header",
+              Credentials.token() ? [ m("div.login-name", Credentials.name(), m("br"), m("a", { onclick: function() { Credentials.clear(); } }, "Log out")) ]
+                                    : [
+                                        m("a[href=/login]", { config: m.route }, "Login"),
+                                        "/",
+                                        m("a[href=/register]", { config: m.route }, "Register")
+                                      ]
+             ),
 
             m("div.nav-header", [
                 m("a",
@@ -345,28 +349,28 @@ var StarRating = function() {
 }();
 
 //==================================================================================================================================
-var LoginScreen = function() {
+var RegisterScreen = function() {
     var errors = m.prop("");
 
-    var register = () => {
+    var login = () => {
         m.request({
             method: "POST",
             url: API_URL + "/sessions",
             data: { user: { email: Credentials.email(), password: Credentials.password() } }
-        }).then((resp) => {
+        }).then(resp => {
                   Credentials.token(resp.data.token);
                   console.log(resp.data.token);
                   m.route("/scenarios");
                 }, errors);
     };
 
-    var login = () => {
+    var register = () => {
         m.request({
             method: "POST",
             url: API_URL + "/users",
             data: { user: { name: Credentials.name(), email: Credentials.email(), password: Credentials.password() } }
         })
-        .then(register, errors);
+        .then(login, errors);
     };
 
     var errorText = () => {
@@ -397,6 +401,58 @@ var LoginScreen = function() {
                                 m("input[type=text][name=name]", { onchange: m.withAttr("value", Credentials.name) })
                             ])
                         ]),
+                        m("tr", [
+                            m("td", "Email"),
+                            m("td", [
+                                m("input[type=text][name=email]", { onchange: m.withAttr("value", Credentials.email) })
+                            ])
+                        ]),
+                        m("tr", [
+                            m("td", "Password"),
+                            m("td", [
+                                m("input[type=password][name=password]", { onchange: m.withAttr("value", Credentials.password) })
+                            ])
+                        ]),
+                        m("tr", [
+                            m("td", ""),
+                            m("button[value=Sign In][name=signin]", { onclick: () => register() }, "Sign Up!")
+                        ])
+                    ])
+                ])
+            ];
+        }
+    };
+}();
+
+//==================================================================================================================================
+var LoginScreen = function() {
+    var errors = m.prop("");
+
+    var login = () => {
+        m.request({
+            method: "POST",
+            url: API_URL + "/sessions",
+            data: { user: { email: Credentials.email(), password: Credentials.password() } }
+        }).then(resp => {
+                  Credentials.token(resp.data.token);
+                  Credentials.name(resp.data.name);
+                  console.log(resp.data.token);
+                  m.route("/scenarios");
+                }, errors);
+    };
+
+    return {
+        email: m.prop(),
+        password: m.prop(),
+        token: m.prop(),
+
+        view(ctrl) {
+            return [
+                m(Header),
+                m(Nav, "Login"),
+                errors() ? m("div.errors", errors().errors) : null,
+                m("div.main-content", [
+                    m("table", [
                         m("tr", [
                             m("td", "Email"),
                             m("td", [
@@ -752,9 +808,10 @@ var InventoryScreen = {
 
 m.route.mode = "hash";
 m.route(document.getElementById("mainDiv"), "/", {
-    "/": MainScreen,
-    "/scenarios/:id": ScenarioDetailScreen,
-    "/scenarios": ScenarioListScreen,
-    "/inventory": InventoryScreen,
-    "/login": LoginScreen
+    "/"              : MainScreen,
+    "/scenarios/:id" : ScenarioDetailScreen,
+    "/scenarios"     : ScenarioListScreen,
+    "/inventory"     : InventoryScreen,
+    "/login"         : LoginScreen,
+    "/register"      : RegisterScreen
 });
