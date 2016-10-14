@@ -16,6 +16,7 @@ var BOOK_NAMES = {
     fotr_jb: "The Fellowship of the Ring (Journey Book)",
     harad:   "Harad",
     kd:      "Khazad-dûm",
+    mordor:  "Mordor",
     roa:     "The Ruin of Arnor",
     rotk:    "The Return of the King",
     rotk_jb: "The Return of the King (Journey Book)",
@@ -210,6 +211,7 @@ var Nav = {
               }, [
                   m("option[value=]", "... by Source"),
                   ScenarioListScreen.isFilterActive("source", "fotn")   ? null : m("option[value=fotn]", "Fall of the Necromancer"),
+                  ScenarioListScreen.isFilterActive("source", "mordor") ? null : m("option[value=mordor]", "Mordor"),
                   ScenarioListScreen.isFilterActive("source", "saf")    ? null : m("option[value=saf]", "Shadow and Flame"),
                   ScenarioListScreen.isFilterActive("source", "site")   ? null : m("option[value=site]", "A Shadow in the East"),
                   ScenarioListScreen.isFilterActive("source", "ttt_jb") ? null : m("option[value=ttt_jb]", "The Two Towers Journeybook")
@@ -482,6 +484,7 @@ var ScenarioListScreen = function() {
         source: {
             data: [
                 { name: "fotn",   state: false },
+                { name: "mordor", state: false },
                 { name: "saf",    state: false },
                 { name: "site",   state: false },
                 { name: "ttt_jb", state: false }
@@ -753,6 +756,7 @@ var ScenarioDetailScreen = {
         ScenarioDetailScreen.resourcesRollupAddSource(r, scenario.scenario_resources);
         ScenarioDetailScreen.resourcesRollupAddVideoReplays(r, scenario.scenario_resources);
         ScenarioDetailScreen.resourcesRollupAddWebReplays(r, scenario.scenario_resources);
+        ScenarioDetailScreen.resourcesRollupAddPodcasts(r, scenario.scenario_resources);
         return m("div.scenario-resources", r);
     },
 
@@ -763,6 +767,19 @@ var ScenarioDetailScreen = {
                     m("span.scenario-source-title", "Source: "),
                     m("span.scenario-source-book-title", BOOK_NAMES[resource.book]),
                     m("span.scenario-source-book-page", ", page " + resource.page)
+                ]));
+            });
+        }
+    },
+
+    resourcesRollupAddPodcasts: function(eltArray, resources) {
+        if (resources.podcast) {
+            resources.podcast.forEach(function(resource) {
+                eltArray.push(m("div.podcast", [
+                    m("span.scenario-podcast-title", "Podcast: "),
+                    m("span.scenario-podcast-url", [
+                        m("a", { href: resource.url }, resource.title || resource.url)
+                    ])
                 ]));
             });
         }
