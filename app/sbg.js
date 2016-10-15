@@ -44,6 +44,7 @@ var FACTION_INFO = {
     mordor:        { name: "Mordor",        letter: "M" },
     rivendell:     { name: "Rivendell",     letter: "R" },
     rohan:         { name: "Rohan",         letter: "r" },
+    shire:         { name: "The Shire",     letter: "s" },
     white_council: { name: "White Council", letter: "w" }
 };
 
@@ -214,6 +215,7 @@ var Nav = {
                   ScenarioListScreen.isFilterActive("source", "mordor") ? null : m("option[value=mordor]", "Mordor"),
                   ScenarioListScreen.isFilterActive("source", "saf")    ? null : m("option[value=saf]", "Shadow and Flame"),
                   ScenarioListScreen.isFilterActive("source", "site")   ? null : m("option[value=site]", "A Shadow in the East"),
+                  ScenarioListScreen.isFilterActive("source", "sots")   ? null : m("option[value=sots]", "The Scouring of the Shire"),
                   ScenarioListScreen.isFilterActive("source", "ttt_jb") ? null : m("option[value=ttt_jb]", "The Two Towers Journeybook")
             ]),
             m("ul.filter-group", ScenarioListScreen.getSetFilters("source").map((f) => {
@@ -487,6 +489,7 @@ var ScenarioListScreen = function() {
                 { name: "mordor", state: false },
                 { name: "saf",    state: false },
                 { name: "site",   state: false },
+                { name: "sots",   state: false },
                 { name: "ttt_jb", state: false }
             ],
 
@@ -729,6 +732,9 @@ var ScenarioDetailScreen = {
                     m("div.role-line-name", r.name)
                 ].concat(ScenarioDetailScreen.figuresRollup(r.figures))));
             });
+        }
+        if (roles.length == 0) {
+            roles.push(m("div.role-line", "None (no, really!)"));
         }
         return roles;
     },
