@@ -663,10 +663,11 @@ var ScenarioListScreen = function() {
                                 return cmp(a[prop], b[prop]);
                             },
 
-                            date: function(a, b) { // TODO: handle dates of same year with month,day = (0,0) & non-TA dates
-                                return cmp(a.date_year, b.date_year) ||
-                                    cmp(a.date_month, b.date_month) ||
-                                    cmp(a.date_day, b.date_day);
+                            date: function(a, b) { // TODO: handle dates of same year with month,day = (0,0)
+                                return cmp(a.date_age, b.date_age) ||
+                                       cmp(a.date_year, b.date_year) ||
+                                       cmp(a.date_month, b.date_month) ||
+                                       cmp(a.date_day, b.date_day);
                             },
 
                             rating: function(a, b) {
