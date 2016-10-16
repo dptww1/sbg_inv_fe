@@ -220,11 +220,22 @@ var Nav = {
                   ScenarioListScreen.isFilterActive("source", "ttt_jb") ? null : m("option[value=ttt_jb]", "The Two Towers Journeybook")
             ]),
             m("ul.filter-group", ScenarioListScreen.getSetFilters("source").map((f) => {
-                return f.state ? m("li", {
-                                            onclick: (ev) =>
-                                               ScenarioListScreen.unsetFilter("source", Object.keys(BOOK_NAMES).find((bk) => BOOK_NAMES[bk] == ev.target.textContent))
-                                       },
-                                       BOOK_NAMES[f.name])
+                return f.state ? m("li", { onclick: ev => ScenarioListScreen.unsetFilter("source",f.name) }, BOOK_NAMES[f.name])
+                               : null;
+            })),
+
+            m("select[name=size]", {
+                onchange: function(ev) { ScenarioListScreen.setFilter("size", ev.target.value); }
+              }, [
+                  m("option[value=]", "... by Size"),
+                  ScenarioListScreen.isFilterActive("size", "tiny")   ? null : m("option[value=tiny]", "Tiny (<21)"),
+                  ScenarioListScreen.isFilterActive("size", "small")  ? null : m("option[value=small]", "Small (21-40)"),
+                  ScenarioListScreen.isFilterActive("size", "medium") ? null : m("option[value=medium]", "Medium (41-60)"),
+                  ScenarioListScreen.isFilterActive("size", "large")  ? null : m("option[value=large]", "Large (61-100)"),
+                  ScenarioListScreen.isFilterActive("size", "huge")   ? null : m("option[value=huge]", "Huge (101+)"),
+            ]),
+            m("ul.filter-group", ScenarioListScreen.getSetFilters("size").map(f => {
+                return f.state ? m("li", { onclick: ev => ScenarioListScreen.unsetFilter("size", f.name) }, f.label)
                                : null;
             }))
         ]);
@@ -498,6 +509,21 @@ var ScenarioListScreen = function() {
             evalFn(rec) {
                 var activeFilters = filters.source.data.filter((f) => f.state);
                 return activeFilters.length == 0 ? true : activeFilters.find((s) => s.name === rec.scenario_resources.source[0].book);  // TODO: non-book sources
+            }
+        },
+
+        size: {
+            data: [
+                { name: "tiny",   state: false, label: "Tiny",   sizeMin:  0, sizeMax: 20 },
+                { name: "small",  state: false, label: "Small",  sizeMin: 21, sizeMax: 40 },
+                { name: "medium", state: false, label: "Medium", sizeMin: 41, sizeMax: 60 },
+                { name: "large",  state: false, label: "Large",  sizeMin: 61, sizeMax: 100 },
+                { name: "huge",   state: false, label: "Huge",   sizeMin: 101, sizeMax: 10000 },
+            ],
+
+            evalFn(rec) {
+                var activeFilters = filters.size.data.filter(f => f.state);
+                return activeFilters.length == 0 || activeFilters.find(s => s.sizeMin <= rec.size && rec.size <= s.sizeMax);
             }
         }
     };
