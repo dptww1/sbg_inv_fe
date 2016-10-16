@@ -211,6 +211,7 @@ var Nav = {
                 onchange: function(ev) { ScenarioListScreen.setFilter("source", ev.target.value); }
               }, [
                   m("option[value=]", "... by Source"),
+                  ScenarioListScreen.isFilterActive("source", "bpf")    ? null : m("option[value=bpf]", "The Battle of the Pelennor Fields"),
                   ScenarioListScreen.isFilterActive("source", "fotn")   ? null : m("option[value=fotn]", "Fall of the Necromancer"),
                   ScenarioListScreen.isFilterActive("source", "mordor") ? null : m("option[value=mordor]", "Mordor"),
                   ScenarioListScreen.isFilterActive("source", "saf")    ? null : m("option[value=saf]", "Shadow and Flame"),
@@ -485,6 +486,7 @@ var ScenarioListScreen = function() {
     var filters = {
         source: {
             data: [
+                { name: "bpf",    state: false },
                 { name: "fotn",   state: false },
                 { name: "mordor", state: false },
                 { name: "saf",    state: false },
