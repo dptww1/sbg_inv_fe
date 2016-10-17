@@ -30,6 +30,7 @@ var BOOK_NAMES = {
 
 var FACTION_INFO = {
     angmar:        { name: "Angmar",        letter: "a" },
+    arnor:         { name: "Arnor",         letter: "A" },
     dol_guldur:    { name: "Dol Guldur",    letter: "x" },
     dwarves:       { name: "Dwarves",       letter: "d" },
     easterlings:   { name: "Easterlings",   letter: "e" },
@@ -214,6 +215,7 @@ var Nav = {
                   ScenarioListScreen.isFilterActive("source", "bpf")    ? null : m("option[value=bpf]", "The Battle of the Pelennor Fields"),
                   ScenarioListScreen.isFilterActive("source", "fotn")   ? null : m("option[value=fotn]", "Fall of the Necromancer"),
                   ScenarioListScreen.isFilterActive("source", "mordor") ? null : m("option[value=mordor]", "Mordor"),
+                  ScenarioListScreen.isFilterActive("source", "roa")    ? null : m("option[value=roa]", "The Ruin of Arnor"),
                   ScenarioListScreen.isFilterActive("source", "saf")    ? null : m("option[value=saf]", "Shadow and Flame"),
                   ScenarioListScreen.isFilterActive("source", "site")   ? null : m("option[value=site]", "A Shadow in the East"),
                   ScenarioListScreen.isFilterActive("source", "sots")   ? null : m("option[value=sots]", "The Scouring of the Shire"),
@@ -500,6 +502,7 @@ var ScenarioListScreen = function() {
                 { name: "bpf",    state: false },
                 { name: "fotn",   state: false },
                 { name: "mordor", state: false },
+                { name: "roa",    state: false },
                 { name: "saf",    state: false },
                 { name: "site",   state: false },
                 { name: "sots",   state: false },
