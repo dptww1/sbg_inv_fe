@@ -85,6 +85,7 @@ var Request = (function() {
     };
 }());
 
+/*******
 // courtesy http://ratfactor.com/daves-guide-to-mithril-js
 var requestWrapper = function(opts) {
     return new function() {
@@ -117,6 +118,7 @@ var requestWrapper = function(opts) {
         };
     };
 };
+********/
 
 var Pie = {
     view: function(ctrl, size, n, nPainted, nOwned) {
