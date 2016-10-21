@@ -66,21 +66,41 @@ function cmp(a, b) {
 }
 
 var Request = (function() {
+    var failFn = (resp, errorComponent) => {
+        var resolvedComponent = errorComponent || LoginScreen;
+        if (resp === null) {
+            resolvedComponent.setError("The server appears to be down. Please try again later.");
+        } else {
+            resolvedComponent.setError(resp.errors);
+        }
+        if (errorComponent) {
+            m.route();
+        } else {
+            m.route("/login");
+        }
+    };
+
     return {
-        get: function(url) {
+        get: function(url, successFn, errorComponent) {
             var opts = { method: "GET", url: url };
             if (Credentials.token()) {
                 opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
             }
-            return m.request(opts);
+            return m.request(opts).then(
+                resp => successFn(resp),
+                resp => failFn(resp, errorComponent)
+            );
         },
 
-        post: function(url, data) {
+        post: function(url, data, successFn, errorComponent) {
             var opts = { method: "POST", url: url, data: data };
             if (Credentials.token()) {
                 opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
             }
-            return m.request(opts);
+            return m.request(opts).then(
+                resp => successFn(resp),
+                resp => failFn(resp, errorComponent)
+            );
         }
     };
 }());
@@ -373,24 +393,21 @@ var RegisterScreen = function() {
     var errors = m.prop("");
 
     var login = () => {
-        m.request({
-            method: "POST",
-            url: API_URL + "/sessions",
-            data: { user: { email: Credentials.email(), password: Credentials.password() } }
-        }).then(resp => {
-                  Credentials.token(resp.data.token);
-                  console.log(resp.data.token);
-                  m.route("/scenarios");
-                }, errors);
+        Request.post(API_URL + "/sessions",
+                     { user: { email: Credentials.email(), password: Credentials.password() } },
+                     resp => {
+                         Credentials.token(resp.data.token);
+                         console.log(resp.data.token);
+                         m.route("/scenarios");
+                     },
+                     RegisterScreen);
     };
 
     var register = () => {
-        m.request({
-            method: "POST",
-            url: API_URL + "/users",
-            data: { user: { name: Credentials.name(), email: Credentials.email(), password: Credentials.password() } }
-        })
-        .then(login, errors);
+        Request.post(API_URL + "/users",
+                     { user: { name: Credentials.name(), email: Credentials.email(), password: Credentials.password() } },
+                     login,
+                     RegisterScreen);
     };
 
     var errorText = () => {
@@ -407,6 +424,14 @@ var RegisterScreen = function() {
         email: m.prop(),
         password: m.prop(),
         token: m.prop(),
+
+        setError(str) {
+            if (typeof(str) === "string") {
+                errors({errors: {"Error": [str]}});
+            } else {
+                errors({errors: str});
+            }
+        },
 
         view(ctrl) {
             return [
@@ -449,22 +474,24 @@ var LoginScreen = function() {
     var errors = m.prop("");
 
     var login = () => {
-        m.request({
-            method: "POST",
-            url: API_URL + "/sessions",
-            data: { user: { email: Credentials.email(), password: Credentials.password() } }
-        }).then(resp => {
-                  Credentials.token(resp.data.token);
-                  Credentials.name(resp.data.name);
-                  console.log(resp.data.token);
-                  m.route("/scenarios");
-                }, errors);
+        Request.post(API_URL + "/sessions",
+                     { user: { email: Credentials.email(), password: Credentials.password() } },
+                     resp => {
+                         Credentials.token(resp.data.token);
+                         Credentials.name(resp.data.name);
+                         console.log(resp.data.token);
+                         m.route("/scenarios");
+                     });
     };
 
     return {
         email: m.prop(),
         password: m.prop(),
         token: m.prop(),
+
+        setError(str) {
+            errors({ errors: str});
+        },
 
         view(ctrl) {
             return [
@@ -574,7 +601,11 @@ var ScenarioListScreen = function() {
         },
 
         controller: function() {
-            Request.get(API_URL + "/scenarios").then(ScenarioListScreen.data).then(function() { m.redraw(); });
+            Request.get(API_URL + "/scenarios",
+                        resp => {
+                            ScenarioListScreen.data(resp);
+                            m.redraw();
+                        });
         },
 
         view: function(ctrl) {
@@ -716,7 +747,11 @@ var ScenarioDetailScreen = {
     data: m.prop(false),
 
     controller: function() {
-        Request.get(API_URL + "/scenarios/" + m.route.param("id")).then(ScenarioDetailScreen.data).then(function() { m.redraw(); });
+        Request.get(API_URL + "/scenarios/" + m.route.param("id"),
+                    resp => {
+                        ScenarioDetailScreen.data(resp);
+                        m.redraw();
+                    });
     },
 
     view: function(ctrl) {
