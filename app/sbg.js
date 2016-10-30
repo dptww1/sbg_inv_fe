@@ -2,54 +2,8 @@
 
 var m           = require("mithril");
 var Credentials = require("credentials");
+var K           = require("constants");
 var Request     = require("request");
-
-var API_URL = "http://127.0.0.1:4000/api";
-
-var MONTH_NAMES = [
-    "", "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-];
-
-var BOOK_NAMES = {
-    bpf:     "Battle of the Pelennor Fields",
-    fotn:    "Fall of the Necromancer",
-    fotr:    "The Fellowship of the Ring",
-    fotr_jb: "The Fellowship of the Ring (Journey Book)",
-    harad:   "Harad",
-    kd:      "Khazad-dûm",
-    mordor:  "Mordor",
-    roa:     "The Ruin of Arnor",
-    rotk:    "The Return of the King",
-    rotk_jb: "The Return of the King (Journey Book)",
-    saf:     "Shadow & Flamge",
-    site:    "A Shadow in the East",
-    sog:     "Siege of Gondor",
-    sots:    "The Scouring of the Shire",
-    ttt:     "The Two Towers",
-    ttt_jb:  "The Two Towers (Journey Book)"
-};
-
-var FACTION_INFO = {
-    angmar:        { name: "Angmar",        letter: "a" },
-    arnor:         { name: "Arnor",         letter: "A" },
-    dol_guldur:    { name: "Dol Guldur",    letter: "x" },
-    dwarves:       { name: "Dwarves",       letter: "d" },
-    easterlings:   { name: "Easterlings",   letter: "e" },
-    fellowship:    { name: "Fellowship",    letter: "f" },
-    free_peoples:  { name: "Free Peoples",  letter: "F" },
-    gondor:        { name: "Gondor",        letter: "g" },
-    harad:         { name: "Harad",         letter: "h" },
-    isengard:      { name: "Isengard",      letter: "i" },
-    lothlorien:    { name: "Lothlorien",    letter: "l" },
-    mirkwood:      { name: "Mirkwood",      letter: "w" },
-    moria:         { name: "Moria",         letter: "m" },
-    mordor:        { name: "Mordor",        letter: "M" },
-    rivendell:     { name: "Rivendell",     letter: "R" },
-    rohan:         { name: "Rohan",         letter: "r" },
-    shire:         { name: "The Shire",     letter: "s" },
-    white_council: { name: "White Council", letter: "w" }
-};
 
 function formatDate(age, year, month, day) {
     var a = [ ["", "FA", "SA", "TA"][age || 0] ];
@@ -57,7 +11,7 @@ function formatDate(age, year, month, day) {
         a.push(day);
     }
     if (month > 0) {
-        a.push(MONTH_NAMES[month]);
+        a.push(K.MONTH_NAMES[month]);
     }
     a.push(year);
     return a.join(" ");
@@ -173,7 +127,7 @@ var Nav = {
                   ScenarioListScreen.isFilterActive("source", "ttt_jb") ? null : m("option[value=ttt_jb]", "The Two Towers Journeybook")
             ]),
             m("ul.filter-group", ScenarioListScreen.getSetFilters("source").map((f) => {
-                return f.state ? m("li", { onclick: ev => ScenarioListScreen.unsetFilter("source",f.name) }, BOOK_NAMES[f.name])
+                return f.state ? m("li", { onclick: ev => ScenarioListScreen.unsetFilter("source",f.name) }, K.BOOK_NAMES[f.name])
                                : null;
             })),
 
@@ -223,7 +177,7 @@ var StarRating = function() {
     };
 
     var updateRating = function(scenario, newRating) {
-        Request.post(API_URL + "/userscenarios",
+        Request.post(K.API_URL + "/userscenarios",
                      { user_scenario: { scenario_id: scenario.id, rating: newRating } },
                      resp => {
                          scenario.rating = resp.avg_rating;
@@ -268,7 +222,7 @@ var RegisterScreen = function() {
     var errors = m.prop("");
 
     var login = () => {
-        Request.post(API_URL + "/sessions",
+        Request.post(K.API_URL + "/sessions",
                      { user: { email: Credentials.email(), password: Credentials.password() } },
                      resp => {
                          Credentials.token(resp.data.token);
@@ -279,7 +233,7 @@ var RegisterScreen = function() {
     };
 
     var register = () => {
-        Request.post(API_URL + "/users",
+        Request.post(K.API_URL + "/users",
                      { user: { name: Credentials.name(), email: Credentials.email(), password: Credentials.password() } },
                      login,
                      RegisterScreen);
@@ -349,7 +303,7 @@ var LoginScreen = function() {
     var errors = m.prop("");
 
     var login = () => {
-        Request.post(API_URL + "/sessions",
+        Request.post(K.API_URL + "/sessions",
                      { user: { email: Credentials.email(), password: Credentials.password() } },
                      resp => {
                          Credentials.token(resp.data.token);
@@ -478,7 +432,7 @@ var ScenarioListScreen = function() {
         },
 
         controller: function() {
-            Request.get(API_URL + "/scenarios",
+            Request.get(K.API_URL + "/scenarios",
                         resp => {
                             ScenarioListScreen.data(resp);
                             m.redraw();
@@ -509,8 +463,8 @@ var ScenarioListScreen = function() {
                 ])];
 
             rawData.forEach(scenario => {
-                var f1 = FACTION_INFO[scenario.scenario_factions[0].faction];
-                var f2 = FACTION_INFO[scenario.scenario_factions[1].faction];
+                var f1 = K.FACTION_INFO[scenario.scenario_factions[0].faction];
+                var f2 = K.FACTION_INFO[scenario.scenario_factions[1].faction];
                 if (ScenarioListScreen.filter(scenario)) {
                     rows.push(m("tr", [
                         m("td.completion", [m(Pie, 24, scenario.size, scenario.user_scenario.painted, scenario.user_scenario.owned)]),
@@ -624,7 +578,7 @@ var ScenarioDetailScreen = {
     data: m.prop(false),
 
     controller: function() {
-        Request.get(API_URL + "/scenarios/" + m.route.param("id"),
+        Request.get(K.API_URL + "/scenarios/" + m.route.param("id"),
                     resp => {
                         ScenarioDetailScreen.data(resp);
                         m.redraw();
@@ -664,7 +618,7 @@ var ScenarioDetailScreen = {
 
     factionRollup: function(faction) {
         return m("div.faction", [
-            m("div.faction-name", FACTION_INFO[faction.faction].name)
+            m("div.faction-name", K.FACTION_INFO[faction.faction].name)
         ].concat(ScenarioDetailScreen.rolesRollup(faction.roles)));
     },
 
@@ -717,7 +671,7 @@ var ScenarioDetailScreen = {
             resources.source.forEach(function(resource) {
                 eltArray.push(m("div.scenario-source", [
                     m("span.scenario-source-title", "Source: "),
-                    m("span.scenario-source-book-title", BOOK_NAMES[resource.book]),
+                    m("span.scenario-source-book-title", K.BOOK_NAMES[resource.book]),
                     m("span.scenario-source-book-page", ", page " + resource.page)
                 ]));
             });
