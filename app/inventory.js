@@ -1,18 +1,17 @@
 /* global require module */
 
+var InventoryScreen = {};
+module.exports = InventoryScreen;
+
 var m      = require("mithril");
-var Header = require("sbg").Header;
+var Header = require("header");
 var Nav    = require("sbg").Nav;
 
 //========================================================================
-var InventoryScreen = {
-    view: function() {
-        return [
-            m(Header),
-            m(Nav, "Inventory"),
-            m("div.main-content", "*** Inventory ***")
-        ];
-    }
+InventoryScreen.view = () => {
+    return [
+        m(Header),
+        m(Nav, "Inventory"),
+        m("div.main-content", "*** Inventory ***")
+    ];
 };
-
-module.exports = InventoryScreen;

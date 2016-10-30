@@ -2,6 +2,7 @@
 
 var m           = require("mithril");
 var Credentials = require("credentials");
+var Header      = require("header");
 var K           = require("constants");
 var Pie         = require("pie");
 var Request     = require("request");
@@ -21,17 +22,6 @@ function formatDate(age, year, month, day) {
 function cmp(a, b) {
     return a > b ? 1 : a < b ? -1 : 0;
 }
-
-//==================================================================================================================================
-var Header = {
-    view: function(ctl) {
-        return m(".page-header", [
-            m(".title", "ME SBG Inventory")
-        ]);
-    }
-};
-
-module.exports.Header = Header;
 
 //==================================================================================================================================
 var Nav = {
