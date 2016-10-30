@@ -74,10 +74,13 @@ div.rating-star-inner {
   overflow: hidden;
   text-shadow: none;
   transition:all .4s ease-out;
+}
+
+div.active div.star-rating-inner {
   cursor:pointer;
 }
 
-div.rating-star-inner:hover {
+div.active div.rating-star-inner:hover {
   color: #ff8400;
 }
 
@@ -88,7 +91,7 @@ div.rating-star {
   transition:all .4s ease-out;
 }
 
-div.rating-star:hover {
+div.active div.rating-star:hover {
   color: #a4b;
   cursor: pointer;
 }
