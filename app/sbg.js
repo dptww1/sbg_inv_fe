@@ -18,6 +18,6 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
     "/scenarios/:id" : require("scenario-details"),
     "/scenarios"     : require("scenario-list"),
     "/inventory"     : require("inventory"),
-    "/login"         : require("login-screen"),
+    "/login"         : require("login"),
     "/register"      : require("register")
 });
