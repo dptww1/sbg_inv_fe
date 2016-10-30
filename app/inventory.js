@@ -3,15 +3,13 @@
 var InventoryScreen = {};
 module.exports = InventoryScreen;
 
-var m      = require("mithril");
-var Header = require("header");
-var Nav    = require("sbg").Nav;
+var m = require("mithril");
 
 //========================================================================
 InventoryScreen.view = () => {
     return [
-        m(Header),
-        m(Nav, "Inventory"),
+        m(require("header")),
+        m(require("nav"), "Inventory"),
         m("div.main-content", "*** Inventory ***")
     ];
 };

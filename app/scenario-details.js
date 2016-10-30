@@ -3,7 +3,6 @@
 var m           = require("mithril");
 var Credentials = require("credentials");
 var Header      = require("header");
-var Nav         = require("sbg").Nav;   // TODO
 var K           = require("constants");
 var Pie         = require("pie");
 var Request     = require("request");
@@ -43,7 +42,7 @@ var ScenarioDetailScreen = {
 
         return [
             m(Header),
-            m(Nav, "Scenario Details"),
+            m(require("nav"), "Scenario Details"),
             m("div.main-content", [
                 m("div.scenario-details", [
                     m("div.scenario-title", scenario.name),

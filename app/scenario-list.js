@@ -101,7 +101,7 @@ var ScenarioListScreen = function() {
         view: function(ctrl) {
             return [
                 m(Header),
-                m(require("sbg").Nav, "Scenario List"),  // TODO
+                m(require("nav"), "Scenario List"),
                 m("div.main-content", [
                     ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
                 ])
