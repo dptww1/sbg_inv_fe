@@ -194,6 +194,8 @@ var Header = {
     }
 };
 
+module.exports.Header = Header;
+
 //==================================================================================================================================
 var Nav = {
     view: function(ctl, which) {
@@ -265,6 +267,8 @@ var Nav = {
         ]);
     }
 };
+
+module.exports.Nav = Nav;
 
 //==================================================================================================================================
 var MainScreen = {
@@ -891,23 +895,12 @@ var ScenarioDetailScreen = {
     }
 };
 
-//==================================================================================================================================
-var InventoryScreen = {
-    view: function() {
-        return [
-            m(Header),
-            m(Nav, "Inventory"),
-            m("div.main-content", "*** Inventory ***")
-        ];
-    }
-};
-
 m.route.mode = "hash";
 m.route(document.getElementById("mainDiv"), "/", {
     "/"              : MainScreen,
     "/scenarios/:id" : ScenarioDetailScreen,
     "/scenarios"     : ScenarioListScreen,
-    "/inventory"     : InventoryScreen,
+    "/inventory"     : require("inventory").InventoryScreen,
     "/login"         : LoginScreen,
     "/register"      : RegisterScreen
 });
