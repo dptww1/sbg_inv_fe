@@ -348,16 +348,13 @@ var StarRating = function() {
     };
 
     var updateRating = function(scenario, newRating) {
-        Request.post(API_URL + "/userscenarios", {
-                                 user_scenario: { scenario_id: scenario.id, rating: newRating }
-                             }).then(resp => {
-                                 scenario.rating = resp.avg_rating;
-                                 scenario.user_scenario.rating = newRating;
-                                 scenario.num_votes = resp.num_votes;
-                             },
-                             resp => {
-                                 alert("Fail!");
-                             });
+        Request.post(API_URL + "/userscenarios",
+                     { user_scenario: { scenario_id: scenario.id, rating: newRating } },
+                     resp => {
+                         scenario.rating = resp.avg_rating;
+                         scenario.user_scenario.rating = newRating;
+                         scenario.num_votes = resp.num_votes;
+                     });
     };
 
     return {
