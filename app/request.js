@@ -2,11 +2,10 @@
 
 var m           = require("mithril");
 var Credentials = require("credentials");
-var LoginScreen = require("sbg").LoginScreen;
 
 var Request = (function() {
     var failFn = (resp, errorComponent) => {
-        var resolvedComponent = errorComponent || LoginScreen;
+        var resolvedComponent = errorComponent || require("sbg").LoginScreen;  // TODO: separate login-screen module
         if (resp === null) {
             resolvedComponent.setError("The server appears to be down. Please try again later.");
         } else {
