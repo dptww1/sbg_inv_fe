@@ -1,8 +1,10 @@
+/* global require module */
+
 var m      = require("mithril");
 var Header = require("sbg").Header;
 var Nav    = require("sbg").Nav;
 
-//==================================================================================================================================
+//========================================================================
 var InventoryScreen = {
     view: function() {
         return [
@@ -13,6 +15,4 @@ var InventoryScreen = {
     }
 };
 
-module.exports = {
-    InventoryScreen
-};
+module.exports = InventoryScreen;

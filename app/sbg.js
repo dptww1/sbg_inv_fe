@@ -841,7 +841,7 @@ m.route(document.getElementById("mainDiv"), "/", {
     "/"              : MainScreen,
     "/scenarios/:id" : ScenarioDetailScreen,
     "/scenarios"     : ScenarioListScreen,
-    "/inventory"     : require("inventory").InventoryScreen,
+    "/inventory"     : require("inventory"),
     "/login"         : LoginScreen,
     "/register"      : RegisterScreen
 });
