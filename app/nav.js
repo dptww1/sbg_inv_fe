@@ -1,27 +1,36 @@
 /* global module require */
 
-var m = require("mithril");
+var m                  = require("mithril");
 var Credentials        = require("credentials");
 var K                  = require("constants");
 var ScenarioListScreen = require("scenario-list");
 
 //========================================================================
+var loggedInHeaderElts = () => {
+    return [
+        m("a[href=/login]", { config: m.route }, "Login"),
+        "/",
+        m("a[href=/register]", { config: m.route }, "Register")
+    ];
+};
+
+//========================================================================
+var loggedOutHeaderElts = () => {
+    return [
+        m("div.login-name", Credentials.name()),
+        m("a", { onclick: function() { Credentials.clear(); } }, "Log out")
+    ];
+};
+
+//========================================================================
 var Nav = {
-    view: function(ctl, which) {
+    view(ctl, which) {
         var loginActive           = which == "Login";
         var inventoryActive       = which == "Inventory";
         var scenariosActive       = which == "Scenario List";
-        var scenarioDetailsActive = which == "Scenario Details";
 
         return m("div.nav", [
-            m("div.nav-header",
-              Credentials.token() ? [ m("div.login-name", Credentials.name(), m("br"), m("a", { onclick: function() { Credentials.clear(); } }, "Log out")) ]
-                                    : [
-                                        m("a[href=/login]", { config: m.route }, "Login"),
-                                        "/",
-                                        m("a[href=/register]", { config: m.route }, "Register")
-                                      ]
-             ),
+            m("div.nav-header", Credentials.token() ? loggedOutHeaderElts() : loggedInHeaderElts()),
 
             m("div.nav-header", [
                 m("a",
