@@ -100,7 +100,10 @@ var ScenarioListScreen = function() {
                                  }
                              }
                              return false;
-                         })
+                         }),
+        new SelectFilter("Resources",
+                         ["Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
+                         (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length))
     ];
 
     var numFiltersSet = () => filters2.reduce((sum, filter) => sum + filter.numActive(), 0);
