@@ -14,80 +14,109 @@ function cmp(a, b) {
 }
 
 //========================================================================
-var ScenarioListScreen = function() {
-    var filters = {
-        source: {
-            data: [
-                { name: "bpf",    state: false },
-                { name: "fotn",   state: false },
-                { name: "mordor", state: false },
-                { name: "roa",    state: false },
-                { name: "saf",    state: false },
-                { name: "site",   state: false },
-                { name: "sots",   state: false },
-                { name: "ttt_jb", state: false }
-            ],
+function bookFilterOptions() {
+    var rev_book_names = Object.keys(K.BOOK_NAMES).reduce((map, abbrev) => {
+        map[K.BOOK_NAMES[abbrev]] = abbrev;
+        return map;
+    }, {});
 
-            evalFn(rec) {
-                var activeFilters = filters.source.data.filter((f) => f.state);
-                return activeFilters.length == 0 ? true : activeFilters.find((s) => s.name === rec.scenario_resources.source[0].book);  // TODO: non-book sources
-            }
-        },
-
-        size: {
-            data: [
-                { name: "tiny",   state: false, label: "Tiny",   sizeMin:  0, sizeMax: 20 },
-                { name: "small",  state: false, label: "Small",  sizeMin: 21, sizeMax: 40 },
-                { name: "medium", state: false, label: "Medium", sizeMin: 41, sizeMax: 60 },
-                { name: "large",  state: false, label: "Large",  sizeMin: 61, sizeMax: 100 },
-                { name: "huge",   state: false, label: "Huge",   sizeMin: 101, sizeMax: 10000 },
-            ],
-
-            evalFn(rec) {
-                var activeFilters = filters.size.data.filter(f => f.state);
-                return activeFilters.length == 0 || activeFilters.find(s => s.sizeMin <= rec.size && rec.size <= s.sizeMax);
-            }
+    return Object.keys(K.BOOK_NAMES).map(k => K.BOOK_NAMES[k]).sort((a,b) => {
+        if (a < b) {
+            return -1;
         }
+        if (b < a) {
+            return 1;
+        }
+        return 0;
+    }).reduce((list, name) => list.concat([name + "=" + rev_book_names[name]]), []);
+}
+
+//========================================================================
+function SelectFilter(name, optionList, matchFn) {
+    var self = this;
+
+    this.label          = name;
+    this.internalName   = name.sub(/[^A-Za-z0-9]/g, "-");
+    this.optionMap      = {};   // key: orderedOptions[n]  value: { label: string, active: boolean}
+    this.orderedOptions = [];
+    this.activeOptions  = 0;
+
+    optionList.forEach(opt => {
+        var [optLabel, optVal] = opt.split(/\s*=\s*/);
+        optVal = optVal || optLabel;
+        this.orderedOptions.push(optVal);
+        this.optionMap[optVal] = { label: optLabel, active: false };
+    });
+
+    this.view = _ => {
+        return m("div.filter-group", [
+            m("select",
+              {
+                  name: self.internalName,
+                  onchange: ev => { self.optionMap[ev.target.value].active = true; ++self.activeOptions; }
+              },
+              [ m("option[value=]", "... by " + self.label) ].concat(
+                  self.orderedOptions.map(optVal => {
+                      return self.optionMap[optVal].active ? null : m("option", { value: optVal }, self.optionMap[optVal].label);
+                  })
+              )),
+
+            m("ul.filter-group", self.orderedOptions.filter(opt => self.optionMap[opt].active).map(f => {
+                return m("li",
+                         { onclick: ev => { self.optionMap[f].active = false; --self.activeOptions; } },
+                         self.optionMap[f].label);
+            }))
+        ]);
     };
+
+    this.matches = (rec) => self.activeOptions == 0 || matchFn(rec, self.orderedOptions.filter(o => self.optionMap[o].active));
+
+    this.numActive = () => {
+        return self.activeOptions;
+    };
+
+    this.clearActiveFilters = () => {
+      self.orderedOptions.forEach(opt => self.optionMap[opt].active = false);
+      self.activeOptions = 0;
+    };
+}
+
+//========================================================================
+var ScenarioListScreen = function() {
+    var filters2 = [
+        new SelectFilter("Book",
+                         bookFilterOptions(),
+                         (rec, activeOpts) => activeOpts.includes(rec.scenario_resources.source[0].book)),
+        new SelectFilter("Size",
+                         ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
+                         (rec, activeOpts) => {
+                             for (var i = 0; i < activeOpts.length; ++i) {
+                                 switch (activeOpts[i]) {
+                                 case  "20": if (                  rec.size <= 20)  return true;  break;
+                                 case  "40": if (21 <= rec.size && rec.size <= 40)  return true;  break;
+                                 case  "60": if (41 <= rec.size && rec.size <= 60)  return true;  break;
+                                 case "100": if (61 <= rec.size && rec.size <= 100) return true;  break;
+                                 case  " 0": if (100 < rec.size)                    return true;  break;
+                                 }
+                             }
+                             return false;
+                         })
+    ];
+
+    var numFiltersSet = () => filters2.reduce((sum, filter) => sum + filter.numActive(), 0);
+
+    var unsetAllFilters = () => filters2.forEach(f => f.clearActiveFilters());
 
     return {
         data: m.prop(false),
 
-        filter(rec) { return Object.keys(filters).reduce((acc, v) => filters[v].evalFn(rec) && acc, true); },
+        filter(rec) { return filters2.every(filter => filter.matches(rec)); },
 
-        getSetFilters(filterClass) {
-            if (filterClass == null) {
-                return Object.keys(filters).reduce((acc, v) => acc += ScenarioListScreen.getSetFilters(v).length, 0);
-            }
-            return filters[filterClass].data.filter((elt) => elt.state);
-        },
-
-        getUnsetFilters(filterClass) {
-            return filters[filterClass].data.filter((elt) => !elt.state);
-        },
-
-        isFilterActive(filterClass, name) {
-            return filters[filterClass].data.find((elt) => elt.name == name).state;
-        },
-
-        setFilter(filterClass, name) {
-            var filter = filters[filterClass].data.find((elt) => elt.name == name);
-            if (filter != null) {
-                filter.state = true;
-            }
-        },
-
-        unsetAllFilters() {
-            for (var filterClass in filters) {
-                filters[filterClass].data.forEach(f => f.state = false);
-            }
-        },
-
-        unsetFilter(filterClass, name) {
-            var filter = filters[filterClass].data.find((elt) => elt.name == name);
-            if (filter != null) {
-                filter.state = false;
-            }
+        leftNav() {
+            return filters2.map(f => m(f)).concat(
+                numFiltersSet() > 1 ? m("ul.filter-group", [ m("li", { onclick: _ => unsetAllFilters() }, "Remove all") ])
+                                    : null
+            );
         },
 
         controller: function() {
