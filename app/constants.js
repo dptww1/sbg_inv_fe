@@ -13,7 +13,7 @@ module.exports.BOOK_NAMES = {
     roa:     "The Ruin of Arnor",
     rotk:    "The Return of the King",
     rotk_jb: "The Return of the King (Journey Book)",
-    saf:     "Shadow & Flamge",
+    saf:     "Shadow & Flame",
     site:    "A Shadow in the East",
     sog:     "Siege of Gondor",
     sots:    "The Scouring of the Shire",
