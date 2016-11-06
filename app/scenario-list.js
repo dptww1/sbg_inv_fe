@@ -21,6 +21,9 @@ function bookFilterOptions() {
     }, {});
 
     return Object.keys(K.BOOK_NAMES).map(k => K.BOOK_NAMES[k]).sort((a,b) => {
+        a = a.replace(/^The /, "").replace(/^A /, "");
+        b = b.replace(/^The /, "").replace(/^A /, "");
+
         if (a < b) {
             return -1;
         }
