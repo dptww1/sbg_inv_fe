@@ -1,7 +1,6 @@
 /* global module require */
 
 var m       = require("mithril");
-var K       = require("constants");
 var Request = require("request");
 
 //==================================================================================================================================
@@ -20,7 +19,7 @@ var StarRating = function() {
     };
 
     var updateRating = function(scenario, newRating) {
-        Request.post(K.API_URL + "/userscenarios",
+        Request.post("/userscenarios",
                      { user_scenario: { scenario_id: scenario.id, rating: newRating } },
                      resp => {
                          scenario.rating = resp.avg_rating;

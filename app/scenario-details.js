@@ -30,7 +30,7 @@ var ScenarioDetailScreen = {
     data: m.prop(false),
 
     controller: function() {
-        Request.get(K.API_URL + "/scenarios/" + m.route.param("id"),
+        Request.get("/scenarios/" + m.route.param("id"),
                     resp => {
                         ScenarioDetailScreen.data(resp);
                         m.redraw();

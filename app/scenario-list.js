@@ -126,7 +126,7 @@ var ScenarioListScreen = function() {
         },
 
         controller: function() {
-            Request.get(K.API_URL + "/scenarios",
+            Request.get("/scenarios",
                         resp => {
                             ScenarioListScreen.data(resp);
                             m.redraw();

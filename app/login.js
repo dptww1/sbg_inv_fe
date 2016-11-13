@@ -2,7 +2,6 @@
 
 var m           = require("mithril");
 var Credentials = require("credentials");
-var K           = require("constants");
 var Request     = require("request");
 
 //========================================================================
@@ -10,7 +9,7 @@ var LoginScreen = function() {
     var errors = m.prop("");
 
     var login = () => {
-        Request.post(K.API_URL + "/sessions",
+        Request.post("/sessions",
                      { user: { email: Credentials.email(), password: Credentials.password() } },
                      resp => {
                          Credentials.token(resp.data.token);

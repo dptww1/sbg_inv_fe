@@ -2,7 +2,6 @@
 
 var m           = require("mithril");
 var Credentials = require("credentials");
-var K           = require("constants");
 var Request     = require("request");
 
 //========================================================================
@@ -10,7 +9,7 @@ var RegisterScreen = function() {
     var errors = m.prop("");
 
     var login = () => {
-        Request.post(K.API_URL + "/sessions",
+        Request.post("/sessions",
                      { user: { email: Credentials.email(), password: Credentials.password() } },
                      resp => {
                          Credentials.token(resp.data.token);
@@ -21,7 +20,7 @@ var RegisterScreen = function() {
     };
 
     var register = () => {
-        Request.post(K.API_URL + "/users",
+        Request.post("/users",
                      { user: { name: Credentials.name(), email: Credentials.email(), password: Credentials.password() } },
                      login,
                      RegisterScreen);

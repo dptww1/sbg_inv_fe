@@ -1,7 +1,5 @@
 /* global module */
 
-module.exports.API_URL = "http://127.0.0.1:4000/api";
-
 module.exports.BOOK_NAMES = {
     bpf:     "Battle of the Pelennor Fields",
     fotn:    "Fall of the Necromancer",

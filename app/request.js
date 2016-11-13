@@ -3,6 +3,8 @@
 var m           = require("mithril");
 var Credentials = require("credentials");
 
+const API_URL = "http://127.0.0.1:4000/api";
+
 var Request = (function() {
     var failFn = (resp, errorComponent) => {
         var resolvedComponent = errorComponent || require("login");
@@ -20,7 +22,7 @@ var Request = (function() {
 
     return {
         get: function(url, successFn, errorComponent) {
-            var opts = { method: "GET", url: url };
+            var opts = { method: "GET", url: API_URL + url };
             if (Credentials.token()) {
                 opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
             }
@@ -31,7 +33,7 @@ var Request = (function() {
         },
 
         post: function(url, data, successFn, errorComponent) {
-            var opts = { method: "POST", url: url, data: data };
+            var opts = { method: "POST", url: API_URL + url, data: data };
             if (Credentials.token()) {
                 opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
             }
