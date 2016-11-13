@@ -49,6 +49,10 @@ var LoginScreen = function() {
                         ]),
                         m("tr", [
                             m("td", ""),
+                            m("a[href=/forgot-pw]", { config: m.route }, "Forgot your password?")
+                        ]),
+                        m("tr", [
+                            m("td", ""),
                             m("button[value=Sign In][name=signin]", { onclick: () => login() }, "Sign In!")
                         ])
                     ])
