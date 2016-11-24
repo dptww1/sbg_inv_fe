@@ -99,7 +99,7 @@ var ScenarioListScreen = function() {
                                  case  "40": if (21 <= rec.size && rec.size <= 40)  return true;  break;
                                  case  "60": if (41 <= rec.size && rec.size <= 60)  return true;  break;
                                  case "100": if (61 <= rec.size && rec.size <= 100) return true;  break;
-                                 case  " 0": if (100 < rec.size)                    return true;  break;
+                                 case   "0": if (100 < rec.size)                    return true;  break;
                                  }
                              }
                              return false;
