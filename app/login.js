@@ -9,6 +9,7 @@ var LoginScreen = function() {
     var errors = m.prop("");
 
     var login = () => {
+        LoginScreen.setError("");
         Request.post("/sessions",
                      { user: { email: Credentials.email(), password: Credentials.password() } },
                      resp => {
