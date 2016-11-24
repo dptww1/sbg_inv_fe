@@ -27,7 +27,7 @@ var Nav = {
     view(ctl, which) {
         var loginActive           = which == "Login";
         var inventoryActive       = which == "Inventory";
-        var scenariosActive       = which == "Scenario List";
+        var scenarioListActive    = which == "Scenario List";
 
         return m("div.nav", [
             m("div.nav-header", Credentials.token() ? loggedOutHeaderElts() : loggedInHeaderElts()),
@@ -41,11 +41,11 @@ var Nav = {
 */
             m("div.nav-header", [
                 m("a",
-                  { href: "/scenarios", config: m.route, class: scenariosActive ? "nav-content-selected" : "nav-content-unselected" },
+                  { href: "/scenarios", config: m.route, class: scenarioListActive ? "nav-content-selected" : "nav-content-unselected" },
                   "Scenarios")
             ]),
 
-            m("div", ScenarioListScreen.leftNav()),
+            scenarioListActive ? m("div", ScenarioListScreen.leftNav()) : null,
         ]);
     }
 };
