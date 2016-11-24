@@ -31,14 +31,14 @@ var Nav = {
 
         return m("div.nav", [
             m("div.nav-header", Credentials.token() ? loggedOutHeaderElts() : loggedInHeaderElts()),
-
+/*
             m("div.nav-header", [
                 m("a",
                   { href: "/inventory", config: m.route, class: inventoryActive ? "nav-content-selected" : "nav-content-unselected" },
                   "Inventory"),
                 m("br"),
             ]),
-
+*/
             m("div.nav-header", [
                 m("a",
                   { href: "/scenarios", config: m.route, class: scenariosActive ? "nav-content-selected" : "nav-content-unselected" },

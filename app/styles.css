@@ -135,6 +135,18 @@ table.scenario-list td.resources {
     color: #999;
 }
 
+.completion {
+    display: none;
+}
+
+th.factions {
+    display: none;
+}
+
+td.faction {
+    display: none;
+}
+
 /* ===== Scenario Details ===== */
 
 .scenario-details .scenario-title {
@@ -183,6 +195,10 @@ table.scenario-list td.resources {
 
 .role-line .role-line-name {
     display: inline;
+}
+
+.role-line > svg {
+    display: none;
 }
 
 .figure-line {
