@@ -14,6 +14,52 @@ function cmp(a, b) {
 }
 
 //========================================================================
+function sortByCompletion(a, b) {
+    return cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
+           cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
+           cmp(b.size, a.size) ||
+           sortBySource(a, b);
+}
+
+//========================================================================
+function sortByDate(a, b) {
+    return cmp(a.date_age, b.date_age) ||
+           cmp(a.date_year, b.date_year) ||
+           cmp(a.date_month, b.date_month) ||
+           cmp(a.date_day, b.date_day) ||
+           sortBySource(a, b);
+}
+
+//========================================================================
+function sortByName(a, b) {
+    return cmp(a.name, b.name) ||
+           sortBySource(a, b);
+}
+
+//========================================================================
+function sortByRating(a, b) {
+    return cmp(a.rating, b.rating) ||
+           cmp(a.name, b.name) ||
+           sortBySource(a, b);
+}
+
+//========================================================================
+function sortBySize(a, b) {
+    return cmp(a.size, b.size) ||
+           cmp(a.name, b.name) ||
+           sortBySource(a, b);
+}
+
+//========================================================================
+function sortBySource(a, b) {
+    var a_src = a.scenario_resources["source"][0];
+    var b_src = b.scenario_resources["source"][0];
+    return cmp(a_src.title, b_src.title) ||
+           cmp(a_src.sort_order, b_src.sort_order);
+}
+
+
+//========================================================================
 function bookFilterOptions() {
     var rev_book_names = Object.keys(K.BOOK_NAMES).reduce((map, abbrev) => {
         map[K.BOOK_NAMES[abbrev]] = abbrev;
@@ -128,7 +174,7 @@ var ScenarioListScreen = function() {
         controller: function() {
             Request.get("/scenarios",
                         resp => {
-                            ScenarioListScreen.data(resp);
+                            ScenarioListScreen.data({ data: resp.data.sort(sortByDate) });
                             m.redraw();
                         });
         },
@@ -209,45 +255,12 @@ var ScenarioListScreen = function() {
                     var prop = ev.target.getAttribute("data-sort-by");
                     if (prop) {
                         var sorters = {
-                            completion: function(a, b) {
-                                var d = cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size);
-                                if (d == 0) {
-                                    d = cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size);
-                                }
-                                if (d == 0) {
-                                    d = cmp(b.size, a.size);
-                                    if (d == 0) {
-                                        d = cmp(a.name, b.name);
-                                    }
-                                }
-                                return d;
-                            },
-
-                            name: function(a, b) {
-                                return cmp(a[prop], b[prop]);
-                            },
-
-                            date: function(a, b) { // TODO: handle dates of same year with month,day = (0,0)
-                                return cmp(a.date_age, b.date_age) ||
-                                       cmp(a.date_year, b.date_year) ||
-                                       cmp(a.date_month, b.date_month) ||
-                                       cmp(a.date_day, b.date_day);
-                            },
-
-                            rating: function(a, b) {
-                                return cmp(a.rating, b.rating);  // TODO: tiebreaker
-                            },
-
-                            size: function(a, b) {
-                                return cmp(a[prop], b[prop]);  // TODO: tiebreaker
-                            },
-
-                            source: function(a, b) {
-                                var a_src = a.scenario_resources["source"][0];
-                                var b_src = b.scenario_resources["source"][0];
-                                return cmp(a_src.title, b_src.title) ||
-                                    cmp(a_src.sort_order, b_src.sort_order);
-                            }
+                            completion: sortByCompletion,
+                            name:       sortByName,
+                            date:       sortByDate,
+                            rating:     sortByRating,
+                            size:       sortBySize,
+                            source:     sortBySource
                         };
 
                         var arrowNodes = document.getElementsByClassName("sort-arrow");
