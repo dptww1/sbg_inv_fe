@@ -50,10 +50,12 @@ var Credentials = function() {
         email: m.prop(),
         password: m.prop(),
         token: propCookie("token"),
+        userId: m.prop(),
 
         clear: function() {
             Credentials.name(undefined);
             Credentials.token(undefined);
+            Credentials.userId(undefined);
         },
 
         isLoggedIn() {

@@ -41,6 +41,17 @@ var Request = (function() {
                 resp => successFn(resp),
                 resp => failFn(resp, errorComponent)
             );
+        },
+
+        put: function(url, data, successFn, errorComponent) {
+            var opts = { method: "PUT", url: API_URL + url, data: data };
+            if (Credentials.token()) {
+                opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
+            }
+            return m.request(opts).then(
+                resp => successFn(resp),
+                resp => failFn(resp, errorComponent)
+            );
         }
     };
 }());

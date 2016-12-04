@@ -15,7 +15,7 @@ var LoginScreen = function() {
                      resp => {
                          Credentials.token(resp.data.token);
                          Credentials.name(resp.data.name);
-                         console.log(resp.data.token);
+                         Credentials.userId(resp.data.user_id);
                          m.route("/scenarios");
                      });
     };

@@ -20,5 +20,6 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
     "/inventory"     : require("inventory"),
     "/login"         : require("login"),
     "/register"      : require("register"),
-    "/forgot-pw"     : require("forgot-password")
+    "/forgot-pw"     : require("forgot-password"),
+    "/account"       : require("account")
 });

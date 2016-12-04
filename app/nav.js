@@ -17,8 +17,9 @@ var loggedInHeaderElts = () => {
 //========================================================================
 var loggedOutHeaderElts = () => {
     return [
-        m("div.login-name", Credentials.name()),
-        m("a", { onclick: function() { Credentials.clear(); } }, "Log out")
+        m("div.login-name",
+          m("a[href=/account]", { config: m.route }, Credentials.name())),
+        m("a[href=/scenarios]", { onclick: function() { Credentials.clear(); } }, "Log out")
     ];
 };
 
