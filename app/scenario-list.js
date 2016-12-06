@@ -32,7 +32,7 @@ function sortByDate(a, b) {
 
 //========================================================================
 function sortByName(a, b) {
-    return cmp(a.name, b.name) ||
+    return sortByTitle(a.name, b.name) ||
            sortBySource(a, b);
 }
 
@@ -54,10 +54,23 @@ function sortBySize(a, b) {
 function sortBySource(a, b) {
     var a_src = a.scenario_resources["source"][0];
     var b_src = b.scenario_resources["source"][0];
-    return cmp(a_src.title, b_src.title) ||
+    return sortByTitle(a_src.title, b_src.title) ||
            cmp(a_src.sort_order, b_src.sort_order);
 }
 
+//========================================================================
+function sortByTitle(a, b) {
+    a = a.replace(/^The /, "").replace(/^A /, "").replace("É", "E");
+    b = b.replace(/^The /, "").replace(/^A /, "").replace("É", "E");
+
+    if (a < b) {
+        return -1;
+    }
+    if (b < a) {
+        return 1;
+    }
+    return 0;
+}
 
 //========================================================================
 function bookFilterOptions() {
