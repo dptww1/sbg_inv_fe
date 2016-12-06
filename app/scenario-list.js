@@ -238,7 +238,7 @@ var ScenarioListScreen = function() {
                 rows.push(m("tr", m("td[colspan=8]", "There are no scenarios matching those search criteria!")));
             }
 
-            return m("table.scenario-list", ScenarioListScreen.tableSorter(rawData), rows);
+            return m("table.scenario-list.striped", ScenarioListScreen.tableSorter(rawData), rows);
         },
 
         ageAbbrev: function(ageNumber) {
