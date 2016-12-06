@@ -1,3 +1,7 @@
+@rating-star-filled:      #e7c344;
+@rating-star-user-choice: #a4b;
+@light-gray:              #999;
+
 @font-face {
     font-family: "sbg-resources";
     src: url("/fonts/sbg-resources.eot");
@@ -8,6 +12,7 @@
 
 body {
     font-family: Georgia, serif;
+    display: block;
 }
 
 .errors {
@@ -35,24 +40,24 @@ body {
 ul.filter-group {
   list-style: none;
   padding-left: 0;
-}
 
-ul.filter-group li {
-  border-radius: 3px;
-  border: 1px gray solid;
-  background-color: white;
-  font-size: 12px;
-  margin-bottom: 2px;
-}
+  li {
+    border-radius: 3px;
+    border: 1px @light-gray solid;
+    background-color: white;
+    font-size: 12px;
+    margin-bottom: 2px;
 
-ul.filter-group li::before {
-  font-family: sans-serif;
-  content: "x";
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-  margin-right: 0.3em;
-  background-color: gray;
-  color: white;
+    &:before {
+      font-family: sans-serif;
+      content: "x";
+      padding-left: 0.2em;
+      padding-right: 0.2em;
+      margin-right: 0.3em;
+      background-color: @light-gray;
+      color: white;
+    }
+  }
 }
 
 /* ===== Star Ratings ===== */
@@ -70,7 +75,7 @@ div.rating-star-inner {
   position: absolute;
   left: 0;
   top: -3px;
-  color: #e7c344;
+  color: @rating-star-filled;
   overflow: hidden;
   text-shadow: none;
   transition:all .4s ease-out;
@@ -78,10 +83,10 @@ div.rating-star-inner {
 
 div.active div.star-rating-inner {
   cursor:pointer;
-}
 
-div.active div.rating-star-inner:hover {
-  color: #ff8400;
+  &:hover {
+    color: @rating-star-user-choice;
+  }
 }
 
 div.rating-star {
@@ -92,12 +97,12 @@ div.rating-star {
 }
 
 div.active div.rating-star:hover {
-  color: #a4b;
+  color: @rating-star-user-choice;
   cursor: pointer;
 }
 
 div.rating-star-highlight {
-  color: #a4b;
+  color: @rating-star-user-choice;
 }
 
 div.rating {
@@ -127,12 +132,12 @@ table.scenario-list td.resources {
     font-family: "sbg-resources";
     font-weight: normal;
     font-style: normal;
-    color: #999;
+    color: @light-gray;
 }
 
 .sort-arrow {
     font-size: 40%;
-    color: #999;
+    color: @light-gray;
 }
 
 .completion {
@@ -149,37 +154,39 @@ td.faction {
 
 /* ===== Scenario Details ===== */
 
-.scenario-details .scenario-title {
+.scenario-details {
+  .scenario-title {
     font-weight: bold;
     font-size: 150%;
-}
+  }
 
-.scenario-details .scenario-blurb {
+  .scenario-blurb {
     font-style: italic;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
-}
+  }
 
-.scenario-details .scenario-date .date-age {
-    display: inline;
-}
+  .scenario-date {
+    .date-age, date-year {
+      display: inline;
+    }
+  }
 
-.scenario-details .scenario-date .date-year {
-    display: inline;
-}
-
-.scenario-details .scenario-details-section-title {
+  .scenario-details-section-title {
     font-weight: bold;
     margin-top: 0.75em;
-}
+  }
 
-.scenario-details .scenario-factions .factions-container {
-    width: 100%;
-    overflow:auto;
-}
+  .scenario-factions {
+    .factions-container {
+      width: 100%;
+      overflow:auto;
 
-.scenario-details .scenario-factions .faction {
-    float: left;
+      .faction {
+        float: left;
+      }
+    }
+  }
 }
 
 .pie {
@@ -188,29 +195,31 @@ td.faction {
     width: 24px;
 }
 
-.role-line .role-line-amount {
+.role-line {
+  .role-line-amount {
     display: inline;
     margin-right: 0.5em;
-}
+  }
 
-.role-line .role-line-name {
+  .role-line-name {
     display: inline;
-}
+  }
 
-.role-line > svg {
-    display: none;
+  svg {
+    display: none;  // TODO: Re-enable
+  }
 }
 
 .figure-line {
-    padding-left: 24px;
-    color: #999;
-}
+  padding-left: 24px;
+  color: @light-gray;
 
-.figure-line .figure-line-amount {
+  .figure-line-amount {
     display: inline;
     margin-right: 0.5em;
-}
+  }
 
-.figure-line .figure-line-name {
+  .figure-line-name {
     display: inline;
+  }
 }
