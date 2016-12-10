@@ -41,3 +41,31 @@ module.exports.FACTION_INFO = {
     shire:         { name: "The Shire",     letter: "s" },
     white_council: { name: "White Council", letter: "w" }
 };
+
+module.exports.LOCATIONS = {
+    amon_hen:     "Amon Hen",
+    arnor:        "Arnor",
+    dol_guldur:   "Dol Guldur",
+    eriador:      "Eriador",
+    fangorn:      "Fangorn",
+    fornost:      "Fornost",
+    gondor:       "Gondor",
+    harad:        "Harad",
+    harondor:     "Harondor",
+    helms_deep:   "Helm's Deep",
+    isengard:     "Isengard",
+    ithilien:     "Ithilien",
+    lothlorien:   "Lothlorien",
+    minas_morgul: "Minas Morgul",
+    minas_tirith: "Minas Tirith",
+    mirkwood:     "Mirkwood",
+    mordor:       "Mordor",
+    moria:        "Moria",
+    morannon:     "Morannon",
+    osgiliath:    "Osgiliath",
+    rhovanion:    "Rhovanion",
+    rhun:         "Rhûn",
+    rohan:        "Rohan",
+    the_shire:    "The Shire",
+    weathertop:   "Weathertop"
+}

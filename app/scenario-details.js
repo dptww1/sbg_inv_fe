@@ -48,7 +48,9 @@ var ScenarioDetailScreen = {
                     m("div.scenario-title", scenario.name),
                     m("div.scenario-rating", m(StarRating, Credentials.isLoggedIn(), scenario)),
                     m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
+                    m("div.scenario-location", K.LOCATIONS[scenario.location]),
                     m("div.scenario-blurb", scenario.blurb),
+                    m("div.scenario-map", "Map Size: " + scenario.map_width + "\" x " + scenario.map_height + "\""),
                     m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
                     m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
                 ])
