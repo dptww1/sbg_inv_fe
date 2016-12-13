@@ -33,17 +33,57 @@ body {
   text-align: center;
 }
 
-/* ===== Left-hand Nav ===== */
+/* ===== Tabs ===== */
 
 .nav {
-  float: left;
+  background-color: #cca583;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
-.main-content {
-  float: left;
+.nav-header {
+  color: black;
+  display: inline;
+  padding-left: 1em;
+  padding-right: 1em;
+  transition: background-color 0.25s ease;
+
+  a {
+    text-decoration: none;
+  }
+
+  a:visited, a:link {
+    color: black;
+  }
 }
 
-ul.filter-group {
+.nav-content-selected {
+  background-color: #ad7b3a;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+
+  a, a:visited {
+    color: white;
+  }
+}
+
+div.filters {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+
+  span.label {
+    font-size: 8pt;
+  }
+}
+
+div.filter-group {
+  display: inline-block;
+  padding-left: 0.5em;
+  vertical-align: top;
+}
+
+ul.active-filters {
+  display: inline;
   list-style: none;
   padding-left: 0;
 
@@ -52,7 +92,7 @@ ul.filter-group {
     border: 1px @light-gray solid;
     background-color: white;
     font-size: 12px;
-    margin-bottom: 2px;
+    margin-top: 2px;
 
     &:before {
       content: "x";
@@ -124,6 +164,10 @@ span.votes {
 
 table.scenario-list {
   border-collapse: collapse;
+
+  a, a:visited {
+    color: black;
+  }
 }
 
 table.scenario-list a.scenario-detail-link {

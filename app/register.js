@@ -52,7 +52,7 @@ var RegisterScreen = function() {
         view(ctrl) {
             return [
                 m(require("header")),
-                m(require("nav"), "Login"),
+                m(require("nav"), "Register"),
                 errors() ? m("div.errors", errorText()) : null,
                 m("div.main-content", [
                     m("table", [

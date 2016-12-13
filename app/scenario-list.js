@@ -123,7 +123,7 @@ function SelectFilter(name, optionList, matchFn) {
                   })
               )),
 
-            m("ul.filter-group", self.orderedOptions.filter(opt => self.optionMap[opt].active).map(f => {
+            m("ul.active-filters", self.orderedOptions.filter(opt => self.optionMap[opt].active).map(f => {
                 return m("li",
                          { onclick: ev => { self.optionMap[f].active = false; --self.activeOptions; } },
                          self.optionMap[f].label);
@@ -177,9 +177,11 @@ var ScenarioListScreen = function() {
 
         filter(rec) { return filters2.every(filter => filter.matches(rec)); },
 
-        leftNav() {
+        filterNav() {
             return filters2.map(f => m(f)).concat(
-                numFiltersSet() > 1 ? m("ul.filter-group", [ m("li", { onclick: _ => unsetAllFilters() }, "Remove all") ])
+                numFiltersSet() > 1 ? m("div.filter-group", [
+                                          m("ul.active-filters", [ m("li", { onclick: _ => unsetAllFilters() }, "Remove all filters") ])
+                                        ])
                                     : null
             );
         },
@@ -196,6 +198,7 @@ var ScenarioListScreen = function() {
             return [
                 m(Header),
                 m(require("nav"), "Scenario List"),
+                m("div.filters", [m("span.label", "Filter ")].concat(ScenarioListScreen.filterNav())),
                 m("div.main-content", [
                     ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
                 ])
