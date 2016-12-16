@@ -6,6 +6,16 @@ var Credentials = require("credentials");
 const API_URL = "http://127.0.0.1:4000/api";
 
 var Request = (function() {
+    var extractFn = (xhr, xhrOptions) => {
+        if (xhr.status === 401) {
+            Credentials.clear();
+            return failFn({ errors: "Authentication failed. Please log in."});
+
+        } else {
+            return xhr.responseText;
+        }
+    };
+
     var failFn = (resp, errorComponent) => {
         var resolvedComponent = errorComponent || require("login");
         if (resp === null) {
@@ -22,7 +32,7 @@ var Request = (function() {
 
     return {
         get: function(url, successFn, errorComponent) {
-            var opts = { method: "GET", url: API_URL + url };
+            var opts = { method: "GET", url: API_URL + url, extract: extractFn };
             if (Credentials.token()) {
                 opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
             }
@@ -33,7 +43,7 @@ var Request = (function() {
         },
 
         post: function(url, data, successFn, errorComponent) {
-            var opts = { method: "POST", url: API_URL + url, data: data };
+            var opts = { method: "POST", url: API_URL + url, data: data, extract: extractFn };
             if (Credentials.token()) {
                 opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
             }
@@ -44,7 +54,7 @@ var Request = (function() {
         },
 
         put: function(url, data, successFn, errorComponent) {
-            var opts = { method: "PUT", url: API_URL + url, data: data };
+            var opts = { method: "PUT", url: API_URL + url, data: data, extract: extractFn };
             if (Credentials.token()) {
                 opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
             }
