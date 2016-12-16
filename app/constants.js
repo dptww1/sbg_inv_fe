@@ -4,6 +4,7 @@ module.exports.BOOK_NAMES = {
     bpf:     "Battle of the Pelennor Fields",
     fotn:    "Fall of the Necromancer",
     fotr:    "The Fellowship of the Ring",
+    fr:      "Fallen Realms",
     fotr_jb: "The Fellowship of the Ring (Journey Book)",
     gif:     "Gondor in Flames",
     harad:   "Harad",
