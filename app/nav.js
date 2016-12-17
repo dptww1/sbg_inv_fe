@@ -32,6 +32,7 @@ var loggedOutTabs = (loginActive, registerActive) => {
 //========================================================================
 var Nav = {
     view(ctl, which) {
+        var accountActive         = which == "Account";
         var loginActive           = which == "Login";
         var inventoryActive       = which == "Inventory";
         var registerActive        = which == "Register";
@@ -49,7 +50,7 @@ var Nav = {
                   { href: "/inventory", config: m.route },
                   "Inventory")
             ])
-        ].concat(loggedInTabs(loginActive))
+        ].concat(loggedInTabs(accountActive))
          .concat(loggedOutTabs(loginActive, registerActive)));
     }
 };
