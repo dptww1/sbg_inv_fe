@@ -257,7 +257,7 @@ var ScenarioListScreen = function() {
                 r.push(m("span", "\ue922"));
             }
             if (resources.video_replay != null && resources.video_replay.length > 0) {
-                r.push(m("span", "\uea9d"));
+                r.push(m("span", "\ue912"));
             }
             if (resources.podcast != null && resources.podcast.length > 0) {
                 r.push(m("span", "\uea27"));
