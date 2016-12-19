@@ -10,6 +10,8 @@ module.exports.BOOK_NAMES = {
     gif:     "Gondor in Flames",
     harad:   "Harad",
     kd:      "Khazad-dûm",
+    km:      "Kingdoms of Men",
+    ma:      "Moria & Angmar",
     mordor:  "Mordor",
     roa:     "The Ruin of Arnor",
     rotk:    "The Return of the King",
