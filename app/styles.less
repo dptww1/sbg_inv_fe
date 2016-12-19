@@ -2,6 +2,7 @@
 @rating-star-user-choice: #9d70a5;
 @light-gray:              #999;
 @table-stripe-color:      #f5ecd6;
+@link-color:              #0000dd;
 
 @header-font-family:      Tahoma, Arial, Helvetica, sans-serif;
 @body-font-family:        @header-font-family;
@@ -22,6 +23,15 @@ body {
 .errors {
   font-size: 9pt;
   color: red;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: @link-color;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 /* ===== Header ===== */
@@ -51,10 +61,6 @@ body {
   .icon {
     font-family: "sbg-resources";
     padding-right: 0.25em;
-  }
-
-  a {
-    text-decoration: none;
   }
 
   a:visited, a:link {
@@ -169,10 +175,6 @@ span.votes {
 
 table.scenario-list {
   border-collapse: collapse;
-
-  a, a:visited {
-    color: black;
-  }
 }
 
 table.scenario-list a.scenario-detail-link {
@@ -260,10 +262,13 @@ th, td {
 
   .scenario-location {
     display: inline;
+    padding-left: 1em;
   }
 
   .scenario-details-section-title {
     font-weight: bold;
+    font-size: 20px;
+    font-style: italic;
     margin-top: 0.75em;
   }
 
@@ -274,7 +279,24 @@ th, td {
 
       .faction {
         float: left;
+        padding-right: 1em;
+
+        .faction-name {
+          font-weight: bold;
+        }
       }
+    }
+  }
+
+  .scenario-resources {
+    ul.resource-list {
+      margin-top: 0;
+    }
+
+    .icon {
+      font-family: "sbg-resources";
+      padding-right: 0.25em;
+      color: @light-gray;
     }
   }
 }

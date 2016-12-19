@@ -114,10 +114,33 @@ var ScenarioDetailScreen = {
 
         var r = [ m("div.scenario-details-section-title", "Resources") ];
         ScenarioDetailScreen.resourcesRollupAddSource(r, scenario.scenario_resources);
-        ScenarioDetailScreen.resourcesRollupAddVideoReplays(r, scenario.scenario_resources);
-        ScenarioDetailScreen.resourcesRollupAddWebReplays(r, scenario.scenario_resources);
-        ScenarioDetailScreen.resourcesRollupAddPodcasts(r, scenario.scenario_resources);
-        return m("div.scenario-resources", r);
+        ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
+        ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
+        ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
+        return r;
+    },
+
+    resourcesRollupAdd: (eltArray, resourceArray, className, titleStr, iconCharStr) => {
+        if (resourceArray.length > 0) {
+            if (resourceArray.length == 1) {
+                eltArray.push(m("div." + className, [
+                                    m("span.icon", iconCharStr),
+                                    m("span.scenario-" + className + "-title", titleStr + ": "),
+                                    m("span.scenario-" + className + "-url", [
+                                          m("a", { href: resourceArray[0].url }, resourceArray[0].title || resourceArray[0].url)
+                                      ])
+                                ]));
+            } else {
+                var items = resourceArray.map(res => {
+                    return m("li", { className: "span.scenario-" + className + "-url" }, [
+                                 m("a", { href: res.url }, res.title || res.url)
+                             ]);
+                });
+                eltArray.push(m("span.icon", iconCharStr)),
+                eltArray.push(m("span.scenario-" + className + "-title", titleStr + "s: "));
+                eltArray.push(m("ul.resource-list", items));
+            }
+        }
     },
 
     resourcesRollupAddSource: function(eltArray, resources) {
@@ -127,45 +150,6 @@ var ScenarioDetailScreen = {
                     m("span.scenario-source-title", "Source: "),
                     m("span.scenario-source-book-title", K.BOOK_NAMES[resource.book]),
                     m("span.scenario-source-book-page", ", page " + resource.page)
-                ]));
-            });
-        }
-    },
-
-    resourcesRollupAddPodcasts: function(eltArray, resources) {
-        if (resources.podcast) {
-            resources.podcast.forEach(function(resource) {
-                eltArray.push(m("div.podcast", [
-                    m("span.scenario-podcast-title", "Podcast: "),
-                    m("span.scenario-podcast-url", [
-                        m("a", { href: resource.url }, resource.title || resource.url)
-                    ])
-                ]));
-            });
-        }
-    },
-
-    resourcesRollupAddVideoReplays: function(eltArray, resources) {
-        if (resources.video_replay) {
-            resources.video_replay.forEach(function(resource) {
-                eltArray.push(m("div.video-replay", [
-                    m("span.scenario-video-replay-title", "Video Replay: "),
-                    m("span.scenario-video-replay-url", [
-                        m("a", { href: resource.url }, resource.title || resource.url)
-                    ])
-                ]));
-            });
-        }
-    },
-
-    resourcesRollupAddWebReplays: function(eltArray, resources) {
-        if (resources.web_replay) {
-            resources.web_replay.forEach(function(resource) {
-                eltArray.push(m("div.web-replay", [
-                    m("span.scenario-web-replay-title", "Web Replay: "),
-                    m("span.scenario-web-replay-url", [
-                        m("a", { href: resource.url }, resource.title || resource.url)
-                    ])
                 ]));
             });
         }
