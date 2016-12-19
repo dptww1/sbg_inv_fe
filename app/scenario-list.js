@@ -37,6 +37,13 @@ function sortByLocation(a, b) {
 }
 
 //========================================================================
+function sortByMap(a, b) {
+    return cmp(a.map_width, b.map_width) ||
+           cmp(a.map_height, b.map_height) ||
+           sortBySource(a, b);
+}
+
+//========================================================================
 function sortByName(a, b) {
     return sortByTitle(a.name, b.name) ||
            sortBySource(a, b);
@@ -173,7 +180,7 @@ var ScenarioListScreen = function() {
         new SelectFilter("Book",
                          alphabetizedOptionsByValue(K.BOOK_NAMES),
                          (rec, activeOpts) => activeOpts.includes(rec.scenario_resources.source[0].book)),
-        new SelectFilter("Size",
+        new SelectFilter("Models",
                          ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
                          (rec, activeOpts) => {
                              for (var i = 0; i < activeOpts.length; ++i) {
@@ -183,6 +190,19 @@ var ScenarioListScreen = function() {
                                  case  "60": if (41 <= rec.size && rec.size <= 60)  return true;  break;
                                  case "100": if (61 <= rec.size && rec.size <= 100) return true;  break;
                                  case   "0": if (100 < rec.size)                    return true;  break;
+                                 }
+                             }
+                             return false;
+                         }),
+        new SelectFilter("Map Size",
+                         ["Tiny (<24\")=24", "Small (36\")=36", "Medium (48\")=48", "Large (>48\")=0"],
+                         (rec, activeOpts) => {
+                             for (var i = 0; i < activeOpts.length; ++i) {
+                                 switch (activeOpts[i]) {
+                                 case "24": if (rec.map_width <= 24) return true; break;
+                                 case "36": if (rec.map_width == 36) return true; break;
+                                 case "48": if (rec.map_width == 48) return true; break;
+                                 case  "0": if (rec.map_width >  48) return true; break;
                                  }
                              }
                              return false;
@@ -253,7 +273,8 @@ var ScenarioListScreen = function() {
                     m("th.location[data-sort-by=location]", m.trust("Location<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.date[data-sort-by=date][colspan=2]", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
                     m("th.source[data-sort-by=source]", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.size[data-sort-by=size]", m.trust("Size<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.size[data-sort-by=size]", m.trust("Models<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.map[data-sort-by=map]", m.trust("Map Size<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.rating[data-sort-by=rating]", m.trust("Rating<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.factions[colspan=2]", "Factions"),
                     m("th.resources", "Resources")
@@ -271,6 +292,7 @@ var ScenarioListScreen = function() {
                         m("td.date-year", scenario.date_year),
                         m("td.source", scenario.scenario_resources["source"][0].title),
                         m("td.size", scenario.size),
+                        m("td.map", scenario.map_width + "\" x " + scenario.map_height + "\""),
                         m("td.rating", m(StarRating, Credentials.isLoggedIn(), scenario)),
                         m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
                         m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
@@ -316,6 +338,7 @@ var ScenarioListScreen = function() {
                             completion: sortByCompletion,
                             date:       sortByDate,
                             location:   sortByLocation,
+                            map:        sortByMap,
                             name:       sortByName,
                             rating:     sortByRating,
                             size:       sortBySize,
