@@ -141,10 +141,23 @@ function SelectFilter(name, optionList, matchFn) {
       self.orderedOptions.forEach(opt => self.optionMap[opt].active = false);
       self.activeOptions = 0;
     };
+
+    this.summaryLabel = () => {
+        if (self.activeOptions === 0) {
+            return null;
+        }
+
+        return self.label + ": " +
+               self.orderedOptions.filter(opt => self.optionMap[opt].active)
+                                  .map(opt => self.optionMap[opt].label)
+                                  .join(",");
+    };
 }
 
 //========================================================================
 var ScenarioListScreen = function() {
+    var collapsedFilters = true;
+
     var filters2 = [
         new SelectFilter("Book",
                          bookFilterOptions(),
@@ -172,6 +185,22 @@ var ScenarioListScreen = function() {
 
     var unsetAllFilters = () => filters2.forEach(f => f.clearActiveFilters());
 
+    var filterDiv = () => {
+        if (collapsedFilters) {
+            var flabel = filters2.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
+            return m("div.filters", [
+                       m(".arrow", { onclick: () => collapsedFilters = false }, "\u25b6"),
+                       m("span.label", { onclick: () => collapsedFilters = false }, "Filters: " + flabel)
+                     ]);
+
+        } else {
+            return m("div.filters", [
+                       m(".arrow",  { onclick: () => collapsedFilters = true }, "\u25bc"),
+                       m("span.label", { onclick: () => collapsedFilters = true }, "Filter")
+                     ].concat(ScenarioListScreen.filterNav()));
+        }
+    };
+
     return {
         data: m.prop(false),
 
@@ -198,7 +227,7 @@ var ScenarioListScreen = function() {
             return [
                 m(Header),
                 m(require("nav"), "Scenario List"),
-                m("div.filters", [m("span.label", "Filter ")].concat(ScenarioListScreen.filterNav())),
+                filterDiv(),
                 m("div.main-content", [
                     ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
                 ])
