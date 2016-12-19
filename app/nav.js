@@ -13,11 +13,11 @@ var loggedInTabs = (loginActive) => {
 
     return [
         m("div.nav-header", { class: loginActive ? "nav-content-selected" : "" }, [
-            m("span.icon", "\ue902"),
+            m("span.icon", K.ICON_STRINGS.account),
             m("a[href=/account]", { config: m.route }, Credentials.name())
           ]),
         m("div.nav-header", [
-            m("span.icon", "\ue968"),
+            m("span.icon", K.ICON_STRINGS.log_out),
             m("a[href=/scenarios]", { config: m.route, onclick: () => { Credentials.clear(); }  }, "Log Out")
           ])
     ];
@@ -31,11 +31,11 @@ var loggedOutTabs = (loginActive, registerActive) => {
 
     return [
         m("div.nav-header", { class: loginActive ? "nav-content-selected" : "" }, [
-            m("span.icon", "\ue969"),
+            m("span.icon", K.ICON_STRINGS.log_in),
             m("a[href=/login]", { config: m.route }, "Login")
           ]),
         m("div.nav-header", { class: registerActive ? "nav-content-selected" : "" }, [
-            m("span.icon", "\ue969"),
+            m("span.icon", K.ICON_STRINGS.log_in),
             m("a[href=/register]", { config: m.route }, "Register")
           ])
     ];
@@ -52,14 +52,14 @@ var Nav = {
 
         return m("div.nav", [
             m("div.nav-header", { class: scenarioListActive ? "nav-content-selected" : "" }, [
-                m("span.icon", "\ue91f"),
+                m("span.icon", K.ICON_STRINGS.scenarios),
                 m("a",
                   { href: "/scenarios", config: m.route },
                   "Scenarios")
             ]),
 
             m("div.nav-header", { class: inventoryActive ? "nav-content-selected" : "" }, [
-                m("span.icon", "\ue9dc"),
+                m("span.icon", K.ICON_STRINGS.inventory),
                 m("a",
                   { href: "/inventory", config: m.route },
                   "Inventory")

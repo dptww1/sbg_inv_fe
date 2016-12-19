@@ -46,6 +46,21 @@ module.exports.FACTION_INFO = {
     white_council: { name: "White Council", letter: "w" }
 };
 
+module.exports.ICON_STRINGS = {
+    // Tab Icons
+    account:   "\ue902",
+    inventory: "\ue9dc",
+    log_in:    "\ue969",
+    log_out:   "\ue968",
+    register:  "\ue969",
+    scenarios: "\ue91f",
+
+    // Resource Icons
+    podcast:      "\uea27",
+    video_replay: "\ue912",
+    web_replay:   "\ue922"
+}
+
 module.exports.LOCATIONS = {
     amon_hen:     "Amon Hen",
     arnor:        "Arnor",

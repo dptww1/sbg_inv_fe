@@ -254,13 +254,13 @@ var ScenarioListScreen = function() {
         resourceIcons: function(resources) {
             var r = [];
             if (resources.web_replay != null && resources.web_replay.length > 0) {
-                r.push(m("span", "\ue922"));
+                r.push(m("span", K.ICON_STRINGS.web_replay));
             }
             if (resources.video_replay != null && resources.video_replay.length > 0) {
-                r.push(m("span", "\ue912"));
+                r.push(m("span", K.ICON_STRINGS.video_replay));
             }
             if (resources.podcast != null && resources.podcast.length > 0) {
-                r.push(m("span", "\uea27"));
+                r.push(m("span", K.ICON_STRINGS.podcast));
             }
             return r;
         },
