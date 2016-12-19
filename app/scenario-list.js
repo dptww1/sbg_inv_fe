@@ -31,6 +31,12 @@ function sortByDate(a, b) {
 }
 
 //========================================================================
+function sortByLocation(a, b) {
+    return sortByTitle(a.location, b.location) ||
+           sortBySource(a, b);
+}
+
+//========================================================================
 function sortByName(a, b) {
     return sortByTitle(a.name, b.name) ||
            sortBySource(a, b);
@@ -73,13 +79,13 @@ function sortByTitle(a, b) {
 }
 
 //========================================================================
-function bookFilterOptions() {
-    var rev_book_names = Object.keys(K.BOOK_NAMES).reduce((map, abbrev) => {
-        map[K.BOOK_NAMES[abbrev]] = abbrev;
+function alphabetizedOptionsByValue(hash) {
+    var reverseMap = Object.keys(hash).reduce((map, key) => {
+        map[hash[key]] = key;
         return map;
     }, {});
 
-    return Object.keys(K.BOOK_NAMES).map(k => K.BOOK_NAMES[k]).sort((a,b) => {
+    var values = Object.keys(reverseMap).sort((a, b) => {
         a = a.replace(/^The /, "").replace(/^A /, "");
         b = b.replace(/^The /, "").replace(/^A /, "");
 
@@ -90,7 +96,9 @@ function bookFilterOptions() {
             return 1;
         }
         return 0;
-    }).reduce((list, name) => list.concat([name + "=" + rev_book_names[name]]), []);
+    });
+
+    return values.reduce((list, val) => list.concat([val + "=" + reverseMap[val]]), []);
 }
 
 //========================================================================
@@ -159,8 +167,11 @@ var ScenarioListScreen = function() {
     var collapsedFilters = true;
 
     var filters2 = [
+        new SelectFilter("Location",
+                         alphabetizedOptionsByValue(K.LOCATIONS),
+                         (rec, activeOpts) => activeOpts.includes(rec.location)),
         new SelectFilter("Book",
-                         bookFilterOptions(),
+                         alphabetizedOptionsByValue(K.BOOK_NAMES),
                          (rec, activeOpts) => activeOpts.includes(rec.scenario_resources.source[0].book)),
         new SelectFilter("Size",
                          ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
@@ -239,6 +250,7 @@ var ScenarioListScreen = function() {
                 m("tr", [
                     m("th.completion[data-sort-by=completion]", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.name[data-sort-by=name]", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.location[data-sort-by=location]", m.trust("Location<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.date[data-sort-by=date][colspan=2]", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
                     m("th.source[data-sort-by=source]", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.size[data-sort-by=size]", m.trust("Size<span class='sort-arrow'>&nbsp;</span>")),
@@ -254,6 +266,7 @@ var ScenarioListScreen = function() {
                     rows.push(m("tr", [
                         m("td.completion", [m(Pie, 24, scenario.size, scenario.user_scenario.painted, scenario.user_scenario.owned)]),
                         m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
+                        m("td.location", K.LOCATIONS[scenario.location]),
                         m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
                         m("td.date-year", scenario.date_year),
                         m("td.source", scenario.scenario_resources["source"][0].title),
@@ -301,8 +314,9 @@ var ScenarioListScreen = function() {
                     if (prop) {
                         var sorters = {
                             completion: sortByCompletion,
-                            name:       sortByName,
                             date:       sortByDate,
+                            location:   sortByLocation,
+                            name:       sortByName,
                             rating:     sortByRating,
                             size:       sortBySize,
                             source:     sortBySource
