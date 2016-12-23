@@ -18,18 +18,23 @@ var StarRating = function() {
         return Math.min(1 + ((rating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH);
     };
 
-    var updateRating = function(scenario, newRating) {
+    var updateRating = function(scenario, newRating, callback) {
         Request.post("/userscenarios",
                      { user_scenario: { scenario_id: scenario.id, rating: newRating } },
                      resp => {
-                         scenario.rating = resp.avg_rating;
-                         scenario.user_scenario.rating = newRating;
-                         scenario.num_votes = resp.num_votes;
+                         if (callback) {
+                             callback.call();
+                         } else {
+                             scenario.rating = resp.avg_rating;
+                             scenario.user_scenario.rating = newRating;
+                             scenario.num_votes = resp.num_votes;
+                             m.redraw(true);
+                         }
                      });
     };
 
     return {
-        view: function(ctrl, isActive, scenario) {
+        view: function(ctrl, isActive, scenario, callback) {
             var id = scenario.id;
             var rating = scenario.rating;
             var userRating = scenario.user_scenario.rating;
@@ -42,7 +47,7 @@ var StarRating = function() {
             }
             return m("div", { class: "rating" + (isActive ? " active" : "") }, [1, 2, 3, 4, 5].map(function(n) {
                 return m("div.rating-star-container",
-                         { onclick: function(ev) { if (isActive) { updateRating(scenario, n); } } },
+                         { onclick: function(ev) { if (isActive) { updateRating(scenario, n, callback); } } },
                          [
                              m("div", { class: "rating-star " + highlightClassName(n, userRating) }, [
                                  m.trust("&#9734;"),

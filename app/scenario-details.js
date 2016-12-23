@@ -26,6 +26,35 @@ function formatDate(age, year, month, day) {
 };
 
 //========================================================================
+var refresh = function() {
+    ScenarioDetailScreen.controller();
+};
+
+//========================================================================
+var RatingBreakdown = function() {
+    return {
+        view: function(ctl, breakdown, num_votes) {
+            if (!breakdown || breakdown.length === 0) {
+                return null;
+            }
+
+            return m("div.rating-breakdown", [
+                [5,4,3,2,1].map(n => {
+                    var pct = (breakdown[n - 1] / num_votes) * 100;
+                    return m("div", { className: "rating-background-" + n }, [
+                        m("span.label", n + " Star"),
+                        m("div.rating-bar-background", [
+                            m("div.rating-bar-foreground", { style: "width: " + pct + "%"})
+                          ]),
+                        m("span.value", breakdown[n - 1] === 0 ? "" : pct.toFixed(2) + "%")
+                    ]);
+                })
+            ]);
+        }
+    };
+}();
+
+//========================================================================
 var ScenarioDetailScreen = {
     data: m.prop(false),
 
@@ -46,12 +75,14 @@ var ScenarioDetailScreen = {
             m("div.main-content", [
                 m("div.scenario-details", [
                     m("div.scenario-title", scenario.name),
-                    m("div.scenario-rating", m(StarRating, Credentials.isLoggedIn(), scenario)),
+                    m("div.scenario-rating", m(StarRating, Credentials.isLoggedIn(), scenario, refresh)),
                     m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
                     m("div.scenario-location", K.LOCATIONS[scenario.location]),
                     m("div.scenario-blurb", scenario.blurb),
                     m("div.scenario-map", "Map Size: " + scenario.map_width + "\" x " + scenario.map_height + "\""),
                     m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
+                    m("div.scenario-details-section-title", "Ratings"),
+                     m(RatingBreakdown, scenario.rating_breakdown, scenario.num_votes),
                     m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
                 ])
             ])

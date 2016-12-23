@@ -124,6 +124,37 @@ ul.active-filters {
   }
 }
 
+/* ===== Rating Breakdowns ===== */
+
+div.rating-breakdown {
+  div.rating-bar-background {
+    background:    #ccc;
+    border-bottom: 1px solid: #ddd;
+    border-left:   1px solid #999;
+    border-right:  1px solid: #ddd;
+    border-top:    1px solid #999;
+    display:       inline-block;
+    height:        18px;
+    margin-bottom: 0.1em;
+    margin-left:   0.5em;
+    margin-right:  0.5em;
+    margin-top:    0.1em;
+    width:         100px;
+  }
+
+  div.rating-bar-foreground {
+    background: @rating-star-filled;
+    background: linear-gradient(#f0d176, #c0a136);
+    display: inline-block;
+    height: 18px;
+    width:  100px;
+  }
+
+  span.label, span.value {
+    font-size: 75%;
+  }
+}
+
 /* ===== Star Ratings ===== */
 
 div.rating {
