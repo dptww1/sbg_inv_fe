@@ -40,7 +40,7 @@ var RatingBreakdown = function() {
 
             return m("div.rating-breakdown", [
                 [5,4,3,2,1].map(n => {
-                    var pct = (breakdown[n - 1] / num_votes) * 100;
+                    var pct = breakdown[n - 1] ? (breakdown[n - 1] / num_votes) * 100 : 0;
                     return m("div", { className: "rating-background-" + n }, [
                         m("span.label", n + " Star"),
                         m("div.rating-bar-background", [
