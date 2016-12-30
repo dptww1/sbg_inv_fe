@@ -2,6 +2,7 @@
 
 module.exports.BOOK_NAMES = {
     bpf:     "Battle of the Pelennor Fields",
+    dos:     "Desolation of Smaug",
     fotn:    "Fall of the Necromancer",
     fotr:    "The Fellowship of the Ring",
     fotr_jb: "The Fellowship of the Ring (Journey Book)",
@@ -27,6 +28,7 @@ module.exports.BOOK_NAMES = {
 
 module.exports.FACTION_INFO = {
     angmar:        { name: "Angmar",           letter: "a" },
+    army_thror:    { name: "Army of Thror",    letter: "o" },
     arnor:         { name: "Arnor",            letter: "A" },
     azogs_hunters: { name: "Azog's Hunters",   letter: "z" },
     dol_guldur:    { name: "Dol Guldur",       letter: "x" },
@@ -70,6 +72,7 @@ module.exports.LOCATIONS = {
     amon_hen:     "Amon Hen",
     arnor:        "Arnor",
     dol_guldur:   "Dol Guldur",
+    erebor:       "Erebor",
     eriador:      "Eriador",
     fangorn:      "Fangorn",
     fornost:      "Fornost",
