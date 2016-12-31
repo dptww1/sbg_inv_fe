@@ -23,6 +23,7 @@ module.exports.BOOK_NAMES = {
     site:    "A Shadow in the East",
     sog:     "Siege of Gondor",
     sots:    "The Scouring of the Shire",
+    tba:     "There and Back Again",
     ttt:     "The Two Towers",
     ttt_jb:  "The Two Towers (Journey Book)"
 };
@@ -32,6 +33,8 @@ module.exports.FACTION_INFO = {
     army_thror:      { name: "Army of Thror",          letter: "o" },
     arnor:           { name: "Arnor",                  letter: "A" },
     azogs_hunters:   { name: "Azog's Hunters",         letter: "z" },
+    azogs_legion:    { name: "Azog's Legion",          letter: "Z" },
+    dale:            { name: "Dale",                   letter: "q" },
     desolator_north: { name: "Desolator of the North", letter: "D" },
     dol_guldur:      { name: "Dol Guldur",             letter: "x" },
     dwarves:         { name: "Dwarves",                letter: "d" },
@@ -41,6 +44,7 @@ module.exports.FACTION_INFO = {
     goblintown:      { name: "Goblintown",             letter: "G" },
     gondor:          { name: "Gondor",                 letter: "g" },
     harad:           { name: "Harad",                  letter: "h" },
+    iron_hills:      { name: "Iron Hills",             letter: "I" },
     isengard:        { name: "Isengard",               letter: "i" },
     laketown:        { name: "Lake-town",              letter: "L" },
     lothlorien:      { name: "Lothlorien",             letter: "l" },
@@ -74,6 +78,7 @@ module.exports.ICON_STRINGS = {
 module.exports.LOCATIONS = {
     amon_hen:     "Amon Hen",
     arnor:        "Arnor",
+    dale:         "Dale",
     dol_guldur:   "Dol Guldur",
     erebor:       "Erebor",
     eriador:      "Eriador",
