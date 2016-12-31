@@ -10,6 +10,7 @@ module.exports.BOOK_NAMES = {
     fp:      "The Free Peoples",
     fr:      "Fallen Realms",
     gif:     "Gondor in Flames",
+    gt:      "Escape from Goblintown",
     harad:   "Harad",
     hobbit:  "The Hobbit: An Unexpected Journey",
     kd:      "Khazad-dûm",
