@@ -24,7 +24,7 @@ var loggedInTabs = (loginActive) => {
 }
 
 //========================================================================
-var loggedOutTabs = (loginActive, registerActive) => {
+var loggedOutTabs = (loginActive) => {
     if (Credentials.token()) {
         return [];
     }
@@ -33,10 +33,6 @@ var loggedOutTabs = (loginActive, registerActive) => {
         m("div.nav-header", { class: loginActive ? "nav-content-selected" : "" }, [
             m("span.icon", K.ICON_STRINGS.log_in),
             m("a[href=/login]", { config: m.route }, "Login")
-          ]),
-        m("div.nav-header", { class: registerActive ? "nav-content-selected" : "" }, [
-            m("span.icon", K.ICON_STRINGS.log_in),
-            m("a[href=/register]", { config: m.route }, "Register")
           ])
     ];
 };
@@ -47,7 +43,6 @@ var Nav = {
         var accountActive         = which == "Account";
         var loginActive           = which == "Login";
         var inventoryActive       = which == "Inventory";
-        var registerActive        = which == "Register";
         var scenarioListActive    = which == "Scenario List";
 
         return m("div.nav", [
@@ -65,7 +60,7 @@ var Nav = {
                   "Inventory")
             ])
         ].concat(loggedInTabs(accountActive))
-         .concat(loggedOutTabs(loginActive, registerActive)));
+         .concat(loggedOutTabs(loginActive)));
     }
 };
 

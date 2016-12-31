@@ -52,7 +52,8 @@ var RegisterScreen = function() {
         view(ctrl) {
             return [
                 m(require("header")),
-                m(require("nav"), "Register"),
+                m(require("nav"), "Login"),
+                m(".instructions", "Please fill in all fields completely."),
                 errors() ? m("div.errors", errorText()) : null,
                 m("div.main-content", [
                     m("table", [

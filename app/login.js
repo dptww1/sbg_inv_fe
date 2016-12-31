@@ -34,6 +34,10 @@ var LoginScreen = function() {
                 m(require("nav"), "Login"),
                 errors() ? m("div.errors", errors().errors) : null,
                 m("div.main-content", [
+                    m(".instructions", [
+                        "Log in using your email and password. New user? ",
+                        m("a[href=/register]", { config: m.route }, "Sign up!")
+                    ]),
                     m("table", [
                         m("tr", [
                             m("td", "Email"),
