@@ -13,6 +13,7 @@ var MONTH_NAMES = [
     "July", "August", "September", "October", "November", "December"
 ];
 
+//========================================================================
 function formatDate(age, year, month, day) {
     var a = [ ["", "FA", "SA", "TA"][age || 0] ];
     if (day > 0) {
@@ -29,6 +30,12 @@ function formatDate(age, year, month, day) {
 var refresh = function() {
     ScenarioDetailScreen.controller();
 };
+
+//========================================================================
+var resourceItemHtml = function(res) {
+    return res.url ? m("a", { href: res.url }, res.title || res.url)
+                   : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : "");
+}
 
 //========================================================================
 var RatingBreakdown = function() {
@@ -148,6 +155,7 @@ var ScenarioDetailScreen = {
         ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
         ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
         ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
+        ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.magazine_replay, "magazine-replay", "Magazine Replay", K.ICON_STRINGS.magazine_replay);
         return r;
     },
 
@@ -157,15 +165,11 @@ var ScenarioDetailScreen = {
                 eltArray.push(m("div." + className, [
                                     m("span.icon", iconCharStr),
                                     m("span.scenario-" + className + "-title", titleStr + ": "),
-                                    m("span.scenario-" + className + "-url", [
-                                          m("a", { href: resourceArray[0].url }, resourceArray[0].title || resourceArray[0].url)
-                                      ])
+                                    m("span.scenario-" + className + "-url", [ resourceItemHtml(resourceArray[0]) ])
                                 ]));
             } else {
                 var items = resourceArray.map(res => {
-                    return m("li", { className: "span.scenario-" + className + "-url" }, [
-                                 m("a", { href: res.url }, res.title || res.url)
-                             ]);
+                    return m("li", { className: "span.scenario-" + className + "-url" }, [ resourceItemHtml(res) ]);
                 });
                 eltArray.push(m("span.icon", iconCharStr)),
                 eltArray.push(m("span.scenario-" + className + "-title", titleStr + "s: "));

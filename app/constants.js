@@ -69,12 +69,13 @@ module.exports.ICON_STRINGS = {
     log_in:    "\ue969",
     log_out:   "\ue968",
     register:  "\ue969",
-    scenarios: "\ue91f",
+    scenarios: "\ue920",
 
     // Resource Icons
-    podcast:      "\uea27",
-    video_replay: "\ue912",
-    web_replay:   "\ue922"
+    magazine_replay: "\ue91f",
+    podcast:         "\uea27",
+    video_replay:    "\ue912",
+    web_replay:      "\ue922"
 }
 
 module.exports.LOCATIONS = {

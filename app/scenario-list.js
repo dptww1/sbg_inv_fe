@@ -208,7 +208,7 @@ var ScenarioListScreen = function() {
                              return false;
                          }),
         new SelectFilter("Resources",
-                         ["Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
+                         ["Magazine=magazine_replay", "Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
                          (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length))
     ];
 
@@ -317,6 +317,10 @@ var ScenarioListScreen = function() {
 
         resourceIcons: function(resources) {
             var r = [];
+            if (resources.magazine_replay != null && resources.magazine_replay.length > 0) {
+                r.push(m("span", K.ICON_STRINGS.magazine_replay));
+            }
+
             if (resources.web_replay != null && resources.web_replay.length > 0) {
                 r.push(m("span", K.ICON_STRINGS.web_replay));
             }
