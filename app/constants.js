@@ -21,6 +21,7 @@ module.exports.BOOK_NAMES = {
     rotk:    "Return of the King",
     rotk_jb: "Return of the King (Journey Book)",
     saf:     "Shadow & Flame",
+    sbg:     "SBG Magazine",
     site:    "A Shadow in the East",
     sog:     "Siege of Gondor",
     sots:    "The Scouring of the Shire",
