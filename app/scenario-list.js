@@ -68,6 +68,7 @@ function sortBySource(a, b) {
     var a_src = a.scenario_resources["source"][0];
     var b_src = b.scenario_resources["source"][0];
     return sortByTitle(a_src.title, b_src.title) ||
+           cmp(a_src.issue, b_src.issue) ||
            cmp(a_src.sort_order, b_src.sort_order);
 }
 
