@@ -56,7 +56,7 @@ InventoryScreen.view = () => {
         m("div.main-content inventory-main-content", [
             m("select.faction", { onchange: ev => updateArmyDetails(ev) }, [
                   m("option", { value: "" }, "-- Select an Army --"),
-                  Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i }, K.FACTION_INFO[k].name))
+                  Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i == armyId }, K.FACTION_INFO[k].name))
               ])
           ]),
         armyDetails()
