@@ -15,6 +15,7 @@ var MainScreen = {
 m.route.mode = "hash";
 m.route(document.getElementById("mainDiv"), "/scenarios", {
     "/"              : MainScreen,
+    "/figures/:id"   : require("figure-details.js"),
     "/scenarios/:id" : require("scenario-details"),
     "/scenarios"     : require("scenario-list"),
     "/inventory"     : require("inventory"),

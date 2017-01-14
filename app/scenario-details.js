@@ -81,14 +81,14 @@ var ScenarioDetailScreen = {
             m(require("nav"), "Scenario Details"),
             m("div.main-content", [
                 m("div.scenario-details", [
-                    m("div.scenario-title", scenario.name),
+                    m("div.detail-page-title", scenario.name),
                     m("div.scenario-rating", m(StarRating, Credentials.isLoggedIn(), scenario, refresh)),
                     m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
                     m("div.scenario-location", K.LOCATIONS[scenario.location]),
                     m("div.scenario-blurb", scenario.blurb),
                     m("div.scenario-map", "Map Size: " + scenario.map_width + "\" x " + scenario.map_height + "\""),
                     m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
-                    m("div.scenario-details-section-title", "Ratings"),
+                    m("div.section-header", "Ratings"),
                      m(RatingBreakdown, scenario.rating_breakdown, scenario.num_votes),
                     m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
                 ])
@@ -101,7 +101,7 @@ var ScenarioDetailScreen = {
             return null;
         }
 
-        var f = [ m("div.scenario-details-section-title", "Participants") ];
+        var f = [ m("div.section-header", "Participants") ];
         scenario.scenario_factions.forEach(function(faction) {
             f.push(ScenarioDetailScreen.factionRollup(faction));
         });
@@ -150,7 +150,7 @@ var ScenarioDetailScreen = {
             return null;
         }
 
-        var r = [ m("div.scenario-details-section-title", "Resources") ];
+        var r = [ m("div.section-header", "Resources") ];
         ScenarioDetailScreen.resourcesRollupAddSource(r, scenario.scenario_resources);
         ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
         ScenarioDetailScreen.resourcesRollupAdd(r, scenario.scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);

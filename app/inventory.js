@@ -11,21 +11,21 @@ var armyId = "";
 var figuresMap = {};
 
 //========================================================================
-var figureListByType = function(title, list) {
+function figureListByType(title, list) {
     if (list.length === 0) {
         return null;
     }
 
     return m("div.inventory-section", [
-               m("div.title", title),
+               m("div.section-header", title),
                m("div.list", list.map(fig => {
-                   return m("div.name", fig["name"]);
+                   return m("div.name", m("a", { href: "/figures/" + fig.id, config: m.route }, fig["name"]));
                }))
              ]);
 };
 
 //========================================================================
-var armyDetails = function() {
+function armyDetails() {
     if (armyId == "") {
         return null;
     }
@@ -40,8 +40,9 @@ var armyDetails = function() {
 };
 
 //========================================================================
-var updateArmyDetails = function(ev) {
+InventoryScreen.updateArmyDetails = (ev) => {
     armyId = ev.target.value;
+    figuresMap = {};
     Request.get("/faction/" + armyId,
                 resp => {
                     figuresMap = resp.data;
@@ -54,7 +55,7 @@ InventoryScreen.view = () => {
         m(require("header")),
         m(require("nav"), "Inventory"),
         m("div.main-content inventory-main-content", [
-            m("select.faction", { onchange: ev => updateArmyDetails(ev) }, [
+            m("select.faction", { onchange: ev => InventoryScreen.updateArmyDetails(ev) }, [
                   m("option", { value: "" }, "-- Select an Army --"),
                   Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i == armyId }, K.FACTION_INFO[k].name))
               ])

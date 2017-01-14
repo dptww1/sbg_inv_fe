@@ -2,9 +2,12 @@
 @rating-star-user-choice: #9d70a5;
 @light-gray:              #999;
 @table-stripe-color:      #f5ecd6;
-@link-color:              #000000;
 @tab-color:               #cca583;
 @tab-color-selected:      #ad7b3a;
+
+@header-color:            @tab-color-selected;
+@text-color:              #666;
+@link-color:              #000000;
 
 @header-font-family:      Tahoma, Arial, Helvetica, sans-serif;
 @body-font-family:        @header-font-family;
@@ -19,8 +22,12 @@
 
 body {
   font-family: @body-font-family;
-  color: #888;
+  color: @text-color;
   display: block;
+}
+
+select {
+  border: 1px solid @tab-color-selected;
 }
 
 .errors {
@@ -35,6 +42,17 @@ a, a:visited {
 
 a:hover {
   text-decoration: underline;
+}
+
+.detail-page-title {
+  font-weight: bold;
+  font-size: 150%;
+  color: @header-color;
+}
+
+.section-header {
+  color: @header-color;
+  font-weight: bold;
 }
 
 /* ===== Header ===== */
@@ -52,6 +70,7 @@ a:hover {
   background-color: @tab-color;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+  margin-bottom: 1em;
 }
 
 .nav-header {
@@ -73,7 +92,7 @@ a:hover {
 
 .nav-content-selected {
   background-color: @tab-color-selected;
-  border-left: #999 1px solid;
+  border-left: #333 1px solid;
   border-right: #333 1px solid;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
@@ -84,7 +103,6 @@ a:hover {
 }
 
 div.filters {
-  padding-top: 0.5em;
   padding-bottom: 0.5em;
 
   span.label {
@@ -168,6 +186,7 @@ div.rating {
 
 div.rating-star-container {
   display: inline;
+  color: @link-color;
 }
 
 div.rating-star-inner {
@@ -219,12 +238,27 @@ span.votes {
 
 .inventory-section {
   padding-top: 0.75em;
+}
 
-  .title {
-    font-weight: bold;
-    color: @tab-color-selected;
+/* ===== Figure Detail ===== */
+
+.figure-factions {
+  margin-top: 0.5em;
+}
+
+.figure-scenarios {
+  margin-top: 0.5em;
+
+  span.amount {
+    margin-left: 0.25em;
+    color: @text-color;
   }
 }
+
+.figure-scenarios-total {
+  margin-top: 0.5em;
+}
+
 
 /* ===== Scenario List ===== */
 
@@ -269,8 +303,6 @@ table.scenario-list td.resources {
 
 th {
   text-align: left;
-  font-family: @header-font-family;
-  color: @tab-color-selected;
 }
 
 th.factions {
@@ -301,11 +333,6 @@ th, td {
 /* ===== Scenario Details ===== */
 
 .scenario-details {
-  .scenario-title {
-    font-weight: bold;
-    font-size: 150%;
-  }
-
   .scenario-blurb {
     font-style: italic;
     margin-top: 0.75em;
@@ -325,10 +352,7 @@ th, td {
     padding-left: 1em;
   }
 
-  .scenario-details-section-title {
-    font-weight: bold;
-    font-size: 20px;
-    font-style: italic;
+  .section-header {
     margin-top: 0.75em;
   }
 
