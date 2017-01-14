@@ -65,7 +65,7 @@ module.exports.FACTION_INFO = {
 module.exports.ICON_STRINGS = {
     // Tab Icons
     account:   "\ue902",
-    inventory: "\ue9dc",
+    figures:   "\ue9dc",
     log_in:    "\ue969",
     log_out:   "\ue968",
     register:  "\ue969",

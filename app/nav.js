@@ -42,7 +42,7 @@ var Nav = {
     view(ctl, which) {
         var accountActive         = which == "Account";
         var loginActive           = which == "Login";
-        var inventoryActive       = which == "Inventory";
+        var figureListActive      = which == "Figures";
         var scenarioListActive    = which == "Scenario List";
 
         return m("div.nav", [
@@ -53,11 +53,11 @@ var Nav = {
                   "Scenarios")
             ]),
 
-            m("div.nav-header", { class: inventoryActive ? "nav-content-selected" : "" }, [
-                m("span.icon", K.ICON_STRINGS.inventory),
+            m("div.nav-header", { class: figureListActive ? "nav-content-selected" : "" }, [
+                m("span.icon", K.ICON_STRINGS.figures),
                 m("a",
-                  { href: "/inventory", config: m.route },
-                  "Inventory")
+                  { href: "/figures", config: m.route },
+                  "Figures")
             ])
         ].concat(loggedInTabs(accountActive))
          .concat(loggedOutTabs(loginActive)));

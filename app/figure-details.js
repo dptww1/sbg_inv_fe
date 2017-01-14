@@ -1,7 +1,7 @@
 /* global module, require */
 
 var m          = require("mithril");
-var FigureList = require("inventory");
+var FigureList = require("figure-list");
 var Header     = require("header");
 var K          = require("constants");
 var Request    = require("request");
@@ -11,7 +11,7 @@ var figure = {};
 //========================================================================
 function chooseFaction(fid) {
     FigureList.updateArmyDetails({ target: { value: Object.keys(K.FACTION_INFO).findIndex(f => f == fid ) } });
-    m.route("/inventory");
+    m.route("/figures");
 }
 
 //========================================================================

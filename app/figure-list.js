@@ -1,7 +1,7 @@
 /* global require module */
 
-var InventoryScreen = {};
-module.exports = InventoryScreen;
+var FigureListScreen = {};
+module.exports = FigureListScreen;
 
 var m       = require("mithril");
 var K       = require("constants");
@@ -16,7 +16,7 @@ function figureListByType(title, list) {
         return null;
     }
 
-    return m("div.inventory-section", [
+    return m("div.figure-list-section", [
                m("div.section-header", title),
                m("div.list", list.map(fig => {
                    return m("div.name", m("a", { href: "/figures/" + fig.id, config: m.route }, fig["name"]));
@@ -40,7 +40,7 @@ function armyDetails() {
 };
 
 //========================================================================
-InventoryScreen.updateArmyDetails = (ev) => {
+FigureListScreen.updateArmyDetails = (ev) => {
     armyId = ev.target.value;
     figuresMap = {};
     Request.get("/faction/" + armyId,
@@ -50,12 +50,12 @@ InventoryScreen.updateArmyDetails = (ev) => {
 }
 
 //========================================================================
-InventoryScreen.view = () => {
+FigureListScreen.view = () => {
     return [
         m(require("header")),
-        m(require("nav"), "Inventory"),
-        m("div.main-content inventory-main-content", [
-            m("select.faction", { onchange: ev => InventoryScreen.updateArmyDetails(ev) }, [
+        m(require("nav"), "Figures"),
+        m("div.main-content figure-list-main-content", [
+            m("select.faction", { onchange: ev => FigureListScreen.updateArmyDetails(ev) }, [
                   m("option", { value: "" }, "-- Select an Army --"),
                   Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i == armyId }, K.FACTION_INFO[k].name))
               ])
