@@ -1,6 +1,9 @@
 /* global module require */
 
 var m           = require("mithril");
+var prop        = require("mithril/stream");
+
+
 var Credentials = require("credentials");
 var Header      = require("header");
 var Pie         = require("pie");
@@ -234,7 +237,7 @@ var ScenarioListScreen = function() {
     };
 
     return {
-        data: m.prop(false),
+        data: prop(false),
 
         filter(rec) { return filters2.every(filter => filter.matches(rec)); },
 
@@ -247,7 +250,7 @@ var ScenarioListScreen = function() {
             );
         },
 
-        controller: function() {
+        oninit: function(/*vnode*/) {
             Request.get("/scenarios",
                         resp => {
                             ScenarioListScreen.data({ data: resp.data.sort(sortByDate) });
@@ -255,10 +258,10 @@ var ScenarioListScreen = function() {
                         });
         },
 
-        view: function(ctrl) {
+        view: function() {
             return [
                 m(Header),
-                m(require("nav"), "Scenario List"),
+                m(require("nav"), { selected: "Scenario List" }),
                 filterDiv(),
                 m("div.main-content", [
                     ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
@@ -286,15 +289,15 @@ var ScenarioListScreen = function() {
                 var f2 = K.FACTION_INFO[scenario.scenario_factions[1].faction];
                 if (ScenarioListScreen.filter(scenario)) {
                     rows.push(m("tr", [
-                        m("td.completion", [m(Pie, 24, scenario.size, scenario.user_scenario.painted, scenario.user_scenario.owned)]),
-                        m("td.name", [ m("a", { class: "scenario-detail-link", config: m.route, href: "/scenarios/" + scenario.id}, scenario.name) ]),
+                        m("td.completion", [m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })]),
+                        m("td.name", [ m("a", { class: "scenario-detail-link", oncreate: m.route.link, href: "/scenarios/" + scenario.id}, scenario.name) ]),
                         m("td.location", K.LOCATIONS[scenario.location]),
                         m("td.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
                         m("td.date-year", scenario.date_year),
                         m("td.source", scenario.scenario_resources["source"][0].title),
                         m("td.size", scenario.size),
                         m("td.map", scenario.map_width + "\" x " + scenario.map_height + "\""),
-                        m("td.rating", m(StarRating, Credentials.isLoggedIn(), scenario)),
+                        m("td.rating", m(StarRating, { isActive: Credentials.isLoggedIn(), scenario: scenario })),
                         m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
                         m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
                         m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))

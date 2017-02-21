@@ -4,7 +4,7 @@ var m = require("mithril");
 
 //======================================================================
 var Header = {
-    view: function(ctl) {
+    view: function() {
         return m(".page-header", [
             m(".title", "Middle Earth SBG Inventory")
         ]);

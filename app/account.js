@@ -1,13 +1,15 @@
 /* global module require */
 
 var m           = require("mithril");
+var prop        = require("mithril/stream");
+
 var Credentials = require("credentials");
 var Request     = require("request");
 
 //========================================================================
 var AccountScreen = function() {
-    var errors = m.prop("");
-    var message = m.prop("");
+    var errors = prop("");
+    var message = prop("");
 
     var update = () => {
         var paramMap = {};
@@ -21,7 +23,7 @@ var AccountScreen = function() {
                     { user: paramMap },
                     resp => {
                         message("Account updated.");
-                        m.route("/account");
+                        m.route.set("/account");
                     },
                     AccountScreen);
     };
@@ -44,10 +46,10 @@ var AccountScreen = function() {
             }
         },
 
-        view(ctrl) {
+        view() {
             return [
                 m(require("header")),
-                m(require("nav"), "Account"),
+                m(require("nav"), { selected: "Account" }),
                 errors() ? m("div.errors", errorText()) : null,
                 message() ? m("div.message", message()) : null,
                 m("div.main-content", [

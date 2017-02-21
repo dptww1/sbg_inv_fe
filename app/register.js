@@ -1,12 +1,14 @@
 /* global module require */
 
 var m           = require("mithril");
+var prop        = require("mithril/stream");
+
 var Credentials = require("credentials");
 var Request     = require("request");
 
 //========================================================================
 var RegisterScreen = function() {
-    var errors = m.prop("");
+    var errors = prop("");
 
     var login = () => {
         Request.post("/sessions",
@@ -14,7 +16,7 @@ var RegisterScreen = function() {
                      resp => {
                          Credentials.token(resp.data.token);
                          console.log(resp.data.token);
-                         m.route("/scenarios");
+                         m.route.set("/scenarios");
                      },
                      RegisterScreen);
     };
@@ -36,10 +38,10 @@ var RegisterScreen = function() {
     };
 
     return {
-        name: m.prop(),
-        email: m.prop(),
-        password: m.prop(),
-        token: m.prop(),
+        name: prop(),
+        email: prop(),
+        password: prop(),
+        token: prop(),
 
         setError(str) {
             if (typeof(str) === "string") {
@@ -52,7 +54,7 @@ var RegisterScreen = function() {
         view(ctrl) {
             return [
                 m(require("header")),
-                m(require("nav"), "Login"),
+                m(require("nav"), { selected: "Login" }),
                 m(".instructions", "Please fill in all fields completely."),
                 errors() ? m("div.errors", errorText()) : null,
                 m("div.main-content", [

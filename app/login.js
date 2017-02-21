@@ -1,12 +1,14 @@
 /* global require module */
 
 var m           = require("mithril");
+var prop        = require("mithril/stream");
+
 var Credentials = require("credentials");
 var Request     = require("request");
 
 //========================================================================
 var LoginScreen = function() {
-    var errors = m.prop("");
+    var errors = prop("");
 
     var login = () => {
         Request.post("/sessions",
@@ -15,28 +17,28 @@ var LoginScreen = function() {
                          Credentials.token(resp.data.token);
                          Credentials.name(resp.data.name);
                          Credentials.userId(resp.data.user_id);
-                         m.route("/scenarios");
+                         m.route.set("/scenarios");
                      });
     };
 
     return {
-        email: m.prop(),
-        password: m.prop(),
-        token: m.prop(),
+        email: prop(),
+        password: prop(),
+        token: prop(),
 
         setError(str) {
             errors({ errors: str});
         },
 
-        view(ctrl) {
+        view() {
             return [
                 m(require("header")),
-                m(require("nav"), "Login"),
+                m(require("nav"), { selected: "Login" }),
                 errors() ? m("div.errors", errors().errors) : null,
                 m("div.main-content", [
                     m(".instructions", [
                         "Log in using your email and password. New user? ",
-                        m("a[href=/register]", { config: m.route }, "Sign up!")
+                        m("a[href=/register]", { oncreate: m.route.link }, "Sign up!")
                     ]),
                     m("table", [
                         m("tr", [
@@ -53,7 +55,7 @@ var LoginScreen = function() {
                         ]),
                         m("tr", [
                             m("td", ""),
-                            m("a[href=/forgot-pw]", { config: m.route }, "Forgot your password?")
+                            m("a[href=/forgot-pw]", { oncreate: m.route.link }, "Forgot your password?")
                         ]),
                         m("tr", [
                             m("td", ""),

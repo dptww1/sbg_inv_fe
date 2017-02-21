@@ -34,7 +34,10 @@ var StarRating = function() {
     };
 
     return {
-        view: function(ctrl, isActive, scenario, callback) {
+        view: function(vnode) {
+            var isActive = vnode.attrs.isActive;
+            var scenario = vnode.attrs.scenario;
+            var callback = vnode.attrs.callback;
             var id = scenario.id;
             var rating = scenario.rating;
             var userRating = scenario.user_scenario.rating;

@@ -1,11 +1,13 @@
 /* global require module */
 
 var m       = require("mithril");
+var prop    = require("mithril/stream");
+
 var Request = require("request");
 
 //========================================================================
 var ForgotPassword = function() {
-    var errors = m.prop("");
+    var errors = prop("");
 
     var reset_password = () => {
         Request.post("/reset-password",
@@ -16,12 +18,12 @@ var ForgotPassword = function() {
     };
 
     return {
-        email: m.prop(),
+        email: prop(),
 
-        view(ctrl) {
+        view() {
             return [
                 m(require("header")),
-                m(require("nav"), "Login"),
+                m(require("nav"), { selected: "Login" }),
                 errors() ? m("div.errors", errors().errors) : null,
                 m("div.main-content", [
                     m("div", "Forgot your password?"),

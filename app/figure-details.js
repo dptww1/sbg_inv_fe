@@ -6,31 +6,31 @@ var Header     = require("header");
 var K          = require("constants");
 var Request    = require("request");
 
-var figure = {};
+var figure = { factions: [], scenarios: [] };
 
 //========================================================================
 function chooseFaction(fid) {
     FigureList.updateArmyDetails({ target: { value: Object.keys(K.FACTION_INFO).findIndex(f => f == fid ) } });
-    m.route("/figures");
+    m.route.set("/figures");
 }
 
 //========================================================================
 var FigureDetailScreen = {
-    controller() {
-        figure = {};
+    oninit: (/*vnode*/) => {
+        figure = { factions: [], scenarios: [] };
         Request.get("/figure/" + m.route.param("id"),
                     resp => {
                         figure = resp.data;
                     });
     },
 
-    view(ctrl) {
+    view() {
 
         var total = figure.scenarios ? figure.scenarios.reduce((acc, s) => Math.max(acc, s.amount), 0) : null;
 
         return [
             m(Header),
-            m(require("nav"), "Figure Details"),
+            m(require("nav"), { selected: "Figure Details" }),
             m("div.main-content", [
                 m(".detail-page-title", figure.name),
                 m(".figure-factions", [
@@ -40,7 +40,7 @@ var FigureDetailScreen = {
                 m(".figure-scenarios", [
                     m(".section-header", "Scenarios"),
                     figure.scenarios.map(s => m(".scenario-name", [
-                        m("a", { config: m.route, href: "/scenarios/" + s.scenario_id }, s.name),
+                        m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name),
                         total > 1 ? m("span.amount", "(" + s.amount + ")") : null
                     ]))
                 ]),

@@ -12,7 +12,7 @@ var Request = (function() {
             return failFn({ errors: "Authentication failed. Please log in."});
 
         } else {
-            return xhr.responseText;
+            return JSON.parse(xhr.responseText);
         }
     };
 
@@ -24,9 +24,9 @@ var Request = (function() {
             resolvedComponent.setError(resp.errors);
         }
         if (errorComponent) {
-            m.route();
+            m.route.get();
         } else {
-            m.route("/login");
+            m.route.set("/login");
         }
     };
 

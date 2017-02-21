@@ -2,19 +2,8 @@
 
 var m = require("mithril");
 
-//==================================================================================================================================
-var MainScreen = {
-    view: function() {
-        return m("ul", [
-                   m("li", m("a[href='/figures']", {config: m.route}, "Figures")),
-                   m("li", m("a[href='/scenarios']", {config: m.route}, "Scenarios")),
-                 ]);
-    }
-};
-
-m.route.mode = "hash";
+m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
-    "/"              : MainScreen,
     "/figures/:id"   : require("figure-details"),
     "/figures"       : require("figure-list"),
     "/scenarios/:id" : require("scenario-details"),

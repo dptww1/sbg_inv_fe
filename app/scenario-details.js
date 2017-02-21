@@ -1,6 +1,8 @@
 /* global module, require */
 
 var m           = require("mithril");
+var prop        = require("mithril/stream");
+
 var Credentials = require("credentials");
 var Header      = require("header");
 var K           = require("constants");
@@ -28,7 +30,7 @@ function formatDate(age, year, month, day) {
 
 //========================================================================
 var refresh = function() {
-    ScenarioDetailScreen.controller();
+    //ScenarioDetailScreen.controller(); // TODO
 };
 
 //========================================================================
@@ -63,36 +65,36 @@ var RatingBreakdown = function() {
 
 //========================================================================
 var ScenarioDetailScreen = {
-    data: m.prop(false),
+    data: prop(false),
 
-    controller: function() {
+    oninit: function(/*vnode*/) {
         Request.get("/scenarios/" + m.route.param("id"),
                     resp => {
                         ScenarioDetailScreen.data(resp);
-                        m.redraw();
                     });
     },
 
-    view: function(ctrl) {
+    view: function() {
         var scenario = ScenarioDetailScreen.data().data;
 
         return [
             m(Header),
-            m(require("nav"), "Scenario Details"),
-            m("div.main-content", [
-                m("div.scenario-details", [
-                    m("div.detail-page-title", scenario.name),
-                    m("div.scenario-rating", m(StarRating, Credentials.isLoggedIn(), scenario, refresh)),
-                    m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
-                    m("div.scenario-location", K.LOCATIONS[scenario.location]),
-                    m("div.scenario-blurb", scenario.blurb),
-                    m("div.scenario-map", "Map Size: " + scenario.map_width + "\" x " + scenario.map_height + "\""),
-                    m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
-                    m("div.section-header", "Ratings"),
-                     m(RatingBreakdown, scenario.rating_breakdown, scenario.num_votes),
-                    m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
-                ])
-            ])
+            m(require("nav"), { selected: "Scenario Details" }),
+            scenario ?
+                m("div.main-content", [
+                    m("div.scenario-details", [
+                        m("div.detail-page-title", scenario.name),
+                        m("div.scenario-rating", m(StarRating, { isActive: Credentials.isLoggedIn(), scenario: scenario, callback: refresh })),
+                        m("div.scenario-date", formatDate(scenario.date_age, scenario.date_year, scenario.date_month, scenario.date_day)),
+                        m("div.scenario-location", K.LOCATIONS[scenario.location]),
+                        m("div.scenario-blurb", scenario.blurb),
+                        m("div.scenario-map", "Map Size: " + scenario.map_width + "\" x " + scenario.map_height + "\""),
+                        m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
+                        m("div.section-header", "Ratings"),
+                        m(RatingBreakdown, scenario.rating_breakdown, scenario.num_votes),
+                        m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
+                    ])
+                ]) : null
         ];
     },
 
@@ -119,7 +121,7 @@ var ScenarioDetailScreen = {
         if (rolesList != null) {
             rolesList.forEach(function(r) {
                 roles.push(m("div.role-line", [
-                    m(Pie, 24, r.amount, r.num_painted, r.num_owned),
+                    m(Pie, { size: 24, n: r.amount, nPainted: r.num_painted, nOwned: r.num_owned }),
                     r.amount > 1 ? m("div.role-line-amount", r.amount) : null,
                     m("div.role-line-name", r.name)
                 ].concat(ScenarioDetailScreen.figuresRollup(r.figures))));

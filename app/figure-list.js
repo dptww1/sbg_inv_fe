@@ -19,7 +19,7 @@ function figureListByType(title, list) {
     return m("div.figure-list-section", [
                m("div.section-header", title),
                m("div.list", list.map(fig => {
-                   return m("div.name", m("a", { href: "/figures/" + fig.id, config: m.route }, fig["name"]));
+                   return m("div.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"]));
                }))
              ]);
 };
@@ -42,7 +42,13 @@ function armyDetails() {
 //========================================================================
 FigureListScreen.updateArmyDetails = (ev) => {
     armyId = ev.target.value;
-    figuresMap = {};
+    figuresMap = {
+        characters: [],
+        heroes: [],
+        warriors: [],
+        monsters: [],
+        siegers: []
+    };
     Request.get("/faction/" + armyId,
                 resp => {
                     figuresMap = resp.data;
@@ -53,7 +59,7 @@ FigureListScreen.updateArmyDetails = (ev) => {
 FigureListScreen.view = () => {
     return [
         m(require("header")),
-        m(require("nav"), "Figures"),
+        m(require("nav"), { selected: "Figures" }),
         m("div.main-content figure-list-main-content", [
             m("select.faction", { onchange: ev => FigureListScreen.updateArmyDetails(ev) }, [
                   m("option", { value: "" }, "-- Select an Army --"),
