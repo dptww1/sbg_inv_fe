@@ -40,10 +40,11 @@ var loggedOutTabs = (loginActive) => {
 //========================================================================
 var Nav = {
     view(vnode) {
-        var accountActive         = vnode.attrs.selected == "Account";
-        var loginActive           = vnode.attrs.selected == "Login";
-        var figureListActive      = vnode.attrs.selected == "Figures";
-        var scenarioListActive    = vnode.attrs.selected == "Scenario List";
+        var aboutActive        = vnode.attrs.selected == "About";
+        var accountActive      = vnode.attrs.selected == "Account";
+        var loginActive        = vnode.attrs.selected == "Login";
+        var figureListActive   = vnode.attrs.selected == "Figures";
+        var scenarioListActive = vnode.attrs.selected == "Scenario List";
 
         return m("div.nav", [
             m("div.nav-header", { class: scenarioListActive ? "nav-content-selected" : "" }, [
@@ -60,7 +61,14 @@ var Nav = {
                   "Figures")
             ])
         ].concat(loggedInTabs(accountActive))
-         .concat(loggedOutTabs(loginActive)));
+         .concat(loggedOutTabs(loginActive))
+         .concat([
+             m(".nav-header", { class: aboutActive ? "nav-content-selected" : "" }, [
+                 m("span.icon", K.ICON_STRINGS.about),
+                 m("a", { href: "/about", oncreate: m.route.link }, "About")
+             ])
+         ])
+        );
     }
 };
 

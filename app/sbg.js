@@ -4,6 +4,7 @@ var m = require("mithril");
 
 m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
+    "/about"         : require("about"),
     "/figures/:id"   : require("figure-details"),
     "/figures"       : require("figure-list"),
     "/scenarios/:id" : require("scenario-details"),
