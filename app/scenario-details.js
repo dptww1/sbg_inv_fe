@@ -30,7 +30,10 @@ function formatDate(age, year, month, day) {
 
 //========================================================================
 var refresh = function() {
-    //ScenarioDetailScreen.controller(); // TODO
+    Request.get("/scenarios/" + m.route.param("id"),
+                resp => {
+                    ScenarioDetailScreen.data(resp);
+                });
 };
 
 //========================================================================
@@ -42,14 +45,16 @@ var resourceItemHtml = function(res) {
 //========================================================================
 var RatingBreakdown = function() {
     return {
-        view: function(ctl, breakdown, num_votes) {
+        view: function(vnode) {
+            var breakdown = vnode.attrs.breakdown;
+            var numVotes = vnode.attrs.numVotes;
             if (!breakdown || breakdown.length === 0) {
                 return null;
             }
 
             return m("div.rating-breakdown", [
                 [5,4,3,2,1].map(n => {
-                    var pct = breakdown[n - 1] ? (breakdown[n - 1] / num_votes) * 100 : 0;
+                    var pct = breakdown[n - 1] ? (breakdown[n - 1] / numVotes) * 100 : 0;
                     return m("div", { className: "rating-background-" + n }, [
                         m("span.label", n + " Star"),
                         m("div.rating-bar-background", [
@@ -68,10 +73,7 @@ var ScenarioDetailScreen = {
     data: prop(false),
 
     oninit: function(/*vnode*/) {
-        Request.get("/scenarios/" + m.route.param("id"),
-                    resp => {
-                        ScenarioDetailScreen.data(resp);
-                    });
+        refresh();
     },
 
     view: function() {
@@ -91,7 +93,7 @@ var ScenarioDetailScreen = {
                         m("div.scenario-map", "Map Size: " + scenario.map_width + "\" x " + scenario.map_height + "\""),
                         m("div.scenario-factions", ScenarioDetailScreen.factionsRollup(scenario)),
                         m("div.section-header", "Ratings"),
-                        m(RatingBreakdown, scenario.rating_breakdown, scenario.num_votes),
+                        m(RatingBreakdown, { breakdown: scenario.rating_breakdown, numVotes: scenario.num_votes }),
                         m("div.scenario-resources", ScenarioDetailScreen.resourcesRollup(scenario))
                     ])
                 ]) : null
