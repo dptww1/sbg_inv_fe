@@ -270,7 +270,7 @@ var ScenarioListScreen = function() {
         },
 
         drawTable: function(rawData) {
-            var rows = [
+            var desktopRows = [
                 m("tr", [
                     m("th.completion[data-sort-by=completion].section-header", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.name[data-sort-by=name].section-header", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
@@ -282,13 +282,22 @@ var ScenarioListScreen = function() {
                     m("th.rating[data-sort-by=rating].section-header", m.trust("Rating<span class='sort-arrow'>&nbsp;</span>")),
                     m("th.factions[colspan=2].section-header", "Factions"),
                     m("th.resources.section-header", "Resources")
-                ])];
+                ])
+            ];
+
+            var mobileRows = [
+                m("tr.mobile", [
+                    m("th.completion[data-sort-by=completion].section-header", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.name[data-sort-by=name].section-header", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
+                    m("th.rating[data-sort-by=rating].section-header", m.trust("Rating<span class='sort-arrow'>&nbsp;</span>"))
+                ])
+            ];
 
             rawData.forEach(scenario => {
                 var f1 = K.FACTION_INFO[scenario.scenario_factions[0].faction];
                 var f2 = K.FACTION_INFO[scenario.scenario_factions[1].faction];
                 if (ScenarioListScreen.filter(scenario)) {
-                    rows.push(m("tr", [
+                    desktopRows.push(m("tr", [
                         m("td.completion", [m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })]),
                         m("td.name", [ m("a", { class: "scenario-detail-link", oncreate: m.route.link, href: "/scenarios/" + scenario.id}, scenario.name) ]),
                         m("td.location", K.LOCATIONS[scenario.location]),
@@ -302,14 +311,29 @@ var ScenarioListScreen = function() {
                         m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
                         m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
                     ]));
+                    mobileRows.push(m("tr", [
+                        m("td.completion", [m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })]),
+                        m("td.name", [
+                            m("a", { class: "scenario-detail-link", oncreate: m.route.link, href: "/scenarios/" + scenario.id}, scenario.name),
+                            m("br"),
+                            m("span.date-age", ScenarioListScreen.ageAbbrev(scenario.date_age)),
+                            m("span.date-year", scenario.date_year),
+                            m("span.location", K.LOCATIONS[scenario.location]),
+                        ]),
+                        m("td.rating", m(StarRating, { isActive: Credentials.isLoggedIn(), scenario: scenario })),
+                    ]));
                 }
             });
 
-            if (rows.length === 1) {
-                rows.push(m("tr", m("td[colspan=8]", "There are no scenarios matching those search criteria!")));
+            if (desktopRows.length === 1) {
+                desktopRows.push(m("tr", m("td[colspan=8]", "There are no scenarios matching those search criteria!")));
+                mobileRows.push(m("tr", m("td[colspan=8]", "There are no such scenarios!")));
             }
 
-            return m("table.scenario-list.striped", ScenarioListScreen.tableSorter(rawData), rows);
+            return [
+                m("table.scenario-list.striped.desktop", ScenarioListScreen.tableSorter(rawData), desktopRows),
+                m("table.scenario-list.striped.mobile", ScenarioListScreen.tableSorter(rawData), mobileRows)
+            ];
         },
 
         ageAbbrev: function(ageNumber) {

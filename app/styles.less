@@ -424,3 +424,30 @@ th, td {
     display: inline;
   }
 }
+
+/* ===== Responsive Tweaks ===== */
+
+.desktop {
+}
+
+.mobile {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  body {
+    font-size: 75%;
+  }
+
+  .page-header .title {
+    font-size: 20px;
+  }
+
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: inherit;
+  }
+}
