@@ -272,24 +272,24 @@ var ScenarioListScreen = function() {
         drawTable: function(rawData) {
             var desktopRows = [
                 m("tr", [
-                    m("th.completion[data-sort-by=completion].section-header", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.name[data-sort-by=name].section-header", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.location[data-sort-by=location].section-header", m.trust("Location<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.date[data-sort-by=date][colspan=2].section-header", m.trust("Date<span class='sort-arrow'>&#9650;</span>")),
-                    m("th.source[data-sort-by=source].section-header", m.trust("Source<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.size[data-sort-by=size].section-header", m.trust("Models<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.map[data-sort-by=map].section-header", m.trust("Map Size<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.rating[data-sort-by=rating].section-header", m.trust("Rating<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.factions[colspan=2].section-header", "Factions"),
-                    m("th.resources.section-header", "Resources")
+                    m("th.completion[data-sort-by=completion].section-header", "Ready?",   m("span.sort-arrow", "\u00a0")),
+                    m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", "\u00a0")),
+                    m("th.location[data-sort-by=location].section-header",     "Location", m("span.sort-arrow", "\u00a0")),
+                    m("th.date[data-sort-by=date][colspan=2].section-header",  "Date",     m("span.sort-arrow", "\u25b2")),
+                    m("th.source[data-sort-by=source].section-header",         "Source",   m("span.sort-arrow", "\u00a0")),
+                    m("th.size[data-sort-by=size].section-header",             "Models",   m("span.sort-arrow", "\u00a0")),
+                    m("th.map[data-sort-by=map].section-header",               "Map Size", m("span.sort-arrow", "\u00a0")),
+                    m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", "\u00a0")),
+                    m("th.factions[colspan=2].section-header",                 "Factions"),
+                    m("th.resources.section-header",                           "Resources")
                 ])
             ];
 
             var mobileRows = [
                 m("tr.mobile", [
-                    m("th.completion[data-sort-by=completion].section-header", m.trust("Ready?<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.name[data-sort-by=name].section-header", m.trust("Scenario<span class='sort-arrow'>&nbsp;</span>")),
-                    m("th.rating[data-sort-by=rating].section-header", m.trust("Rating<span class='sort-arrow'>&nbsp;</span>"))
+                    m("th.completion[data-sort-by=completion].section-header", "Ready?",   m("span.sort-arrow", "\u00a0")),
+                    m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", "\u00a0")),
+                    m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", "\u00a0")),
                 ])
             ];
 

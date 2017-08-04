@@ -53,12 +53,12 @@ var StarRating = function() {
                          { onclick: function(ev) { if (isActive) { updateRating(scenario, n, callback); } } },
                          [
                              m("div", { class: "rating-star " + highlightClassName(n, userRating) }, [
-                                 m.trust("&#9734;"),
+                                 "\u2606",
                                  n <= ratingCeiling ? m("div", {
                                                           class: "rating-star-inner " + highlightClassName(n, userRating),
                                                           style: "width:" + ratingSpanWidth(n, rating) + "px"
                                                         },
-                                                        m.trust("&#9733;"))
+                                                        "\u2605")
                                                     : null
                              ])
                          ]);
