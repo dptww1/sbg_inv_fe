@@ -35,7 +35,9 @@ var FigureDetailScreen = {
                 m(".detail-page-title", figure.name),
                 m(".figure-factions", [
                     m(".section-header", "Army Lists"),
-                    figure.factions.map(f => m(".faction-name", m("a", { onclick: _ => chooseFaction(f) }, K.FACTION_INFO[f].name)))
+                    figure.factions.length > 0
+                        ? figure.factions.map(f => m(".faction-name", m("a", { onclick: _ => chooseFaction(f) }, K.FACTION_INFO[f].name)))
+                        : "None"
                 ]),
                 m(".figure-scenarios", [
                     m(".section-header", "Scenarios"),
