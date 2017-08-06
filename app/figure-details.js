@@ -25,7 +25,6 @@ var FigureDetailScreen = {
     },
 
     view() {
-
         var total = figure.scenarios ? figure.scenarios.reduce((acc, s) => Math.max(acc, s.amount), 0) : null;
 
         return [
@@ -46,7 +45,14 @@ var FigureDetailScreen = {
                         total > 1 ? m("span.amount", "(" + s.amount + ")") : null
                     ]))
                 ]),
-                total > 1 ? m(".figure-scenarios-total", [ m("div", "Maximum Needed: " + total) ]) : null
+                m(".figure-inventory", [
+                    m(".section-header", "Inventory"),
+                    m("table", [
+                        total >= 1 ? m("tr", m("td.figure-scenarios-total", "Maximum Needed"), m("td", total)) : null,
+                        m("tr", m("td.figure-owned", "# Owned"), m("td", figure.owned)),
+                        m("tr", m("td.figure-painted", "# Painted"), m("td", figure.painted))
+                    ])
+                ])
               ])
         ];
     }
