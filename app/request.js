@@ -12,7 +12,7 @@ var Request = (function() {
             return failFn({ errors: "Authentication failed. Please log in."});
 
         } else {
-            return JSON.parse(xhr.responseText);
+            return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
         }
     };
 

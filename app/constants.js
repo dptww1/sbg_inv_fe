@@ -71,13 +71,16 @@ module.exports.FACTION_INFO = {
 
 module.exports.ICON_STRINGS = {
     // Tab Icons
-    about:     "\uea09",
-    account:   "\ue902",
-    figures:   "\ue9dc",
-    log_in:    "\ue969",
-    log_out:   "\ue968",
-    register:  "\ue969",
-    scenarios: "\ue920",
+    about:        "\uea09",
+    account:      "\ue902",
+    figures:      "\ue9dc",
+    log_in:       "\ue969",
+    log_out:      "\ue968",
+    minus:        "\uea0b",
+    paint_figure: "\ue90b",
+    plus:         "\uea0a",
+    register:     "\ue969",
+    scenarios:    "\ue920",
 
     // Resource Icons
     magazine_replay: "\ue91f",

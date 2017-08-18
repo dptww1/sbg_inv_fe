@@ -9,6 +9,9 @@
 @text-color:              #666;
 @link-color:              #000000;
 
+@dialog-cancel-color:     #999;
+@dialog-ok-color:         @tab-color;
+
 @header-font-family:      Tahoma, Arial, Helvetica, sans-serif;
 @body-font-family:        @header-font-family;
 
@@ -26,6 +29,7 @@ body {
   color: @text-color;
   display: block;
   font-family: @body-font-family;
+  min-height: 100vh;
   position: absolute;
   width: 100%;
 }
@@ -254,9 +258,19 @@ span.votes {
 .figure-scenarios {
   margin-top: 0.5em;
 
-  span.amount {
-    margin-left: 0.25em;
+  td.scenario-amount {
     color: @text-color;
+    margin-left: 0.25em;
+    text-align: right;
+  }
+}
+
+.figure-inventory {
+  td.action {
+    a {
+      padding-left: 1em;
+      font-family: "sbg-resources";
+    }
   }
 }
 
@@ -266,6 +280,87 @@ span.votes {
 
 .figure-inventory {
   margin-top: 0.5em;
+}
+
+.figure-inventory-overlay {
+  animation: fade-in 0.25s;
+  display: none;
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: black;
+  z-index: 1001;
+  -moz-opacity: 0.7;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+
+.figure-inventory-popup {
+  background-color: white;
+  border: solid 1px black;
+  border-radius: 10px;
+  display: none;
+  left: 33%;
+  margin: 25% auto;
+  max-width: 33%;
+  opacity: 1.0;
+    -moz-opacity: 1.0;
+    filter: alpha(opacity=100);
+  position: fixed;
+  padding: 2em;
+  top: 0%;
+  z-index: 2002;
+
+  .dialog-buttons {
+    padding-top: .8em;
+
+    button {
+      border-style: solid;
+      border-radius: 10px;
+      padding: 0.8em;
+    }
+
+    .overlay-cancel {
+      background-color: @dialog-cancel-color;
+      border-color: @dialog-cancel-color;
+      float: left;
+    }
+    .overlay-update {
+      background-color: @dialog-ok-color;
+      border-color: @dialog-ok-color;
+      float: right;
+    }
+  }
+}
+
+.figure-inventory-popup-form {
+  display: table;
+
+  .figure-inventory-popup-row {
+    display: table-row;
+
+    input {
+      display: table-cell;
+      margin-top: 0.5em;
+    }
+
+    label {
+      display: table-cell;
+      font-size: small;
+      margin-top: 0.5em;
+      padding-right: .25em;
+      padding-top: 0.5em;
+      text-align: right;
+      vertical-align: top;
+    }
+
+    textarea {
+      display: table-cell;
+      margin-top: 0.5em;
+    }
+  }
 }
 
 /* ===== Scenario List ===== */
@@ -455,4 +550,65 @@ th, td {
   .mobile {
     display: inherit;
   }
+}
+
+/* ===== Animations ===== */
+
+@keyframes fade-in {
+  from { opacity: 0 }
+  to { opacity: 0.7; }
+}
+
+/* ===== Rome Calendar ===== */
+
+.rd-container-attachment {
+  border: black solid 1px;
+  -moz-opacity: 1.0;
+  opacity: 1.0;
+  filter: alpha(opacity=100);
+  background-color: white;
+  position: absolute;
+  z-index: 3000;
+}
+
+.rd-days {
+  border-collapse: collapse;
+}
+
+.rd-date {
+  font-family: monospace;
+}
+
+.rd-back:before {
+  display: block;
+  content: '\2190';
+}
+.rd-next:before {
+  display: block;
+  content: '\2192';
+}
+
+.rd-next {
+  float: right;
+}
+
+.rd-month-label {
+  text-align: center;
+}
+
+.rd-days-body {
+  text-align: right;
+}
+
+.rd-day-next-month, .rd-day-prev-month {
+  color: #ccc;
+}
+
+.rd-day-body {
+  border: solid 1px #ccc;
+  border-collapse: collapse;
+}
+
+.rd-day-selected {
+  background-color: #ffeecc;
 }

@@ -1,7 +1,7 @@
 {
-  "name": "your-app",
+  "name": "My-SBG-Inventory",
   "description": "Description",
-  "author": "Your Name",
+  "author": "Dave Townsend",
   "version": "0.0.1",
   "repository": {
     "type": "git",
@@ -12,7 +12,8 @@
     "prod": "brunch build --production"
   },
   "dependencies": {
-    "mithril": "^1.0.0"
+    "mithril": "^1.0.0",
+    "rome":  "^2.1.22"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.0.0",
