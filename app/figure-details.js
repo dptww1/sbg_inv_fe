@@ -92,11 +92,13 @@ function domScenarios(total) {
     return m(".figure-scenarios", [
         m(".section-header", "Scenarios"),
         m("table",
-          figure.scenarios.map(s => m("tr",
-                                      m("td.pie", m(Pie, { size: 24, n: s.amount, nPainted: figure.painted, nOwned: figure.owned })),
-                                      m("td.scenario-name",
-                                        m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name)),
-                                      m("td.scenario-amount", total > 1 ? s.amount : null))))
+          figure.scenarios.length == 0
+            ? m("tr", m("td", "None"))
+            : figure.scenarios.map(s => m("tr",
+                                          m("td.pie", m(Pie, { size: 24, n: s.amount, nPainted: figure.painted, nOwned: figure.owned })),
+                                          m("td.scenario-name",
+                                            m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name)),
+                                          m("td.scenario-amount", total > 1 ? s.amount : null))))
     ]);
 }
 
