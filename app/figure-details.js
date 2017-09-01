@@ -11,17 +11,38 @@ var K           = require("constants");
 var Pie         = require("pie");
 var Request     = require("request");
 
-var figure = { factions: [], scenarios: [] };
+var figure = { factions: [], scenarios: [], history: [] };
 var updateType = null;
 var updateOp = null;
 var amt = prop();
-var date = prop();
+var date = prop((new Date()).toISOString().substring(0, 10));
 var notes = prop();
 
 //========================================================================
 function chooseFaction(fid) {
     FigureList.updateArmyDetails({ target: { value: Object.keys(K.FACTION_INFO).findIndex(f => f == fid ) } });
     m.route.set("/figures");
+}
+
+//========================================================================
+function domHistory() {
+    if (!Credentials.isLoggedIn() || !figure.history || figure.history.length < 1) {
+        return null;
+    }
+
+    return m(".figure-history", [
+        m(".section-header", "History"),
+        m("table", [
+            figure.history.map(h => {
+                return m("tr",
+                  m("td", h.date),
+                  m("td", K.USER_FIGURE_OPS[h.op]),
+                  m("td", h.amount),
+                  m("td", h.notes)
+                 );
+            })
+        ])
+    ]);
 }
 
 //========================================================================
@@ -71,8 +92,7 @@ function domPopup() {
               m("label", "When"),
               m("input.figure-inventory-popup-date[type=date][name=date]", {
                   oncreate: setUpRome,
-                  onchange: m.withAttr("value", date),
-                  value: date()
+                  onchange: m.withAttr("value", date)
               })),
             m(".figure-inventory-popup-row",
               m("label", "Notes"),
@@ -104,6 +124,9 @@ function domScenarios(total) {
 
 //========================================================================
 function hidePopup() {
+    // Rome seems to bypass the `onchange` handler on the date widget, though it still works if the user
+    // manually enters the date.  So we have to copy the value manually when we are sure we want it.
+    date(document.getElementsByName("date")[0].value);
     document.getElementsByClassName("figure-inventory-popup")[0].style.display = "none";
     document.getElementsByClassName("figure-inventory-overlay")[0].style.display = "none";
 }
@@ -134,7 +157,7 @@ function showPopup(type, verb) {
     amt(null);
     notes(null);
 
-    var instrText = `How many ${type} ${figure.plural_name} did you ${verb}?`;
+    var instrText = `How many ${type} ${figure.plural_name || figure.name} did you ${verb}?`;
 
     document.getElementsByClassName("figure-inventory-popup-instructions")[0].textContent = instrText;
     document.getElementsByClassName("figure-inventory-popup")[0].style.display = "block";
@@ -155,6 +178,10 @@ function updateFigureInventory() {
         document.getElementsByClassName("errors")[0].textContent = "Amount is required";
         return;
     }
+
+    // Rome seems to bypass the `onchange` handler on the date widget, though it still works if the user
+    // manually enters the date.  So we have to copy the value manually when we are sure we want it.
+    date(document.getElementsByName("date")[0].value);
 
     let intAmt = parseInt(amt(), 10);
 
@@ -179,7 +206,16 @@ function updateFigureInventory() {
     }
 
     Request.post("/userfigure",
-                 { user_figure: { id: figure.id, painted: figure.painted, owned: figure.owned, notes: notes() } },
+                 {
+                     user_figure: {
+                         id: figure.id,
+                         amount: amt(),
+                         new_owned: figure.owned,
+                         new_painted: figure.painted,
+                         notes: notes(),
+                         op_date: date()
+                     }
+                 },
                  resp => {
                      hidePopup();
                      requestFigureModelData(figure.id);
@@ -209,6 +245,7 @@ var FigureDetailScreen = {
                 ]),
                 domScenarios(total),
                 domInventory(total),
+                domHistory(),
                 domPopup()
             ]),
         ];

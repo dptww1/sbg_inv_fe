@@ -69,6 +69,14 @@ module.exports.FACTION_INFO = {
     white_council:   { name: "White Council",             letter: "w" }
 };
 
+module.exports.USER_FIGURE_OPS = {
+    buy_unpainted:  "Bought Unpainted",
+    sell_unpainted: "Sell Unpainted",
+    buy_painted:    "Buy Painted",
+    sell_unpainted: "Sell Painted",
+    paint:          "Paint"
+}
+
 module.exports.ICON_STRINGS = {
     // Tab Icons
     about:        "\uea09",
