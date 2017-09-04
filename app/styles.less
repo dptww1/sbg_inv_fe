@@ -509,21 +509,26 @@ th, td {
   svg {
     display: inline;
   }
+
+  .figures-dropdown {
+    display: none;
+
+    .figure-line {
+      padding-left: 24px;
+      color: @light-gray;
+
+      .figure-line-amount {
+        display: inline;
+        margin-right: 0.5em;
+      }
+
+      .figure-line-name {
+        display: inline;
+      }
+    }
+  }
 }
 
-.figure-line {
-  padding-left: 24px;
-  color: @light-gray;
-
-  .figure-line-amount {
-    display: inline;
-    margin-right: 0.5em;
-  }
-
-  .figure-line-name {
-    display: inline;
-  }
-}
 
 /* ===== Responsive Tweaks ===== */
 

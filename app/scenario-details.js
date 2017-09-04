@@ -40,20 +40,25 @@ function domFactionsRollup() {
 }
 
 //========================================================================
-function domFiguresRollup(amt, figuresList) {
-    var figures = [];
-
+function domFiguresRollup(role, figuresList) {
     if (figuresList.length > 1) {
-        figuresList.forEach(function(f) {
-            figures.push(m("div.figure-line", [
-                m(Pie,{ size: 24, n: amt, nPainted: f.painted, nOwned: f.owned }),
-                f.owned > 1 ? m("div.figure-line-amount", f.owned) : null,
-                m("div.figure-line-name", f.name)
-            ]));
-        });
+        return m("div.figures-dropdown",
+                 {
+                     id: "figures-dropdown-" + role.id,
+                     onmouseover: () => menuShow(role.id),
+                     onmouseout: () => menuHide(role.id)
+                 },
+                 figuresList.reduce((acc, f) => {
+                     acc.push(m("div.figure-line",
+                                m(Pie,{ size: 24, n: role.amount, nPainted: f.painted, nOwned: f.owned }),
+                                f.owned > 1 ? m("div.figure-line-amount", f.owned) : null,
+                                m("div.figure-line-name",
+                                  m("a", {href: "/figures/" + f.figure_id, oncreate: m.route.link}, f.name))));
+                     return acc;
+                 }, []));
     }
 
-    return figures;
+    return null;
 }
 
 //========================================================================
@@ -113,8 +118,15 @@ function domRolesRollup(rolesList) {
             roles.push(m("div.role-line",
                          m(Pie, { size: 24, n: r.amount, nPainted: r.num_painted, nOwned: r.num_owned }),
                          r.amount > 1 ? m("div.role-line-amount", r.amount) : null,
-                         m("div.role-line-name", r.name),
-                         domFiguresRollup(r.amount, r.figures)));
+                         m("div.role-line-name", r.figures.length > 1
+                           ? m("span",
+                               {
+                                   onmouseover: () => menuShow(r.id),
+                                   onmouseout: () => menuHide(r.id)
+                               },
+                               r.name)
+                           : m("a", {href: "/figures/" + r.figures[0].figure_id, oncreate: m.route.link}, r.name)),
+                         domFiguresRollup(r, r.figures)));
         });
 
         if (roles.length == 0) {
@@ -137,6 +149,18 @@ function formatDate(age, year, month, day) {
     a.push(year);
     return a.join(" ");
 };
+
+//========================================================================
+function menuHide(id) {
+    const elt = document.getElementById("figures-dropdown-" + id);
+    elt.style.display = "none";
+}
+
+//========================================================================
+function menuShow(id) {
+    const elt = document.getElementById("figures-dropdown-" + id);
+    elt.style.display = "block";
+}
 
 //========================================================================
 var refresh = function() {
