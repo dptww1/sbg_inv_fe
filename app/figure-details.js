@@ -25,6 +25,17 @@ function chooseFaction(fid) {
 }
 
 //========================================================================
+function domFactions() {
+    return m(".figure-factions",
+        m(".section-header", "Army Lists"),
+        m("table", [
+            figure.factions.length > 0
+                ? figure.factions.map(f => m("tr", m("td.faction-name", m("a", { onclick: _ => chooseFaction(f) }, K.FACTION_INFO[f].name))))
+                : m("tr", m("td", "None"))
+        ]));
+}
+
+//========================================================================
 function domHistory() {
     if (!Credentials.isLoggedIn() || !figure.history || figure.history.length < 1) {
         return null;
@@ -237,14 +248,9 @@ var FigureDetailScreen = {
             m(require("nav"), { selected: "Figure Details" }),
             m("div.main-content", [
                 m(".detail-page-title", figure.name),
-                m(".figure-factions", [
-                    m(".section-header", "Army Lists"),
-                    figure.factions.length > 0
-                        ? figure.factions.map(f => m(".faction-name", m("a", { onclick: _ => chooseFaction(f) }, K.FACTION_INFO[f].name)))
-                        : "None"
-                ]),
-                domScenarios(total),
                 domInventory(total),
+                domFactions(),
+                domScenarios(total),
                 domHistory(),
                 domPopup()
             ]),
