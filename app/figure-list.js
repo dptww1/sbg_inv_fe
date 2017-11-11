@@ -3,9 +3,10 @@
 var FigureListScreen = {};
 module.exports = FigureListScreen;
 
-var m       = require("mithril");
-var K       = require("constants");
-var Request = require("request");
+var m           = require("mithril");
+var Credentials = require("credentials");
+var K           = require("constants");
+var Request     = require("request");
 
 var armyId = "";
 var figuresMap = {};
@@ -18,6 +19,13 @@ function domArmyDetails() {
 
     return [
         m("table",
+          armyId
+            ? m("tr.table-header",
+                m("td", ""),
+                m("td.needed", "Needed"),
+                Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
+                Credentials.isLoggedIn() ? m("td.painted", "Painted") : null)
+            : null,
           domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
           domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
           domFigureListByType("Warriors", figuresMap.warriors),
@@ -36,8 +44,10 @@ function domFigureListByType(title, list) {
         m("tr.figure-list-section", m("td.section-header", title)),
         list.map(fig => {
             return m("tr",
-                     m("td.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"]))//,
-//                     m("td.needed", fig.needed)
+                     m("td.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"])),
+                     m("td.needed", fig.needed),
+                     Credentials.isLoggedIn() ? m("td.owned", fig.owned) : null,
+                     Credentials.isLoggedIn() ? m("td.painted", fig.painted) : null
                     );
         })
     ];

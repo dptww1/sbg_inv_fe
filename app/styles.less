@@ -246,8 +246,9 @@ span.votes {
 /* ===== Figure List ===== */
 
 .figure-list-main-content {
-  td {
-    padding: 0.75em 0 0 0;
+  tr.table-header {
+    color: @text-color;
+    font-size: 67%;
   }
 
   td.name {
@@ -256,11 +257,16 @@ span.votes {
       margin-left: 0.25em;
     }
   }
-}
 
-.section-header {
-  margin-left: 0;
-  padding-top: 0.75em;
+  td.section-header {
+    margin-left: 0;
+    padding: 0.75em 0 0 0;
+  }
+
+  td.needed, td.owned, td.painted {
+    padding-left: 2em;
+    text-align: right;
+  }
 }
 
 /* ===== Figure Detail ===== */
