@@ -6,6 +6,7 @@ module.exports = FigureListScreen;
 var m           = require("mithril");
 var Credentials = require("credentials");
 var K           = require("constants");
+var Pie         = require("pie");
 var Request     = require("request");
 
 var armyId = "";
@@ -21,6 +22,7 @@ function domArmyDetails() {
         m("table",
           armyId
             ? m("tr.table-header",
+                m("td", ""),
                 m("td", ""),
                 m("td.needed", "Needed"),
                 Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
@@ -41,9 +43,10 @@ function domFigureListByType(title, list) {
     }
 
     return [
-        m("tr.figure-list-section", m("td.section-header", title)),
+        m("tr.figure-list-section", m("td.section-header", { colspan: 2}, title)),
         list.map(fig => {
             return m("tr",
+                     m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })),
                      m("td.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"])),
                      m("td.needed", fig.needed),
                      Credentials.isLoggedIn() ? m("td.owned", fig.owned) : null,
