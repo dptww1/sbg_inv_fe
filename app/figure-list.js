@@ -11,31 +11,35 @@ var armyId = "";
 var figuresMap = {};
 
 //========================================================================
-function figureListByType(title, list) {
-    if (list.length === 0) {
-        return null;
-    }
-
-    return m("div.figure-list-section", [
-               m("div.section-header", title),
-               m("div.list", list.map(fig => {
-                   return m("div.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"]));
-               }))
-             ]);
-};
-
-//========================================================================
-function armyDetails() {
+function domArmyDetails() {
     if (armyId == "") {
         return null;
     }
 
     return [
-        figureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
-        figureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
-        figureListByType("Warriors", figuresMap.warriors),
-        figureListByType("Monsters", figuresMap.monsters),
-        figureListByType("Siege Equipment", figuresMap.siegers)
+        m("table",
+          domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
+          domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
+          domFigureListByType("Warriors", figuresMap.warriors),
+          domFigureListByType("Monsters", figuresMap.monsters),
+          domFigureListByType("Siege Equipment", figuresMap.siegers))
+    ];
+};
+
+//========================================================================
+function domFigureListByType(title, list) {
+    if (list.length === 0) {
+        return null;
+    }
+
+    return [
+        m("tr.figure-list-section", m("td.section-header", title)),
+        list.map(fig => {
+            return m("tr",
+                     m("td.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"]))//,
+//                     m("td.needed", fig.needed)
+                    );
+        })
     ];
 };
 
@@ -65,8 +69,7 @@ FigureListScreen.view = () => {
                   m("option", { value: "" }, "-- Select an Army --"),
                   Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i == armyId }, K.FACTION_INFO[k].name)),
                   m("option", { value: "-1" }, "Unaffiliated")
-              ])
-          ]),
-        armyDetails()
+            ]),
+            domArmyDetails()])
     ];
 };
