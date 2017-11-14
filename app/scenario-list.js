@@ -272,7 +272,7 @@ var ScenarioListScreen = function() {
         drawTable: function(rawData) {
             var desktopRows = [
                 m("tr", [
-                    m("th.completion[data-sort-by=completion].section-header", "Ready?",   m("span.sort-arrow", "\u00a0")),
+                    m("th.completion[data-sort-by=completion].section-header", m.trust("&nbsp;"),   m("span.sort-arrow", "\u00a0")),
                     m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", "\u00a0")),
                     m("th.location[data-sort-by=location].section-header",     "Location", m("span.sort-arrow", "\u00a0")),
                     m("th.date[data-sort-by=date][colspan=2].section-header",  "Date",     m("span.sort-arrow", "\u25b2")),
