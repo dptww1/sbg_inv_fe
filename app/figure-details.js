@@ -230,6 +230,7 @@ function updateFigureInventory() {
                  resp => {
                      hidePopup();
                      requestFigureModelData(figure.id);
+                     FigureList.refreshArmyDetails();
                  });
 }
 
