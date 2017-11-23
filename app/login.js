@@ -17,6 +17,7 @@ var LoginScreen = function() {
                          Credentials.token(resp.data.token);
                          Credentials.name(resp.data.name);
                          Credentials.userId(resp.data.user_id);
+                         Credentials.admin(resp.data.is_admin);
                          m.route.set("/scenarios");
                      });
     };

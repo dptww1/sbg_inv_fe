@@ -1,6 +1,6 @@
 /* global require module */
 
-var m = require("mithril");
+var m    = require("mithril");
 var prop = require("mithril/stream");
 
 //==================================================================================================================================
@@ -49,14 +49,20 @@ var Credentials = function() {
     return {
         name: propCookie("name"),
         email: prop(),
+        admin: prop(),
         password: prop(),
         token: propCookie("token"),
         userId: prop(),
 
         clear: function() {
+            Credentials.admin(false);
             Credentials.name(undefined);
             Credentials.token(undefined);
             Credentials.userId(undefined);
+        },
+
+        isAdmin() {
+            return Credentials.admin();
         },
 
         isLoggedIn() {
