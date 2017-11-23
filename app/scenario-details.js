@@ -18,14 +18,14 @@ const MONTH_NAMES = [
 var scenario = prop();
 
 //========================================================================
-function domFactionRollup(faction) {
+const domFactionRollup = (faction) => {
     return m("div.faction",
              m("div.faction-name", K.FACTION_INFO[faction.faction].name),
              domRolesRollup(faction.roles));
-}
+};
 
 //========================================================================
-function domFactionsRollup() {
+const domFactionsRollup = () => {
     if (!scenario().scenario_factions) {
         return null;
     }
@@ -37,10 +37,10 @@ function domFactionsRollup() {
     });
 
     return m("div.factions-container", f);
-}
+};
 
 //========================================================================
-function domFiguresRollup(role, figuresList) {
+const domFiguresRollup = (role, figuresList) => {
     if (figuresList.length > 1) {
         return m("div.figures-dropdown",
                  {
@@ -59,10 +59,10 @@ function domFiguresRollup(role, figuresList) {
     }
 
     return null;
-}
+};
 
 //========================================================================
-function domResourcesRollupAdd(eltArray, resourceArray, className, titleStr, iconCharStr) {
+const domResourcesRollupAdd = (eltArray, resourceArray, className, titleStr, iconCharStr) => {
     if (resourceArray.length > 0) {
         if (resourceArray.length == 1) {
             eltArray.push(m("div." + className, [
@@ -79,10 +79,12 @@ function domResourcesRollupAdd(eltArray, resourceArray, className, titleStr, ico
             eltArray.push(m("ul.resource-list", items));
         }
     }
-}
+
+    return eltArray;
+};
 
 //========================================================================
-function domResourcesRollupAddSource(eltArray, resources) {
+const domResourcesRollupAddSource = (eltArray, resources) => {
     if (resources.source) {
         resources.source.forEach(function(resource) {
             eltArray.push(m("div.scenario-source", [
@@ -92,10 +94,10 @@ function domResourcesRollupAddSource(eltArray, resources) {
             ]));
         });
     }
-}
+};
 
 //========================================================================
-function domResourcesRollup() {
+const domResourcesRollup = () => {
     if (!scenario().scenario_resources) {
         return null;
     }
@@ -110,7 +112,7 @@ function domResourcesRollup() {
 }
 
 //========================================================================
-function domRolesRollup(rolesList) {
+const domRolesRollup = (rolesList) => {
     var roles = [];
 
     if (rolesList != null) {
@@ -135,10 +137,10 @@ function domRolesRollup(rolesList) {
 
         return roles;
     }
-}
+};
 
 //========================================================================
-function formatDate(age, year, month, day) {
+const formatDate = (age, year, month, day) => {
     var a = [ ["", "FA", "SA", "TA"][age || 0] ];
     if (day > 0) {
         a.push(day);
@@ -151,19 +153,19 @@ function formatDate(age, year, month, day) {
 };
 
 //========================================================================
-function menuHide(id) {
+const menuHide = (id) => {
     const elt = document.getElementById("figures-dropdown-" + id);
     elt.style.display = "none";
-}
+};
 
 //========================================================================
-function menuShow(id) {
+const menuShow = (id) => {
     const elt = document.getElementById("figures-dropdown-" + id);
     elt.style.display = "block";
-}
+};
 
 //========================================================================
-var refresh = function() {
+const refresh = function() {
     Request.get("/scenarios/" + m.route.param("id"),
                 resp => {
                     scenario(resp.data);
@@ -171,13 +173,13 @@ var refresh = function() {
 };
 
 //========================================================================
-var resourceItemHtml = function(res) {
+const resourceItemHtml = function(res) {
     return res.url ? m("a", { href: res.url }, res.title || res.url)
                    : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : "");
-}
+};
 
 //========================================================================
-var RatingBreakdown = {
+const RatingBreakdown = {
     view: function(vnode) {
         var breakdown = vnode.attrs.breakdown;
         var numVotes = vnode.attrs.numVotes;
