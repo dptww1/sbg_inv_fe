@@ -16,6 +16,37 @@ const MONTH_NAMES = [
 ];
 
 var scenario = prop();
+var resourceType = prop("-1");
+var title = prop("");
+var book = prop();
+var issue = prop();
+var page = prop();
+var url = prop();
+
+//========================================================================
+const clearResourceForm = () => {
+    let elts = document.getElementsByClassName("form");
+    for (let i = 0; i < elts.length; ++i) {
+        let elt = elts[i];
+        let inputs = elt.getElementsByTagName("input");
+        for (let j = 0; j < inputs.length; ++j) {
+            inputs[j].value = "";
+        }
+        inputs = elt.getElementsByTagName("select");
+        for (let j = 0; j < inputs.length; ++j) {
+            inputs[j].value = "-1";
+        }
+    }
+
+    resourceType("-1");
+    title("");
+    book("");
+    issue("");
+    page("");
+    url("");
+
+    m.redraw();
+};
 
 //========================================================================
 const domFactionRollup = (faction) => {
@@ -108,8 +139,59 @@ const domResourcesRollup = () => {
     domResourcesRollupAdd(r, scenario().scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
     domResourcesRollupAdd(r, scenario().scenario_resources.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
     domResourcesRollupAdd(r, scenario().scenario_resources.magazine_replay, "magazine-replay", "Magazine Replay", K.ICON_STRINGS.magazine_replay);
+
+    if (Credentials.isAdmin()) {
+        r.push(m("table.form",
+                 m("tr", m("td", ""),      m("td", domResourceSelectType())),
+                 m("tr", m("td", "Title"), m("td", domResourceTextInput("title", title))),
+                 isEditResourceBook()   ? m("tr", m("td", "Book"),  m("td", domResourceSelectBook()))              : null,
+                 isEditResourceBook()   ? m("tr", m("td", "Issue"), m("td", domResourceTextInput("issue", issue))) : null,
+                 isEditResourceBook()   ? m("tr", m("td", "Page"),  m("td", domResourceTextInput("page", page)))   : null,
+                 isEditResourceOnline() ? m("tr", m("td", "Url"),   m("td", domResourceTextInput("url", url)))     : null,
+                 m("tr", m("td", "Notes"), m("td", m("input[type=text][name=notes]"))),
+                 m("tr",
+                   m("td", m("button", { onclick: clearResourceForm  }, "Clear")),
+                   m("td", m("button", { onclick: submitResourceForm }, "Submit"))
+                  )));
+    }
+
     return r;
+};
+
+//========================================================================
+const domResourceSelectBook = () => {
+    return m("select[name=book]",
+             { onchange: ev => book(ev.target.value) },
+             m("option", { value: "-1" }, "-- Select a Book --"),
+             Object.keys(K.BOOK_NAMES).reduce(
+                 (acc, key) => {
+                     acc.push(m("option", { value: key }, K.BOOK_NAMES[key]));
+                     return acc;
+                 },
+                 []));
+};
+
+//========================================================================
+const domResourceSelectType = () => {
+    return m("select[name=type]",
+             { onchange: ev => { resourceType(ev.target.value); } },
+             m("option[value=-1]", "-- Select Resource Type --"),
+             m("option[value=0]",  "Source"),
+             m("option[value=1]",  "Video Replay"),
+             m("option[value=2]",  "Web Replay"),
+             m("option[value=3]",  "Terrain Building"),
+             m("option[value=4]",  "Podcast"),
+             m("option[value=5]",  "Magazine Replay"));
 }
+
+//========================================================================
+const domResourceTextInput = (name, prop) => {
+    return m("input[type=text]",
+             {
+                 name: name,
+                 onchange: m.withAttr("value", prop)
+             });
+};
 
 //========================================================================
 const domRolesRollup = (rolesList) => {
@@ -153,6 +235,18 @@ const formatDate = (age, year, month, day) => {
 };
 
 //========================================================================
+const isEditResourceBook = () => {
+    return resourceType() === "5";
+};
+
+//========================================================================
+const isEditResourceOnline = () => {
+    return resourceType() == "1"
+        || resourceType() == "2"
+        || resourceType() == "4";
+};
+
+//========================================================================
 const menuHide = (id) => {
     const elt = document.getElementById("figures-dropdown-" + id);
     elt.style.display = "none";
@@ -176,6 +270,25 @@ const refresh = function() {
 const resourceItemHtml = function(res) {
     return res.url ? m("a", { href: res.url }, res.title || res.url)
                    : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : "");
+};
+
+//========================================================================
+const submitResourceForm = () => {
+    Request.post("/scenarios/" + scenario().id + "/resource",
+                 {
+                     resource: {
+                         resource_type: parseInt(resourceType(), 10),
+                         title:         title(),
+                         book:          book(),
+                         issue:         parseInt(issue(), 10),
+                         page:          parseInt(page(), 10),
+                         url:           url()
+                     }
+                 },
+                 resp => {
+                     clearResourceForm();
+                     refresh();
+                 });
 };
 
 //========================================================================
