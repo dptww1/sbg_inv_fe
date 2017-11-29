@@ -94,7 +94,10 @@ module.exports.ICON_STRINGS = {
     magazine_replay: "\ue91f",
     podcast:         "\uea27",
     video_replay:    "\ue912",
-    web_replay:      "\ue922"
+    web_replay:      "\ue922",
+
+    // Admin Icons
+    edit: "\ue905"
 }
 
 module.exports.LOCATIONS = {

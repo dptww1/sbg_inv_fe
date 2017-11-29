@@ -16,6 +16,7 @@ const MONTH_NAMES = [
 ];
 
 var scenario = prop();
+var resourceId = prop();
 var resourceType = prop("-1");
 var title = prop("");
 var book = prop();
@@ -38,6 +39,7 @@ const clearResourceForm = () => {
         }
     }
 
+    resourceId(null);
     resourceType("-1");
     title("");
     book("");
@@ -99,11 +101,11 @@ const domResourcesRollupAdd = (eltArray, resourceArray, className, titleStr, ico
             eltArray.push(m("div." + className, [
                             m("span.icon", iconCharStr),
                             m("span.scenario-" + className + "-title", titleStr + ": "),
-                            m("span.scenario-" + className + "-url", [ resourceItemHtml(resourceArray[0]) ])
+                            m("span.scenario-" + className + "-url", resourceItemHtml(resourceArray[0]))
                           ]));
         } else {
             var items = resourceArray.map(res => {
-                return m("li", { className: "span.scenario-" + className + "-url" }, [ resourceItemHtml(res) ]);
+                return m("li", { className: "span.scenario-" + className + "-url" }, resourceItemHtml(res));
             });
             eltArray.push(m("span.icon", iconCharStr)),
             eltArray.push(m("span.scenario-" + className + "-title", titleStr + "s: "));
@@ -129,16 +131,16 @@ const domResourcesRollupAddSource = (eltArray, resources) => {
 
 //========================================================================
 const domResourcesRollup = () => {
-    if (!scenario().scenario_resources) {
-        return null;
-    }
+    var r = [];
 
-    var r = [ m("div.section-header", "Resources") ];
-    domResourcesRollupAddSource(r, scenario().scenario_resources);
-    domResourcesRollupAdd(r, scenario().scenario_resources.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
-    domResourcesRollupAdd(r, scenario().scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
-    domResourcesRollupAdd(r, scenario().scenario_resources.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
-    domResourcesRollupAdd(r, scenario().scenario_resources.magazine_replay, "magazine-replay", "Magazine Replay", K.ICON_STRINGS.magazine_replay);
+    if (scenario().scenario_resources) {
+        r.push(m("div.section-header", "Resources"));
+        domResourcesRollupAddSource(r, scenario().scenario_resources);
+        domResourcesRollupAdd(r, scenario().scenario_resources.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
+        domResourcesRollupAdd(r, scenario().scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
+        domResourcesRollupAdd(r, scenario().scenario_resources.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
+        domResourcesRollupAdd(r, scenario().scenario_resources.magazine_replay, "magazine-replay", "Magazine Replay", K.ICON_STRINGS.magazine_replay);
+    }
 
     if (Credentials.isAdmin()) {
         r.push(m("table.form",
@@ -165,7 +167,7 @@ const domResourceSelectBook = () => {
              m("option", { value: "-1" }, "-- Select a Book --"),
              Object.keys(K.BOOK_NAMES).reduce(
                  (acc, key) => {
-                     acc.push(m("option", { value: key }, K.BOOK_NAMES[key]));
+                     acc.push(m("option", { value: key, selected: book() == key }, K.BOOK_NAMES[key]));
                      return acc;
                  },
                  []));
@@ -175,13 +177,13 @@ const domResourceSelectBook = () => {
 const domResourceSelectType = () => {
     return m("select[name=type]",
              { onchange: ev => { resourceType(ev.target.value); } },
-             m("option[value=-1]", "-- Select Resource Type --"),
-             m("option[value=0]",  "Source"),
-             m("option[value=1]",  "Video Replay"),
-             m("option[value=2]",  "Web Replay"),
-             m("option[value=3]",  "Terrain Building"),
-             m("option[value=4]",  "Podcast"),
-             m("option[value=5]",  "Magazine Replay"));
+             m("option[value=-1]", { selected: resourceType() == "-1" }, "-- Select Resource Type --"),
+             m("option[value=0]",  { selected: resourceType() ==  "0" }, "Source"),
+             m("option[value=1]",  { selected: resourceType() ==  "1" }, "Video Replay"),
+             m("option[value=2]",  { selected: resourceType() ==  "2" }, "Web Replay"),
+             m("option[value=3]",  { selected: resourceType() ==  "3" }, "Terrain Building"),
+             m("option[value=4]",  { selected: resourceType() ==  "4" }, "Podcast"),
+             m("option[value=5]",  { selected: resourceType() ==  "5" }, "Magazine Replay"));
 }
 
 //========================================================================
@@ -189,7 +191,8 @@ const domResourceTextInput = (name, prop) => {
     return m("input[type=text]",
              {
                  name: name,
-                 onchange: m.withAttr("value", prop)
+                 onchange: m.withAttr("value", prop),
+                 value: prop() ? prop() : ""
              });
 };
 
@@ -247,6 +250,26 @@ const isEditResourceOnline = () => {
 };
 
 //========================================================================
+const loadResourceIntoForm = (res) => {
+    const RESOURCE_TYPE_MAP = {
+        source:           "0",
+        video_replay:     "1",
+        web_replay:       "2",
+        terrain_building: "3",
+        podcast:          "4",
+        magazine_replay:  "5"
+    };
+
+    resourceId(res.id);
+    resourceType(RESOURCE_TYPE_MAP[res.resource_type]);
+    title(res.title);
+    book(res.book);
+    issue(res.issue);
+    page(res.page);
+    url(res.url);
+};
+
+//========================================================================
 const menuHide = (id) => {
     const elt = document.getElementById("figures-dropdown-" + id);
     elt.style.display = "none";
@@ -268,27 +291,44 @@ const refresh = function() {
 
 //========================================================================
 const resourceItemHtml = function(res) {
-    return res.url ? m("a", { href: res.url }, res.title || res.url)
-                   : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : "");
+    let html = [];
+    html.push(res.url ? m("a", { href: res.url }, res.title || res.url)
+                      : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : ""));
+
+    if (Credentials.isAdmin()) {
+        html.push(m("span.edit", { onclick: (ev) => { loadResourceIntoForm(res); } }, K.ICON_STRINGS.edit));
+    }
+
+    return html;
 };
 
 //========================================================================
 const submitResourceForm = () => {
-    Request.post("/scenarios/" + scenario().id + "/resource",
-                 {
-                     resource: {
-                         resource_type: parseInt(resourceType(), 10),
-                         title:         title(),
-                         book:          book(),
-                         issue:         parseInt(issue(), 10),
-                         page:          parseInt(page(), 10),
-                         url:           url()
-                     }
-                 },
-                 resp => {
-                     clearResourceForm();
-                     refresh();
-                 });
+    let apiUrl = "/scenarios/" + scenario().id + "/resource";
+    let fn;
+    if (resourceId()) {
+        fn = Request.put;
+        apiUrl += "/" + resourceId();
+    } else {
+        fn = Request.post;
+    }
+
+    fn(apiUrl,
+       {
+           resource: {
+               id:            resourceId() ? resourceId() : null,
+               resource_type: parseInt(resourceType(), 10),
+               title:         title(),
+               book:          book(),
+               issue:         parseInt(issue(), 10),
+               page:          parseInt(page(), 10),
+               url:           url()
+           }
+       },
+       resp => {
+           clearResourceForm();
+           refresh();
+       });
 };
 
 //========================================================================
@@ -323,6 +363,8 @@ var ScenarioDetailScreen = {
 
     view: function() {
         const it = scenario();
+
+        console.log(`View! id[${resourceId()}] title[${title()}] url[${url()}]`);
 
         return [
             m(Header),
