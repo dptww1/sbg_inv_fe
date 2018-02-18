@@ -264,7 +264,7 @@ var ScenarioListScreen = function() {
                 m(require("nav"), { selected: "Scenario List" }),
                 filterDiv(),
                 m("div.main-content", [
-                    ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "nope"
+                    ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "Loading..."
                 ])
             ];
         },
