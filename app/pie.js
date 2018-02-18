@@ -56,7 +56,9 @@ const Pie = {
         var pctOwned    = Math.min(n > 0 ? nOwned   / n : 0, 1.0);
 
         // Use the most appropriate base circle color
-        if (pctPainted == 1.0) {
+        if (n == 0) {
+            circleAttrs.fill = '#fff';
+        } if (pctPainted == 1.0) {
             circleAttrs.fill = '#0a0';
         } else if (pctOwned == 1.0) {
             circleAttrs.fill = '#bb0';
