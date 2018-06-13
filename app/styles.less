@@ -52,6 +52,21 @@ a:hover {
   text-decoration: underline;
 }
 
+button {
+  background-color: @tab-color;
+  border: none;
+  border-radius: 12px;
+  color: @link-color;
+  font-size: 16px;
+  padding: 6px 18px;
+
+  &:hover {
+    background-color: @tab-color-selected;
+    cursor: pointer;
+  }
+}
+
+
 .detail-page-title {
   font-weight: bold;
   font-size: 150%;
@@ -65,9 +80,23 @@ a:hover {
   padding-left: 0.5em;
 }
 
+input[type=email],
+input[type=password],
+input[type=text] {
+  border: solid 1px black;
+  font-family: @body-font-family;
+  font-size: 16px;
+  padding: 3px 5px;
+}
+
 .section-header {
   color: @header-color;
   font-weight: bold;
+}
+
+.text {
+  margin-left: 2em;
+  margin-right: 2em;
 }
 
 /* ===== Header ===== */
@@ -356,6 +385,7 @@ span.votes {
       border-color: @dialog-cancel-color;
       float: left;
     }
+
     .overlay-update {
       background-color: @dialog-ok-color;
       border-color: @dialog-ok-color;
@@ -365,30 +395,52 @@ span.votes {
 }
 
 .figure-inventory-popup-form {
-  display: table;
+
+  .errors {
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+  }
 
   .figure-inventory-popup-row {
-    display: table-row;
 
     input {
       display: table-cell;
       margin-top: 0.5em;
-    }
-
-    label {
-      display: table-cell;
-      font-size: small;
-      margin-top: 0.5em;
-      padding-right: .25em;
-      padding-top: 0.5em;
-      text-align: right;
-      vertical-align: top;
+      font-size: 16px;
     }
 
     textarea {
-      display: table-cell;
       margin-top: 0.5em;
+      font-size: 16px;
     }
+
+    .left {
+      text-align: left;
+    }
+
+    .right {
+      text-align: right;
+    }
+  }
+}
+
+/* ===== Forgot Password ===== */
+
+.forgot-password {
+  a.forgot-pw {
+    font-size: 12px;
+  }
+
+  button {
+    margin-top: 12px;
+  }
+}
+
+/* ===== Register ===== */
+
+.register {
+  button {
+    margin-top: 12px;
   }
 }
 

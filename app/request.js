@@ -4,6 +4,7 @@ var m           = require("mithril");
 var Credentials = require("credentials");
 
 const API_URL = "http://127.0.0.1:4000/api";
+//const API_URL = "http://scarce-untried-calf.gigalixirapp.com/api";
 
 var Request = (function() {
     var extractFn = (xhr, xhrOptions) => {

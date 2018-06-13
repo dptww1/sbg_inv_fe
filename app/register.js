@@ -55,26 +55,27 @@ var RegisterScreen = function() {
             return [
                 m(require("header")),
                 m(require("nav"), { selected: "Login" }),
-                m(".instructions", "Please fill in all fields completely."),
-                errors() ? m("div.errors", errorText()) : null,
-                m("div.main-content", [
+                m("p.text", "Please fill in all fields completely."),
+                m("div.main-content register", [
                     m("table", [
+                        errors() ? m("tr", [ m("td"), m("td.errors", errorText()) ]) : null,
+
                         m("tr", [
                             m("td", "Name"),
                             m("td", [
-                                m("input[type=text][name=name]", { onchange: m.withAttr("value", Credentials.name) })
+                                m("input[type=text][name=name][size=40]", { onchange: m.withAttr("value", Credentials.name) })
                             ])
                         ]),
                         m("tr", [
                             m("td", "Email"),
                             m("td", [
-                                m("input[type=text][name=email]", { onchange: m.withAttr("value", Credentials.email) })
+                                m("input[type=text][name=email][size=40]", { onchange: m.withAttr("value", Credentials.email) })
                             ])
                         ]),
                         m("tr", [
                             m("td", "Password"),
                             m("td", [
-                                m("input[type=password][name=password]", { onchange: m.withAttr("value", Credentials.password) })
+                                m("input[type=password][name=password][size=40]", { onchange: m.withAttr("value", Credentials.password) })
                             ])
                         ]),
                         m("tr", [

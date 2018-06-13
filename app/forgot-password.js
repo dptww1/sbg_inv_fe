@@ -26,11 +26,11 @@ var ForgotPassword = function() {
                 m(require("nav"), { selected: "Login" }),
                 errors() ? m("div.errors", errors().errors) : null,
                 m("div.main-content", [
-                    m("div", "Forgot your password?"),
+                    m("p.text", "Forgot your password?"),
                     m("div", [
-                        m("div", "Enter your email address to reset your password:"),
-                        m("input[type=text]", { onchange: m.withAttr("value", ForgotPassword.email) }),
-                        m("button", { onclick: () => reset_password() }, "Reset")
+                        m("p.text", "Enter your email address to reset your password:"),
+                        m("p.text", m("input.email[type=email][size=40]", { onchange: m.withAttr("value", ForgotPassword.email) })),
+                        m("p.text", m("button", { onclick: () => reset_password() }, "Reset"))
                     ])
                 ])
             ];

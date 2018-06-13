@@ -89,27 +89,33 @@ function domPopup() {
         m(".figure-inventory-overlay", { onclick: hidePopup }),
         m(".figure-inventory-popup", { onclick: swallowEvents },
           m(".figure-inventory-popup-instructions", ""),
+
           m("form.figure-inventory-popup-form",
+
             m(".figure-inventory-popup-row",
               m("label"),
               m(".errors", "")),
+
             m(".figure-inventory-popup-row",
-              m("label", "Amount"),
-              m("input.figure-inventory-popup-amount[type=number][name=amt][min=0][max=99999]", {
+              m("label.left", "Amount "),
+              m("input.left figure-inventory-popup-amount[type=number][name=amt][min=0][max=99999]", {
                   onchange: m.withAttr("value", amt),
                   value: amt()
-              })),
-            m(".figure-inventory-popup-row",
-              m("label", "When"),
-              m("input.figure-inventory-popup-date[type=date][name=date]", {
+              }),
+              m("label.right", " When "),
+              m("input.right figure-inventory-popup-date[type=date][name=date]", {
                   oncreate: setUpRome,
                   onchange: m.withAttr("value", date)
               })),
+
             m(".figure-inventory-popup-row",
-              m("label", "Notes"),
-              m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=40]",
+              m("label.left", "Notes")),
+
+            m(".figure-inventory-popup-row",
+              m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=45]",
                 { onchange: m.withAttr("value", notes) }))
            ),
+
           m(".dialog-buttons",
             m("button.overlay-cancel", { onclick: hidePopup }, "Cancel"),
             m("button.overlay-update", { onclick: updateFigureInventory }, "Update")
