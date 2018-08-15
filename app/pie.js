@@ -47,13 +47,10 @@ const title = (pctPainted, pctOwned) => {
 //========================================================================
 const Pie = {
     view: function(vnode) {
-        var size = vnode.attrs.size;
-        var n = vnode.attrs.n;
-        var nPainted = vnode.attrs.nPainted;
-        var nOwned = vnode.attrs.nOwned;
-        var circleAttrs = { cx: size/2, cy: size/2, r: size/2-2, fill: '#ccc' };
-        var pctPainted  = Math.min(n > 0 ? nPainted / n : 0, 1.0);
-        var pctOwned    = Math.min(n > 0 ? nOwned   / n : 0, 1.0);
+        const { size, n, nPainted, nOwned } = vnode.attrs;
+        const circleAttrs = { cx: size/2, cy: size/2, r: size/2 - 2, fill: '#ccc' };
+        const pctPainted  = Math.min(n > 0 ? nPainted / n : 0, 1.0);
+        const pctOwned    = Math.min(n > 0 ? nOwned   / n : 0, 1.0);
 
         // Use the most appropriate base circle color
         if (n == 0) {
