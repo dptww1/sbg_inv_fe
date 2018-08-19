@@ -89,7 +89,7 @@ const FigureListScreen = {
             m(Header),
             m(Nav, { selected: "Figures" }),
             m("div.main-content figure-list-main-content",
-              m("select.faction", { onchange: ev => FigureListScreen.updateArmyDetails(ev) },
+              m("select.faction", { onchange: ev => updateArmyDetails(ev) },
                 m("option", { value: "" }, "-- Select an Army --"),
                 Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i === armyId }, K.FACTION_INFO[k].name)),
                 m("option", { value: "-1" }, "Unaffiliated")),
