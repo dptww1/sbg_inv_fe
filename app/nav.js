@@ -3,7 +3,6 @@
 var m                  = require("mithril");
 var Credentials        = require("credentials");
 var K                  = require("constants");
-var ScenarioListScreen = require("scenario-list");
 
 //========================================================================
 var loggedInTabs = (loginActive) => {
