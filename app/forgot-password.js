@@ -7,13 +7,11 @@ var Request = require("request");
 
 //========================================================================
 var ForgotPassword = function() {
-    var errors = prop("");
-
     var reset_password = () => {
         Request.post("/reset-password",
                      { user: { email: ForgotPassword.email() } },
                      resp => {
-                         errors({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
+                         Request.errors({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
                      });
     };
 
@@ -24,7 +22,7 @@ var ForgotPassword = function() {
             return [
                 m(require("header")),
                 m(require("nav"), { selected: "Login" }),
-                errors() ? m("div.errors", errors().errors) : null,
+                Request.errors() ? m("div.errors", Request.errors().errors) : null,
                 m("div.main-content", [
                     m("p.text", "Forgot your password?"),
                     m("div", [

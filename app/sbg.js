@@ -1,16 +1,26 @@
 /* global require */
 
-var m = require("mithril");
+const m = require("mithril");
+
+const About           = require("about");
+const Account         = require("account");
+const FigureDetails   = require("figure-details");
+const FigureList      = require("figure-list");
+const ForgotPassword  = require("forgot-password");
+const Login           = require("login");
+const Register        = require("register");
+const ScenarioDetails = require("scenario-details");
+const ScenarioList    = require("scenario-list");
 
 m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
-    "/about"         : require("about"),
-    "/figures/:id"   : require("figure-details"),
-    "/figures"       : require("figure-list"),
-    "/scenarios/:id" : require("scenario-details"),
-    "/scenarios"     : require("scenario-list"),
-    "/login"         : require("login"),
-    "/register"      : require("register"),
-    "/forgot-pw"     : require("forgot-password"),
-    "/account"       : require("account")
+    "/about"         : About,
+    "/figures/:id"   : FigureDetails,
+    "/figures"       : FigureList,
+    "/scenarios/:id" : ScenarioDetails,
+    "/scenarios"     : ScenarioList,
+    "/login"         : Login,
+    "/register"      : Register,
+    "/forgot-pw"     : ForgotPassword,
+    "/account"       : Account
 });

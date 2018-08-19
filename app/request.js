@@ -1,105 +1,63 @@
 /* global require module */
 
-var m           = require("mithril");
-var Credentials = require("credentials");
+const m           = require("mithril");
+const prop        = require("mithril/stream");
+const Credentials = require("credentials");
 
 const API_URL = "http://127.0.0.1:4000/api";
 //const API_URL = "http://scarce-untried-calf.gigalixirapp.com/api";
 
-var Request = (function() {
-    var extractFn = (xhr, xhrOptions) => {
-        if (xhr.status === 401) {
-            Credentials.clear();
-            return failFn({ errors: "Authentication failed. Please log in."});
+//===========================================================================
+const extractFn = (xhr, xhrOptions) => {
+    if (xhr.status === 401) {
+        Credentials.clear();
+        return Request.errors({ errors: "Authentication failed. Please log in."});
 
-        } else {
-            return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
-        }
-    };
+    } else {
+        return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
+    }
+};
 
-    var failFn = (resp, errorComponent) => {
-        var resolvedComponent = errorComponent || require("login");
-        if (resp === null) {
-            resolvedComponent.setError("The server appears to be down. Please try again later.");
-        } else {
-            resolvedComponent.setError(resp.errors);
-        }
-        if (errorComponent) {
-            m.route.get();
-        } else {
-            m.route.set("/login");
-        }
-    };
+//===========================================================================
+const failFn = (resp) => {
+    if (resp === null) {
+        Request.errors({errors: "The server appears to be down. Please try again later."});
+    } else {
+        Request.errors({errors: resp.errors});
+    }
+};
 
-    return {
-        get: function(url, successFn, errorComponent) {
-            var opts = { method: "GET", url: API_URL + url, extract: extractFn };
-            if (Credentials.token()) {
-                opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
-            }
-            return m.request(opts).then(
-                resp => successFn(resp),
-                resp => failFn(resp, errorComponent)
-            );
-        },
+//===========================================================================
+const request = (httpMethod, url, data, successFn) => {
+    Request.errors(null);
+    let opts = { method: httpMethod, url: API_URL + url, extract: extractFn };
+    if (Credentials.token()) {
+        opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
+    }
+    if (data) {
+        opts.data = data;
+    }
+    return m.request(opts).then(
+        resp => successFn(resp),
+        resp => failFn(resp)
+    );
+};
 
-        post: function(url, data, successFn, errorComponent) {
-            var opts = { method: "POST", url: API_URL + url, data: data, extract: extractFn };
-            if (Credentials.token()) {
-                opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
-            }
-            return m.request(opts).then(
-                resp => successFn(resp),
-                resp => failFn(resp, errorComponent)
-            );
-        },
+//===========================================================================
+const Request = {
+    errors: prop(),
 
-        put: function(url, data, successFn, errorComponent) {
-            var opts = { method: "PUT", url: API_URL + url, data: data, extract: extractFn };
-            if (Credentials.token()) {
-                opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
-            }
-            return m.request(opts).then(
-                resp => successFn(resp),
-                resp => failFn(resp, errorComponent)
-            );
-        }
-    };
-}());
+    get: (url, successFn) => {
+        return request("GET", url, null, successFn);
+    },
+
+    post: (url, data, successFn) => {
+        return request("POST", url, data, successFn);
+    },
+
+    put: (url, data, successFn) => {
+        return request("PUT", url, data, successFn);
+    }
+};
 
 module.exports = Request;
-
-/*******
-// courtesy http://ratfactor.com/daves-guide-to-mithril-js
-var requestWrapper = function(opts) {
-    return new function() {
-        var me = this;
-        me.opts = opts;
-        me.success = me.loading = me.failed = false;
-        me.errorStatus = me.errorBody = "";
-        me.data = null;
-        me.opts.background = true;
-        me.opts.extract = function(xhr) {
-            if (xhr.status >= 300) {
-                me.failed = true;
-                me.success = me.loading = false;
-                me.errorStatus = xhr.status;
-                me.errorBody = xhr.responseText;
-                m.redraw();
-            }
-            return xhr.responseText;
-        };
-        me.go = function() {
-            me = me;
-            me.loading = true;
-            me.success = me.failed = false;
-            m.request(me.opts).then(function(mydata) {
-                me.success = true;
-                me.failed = me.loading = false;
-                me.data = mydata;
-                m.redraw();
-            });
-        };
-    };
-};
-********/
