@@ -25,31 +25,16 @@ const ratingSpanWidth = (idx, userRating) =>
       idx <= userRating ? "100%" : Math.min(1 + ((userRating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH);
 
 //==================================================================================================================================
-const updateRating = (scenario, newRating, callback) => {
-    Request.post("/userscenarios",
-                 { user_scenario: { scenario_id: scenario.id, rating: newRating } },
-                 resp => {
-                     if (callback) {
-                         callback.call();
-                     } else {
-                         scenario.rating = resp.avg_rating;
-                         scenario.user_scenario.rating = newRating;
-                         scenario.num_votes = resp.num_votes;
-                         m.redraw(true);
-                     }
-                 });
-};
-
-//==================================================================================================================================
+// m(StarRating, { id: <val>, active: <bool>, votes: <n>, rating: <n>, userRating: <n>, callback: fn(id, newRating) })
+//----------------------------------------------------------------------------------------------------------------------------------
 const StarRating = {
     view: function(vnode) {
-        const { isActive, scenario, callback } = vnode.attrs;
-        const { id, num_votes: votes } = scenario;
-        var { rating, user_scenario: { rating: userRating } } = scenario;
+        const { id, active, votes, callback } = vnode.attrs;
+        var   { rating, userRating = -1 }     = vnode.attrs;
 
         //console.log("id: " + id + ", rating: " + rating + ", userRating: " + userRating + ", votes: " + votes);
 
-        if (!isActive) {
+        if (!active) {
             userRating = -1; // don't highlight anything
         }
         rating = Math.max(Math.min(rating, 5), 0);
@@ -57,10 +42,10 @@ const StarRating = {
         const ratingCeiling = Math.ceil(rating);
 
         return m("div",
-                 { class: `rating ${isActive ? "active" : ""}` },
+                 { class: `rating ${active ? "active" : ""}` },
                  [1, 2, 3, 4, 5].map( n => {
                      return m("div.rating-star-container",
-                              isActive ? { onclick: ev => updateRating(scenario, n, callback) } : {},
+                              active ? { onclick: ev => callback(id, n) } : {},
                               m("div", { class: `rating-star ${highlightClassName(n, userRating)}` },
                                 STAR_OUTLINE,
                                 n <= ratingCeiling ? domStarSolid(n, rating, userRating) : null));

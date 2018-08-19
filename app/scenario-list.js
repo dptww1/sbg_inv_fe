@@ -1,31 +1,31 @@
 /* global module require */
 
-const m           = require("mithril");
-const prop        = require("mithril/stream");
+const m               = require("mithril");
+const prop            = require("mithril/stream");
 
-
-const Credentials = require("credentials");
-const Header      = require("header");
-const Pie         = require("pie");
-const K           = require("constants");
-const Request     = require("request");
-const StarRating  = require("star-rating");
+const Credentials     = require("credentials");
+const Header          = require("header");
+const Pie             = require("pie");
+const K               = require("constants");
+const Request         = require("request");
+const ScenarioUpdater = require("scenario-updater");
+const StarRating      = require("star-rating");
 
 //========================================================================
-function cmp(a, b) {
+const cmp = (a, b) => {
     return a > b ? 1 : a < b ? -1 : 0;
-}
+};
 
 //========================================================================
-function sortByCompletion(a, b) {
+const sortByCompletion = (a, b) => {
     return cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
            cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
            cmp(b.size, a.size) ||
            sortBySource(a, b);
-}
+};
 
 //========================================================================
-function sortByDate(a, b) {
+const sortByDate = (a, b) => {
     return cmp(a.date_age, b.date_age) ||
            cmp(a.date_year, b.date_year) ||
            cmp(a.date_month, b.date_month) ||
@@ -34,49 +34,49 @@ function sortByDate(a, b) {
 }
 
 //========================================================================
-function sortByLocation(a, b) {
+const sortByLocation = (a, b) => {
     return sortByTitle(a.location, b.location) ||
            sortBySource(a, b);
-}
+};
 
 //========================================================================
-function sortByMap(a, b) {
+const sortByMap = (a, b) => {
     return cmp(a.map_width, b.map_width) ||
            cmp(a.map_height, b.map_height) ||
            sortBySource(a, b);
-}
+};
 
 //========================================================================
-function sortByName(a, b) {
+const sortByName = (a, b) => {
     return sortByTitle(a.name, b.name) ||
            sortBySource(a, b);
-}
+};
 
 //========================================================================
-function sortByRating(a, b) {
+const sortByRating = (a, b) => {
     return cmp(a.rating, b.rating) ||
            cmp(a.name, b.name) ||
            sortBySource(a, b);
-}
+};
 
 //========================================================================
-function sortBySize(a, b) {
+const sortBySize = (a, b) => {
     return cmp(a.size, b.size) ||
            cmp(a.name, b.name) ||
            sortBySource(a, b);
-}
+};
 
 //========================================================================
-function sortBySource(a, b) {
+const sortBySource = (a, b) => {
     var a_src = a.scenario_resources["source"][0];
     var b_src = b.scenario_resources["source"][0];
     return sortByTitle(a_src.title, b_src.title) ||
            cmp(a_src.issue, b_src.issue) ||
            cmp(a_src.sort_order, b_src.sort_order);
-}
+};
 
 //========================================================================
-function sortByTitle(a, b) {
+const sortByTitle = (a, b) => {
     a = a.replace(/^The /, "").replace(/^A /, "").replace("É", "E");
     b = b.replace(/^The /, "").replace(/^A /, "").replace("É", "E");
 
@@ -87,10 +87,10 @@ function sortByTitle(a, b) {
         return 1;
     }
     return 0;
-}
+};
 
 //========================================================================
-function alphabetizedOptionsByValue(hash) {
+const alphabetizedOptionsByValue = hash => {
     var reverseMap = Object.keys(hash).reduce((map, key) => {
         map[hash[key]] = key;
         return map;
@@ -110,7 +110,7 @@ function alphabetizedOptionsByValue(hash) {
     });
 
     return values.reduce((list, val) => list.concat([val + "=" + reverseMap[val]]), []);
-}
+};
 
 //========================================================================
 function SelectFilter(name, optionList, matchFn) {
@@ -174,10 +174,10 @@ function SelectFilter(name, optionList, matchFn) {
 }
 
 //========================================================================
-var ScenarioListScreen = function() {
+const ScenarioListScreen = function() {
     var collapsedFilters = true;
 
-    var filters2 = [
+    const filters2 = [
         new SelectFilter("Location",
                          alphabetizedOptionsByValue(K.LOCATIONS),
                          (rec, activeOpts) => activeOpts.includes(rec.location)),
@@ -216,11 +216,11 @@ var ScenarioListScreen = function() {
                          (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length))
     ];
 
-    var numFiltersSet = () => filters2.reduce((sum, filter) => sum + filter.numActive(), 0);
+    const numFiltersSet = () => filters2.reduce((sum, filter) => sum + filter.numActive(), 0);
 
-    var unsetAllFilters = () => filters2.forEach(f => f.clearActiveFilters());
+    const unsetAllFilters = () => filters2.forEach(f => f.clearActiveFilters());
 
-    var filterDiv = () => {
+    const filterDiv = () => {
         if (collapsedFilters) {
             var flabel = filters2.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
             return m("div.filters", [
@@ -294,8 +294,17 @@ var ScenarioListScreen = function() {
             ];
 
             rawData.forEach(scenario => {
-                var f1 = K.FACTION_INFO[scenario.scenario_factions[0].faction];
-                var f2 = K.FACTION_INFO[scenario.scenario_factions[1].faction];
+                const starParams = {
+                    id: scenario.id,
+                    active: Credentials.isLoggedIn(),
+                    votes: scenario.num_votes,
+                    rating: scenario.rating,
+                    userRating: scenario.user_scenario.rating,
+                    callback: ScenarioUpdater.update
+                };
+
+                const f1 = K.FACTION_INFO[scenario.scenario_factions[0].faction];
+                const f2 = K.FACTION_INFO[scenario.scenario_factions[1].faction];
                 if (ScenarioListScreen.filter(scenario)) {
                     desktopRows.push(m("tr", [
                         m("td.completion", [m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })]),
@@ -306,7 +315,7 @@ var ScenarioListScreen = function() {
                         m("td.source", scenario.scenario_resources["source"][0].title),
                         m("td.size", scenario.size),
                         m("td.map", scenario.map_width + "\" x " + scenario.map_height + "\""),
-                        m("td.rating", m(StarRating, { isActive: Credentials.isLoggedIn(), scenario: scenario })),
+                        m("td.rating", m(StarRating, starParams)),
                         m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
                         m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
                         m("td.resources", ScenarioListScreen.resourceIcons(scenario.scenario_resources))
@@ -396,5 +405,20 @@ var ScenarioListScreen = function() {
         }
     };
 }();
+
+ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
+    if (!ScenarioListScreen.data()) {
+        return;
+    }
+
+    const scenarioList = ScenarioListScreen.data().data;
+
+    var idx = scenarioList.findIndex(elt => elt.id === id);
+    if (idx >= 0) {
+        scenarioList[idx].rating = newAvgRating;
+        scenarioList[idx].user_scenario.rating = userRating;
+        scenarioList[idx].num_votes = newNumVotes;
+    }
+});
 
 module.exports = ScenarioListScreen;

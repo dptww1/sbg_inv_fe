@@ -1,14 +1,15 @@
 /* global module, require */
 
-const m           = require("mithril");
-const prop        = require("mithril/stream");
+const m               = require("mithril");
+const prop            = require("mithril/stream");
 
-const Credentials = require("credentials");
-const Header      = require("header");
-const K           = require("constants");
-const Pie         = require("pie");
-const Request     = require("request");
-const StarRating  = require("star-rating");
+const Credentials     = require("credentials");
+const Header          = require("header");
+const K               = require("constants");
+const Pie             = require("pie");
+const Request         = require("request");
+const ScenarioUpdater = require("scenario-updater");
+const StarRating      = require("star-rating");
 
 const MONTH_NAMES = [
     "", "January", "February", "March", "April", "May", "June",
@@ -364,7 +365,20 @@ var ScenarioDetailScreen = {
     view: function() {
         const it = scenario();
 
-        console.log(`View! id[${resourceId()}] title[${title()}] url[${url()}]`);
+        if (!it) {
+            return [];
+        }
+
+        const starParams = {
+            id: it.id,
+            active: Credentials.isLoggedIn(),
+            votes: it.num_votes,
+            rating: it.rating,
+            userRating: it.user_scenario.rating,
+            callback: ScenarioUpdater.update
+        };
+
+        //console.log(`View! id[${resourceId()}] title[${title()}] url[${url()}]`);
 
         return [
             m(Header),
@@ -372,7 +386,7 @@ var ScenarioDetailScreen = {
             it && m("div.main-content", [
                 m("div.scenario-details", [
                     m("div.detail-page-title", it.name),
-                    m("div.scenario-rating", m(StarRating, { isActive: Credentials.isLoggedIn(), scenario: it, callback: refresh })),
+                    m("div.scenario-rating", m(StarRating, starParams)),
                     m("div.scenario-date", formatDate(it.date_age, it.date_year, it.date_month, it.date_day)),
                     m("div.scenario-location", K.LOCATIONS[it.location]),
                     m("div.scenario-blurb", it.blurb),
@@ -386,5 +400,13 @@ var ScenarioDetailScreen = {
         ];
     }
 };
+
+ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
+    if (scenario()) {
+        scenario().rating = newAvgRating;
+        scenario().user_scenario.rating = userRating;
+        scenario().num_votes = newNumVotes;
+    }
+});
 
 module.exports = ScenarioDetailScreen;
