@@ -45,13 +45,13 @@ var AccountScreen = {
         return [
             m(Header),
             m(Nav, { selected: "Account" }),
-            Request.errors() ? m("div.errors", errorText()) : null,
-            message() ? m("div.message", message()) : null,
             m("div.main-content",
 
               m("div.text", "Use this form to update your email address and/or password"),
 
               m("p.text",
+                Request.errors() ? m("div.errors", errorText()) : null,
+                message() ? m("div.message", message()) : null,
 
                 m("table",
 
@@ -61,11 +61,13 @@ var AccountScreen = {
 
                   m("tr",
                     m("td", "Email"),
-                    m("td", m("input[type=text][name=email][size=40]", { onchange: m.withAttr("value", Credentials.email) }))),
+                    m("td", m("input[type=text][name=email][size=40]",
+                              { onchange: m.withAttr("value", Credentials.email), value: Credentials.email() }))),
 
                   m("tr",
                     m("td", "New Password"),
-                    m("td", m("input[type=password][name=password][size=40]", { onchange: m.withAttr("value", Credentials.password) })),
+                    m("td", m("input[type=password][name=password][size=40]",
+                              { onchange: m.withAttr("value", Credentials.password), value: Credentials.password() })),
                     m("td", m("span.field-note", "(leave empty to keep the same password)"))),
 
                 m("tr",
