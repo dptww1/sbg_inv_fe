@@ -403,10 +403,8 @@ var ScenarioDetailScreen = {
 };
 
 ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
-    if (scenario()) {
-        scenario().rating = newAvgRating;
-        scenario().user_scenario.rating = userRating;
-        scenario().num_votes = newNumVotes;
+    if (scenario() && m.route.get().startsWith("/scenarios/")) {
+        refresh();
     }
 });
 
