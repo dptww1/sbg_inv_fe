@@ -1,7 +1,6 @@
 /* global module require */
 
-var m       = require("mithril");
-var Request = require("request");
+const m       = require("mithril");
 
 const CELL_WIDTH   = 16;
 const STAR_OUTLINE = "\u2606"; // ☆
