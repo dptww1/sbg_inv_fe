@@ -4,6 +4,8 @@ const m           = require("mithril");
 const prop        = require("mithril/stream");
 
 const Credentials = require("credentials");
+const Header      = require("header");
+const Nav         = require("nav");
 const Request     = require("request");
 
 const message = prop("");
@@ -41,8 +43,8 @@ const update = () => {
 var AccountScreen = {
     view: (/*vnode*/) => {
         return [
-            m(require("header")),
-            m(require("nav"), { selected: "Account" }),
+            m(Header),
+            m(Nav, { selected: "Account" }),
             Request.errors() ? m("div.errors", errorText()) : null,
             message() ? m("div.message", message()) : null,
             m("div.main-content",

@@ -7,6 +7,7 @@ const Credentials     = require("credentials");
 const Header          = require("header");
 const Pie             = require("pie");
 const K               = require("constants");
+const Nav             = require("nav");
 const Request         = require("request");
 const ScenarioUpdater = require("scenario-updater");
 const StarRating      = require("star-rating");
@@ -261,7 +262,7 @@ const ScenarioListScreen = function() {
         view: function() {
             return [
                 m(Header),
-                m(require("nav"), { selected: "Scenario List" }),
+                m(Nav, { selected: "Scenario List" }),
                 filterDiv(),
                 m("div.main-content", [
                     ScenarioListScreen.data() ? ScenarioListScreen.drawTable(ScenarioListScreen.data().data) : "Loading..."

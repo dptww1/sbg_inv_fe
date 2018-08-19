@@ -1,13 +1,16 @@
 /* global require module */
 
-var m           = require("mithril");
+const m      = require("mithril");
+
+const Header = require("header");
+const Nav    = require("nav");
 
 //========================================================================
-var AboutScreen = {
+const AboutScreen = {
     view() {
         return [
-            m(require("header")),
-            m(require("nav"), { selected: "About" }),
+            m(Header),
+            m(Nav, { selected: "About" }),
             m(".main-content",
               m("p.text",
                 "Welcome! This web site lets you track your inventory of figures for Games Workshop's ",

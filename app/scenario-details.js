@@ -6,6 +6,7 @@ const prop            = require("mithril/stream");
 const Credentials     = require("credentials");
 const Header          = require("header");
 const K               = require("constants");
+const Nav             = require("nav");
 const Pie             = require("pie");
 const Request         = require("request");
 const ScenarioUpdater = require("scenario-updater");
@@ -382,7 +383,7 @@ var ScenarioDetailScreen = {
 
         return [
             m(Header),
-            m(require("nav"), { selected: "Scenario Details" }),
+            m(Nav, { selected: "Scenario Details" }),
             it && m("div.main-content", [
                 m("div.scenario-details", [
                     m("div.detail-page-title", it.name),

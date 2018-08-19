@@ -1,49 +1,49 @@
 /* global module, require */
 
-var m          = require("mithril");
-var prop       = require("mithril/stream");
-var rome       = require("rome");
+const m          = require("mithril");
+const prop       = require("mithril/stream");
+const rome       = require("rome");
 
-var Credentials = require("credentials");
-var FigureList  = require("figure-list");
-var Header      = require("header");
-var K           = require("constants");
-var Pie         = require("pie");
-var Request     = require("request");
+const Credentials = require("credentials");
+const FigureList  = require("figure-list");
+const Header      = require("header");
+const K           = require("constants");
+const Nav         = require("nav");
+const Pie         = require("pie");
+const Request     = require("request");
 
 var figure = { factions: [], scenarios: [], history: [] };
 var updateType = null;
 var updateOp = null;
-var amt = prop();
-var date = prop((new Date()).toISOString().substring(0, 10));
-var notes = prop();
+const amt = prop();
+const date = prop((new Date()).toISOString().substring(0, 10));
+const notes = prop();
 
 //========================================================================
-function chooseFaction(fid) {
+const chooseFaction = (fid) => {
     FigureList.updateArmyDetails({ target: { value: Object.keys(K.FACTION_INFO).findIndex(f => f == fid ) } });
     m.route.set("/figures");
-}
+};
 
 //========================================================================
-function domFactions() {
+const domFactions = () => {
     return m(".figure-factions",
         m(".section-header", "Army Lists"),
-        m("table", [
-            figure.factions.length > 0
-                ? figure.factions.map(f => m("tr", m("td.faction-name", m("a", { onclick: _ => chooseFaction(f) }, K.FACTION_INFO[f].name))))
-                : m("tr", m("td", "None"))
-        ]));
-}
+        m("table",
+          figure.factions.length > 0
+              ? figure.factions.map(f => m("tr", m("td.faction-name", m("a", { onclick: _ => chooseFaction(f) }, K.FACTION_INFO[f].name))))
+              : m("tr", m("td", "None"))));
+};
 
 //========================================================================
-function domHistory() {
+const domHistory = () => {
     if (!Credentials.isLoggedIn() || !figure.history || figure.history.length < 1) {
         return null;
     }
 
-    return m(".figure-history", [
+    return m(".figure-history",
         m(".section-header", "History"),
-        m("table", [
+        m("table",
             figure.history.map(h => {
                 return m("tr",
                   m("td", h.date),
@@ -51,40 +51,39 @@ function domHistory() {
                   m("td", h.amount),
                   m("td", h.notes)
                  );
-            })
-        ])
-    ]);
-}
+            })));
+};
 
 //========================================================================
-function domInventory(total) {
+const domInventory = total => {
     if (!Credentials.isLoggedIn()) {
         return null;
     }
 
-    return m(".figure-inventory", [
-        m(".section-header", "Inventory"),
-        m("table", [
-            total >= 1 ? m("tr", m("td.figure-scenarios-total", "Maximum Needed"), m("td", total)) : null,
-            m("tr",
-              m("td.figure-owned", "# Owned"),
-              m("td", figure.owned),
-              m("td.action", m("a", { onclick: () => showPopup("unpainted", "buy") }, K.ICON_STRINGS.plus)),
-              figure.owned > 0
-                  ? m("td.action", m("a", { onclick: () => showPopup("unpainted", "sell") }, K.ICON_STRINGS.minus)) : null,
-              figure.owned > 0 && figure.owned > figure.painted
-                  ? m("td.action", m("a", { onclick: () => showPopup("unpainted", "paint") }, K.ICON_STRINGS.paint_figure)) : null),
-            m("tr",
-              m("td.figure-painted", "# Painted"),
-              m("td", figure.painted),
-              m("td.action", m("a", { onclick: () => showPopup("painted", "buy") }, K.ICON_STRINGS.plus)),
-              figure.painted > 0 ? m("td.action", m("a", { onclick: () => showPopup("painted", "sell") }, K.ICON_STRINGS.minus)) : null)
-        ])
-    ]);
-}
+    return m(".figure-inventory",
+             m(".section-header", "Inventory"),
+             m("table",
+
+               total >= 1 ? m("tr", m("td.figure-scenarios-total", "Maximum Needed"), m("td", total)) : null,
+
+               m("tr",
+                 m("td.figure-owned", "# Owned"),
+                 m("td", figure.owned),
+                 m("td.action", m("a", { onclick: () => showPopup("unpainted", "buy") }, K.ICON_STRINGS.plus)),
+                 figure.owned > 0
+                     ? m("td.action", m("a", { onclick: () => showPopup("unpainted", "sell") }, K.ICON_STRINGS.minus)) : null,
+                 figure.owned > 0 && figure.owned > figure.painted
+                 ? m("td.action", m("a", { onclick: () => showPopup("unpainted", "paint") }, K.ICON_STRINGS.paint_figure)) : null),
+
+               m("tr",
+                 m("td.figure-painted", "# Painted"),
+                 m("td", figure.painted),
+                 m("td.action", m("a", { onclick: () => showPopup("painted", "buy") }, K.ICON_STRINGS.plus)),
+                 figure.painted > 0 ? m("td.action", m("a", { onclick: () => showPopup("painted", "sell") }, K.ICON_STRINGS.minus)) : null)));
+};
 
 //========================================================================
-function domPopup() {
+const domPopup = () => {
     return [
         m(".figure-inventory-overlay", { onclick: hidePopup }),
         m(".figure-inventory-popup", { onclick: swallowEvents },
@@ -125,7 +124,7 @@ function domPopup() {
 }
 
 //========================================================================
-function domScenarios(total) {
+const domScenarios = total => {
     return m(".figure-scenarios", [
         m(".section-header", "Scenarios"),
         m("table",
@@ -137,10 +136,10 @@ function domScenarios(total) {
                                             m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name)),
                                           m("td.scenario-amount", total > 1 ? s.amount : null))))
     ]);
-}
+};
 
 //========================================================================
-function hidePopup() {
+const hidePopup = () => {
     // Rome seems to bypass the `onchange` handler on the date widget, though it still works if the user
     // manually enters the date.  So we have to copy the value manually when we are sure we want it.
     date(document.getElementsByName("date")[0].value);
@@ -149,25 +148,25 @@ function hidePopup() {
 }
 
 //========================================================================
-function requestFigureModelData(figureId) {
+const requestFigureModelData = figureId => {
     Request.get("/figure/" + figureId,
                 resp => {
                     figure = resp.data;
                 });
-}
+};
 
 //========================================================================
-function setUpRome(vnode) {
+const setUpRome = vnode => {
     rome(vnode.dom, {
         dayFormat: "D",
         initialValue: date(),
         inputFormat: "YYYY-MM-DD",
         time: false
     });
-}
+};
 
 //========================================================================
-function showPopup(type, verb) {
+const showPopup = (type, verb) => {
     updateType = type;
     updateOp = verb;
     date((new Date()).toISOString().substring(0, 10)); // format: yyyy-dd-mm
@@ -181,16 +180,16 @@ function showPopup(type, verb) {
     document.getElementsByClassName("figure-inventory-overlay")[0].style.display = "block";
     document.getElementsByClassName("errors")[0].textContent = "";
     document.getElementsByClassName("figure-inventory-popup-notes")[0].value = "";
-}
+};
 
 //========================================================================
-function swallowEvents(ev) {
+const swallowEvents = ev => {
     ev.stopPropagation();
     return false;
-}
+};
 
 //========================================================================
-function updateFigureInventory() {
+const updateFigureInventory = () => {
     if (amt <= 0) {
         document.getElementsByClassName("errors")[0].textContent = "Amount is required";
         return;
@@ -241,18 +240,18 @@ function updateFigureInventory() {
 }
 
 //========================================================================
-var FigureDetailScreen = {
+const FigureDetailScreen = {
     oninit: (/*vnode*/) => {
         figure = { factions: [], scenarios: [] };
         requestFigureModelData(m.route.param("id"));
     },
 
     view() {
-        var total = figure.scenarios ? figure.scenarios.reduce((acc, s) => Math.max(acc, s.amount), 0) : null;
+        const total = figure.scenarios ? figure.scenarios.reduce((acc, s) => Math.max(acc, s.amount), 0) : null;
 
         return [
             m(Header),
-            m(require("nav"), { selected: "Figure Details" }),
+            m(Nav, { selected: "Figure Details" }),
             m("div.main-content", [
                 m(".detail-page-title", figure.name),
                 domInventory(total),

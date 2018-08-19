@@ -4,6 +4,8 @@ const m           = require("mithril");
 const prop        = require("mithril/stream");
 
 const Credentials = require("credentials");
+const Header      = require("header");
+const Nav         = require("nav");
 const Request     = require("request");
 
 //========================================================================
@@ -38,8 +40,8 @@ const register = () => {
 const RegisterScreen = {
     view: (/*vnode*/) => {
         return [
-            m(require("header")),
-            m(require("nav"), { selected: "Login" }),
+            m(Header),
+            m(Nav, { selected: "Login" }),
             m("p.text", "Please fill in all fields completely."),
             m("div.main-content register text",
                 m("table",

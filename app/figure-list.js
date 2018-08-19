@@ -1,19 +1,19 @@
 /* global require module */
 
-var FigureListScreen = {};
-module.exports = FigureListScreen;
+const m           = require("mithril");
 
-var m           = require("mithril");
-var Credentials = require("credentials");
-var K           = require("constants");
-var Pie         = require("pie");
-var Request     = require("request");
+const Credentials = require("credentials");
+const Header      = require("header");
+const K           = require("constants");
+const Nav         = require("nav");
+const Pie         = require("pie");
+const Request     = require("request");
 
 var armyId = "";
 var figuresMap = {};
 
 //========================================================================
-function domArmyDetails() {
+const domArmyDetails = () => {
     if (armyId == "") {
         return null;
     }
@@ -37,7 +37,7 @@ function domArmyDetails() {
 };
 
 //========================================================================
-function domFigureListByType(title, list) {
+const domFigureListByType = (title, list) => {
     if (list.length === 0) {
         return null;
     }
@@ -57,7 +57,7 @@ function domFigureListByType(title, list) {
 };
 
 //========================================================================
-FigureListScreen.refreshArmyDetails = () => {
+const refreshArmyDetails = () => {
     if (armyId) {
         Request.get("/faction/" + armyId,
                     resp => {
@@ -67,7 +67,7 @@ FigureListScreen.refreshArmyDetails = () => {
 };
 
 //========================================================================
-FigureListScreen.updateArmyDetails = (ev) => {
+const updateArmyDetails = (ev) => {
     armyId = ev.target.value;
     figuresMap = {
         characters: [],
@@ -83,16 +83,19 @@ FigureListScreen.updateArmyDetails = (ev) => {
 };
 
 //========================================================================
-FigureListScreen.view = () => {
-    return [
-        m(require("header")),
-        m(require("nav"), { selected: "Figures" }),
-        m("div.main-content figure-list-main-content", [
-            m("select.faction", { onchange: ev => FigureListScreen.updateArmyDetails(ev) }, [
-                  m("option", { value: "" }, "-- Select an Army --"),
-                  Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i === armyId }, K.FACTION_INFO[k].name)),
-                  m("option", { value: "-1" }, "Unaffiliated")
-            ]),
-            domArmyDetails()])
-    ];
+const FigureListScreen = {
+    view: () => {
+        return [
+            m(Header),
+            m(Nav, { selected: "Figures" }),
+            m("div.main-content figure-list-main-content",
+              m("select.faction", { onchange: ev => FigureListScreen.updateArmyDetails(ev) },
+                m("option", { value: "" }, "-- Select an Army --"),
+                Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i === armyId }, K.FACTION_INFO[k].name)),
+                m("option", { value: "-1" }, "Unaffiliated")),
+              domArmyDetails())
+        ];
+    }
 };
+
+module.exports = FigureListScreen;

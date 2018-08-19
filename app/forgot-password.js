@@ -1,9 +1,11 @@
 /* global require module */
 
-var m       = require("mithril");
-var prop    = require("mithril/stream");
+const m       = require("mithril");
+const prop    = require("mithril/stream");
 
-var Request = require("request");
+const Header  = require("header");
+const Nav     = require("nav");
+const Request = require("request");
 
 //========================================================================
 var ForgotPassword = function() {
@@ -20,8 +22,8 @@ var ForgotPassword = function() {
 
         view() {
             return [
-                m(require("header")),
-                m(require("nav"), { selected: "Login" }),
+                m(Header),
+                m(Nav, { selected: "Login" }),
                 Request.errors() ? m("div.errors", Request.errors().errors) : null,
                 m("div.main-content", [
                     m("p.text", "Forgot your password?"),

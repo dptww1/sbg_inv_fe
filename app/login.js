@@ -4,6 +4,8 @@ const m           = require("mithril");
 const prop        = require("mithril/stream");
 
 const Credentials = require("credentials");
+const Header      = require("header");
+const Nav         = require("nav");
 const Request     = require("request");
 
 const email    = prop();
@@ -27,8 +29,8 @@ const login = () => {
 const LoginScreen = {
     view: (/*vnode*/) => {
         return [
-            m(require("header")),
-            m(require("nav"), { selected: "Login" }),
+            m(Header),
+            m(Nav, { selected: "Login" }),
             Request.errors() ? m("div.errors", Request.errors().errors) : null,
             m("div.main-content forgot-password",
               m("p.text",
