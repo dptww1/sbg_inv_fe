@@ -1,15 +1,15 @@
 /* global module require */
 
-var m           = require("mithril");
-var prop        = require("mithril/stream");
+const m           = require("mithril");
+const prop        = require("mithril/stream");
 
 
-var Credentials = require("credentials");
-var Header      = require("header");
-var Pie         = require("pie");
-var K           = require("constants");
-var Request     = require("request");
-var StarRating  = require("star-rating");
+const Credentials = require("credentials");
+const Header      = require("header");
+const Pie         = require("pie");
+const K           = require("constants");
+const Request     = require("request");
+const StarRating  = require("star-rating");
 
 //========================================================================
 function cmp(a, b) {
