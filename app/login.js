@@ -8,10 +8,6 @@ const Header      = require("header");
 const Nav         = require("nav");
 const Request     = require("request");
 
-const email    = prop();
-const password = prop();
-const token    = prop();
-
 //========================================================================
 const login = () => {
     Request.post("/sessions",
