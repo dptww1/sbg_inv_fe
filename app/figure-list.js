@@ -57,16 +57,6 @@ const domFigureListByType = (title, list) => {
 };
 
 //========================================================================
-const refreshArmyDetails = () => {
-    if (armyId) {
-        Request.get("/faction/" + armyId,
-                    resp => {
-                        figuresMap = resp.data;
-                    });
-    }
-};
-
-//========================================================================
 const updateArmyDetails = (ev) => {
     armyId = ev.target.value;
     figuresMap = {
@@ -84,6 +74,16 @@ const updateArmyDetails = (ev) => {
 
 //========================================================================
 const FigureListScreen = {
+
+    refreshArmyDetails: () => {
+        if (armyId) {
+            Request.get("/faction/" + armyId,
+                        resp => {
+                            figuresMap = resp.data;
+                        });
+        }
+    },
+
     view: () => {
         return [
             m(Header),
