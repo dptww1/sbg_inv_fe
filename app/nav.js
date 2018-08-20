@@ -1,11 +1,11 @@
 /* global module require */
 
-var m                  = require("mithril");
-var Credentials        = require("credentials");
-var K                  = require("constants");
+const m                  = require("mithril");
+const Credentials        = require("credentials");
+const K                  = require("constants");
 
 //========================================================================
-var loggedInTabs = (loginActive) => {
+const loggedInTabs = (loginActive) => {
     if (!Credentials.token()) {
         return [];
     }
@@ -24,10 +24,10 @@ var loggedInTabs = (loginActive) => {
             ])
           ])
     ];
-}
+};
 
 //========================================================================
-var loggedOutTabs = (loginActive) => {
+const loggedOutTabs = (loginActive) => {
     if (Credentials.token()) {
         return [];
     }
@@ -43,7 +43,7 @@ var loggedOutTabs = (loginActive) => {
 };
 
 //========================================================================
-var Nav = {
+const Nav = {
     view(vnode) {
         var aboutActive        = vnode.attrs.selected == "About";
         var accountActive      = vnode.attrs.selected == "Account";
