@@ -1,28 +1,16 @@
-# Brunch + Babel/ES6
+# SBG_INV_FE
 
-This is a modern JS skeleton for [Brunch](http://brunch.io).
+This is the `[S]`trategy `[B]`attle `[G]`ame `[Inv]`entory tracker - `[F]`ront `[E]`nd.
 
-## Installation
+The game referred to is Games Workshop's Middle Earth Strategy Battle Game, a miniatures game
+wherein you refight the battles from the _Lord of the Rings_ books and movies.
 
-Clone this repo manually or use `brunch new dir -s brunch/with-es6`
+This is the front end which relies on the [sbg_inv_be](https://github.com/dptww1/sbg_inv_be) server to do the real
+work.
 
-## Getting started
-
-* Install (if you don't have them):
-    * [Node.js](http://nodejs.org): `brew install node` on OS X
-    * [Brunch](http://brunch.io): `npm install -g brunch`
-    * Brunch plugins and app dependencies: `npm install`
-* Run:
-    * `brunch watch --server` — watches the project with continuous rebuild. This will also launch HTTP server with [pushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
-    * `brunch build --production` — builds minified project for production
-* Learn:
-    * `public/` dir is fully auto-generated and served by HTTP server.  Write your code in `app/` dir.
-    * Place static files you want to be copied from `app/assets/` to `public/`.
-    * [Brunch site](http://brunch.io), [Getting started guide](https://github.com/brunch/brunch-guide#readme)
-
-## ES7
-
-To use proposed JS features not included into ES6, do this:
-
-* `npm install --save-dev babel-preset-stage-0`
-* in `brunch-config.js`, add the preset: `presets: ['es2015', 'stage-0']`
+This project was written in [Mithril](https://mithril.js.org).  While
+it might seem like an appropriate choice just based on the
+Tolkien-inspired name, I didn't choose it just to be cute.   It's
+compact, speedy, and very well supported on its dedicated
+[Gitter Channel](https://gitter.im/mithriljs/mithril.js).
+I can't recommend it highly enough.
