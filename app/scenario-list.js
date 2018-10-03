@@ -14,6 +14,11 @@ const StarRating      = require("star-rating");
 
 const data = prop(false);
 
+const ICON_DOWN       = "\u25bc";  // ▼
+const ICON_RIGHT      = "\u25b6";  // ▶
+const ICON_ASCENDING  = "\u25b2"; // ▲
+const NBSP            = "\u00a0";
+
 var collapsedFilters = true;
 
 //========================================================================
@@ -101,12 +106,12 @@ const domFilterDiv = () => {
     if (collapsedFilters) {
         const flabel = domFilters2.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
         return m("div.filters",
-                 m(".arrow", { onclick: () => collapsedFilters = false }, "\u25b6"),
+                 m(".arrow", { onclick: () => collapsedFilters = false }, ICON_RIGHT),
                  m("span.label", { onclick: () => collapsedFilters = false }, "Filters: " + flabel));
 
     } else {
         return m("div.filters",
-                 m(".arrow",  { onclick: () => collapsedFilters = true }, "\u25bc"),
+                 m(".arrow",  { onclick: () => collapsedFilters = true }, ICON_DOWN),
                  m("span.label", { onclick: () => collapsedFilters = true }, "Filter"),
                  filterNav());
     }
@@ -149,23 +154,23 @@ const domResourceIcons = resources => {
 const domTable = rawData => {
     const desktopRows = [
         m("tr",
-            m("th.completion[data-sort-by=completion].section-header", "%",        m("span.sort-arrow", "\u00a0")),
-            m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", "\u00a0")),
-            m("th.location[data-sort-by=location].section-header",     "Location", m("span.sort-arrow", "\u00a0")),
-            m("th.date[data-sort-by=date][colspan=2].section-header",  "Date",     m("span.sort-arrow", "\u25b2")),
-            m("th.source[data-sort-by=source].section-header",         "Source",   m("span.sort-arrow", "\u00a0")),
-            m("th.size[data-sort-by=size].section-header",             "Models",   m("span.sort-arrow", "\u00a0")),
-            m("th.map[data-sort-by=map].section-header",               "Map Size", m("span.sort-arrow", "\u00a0")),
-            m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", "\u00a0")),
+            m("th.completion[data-sort-by=completion].section-header", "%",        m("span.sort-arrow", NBSP)),
+            m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", NBSP)),
+            m("th.location[data-sort-by=location].section-header",     "Location", m("span.sort-arrow", NBSP)),
+            m("th.date[data-sort-by=date][colspan=2].section-header",  "Date",     m("span.sort-arrow", ICON_ASCENDING)),
+            m("th.source[data-sort-by=source].section-header",         "Source",   m("span.sort-arrow", NBSP)),
+            m("th.size[data-sort-by=size].section-header",             "Models",   m("span.sort-arrow", NBSP)),
+            m("th.map[data-sort-by=map].section-header",               "Map Size", m("span.sort-arrow", NBSP)),
+            m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", NBSP)),
             m("th.factions[colspan=2].section-header",                 "Factions"),
             m("th.resources.section-header",                           "Resources"))
     ];
 
     const mobileRows = [
         m("tr.mobile",
-          m("th.completion[data-sort-by=completion].section-header", "Ready?",   m("span.sort-arrow", "\u00a0")),
-          m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", "\u00a0")),
-          m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", "\u00a0")))
+          m("th.completion[data-sort-by=completion].section-header", "Ready?",   m("span.sort-arrow", NBSP)),
+          m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", NBSP)),
+          m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", NBSP)))
     ];
 
     rawData.forEach(scenario => {
