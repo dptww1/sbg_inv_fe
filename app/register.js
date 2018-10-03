@@ -42,7 +42,11 @@ const RegisterScreen = {
         return [
             m(Header),
             m(Nav, { selected: "Login" }),
-            m("p.text", "Please fill in all fields completely."),
+            m("p.text",
+              "Please fill in all fields completely. I encourage your to use your real name here so that I know ",
+              "who is using the service.  Your name and/or email will not be displayed anywhere on the site, nor be ",
+              "sold, traded, or otherwise used and anything other than a way to provide login credentials."),
+
             m("div.main-content register text",
                 m("table",
                     Request.errors() ? m("tr", m("td"), m("td.errors", errorText())) : null,
