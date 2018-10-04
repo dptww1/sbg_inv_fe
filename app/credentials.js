@@ -31,14 +31,14 @@ const Cookie = {
 
 //===========================================================================
 const propCookie = (cookieName) => {
-    return function() {
-        if (arguments.length > 0) {
-            if (arguments[0] === undefined) {
+    return (...args) => {
+        if (args.length > 0) {
+            if (args[0] === undefined) {
                 Cookie.delete(cookieName);
             } else {
-                Cookie.write(cookieName, arguments[0]);
+                Cookie.write(cookieName, args[0]);
             }
-            return arguments[0];
+            return args[0];
         } else {
             return Cookie.read(cookieName);
         }
