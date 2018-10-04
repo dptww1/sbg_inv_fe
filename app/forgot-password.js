@@ -24,7 +24,7 @@ var ForgotPassword = {
         return [
             m(Header),
             m(Nav, { selected: "Login" }),
-            Request.errors() ? m("div.errors", Request.errors().errors) : null,
+            Request.errors() ? m("div.errors", Request.errors().errors || "Unknown Email Address!") : null,
             m("div.main-content", [
                 m("p.text", "Forgot your password?"),
                 m("div", [
