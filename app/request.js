@@ -11,7 +11,7 @@ const API_URL = "http://127.0.0.1:4000/api";
 const extractFn = (xhr, xhrOptions) => {
     if (xhr.status === 401) {
         Credentials.clear();
-        return Request.errors({ errors: "Authentication failed. Please log in."});
+        return Request.errors({ errors: "Authentication failed. Please log in." });
 
     } else {
         return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
@@ -21,18 +21,26 @@ const extractFn = (xhr, xhrOptions) => {
 //===========================================================================
 const failFn = (resp) => {
     if (resp === null) {
-        Request.errors({errors: "The server appears to be down. Please try again later."});
+        Request.errors({ errors: "The server appears to be down. Please try again later." });
     } else {
-        Request.errors({errors: resp.errors});
+        Request.errors({ errors: resp.errors });
     }
 };
 
 //===========================================================================
 const request = (httpMethod, url, data, successFn) => {
     Request.errors(null);
-    let opts = { method: httpMethod, url: API_URL + url, extract: extractFn };
+    const opts = {
+        method: httpMethod,
+        url: API_URL + url,
+        extract: extractFn,
+        timeout: 5000
+    };
     if (Credentials.token()) {
-        opts.config = function(xhr) { xhr.setRequestHeader("authorization", "Token token=" + Credentials.token()); };
+        opts.config = function(xhr) {
+            xhr.onerror = () => failFn(null),
+            xhr.setRequestHeader("authorization", "Token token=" + Credentials.token());
+        };
     }
     if (data) {
         opts.data = data;
