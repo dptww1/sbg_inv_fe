@@ -3,9 +3,10 @@
 const m                  = require("mithril");
 const Credentials        = require("credentials");
 const K                  = require("constants");
+const Request            = require("request");
 
 //========================================================================
-const loggedInTabs = (loginActive) => {
+const domLoggedInTabs = (loginActive) => {
     if (!Credentials.token()) {
         return null;
     }
@@ -24,7 +25,7 @@ const loggedInTabs = (loginActive) => {
 };
 
 //========================================================================
-const loggedOutTabs = (loginActive) => {
+const domLoggedOutTabs = (loginActive) => {
     if (Credentials.token()) {
         return null;
     }
@@ -44,27 +45,25 @@ const Nav = {
         var figureListActive   = vnode.attrs.selected == "Figures";
         var scenarioListActive = vnode.attrs.selected == "Scenario List";
 
-        return m("div.nav", [
-            m("div.nav-header", { class: scenarioListActive ? "nav-content-selected" : "" },
-              m("a", { href: "/scenarios", oncreate: m.route.link },
-                m("span.icon", K.ICON_STRINGS.scenarios),
-                m("span.desktop", "Scenarios"))),
+        return m("div.nav",
+                 m("div.nav-header", { class: scenarioListActive ? "nav-content-selected" : "" },
+                   m("a", { href: "/scenarios", oncreate: m.route.link },
+                     m("span.icon", K.ICON_STRINGS.scenarios),
+                     m("span.desktop", "Scenarios"))),
 
-            m("div.nav-header", { class: figureListActive ? "nav-content-selected" : "" },
-              m("a", { href: "/figures", oncreate: m.route.link },
-                m("span.icon", K.ICON_STRINGS.figures),
-                m("span.desktop", "Figures"))),
+                 m("div.nav-header", { class: figureListActive ? "nav-content-selected" : "" },
+                   m("a", { href: "/figures", oncreate: m.route.link },
+                     m("span.icon", K.ICON_STRINGS.figures),
+                     m("span.desktop", "Figures"))),
 
-            loggedInTabs(accountActive),
+                 domLoggedInTabs(accountActive),
 
-            loggedOutTabs(loginActive),
+                 domLoggedOutTabs(loginActive),
 
-            m(".nav-header", { class: aboutActive ? "nav-content-selected" : "" },
-              m("a", { href: "/about", oncreate: m.route.link },
-                m("span.icon", K.ICON_STRINGS.about),
-                m("span.desktop", "About")))
-         ]
-        );
+                 m(".nav-header", { class: aboutActive ? "nav-content-selected" : "" },
+                   m("a", { href: "/about", oncreate: m.route.link },
+                     m("span.icon", K.ICON_STRINGS.about),
+                     m("span.desktop", "About"))),
     }
 };
 
