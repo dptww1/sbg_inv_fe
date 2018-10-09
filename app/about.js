@@ -1,16 +1,40 @@
 /* global require module */
 
-const m      = require("mithril");
+const m       = require("mithril");
 
-const Header = require("header");
-const Nav    = require("nav");
+const Header  = require("header");
+const Nav     = require("nav");
+const Request = require("request");
+
+
+var news = [];
+
+//========================================================================
+const domNews = () => {
+    var s = m("table.news",
+              news.map(item => m("tr",
+                                 m("td", item.item_date),
+                                 m("td", item.item_text))));
+    return s;
+};
 
 //========================================================================
 const AboutScreen = {
+    oninit: (/*vnode*/) => {
+        Request.get("/newsitem",
+                    resp => {
+                        news = resp.data;
+                    });
+    },
+
     view() {
         return [
             m(Header),
             m(Nav, { selected: "About" }),
+            m("p.text",
+              m(".main-content",
+                m("div.section-header", "News"),
+                domNews())),
 
             m("div.section-header text", "Welcome!"),
             m("p.text",
