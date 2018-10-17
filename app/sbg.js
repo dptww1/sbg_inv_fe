@@ -8,6 +8,7 @@ const FigureDetails   = require("figure-details");
 const FigureList      = require("figure-list");
 const ForgotPassword  = require("forgot-password");
 const Login           = require("login");
+const Page404         = require("page-404");
 const Register        = require("register");
 const ScenarioDetails = require("scenario-details");
 const ScenarioList    = require("scenario-list");
@@ -22,5 +23,6 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
     "/login"         : Login,
     "/register"      : Register,
     "/forgot-pw"     : ForgotPassword,
-    "/account"       : Account
+    "/account"       : Account,
+    "/:404"          : Page404
 });
