@@ -14,13 +14,13 @@ var figuresMap = {};
 
 //========================================================================
 const domArmyDetails = () => {
-    if (armyId == "") {
+    if (armyId === "") {
         return null;
     }
 
     return [
         m("table",
-          armyId
+          armyId >= 0
             ? m("tr.table-header",
                 m("td", ""),
                 m("td", ""),
@@ -57,22 +57,6 @@ const domFigureListByType = (title, list) => {
 };
 
 //========================================================================
-const updateArmyDetails = (ev) => {
-    armyId = ev.target.value;
-    figuresMap = {
-        characters: [],
-        heroes: [],
-        warriors: [],
-        monsters: [],
-        siegers: []
-    };
-    Request.get("/faction/" + armyId,
-                resp => {
-                    figuresMap = resp.data;
-                });
-};
-
-//========================================================================
 const FigureListScreen = {
 
     refreshArmyDetails: () => {
@@ -84,12 +68,27 @@ const FigureListScreen = {
         }
     },
 
+    updateArmyDetails: (ev) => {
+        armyId = ev.target.value;
+        figuresMap = {
+            characters: [],
+            heroes: [],
+            warriors: [],
+            monsters: [],
+            siegers: []
+        };
+        Request.get("/faction/" + armyId,
+                    resp => {
+                        figuresMap = resp.data;
+                    });
+    },
+
     view: () => {
         return [
             m(Header),
             m(Nav, { selected: "Figures" }),
             m("div.main-content figure-list-main-content",
-              m("select.faction", { onchange: ev => updateArmyDetails(ev) },
+              m("select.faction", { onchange: ev => FigureListScreen.updateArmyDetails(ev) },
                 m("option", { value: "" }, "-- Select an Army --"),
                 Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i === armyId }, K.FACTION_INFO[k].name)),
                 m("option", { value: "-1" }, "Unaffiliated")),
