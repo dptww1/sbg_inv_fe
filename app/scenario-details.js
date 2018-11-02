@@ -97,17 +97,30 @@ const domFiguresRollup = (role, figuresList) => {
 };
 
 //========================================================================
+const domResourceItem = function(res) {
+    let html = [];
+    html.push(res.url ? m("a", { href: res.url }, res.title || res.url)
+                      : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : ""));
+
+    if (Credentials.isAdmin()) {
+        html.push(m("span.edit", { onclick: (ev) => { loadResourceIntoForm(res); } }, K.ICON_STRINGS.edit));
+    }
+
+    return html;
+};
+
+//========================================================================
 const domResourcesRollupAdd = (eltArray, resourceArray, className, titleStr, iconCharStr) => {
     if (resourceArray.length > 0) {
         if (resourceArray.length == 1) {
             eltArray.push(m("div." + className, [
                             m("span.icon", iconCharStr),
                             m("span.scenario-" + className + "-title", titleStr + ": "),
-                            m("span.scenario-" + className + "-url", resourceItemHtml(resourceArray[0]))
+                            m("span.scenario-" + className + "-url", domResourceItem(resourceArray[0]))
                           ]));
         } else {
             var items = resourceArray.map(res => {
-                return m("li", { className: "span.scenario-" + className + "-url" }, resourceItemHtml(res));
+                return m("li", { className: "span.scenario-" + className + "-url" }, domResourceItem(res));
             });
             eltArray.push(m("span.icon", iconCharStr)),
             eltArray.push(m("span.scenario-" + className + "-title", titleStr + "s: "));
@@ -289,19 +302,6 @@ const refresh = function() {
                 resp => {
                     scenario(resp.data);
                 });
-};
-
-//========================================================================
-const resourceItemHtml = function(res) {
-    let html = [];
-    html.push(res.url ? m("a", { href: res.url }, res.title || res.url)
-                      : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : ""));
-
-    if (Credentials.isAdmin()) {
-        html.push(m("span.edit", { onclick: (ev) => { loadResourceIntoForm(res); } }, K.ICON_STRINGS.edit));
-    }
-
-    return html;
 };
 
 //========================================================================
