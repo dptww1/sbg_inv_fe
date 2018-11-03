@@ -85,7 +85,7 @@ module.exports.USER_FIGURE_OPS = {
     sell_unpainted: "Sell Unpainted",
     buy_painted:    "Buy Painted",
     sell_unpainted: "Sell Painted",
-    paint:          "Paint"
+    paint:          "Painted"
 }
 
 module.exports.ICON_STRINGS = {
