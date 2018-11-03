@@ -8,18 +8,6 @@ const Header      = require("header");
 const Nav         = require("nav");
 const Request     = require("request");
 
-const message = prop("");
-
-//========================================================================
-const errorText = () => {
-    var msgs = [];
-    var errObj = Request.errors().errors;
-    for (var key in errObj) {
-        msgs.push(key + ": " + errObj[key].join(", "));
-    }
-    return m.trust(msgs.join("<br/>"));
-};
-
 //========================================================================
 const update = () => {
     var paramMap = {};
@@ -35,7 +23,7 @@ const update = () => {
     Request.put("/users/" + Credentials.userId(),
                 { user: paramMap },
                 resp => {
-                    message("Account updated.");
+                    Request.messages("Account updated.");
                 });
 };
 
@@ -50,9 +38,6 @@ var AccountScreen = {
               m("div.text", "Use this form to update your email address and/or password"),
 
               m("p.text",
-                Request.errors() ? m("div.errors", errorText()) : null,
-                message() ? m("div.message", message()) : null,
-
                 m("table",
 
                   m("tr",

@@ -27,7 +27,6 @@ const LoginScreen = {
         return [
             m(Header),
             m(Nav, { selected: "Login" }),
-            Request.errors() ? m("div.errors", Request.errors().errors) : null,
             m("div.main-content forgot-password",
               m("p.text",
                 "Log in using your email and password. New user? ",

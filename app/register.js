@@ -9,16 +9,6 @@ const Nav         = require("nav");
 const Request     = require("request");
 
 //========================================================================
-const errorText = () => {
-    var msgs = [];
-    var errObj = Request.errors().errors;
-    for (var key in errObj) {
-        msgs.push(key + ": " + errObj[key].join(", "));
-    }
-    return m.trust(msgs.join("<br/>"));
-};
-
-//========================================================================
 const login = () => {
     Request.post("/sessions",
                  { user: { email: Credentials.email(), password: Credentials.password() } },
@@ -45,12 +35,10 @@ const RegisterScreen = {
             m("p.text",
               "Please fill in all fields completely. I encourage your to use your real name here so that I know ",
               "who is using the service.  Your name and/or email will not be displayed anywhere on the site, nor be ",
-              "sold, traded, or otherwise used and anything other than a way to provide login credentials."),
+              "sold, traded, or otherwise used as anything other than a way to provide login credentials."),
 
             m("div.main-content register text",
                 m("table",
-                    Request.errors() ? m("tr", m("td"), m("td.errors", errorText())) : null,
-
                     m("tr",
                       m("td", "Name"),
                       m("td", m("input[type=text][name=name][size=40]", { onchange: m.withAttr("value", Credentials.name) }))),

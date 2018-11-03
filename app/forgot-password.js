@@ -14,7 +14,7 @@ const reset_password = () => {
     Request.post("/reset-password",
                  { user: { email: email() } },
                  resp => {
-                     Request.errors({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
+                     Request.messages({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
                  });
 };
 
@@ -24,7 +24,6 @@ var ForgotPassword = {
         return [
             m(Header),
             m(Nav, { selected: "Login" }),
-            Request.errors() ? m("div.errors", Request.errors().errors || "Unknown Email Address!") : null,
             m("div.main-content", [
                 m("p.text", "Forgot your password?"),
                 m("div", [
