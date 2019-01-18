@@ -30,7 +30,8 @@ module.exports.BOOK_NAMES = {
     ttt:     "The Two Towers (2002)",
     ttt_jb:  "The Two Towers (2006)",
     bpf_ss:  "Battle of the Pelennor Fields (2018)",
-    alotr:   "Armies of the Lord of the Rings (2018)"
+    alotr:   "Armies of the Lord of the Rings (2018)",
+    ah:      "Armies of the Hobbit (2018)"
 };
 
 module.exports.FACTION_INFO = {
