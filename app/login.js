@@ -1,7 +1,6 @@
 /* global require module */
 
 const m           = require("mithril");
-const prop        = require("mithril/stream");
 
 const Credentials = require("credentials");
 const Header      = require("header");
