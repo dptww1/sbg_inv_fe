@@ -15,14 +15,14 @@ const ScenarioList    = require("scenario-list");
 
 m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
-    "/about"         : About,
-    "/figures/:id"   : FigureDetails,
-    "/figures"       : FigureList,
-    "/scenarios/:id" : ScenarioDetails,
-    "/scenarios"     : ScenarioList,
-    "/login"         : Login,
-    "/register"      : Register,
-    "/forgot-pw"     : ForgotPassword,
-    "/account"       : Account,
-    "/:404"          : Page404
+  "/about"         : About,
+  "/figures/:id"   : FigureDetails,
+  "/figures"       : FigureList,
+  "/scenarios/:id" : ScenarioDetails,
+  "/scenarios"     : ScenarioList,
+  "/login"         : Login,
+  "/register"      : Register,
+  "/forgot-pw"     : ForgotPassword,
+  "/account"       : Account,
+  "/:404"          : Page404
 });
