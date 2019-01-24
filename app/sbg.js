@@ -5,6 +5,7 @@ const m = require("mithril");
 const About           = require("about");
 const Account         = require("account");
 const FigureDetails   = require("figure-details");
+const FigureEdit      = require("figure-edit");
 const FigureList      = require("figure-list");
 const ForgotPassword  = require("forgot-password");
 const Login           = require("login");
@@ -17,6 +18,7 @@ m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"         : About,
   "/figures/:id"   : FigureDetails,
+  "/figure-edit"   : FigureEdit,
   "/figures"       : FigureList,
   "/scenarios/:id" : ScenarioDetails,
   "/scenarios"     : ScenarioList,
