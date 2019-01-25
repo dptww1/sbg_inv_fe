@@ -65,7 +65,7 @@ const domFilters2 = [
 
     new SelectFilter("Book",
                      alphabetizedOptionsByValue(K.BOOK_NAMES),
-                     (rec, activeOpts) => activeOpts.includes(rec.scenario_resources.source[0].book)),
+                     (rec, activeOpts) => activeOpts.includes(scenarioSource(rec) ? scenarioSource(rec).book : null)),
 
     new SelectFilter("Models",
                      ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
@@ -193,7 +193,7 @@ const domTable = rawData => {
                     m("td.location", K.LOCATIONS[scenario.location]),
                     m("td.date-age", ageAbbrev(scenario.date_age)),
                     m("td.date-year", scenario.date_year),
-                    m("td.source", scenario.scenario_resources["source"][0].title),
+                    m("td.source", (scenarioSource(scenario) ? scenarioSource(scenario).title : "")),
                     m("td.size", scenario.size),
                     m("td.map", scenario.map_width + "\" x " + scenario.map_height + "\""),
                     m("td.rating", m(StarRating, starParams)),
@@ -235,6 +235,15 @@ const numFiltersSet = () => domFilters2.reduce((sum, filter) => sum + filter.num
 
 //========================================================================
 const unsetAllFilters = () => domFilters2.forEach(f => f.clearActiveFilters());
+
+//========================================================================
+const scenarioSource = scenario => {
+  return scenario.scenario_resources &&
+         scenario.scenario_resources.source &&
+         scenario.scenario_resources.source.length > 0
+           ? scenario.scenario_resources.source[0]
+           : null;
+}
 
 //========================================================================
 const sortByCompletion = (a, b) => {
@@ -288,11 +297,24 @@ const sortBySize = (a, b) => {
 
 //========================================================================
 const sortBySource = (a, b) => {
-    var a_src = a.scenario_resources["source"][0];
-    var b_src = b.scenario_resources["source"][0];
-    return sortByTitle(a_src.title, b_src.title) ||
-           cmp(a_src.issue, b_src.issue) ||
-           cmp(a_src.sort_order, b_src.sort_order);
+    var aSrc = scenarioSource(a);
+    var bSrc = scenarioSource(b);
+
+    if (!aSrc && !bSrc) {
+        return 0;
+    }
+
+    if (!aSrc) {
+      return -1;
+    }
+
+    if (!bSrc) {
+      return 1;
+    }
+
+    return sortByTitle(aSrc.title, bSrc.title) ||
+           cmp(aSrc.issue, bSrc.issue) ||
+           cmp(aSrc.sort_order, bSrc.sort_order);
 };
 
 //========================================================================
@@ -425,6 +447,7 @@ const ScenarioListScreen = {
     }
 };
 
+//========================================================================
 ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
     if (!data()) {
         return;

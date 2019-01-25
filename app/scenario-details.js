@@ -111,7 +111,7 @@ const domResourceItem = function(res) {
 
 //========================================================================
 const domResourcesRollupAdd = (eltArray, resourceArray, className, titleStr, iconCharStr) => {
-    if (resourceArray.length > 0) {
+    if (resourceArray && resourceArray.length > 0) {
         if (resourceArray.length == 1) {
             eltArray.push(m("div." + className, [
                             m("span.icon", iconCharStr),
@@ -254,12 +254,13 @@ const formatDate = (age, year, month, day) => {
 
 //========================================================================
 const isEditResourceBook = () => {
-    return resourceType() === "5";
+    return resourceType() === "0" || resourceType() === "5";
 };
 
 //========================================================================
 const isEditResourceOnline = () => {
-    return resourceType() == "1"
+    return resourceType() == "0"
+        || resourceType() == "1"
         || resourceType() == "2"
         || resourceType() == "4";
 };
