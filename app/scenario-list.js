@@ -103,17 +103,21 @@ const domFilters2 = [
 
 //========================================================================
 const domFilterDiv = () => {
-    if (collapsedFilters) {
-        const flabel = domFilters2.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
-        return m("div.filters",
-                 m(".arrow", { onclick: () => collapsedFilters = false }, ICON_RIGHT),
-                 m("span.label", { onclick: () => collapsedFilters = false }, "Filters: " + flabel));
+  const domEdit = Credentials.admin() ? m("a.icon", { href: "/scenario-edit", oncreate: m.route.link }, K.ICON_STRINGS.plus) : null;
 
-    } else {
-        return m("div.filters",
-                 m(".arrow",  { onclick: () => collapsedFilters = true }, ICON_DOWN),
-                 m("span.label", { onclick: () => collapsedFilters = true }, "Filter"),
-                 filterNav());
+  if (collapsedFilters) {
+    const flabel = domFilters2.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
+    return m("div.filters",
+             m(".arrow", { onclick: () => collapsedFilters = false }, ICON_RIGHT),
+             m("span.label", { onclick: () => collapsedFilters = false }, "Filters: " + flabel),
+             domEdit);
+
+  } else {
+    return m("div.filters",
+             m(".arrow",  { onclick: () => collapsedFilters = true }, ICON_DOWN),
+             m("span.label", { onclick: () => collapsedFilters = true }, "Filter"),
+             filterNav(),
+             domEdit);
     }
 };
 
