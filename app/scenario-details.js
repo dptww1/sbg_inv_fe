@@ -395,6 +395,9 @@ var ScenarioDetailScreen = {
             m("div.scenario-factions", domFactionsRollup(it)),
             m("div.section-header", "Ratings"),
             m(RatingBreakdown, { breakdown: it.rating_breakdown, numVotes: it.num_votes }),
+            Credentials.isAdmin()
+              ? m("button", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, "Edit Scenario")
+              : null,
             m("div.scenario-resources", domResourcesRollup(it))
           ])
         ])
