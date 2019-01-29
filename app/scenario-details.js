@@ -387,6 +387,9 @@ var ScenarioDetailScreen = {
         it && m("div.main-content", [
           m("div.scenario-details", [
             m("div.detail-page-title", it.name),
+            Credentials.isAdmin()
+              ? m("button", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, "Edit Scenario")
+              : null,
             m("div.scenario-rating", m(StarRating, starParams)),
             m("div.scenario-date", formatDate(it.date_age, it.date_year, it.date_month, it.date_day)),
             m("div.scenario-location", K.LOCATIONS[it.location]),
@@ -395,9 +398,6 @@ var ScenarioDetailScreen = {
             m("div.scenario-factions", domFactionsRollup(it)),
             m("div.section-header", "Ratings"),
             m(RatingBreakdown, { breakdown: it.rating_breakdown, numVotes: it.num_votes }),
-            Credentials.isAdmin()
-              ? m("button", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, "Edit Scenario")
-              : null,
             m("div.scenario-resources", domResourcesRollup(it))
           ])
         ])
