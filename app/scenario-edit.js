@@ -24,11 +24,11 @@ const FIELDS = {
   date_year: () => m("input[type=text][name=date_year]", { value: scenario.date_year }),
 
   date_month: () => m("select[name=date_month]", { value: scenario.date_month },
-                      m("option[value=]", "--unknown--"),
+                      m("option[value=0]", "--unknown--"),
                       [...Array(12).keys()].map(n => m("option", { value: n + 1 }, n + 1))),
 
   date_day: () => m("select[name=date_day]", { value: scenario.date_day },
-                    m("option[value=]", "--unknown--"),
+                    m("option[value=0]", "--unknown--"),
                     [...Array(31).keys()].map(n => m("option", { value: n + 1 }, n + 1))),
 
   map_width: () => m("input[type=text][name=map_width]", { value: scenario.map_width }),

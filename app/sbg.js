@@ -5,6 +5,7 @@ const m = require("mithril");
 const About           = require("about");
 const Account         = require("account");
 const Credentials     = require("credentials");
+const FactionEdit     = require("faction-edit");
 const FigureDetails   = require("figure-details");
 const FigureEdit      = require("figure-edit");
 const FigureList      = require("figure-list");
@@ -32,17 +33,18 @@ const AuthenticatingResolver = component => {
 
 m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
-  "/about"             : About,
-  "/figures/:id"       : FigureDetails,
-  "/figure-edit"       : FigureEdit,
-  "/figures"           : FigureList,
-  "/scenarios/:id"     : ScenarioDetails,
-  "/scenarios"         : ScenarioList,
-  "/scenario-edit/:id" : AuthenticatingResolver(ScenarioEdit),
-  "/scenario-edit"     : AuthenticatingResolver(ScenarioEdit),
-  "/login"             : Login,
-  "/register"          : Register,
-  "/forgot-pw"         : ForgotPassword,
-  "/account"           : Account,
-  "/:404"              : Page404
+  "/about"                  : About,
+  "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEdit),
+  "/figures/:id"            : FigureDetails,
+  "/figure-edit"            : AuthenticatingResolver(FigureEdit),
+  "/figures"                : FigureList,
+  "/scenarios/:id"          : ScenarioDetails,
+  "/scenarios"              : ScenarioList,
+  "/scenario-edit/:id"      : AuthenticatingResolver(ScenarioEdit),
+  "/scenario-edit"          : AuthenticatingResolver(ScenarioEdit),
+  "/login"                  : Login,
+  "/register"               : Register,
+  "/forgot-pw"              : ForgotPassword,
+  "/account"                : Account,
+  "/:404"                   : Page404
 });

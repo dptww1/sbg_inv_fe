@@ -86,6 +86,7 @@ button {
 
 input[type=email],
 input[type=password],
+input[type=search],
 input[type=text] {
   border: solid 1px black;
   font-family: @body-font-family;
@@ -285,6 +286,47 @@ div.rating {
 span.votes {
   padding-left: 3px;
   font-size: 66%;
+}
+
+/* ===== Typeahead ===== */
+
+.typeahead-container {
+  display: inline-block;
+
+  .suggestions {
+    background: #fff;
+    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+
+    ul {
+      margin: 0;
+      padding-left: 0.5em;
+
+      li {
+        cursor: pointer;
+        list-style: none;
+        padding-top: 0.1em;
+
+        span.highlight {
+          color: red;
+        }
+      }
+
+      li.selected {
+        background-color: @tab-color;
+      }
+    }
+  }
+
+  span.icon {
+    cursor: pointer;
+    margin-left: 0.5em;
+  }
 }
 
 /* ===== Figure List ===== */
@@ -626,6 +668,14 @@ th, td {
   }
 }
 
+/* ===== Scenario Edit ===== */
+
+.role-edit-row {
+  span.icon {
+    font-family: "sbg-resources";
+    margin-left: 0.5em;
+  }
+}
 
 /* ===== Responsive Tweaks ===== */
 

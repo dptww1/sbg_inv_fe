@@ -56,6 +56,10 @@ const clearResourceForm = () => {
 const domFactionRollup = (faction) => {
   return m("div.faction",
            m("div.faction-name", K.FACTION_INFO[faction.faction].name),
+           Credentials.isAdmin() ? m("button",
+                                     { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
+                                     "Edit Faction")
+                                 : null,
            domRolesRollup(faction.roles));
 };
 
