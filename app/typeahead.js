@@ -99,7 +99,7 @@ const Typeahead = {
              : m(".suggestions",
                  m("ul", data.suggestions.map((s, idx) => m("li.suggestion",
                                                             suggestionAttrs(s, idx),
-                                                            decorateName(s.name, s.start, s.len))))));
+                                                            decorateName(s.name, s.pos, s.len))))));
   }
 };
 

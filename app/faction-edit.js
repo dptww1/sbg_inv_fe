@@ -14,7 +14,7 @@ let faction = { roles: [] };
 //========================================================================
 const findCompletions = (s, typeahead) => {
     console.log("FactionEdit#findCompletions: " + s);
-    Request.get("/search?q=" + s,
+    Request.get("/search?type=f&q=" + s,
                      resp => {
                        typeahead.suggestions = resp.data.map(x => {
                          x.len = s.length;
