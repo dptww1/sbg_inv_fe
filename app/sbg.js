@@ -36,6 +36,7 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"                  : About,
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEdit),
   "/figures/:id"            : FigureDetails,
+  "/figure-edit/:id"        : AuthenticatingResolver(FigureEdit),
   "/figure-edit"            : AuthenticatingResolver(FigureEdit),
   "/figures"                : FigureList,
   "/scenarios/:id"          : ScenarioDetails,

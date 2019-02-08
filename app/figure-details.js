@@ -254,6 +254,10 @@ const FigureDetailScreen = {
             m(Nav, { selected: "Figure Details" }),
             m("div.main-content", [
                 m(".detail-page-title", figure.name),
+                Credentials.isAdmin() ? m("button",
+                                          { onclick: ev => m.route.set("/figure-edit/" + figure.id) },
+                                          "Edit Figure")
+                                      : null,
                 domInventory(total),
                 domFactions(),
                 domScenarios(total),
