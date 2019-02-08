@@ -109,7 +109,10 @@ module.exports.ICON_STRINGS = {
     web_replay:      "\ue922",
 
     // Admin Icons
-    edit: "\ue905"
+    down:   "\uea3e",
+    edit:   "\ue905",
+    remove: "\uea0e",
+    up:     "\uea3a"
 }
 
 module.exports.LOCATIONS = {

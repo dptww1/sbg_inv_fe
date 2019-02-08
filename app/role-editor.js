@@ -119,12 +119,12 @@ const RoleEditor = {
                       m("td",
                         m("span.icon", { onclick: () => editIdx = editIdx === roleIdx ? -1 : roleIdx }, K.ICON_STRINGS.edit),
                           roleIdx > 0
-                            ? m("span.icon", { onclick: () => moveUp(attrs.roles, roleIdx) }, "^")
+                            ? m("span.icon", { onclick: () => moveUp(attrs.roles, roleIdx) }, K.ICON_STRINGS.up)
                             : m("span.icon", " "),
                           roleIdx < attrs.roles.length - 1
-                            ? m("span.icon", { onclick: () => moveDown(attrs.roles, roleIdx) }, "v")
+                            ? m("span.icon", { onclick: () => moveDown(attrs.roles, roleIdx) }, K.ICON_STRINGS.down)
                             : m("span.icon", " "),
-                          m("span.icon", { onclick: () => attrs.roles.splice(roleIdx, 1) }, "X")
+                          m("span.icon", { onclick: () => attrs.roles.splice(roleIdx, 1) }, K.ICON_STRINGS.remove)
                         )
                       ),
                       role._expanded
@@ -160,7 +160,7 @@ const RoleEditor = {
               editIdx = attrs.roles.length - 1;
             }
           },
-          "+")
+          K.ICON_STRINGS.plus)
     )
 };
 
