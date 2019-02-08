@@ -72,7 +72,8 @@ const refresh = () => {
 
   if (m.route.param("id")) {
     Request.get("/scenarios/" + m.route.param("id"),
-                resp => { scenario = resp.data; console.log("REQUEST"); console.dir(scenario); });
+                resp => scenario = resp.data
+                );
   }
 };
 
