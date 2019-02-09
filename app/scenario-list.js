@@ -50,55 +50,11 @@ const cmp = (a, b) => {
 };
 
 //========================================================================
-const domFilters2 = [
-  new SelectFilter("Location",
-                   alphabetizedOptionsByValue(K.LOCATIONS),
-                   (rec, activeOpts) => activeOpts.includes(rec.location)),
-
-  new SelectFilter("Book",
-                   alphabetizedOptionsByValue(K.BOOK_NAMES),
-                   (rec, activeOpts) => activeOpts.includes(scenarioSource(rec) ? scenarioSource(rec).book : null)),
-
-  new SelectFilter("Models",
-                   ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
-                   (rec, activeOpts) => {
-                     for (var i = 0; i < activeOpts.length; ++i) {
-                       switch (activeOpts[i]) {
-                       case  "20": if (                  rec.size <= 20)  return true;  break;
-                       case  "40": if (21 <= rec.size && rec.size <= 40)  return true;  break;
-                       case  "60": if (41 <= rec.size && rec.size <= 60)  return true;  break;
-                       case "100": if (61 <= rec.size && rec.size <= 100) return true;  break;
-                       case   "0": if (100 < rec.size)                    return true;  break;
-                       }
-                     }
-                     return false;
-                   }),
-
-  new SelectFilter("Map Size",
-                   ["Tiny (<24\")=24", "Small (36\")=36", "Medium (48\")=48", "Large (>48\")=0"],
-                   (rec, activeOpts) => {
-                     for (var i = 0; i < activeOpts.length; ++i) {
-                       switch (activeOpts[i]) {
-                       case "24": if (rec.map_width <= 24) return true; break;
-                       case "36": if (rec.map_width == 36) return true; break;
-                       case "48": if (rec.map_width == 48) return true; break;
-                       case  "0": if (rec.map_width >  48) return true; break;
-                       }
-                     }
-                     return false;
-                   }),
-
-  new SelectFilter("Resources",
-                   ["Magazine=magazine_replay", "Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
-                   (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length))
-];
-
-//========================================================================
 const domFilterDiv = () => {
   const domEdit = Credentials.admin() ? m("a.icon", { href: "/scenario-edit", oncreate: m.route.link }, K.ICON_STRINGS.plus) : null;
 
   if (collapsedFilters) {
-    const flabel = domFilters2.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
+    const flabel = scenarioFilters.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
     return m("div.filters",
              m(".arrow", { onclick: () => collapsedFilters = false }, ICON_RIGHT),
              m("span.label", { onclick: () => collapsedFilters = false }, "Filters: " + flabel),
@@ -108,19 +64,11 @@ const domFilterDiv = () => {
     return m("div.filters",
              m(".arrow",  { onclick: () => collapsedFilters = true }, ICON_DOWN),
              m("span.label", { onclick: () => collapsedFilters = true }, "Filter"),
-             filterNav(),
-             domEdit);
+             scenarioFilters.map(f => m(f)),
+             numFiltersSet() > 1 ? m("div.filter-group",
+                                     m("ul.active-filters", m("li", { onclick: _ => unsetAllFilters() }, "Remove all filters")))
+                                 : null);
     }
-};
-
-//========================================================================
-const filterNav = () => {
-  return [
-    domFilters2.map(f => m(f)),
-    numFiltersSet() > 1 ? m("div.filter-group",
-                            m("ul.active-filters", m("li", { onclick: _ => unsetAllFilters() }, "Remove all filters")))
-                        : null
-    ];
 };
 
 //========================================================================
@@ -222,13 +170,57 @@ const domTable = rawData => {
 };
 
 //========================================================================
-const filter = rec => domFilters2.every(filter => filter.matches(rec));
+const filter = rec => scenarioFilters.every(filter => filter.matches(rec));
 
 //========================================================================
-const numFiltersSet = () => domFilters2.reduce((sum, filter) => sum + filter.numActive(), 0);
+const numFiltersSet = () => scenarioFilters.reduce((sum, filter) => sum + filter.numActive(), 0);
 
 //========================================================================
-const unsetAllFilters = () => domFilters2.forEach(f => f.clearActiveFilters());
+const unsetAllFilters = () => scenarioFilters.forEach(f => f.clearActiveFilters());
+
+//========================================================================
+const scenarioFilters = [
+  new SelectFilter("Location",
+                   alphabetizedOptionsByValue(K.LOCATIONS),
+                   (rec, activeOpts) => activeOpts.includes(rec.location)),
+
+  new SelectFilter("Book",
+                   alphabetizedOptionsByValue(K.BOOK_NAMES),
+                   (rec, activeOpts) => activeOpts.includes(scenarioSource(rec) ? scenarioSource(rec).book : null)),
+
+  new SelectFilter("Models",
+                   ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
+                   (rec, activeOpts) => {
+                     for (var i = 0; i < activeOpts.length; ++i) {
+                       switch (activeOpts[i]) {
+                       case  "20": if (                  rec.size <= 20)  return true;  break;
+                       case  "40": if (21 <= rec.size && rec.size <= 40)  return true;  break;
+                       case  "60": if (41 <= rec.size && rec.size <= 60)  return true;  break;
+                       case "100": if (61 <= rec.size && rec.size <= 100) return true;  break;
+                       case   "0": if (100 < rec.size)                    return true;  break;
+                       }
+                     }
+                     return false;
+                   }),
+
+  new SelectFilter("Map Size",
+                   ["Tiny (<24\")=24", "Small (36\")=36", "Medium (48\")=48", "Large (>48\")=0"],
+                   (rec, activeOpts) => {
+                     for (var i = 0; i < activeOpts.length; ++i) {
+                       switch (activeOpts[i]) {
+                       case "24": if (rec.map_width <= 24) return true; break;
+                       case "36": if (rec.map_width == 36) return true; break;
+                       case "48": if (rec.map_width == 48) return true; break;
+                       case  "0": if (rec.map_width >  48) return true; break;
+                       }
+                     }
+                     return false;
+                   }),
+
+  new SelectFilter("Resources",
+                   ["Magazine=magazine_replay", "Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
+                   (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length))
+];
 
 //========================================================================
 const scenarioSource = scenario => {
