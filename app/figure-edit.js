@@ -8,7 +8,7 @@ const K           = require("constants");
 const Nav         = require("nav");
 const Request     = require("request");
 
-let figure = { factions: [] };
+let figure = { factions: [], type: "hero" };
 
 //========================================================================
 const assembleMultiSelectValues = ev => {
@@ -32,33 +32,25 @@ const refresh = () => {
                 resp => figure = resp.data
                );
   } else {
-    figure = { factions: [] };
+    figure = { factions: [], type: "hero" };
   }
 };
 
 //========================================================================
 const submitFigure = (ev) => {
-  let apiUrl = "/figure"
-  let fn = Request.post;
-
-  if (figure.id) {
-    apiUrl += "/" + figure.id;
-    fn = Request.put;
-  }
-
   if (!figure.name) {
-    alert("Name is required!");
+    Request.errors("Name is required!");
     return;
   }
 
-  fn(apiUrl,
-     { figure: figure },
-     () => {
-       Request.messages("Saved " + figure.name);
-       figure = { factions: [] };
-       m.route.set("/figures")
-     }
-    );
+  Request.putOrPost("/figure",
+                    figure.id,
+                    { figure: figure },
+                    () => {
+                      Request.messages("Saved " + figure.name);
+                      figure = { factions: [], type: "hero" };
+                      m.route.set("/figures")
+                    });
 };
 
 //========================================================================

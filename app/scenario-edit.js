@@ -79,14 +79,6 @@ const refresh = () => {
 
 //========================================================================
 const save = ev => {
-  let apiUrl = "/scenarios";
-  let fn = Request.post;
-
-  if (scenario.id) {
-    apiUrl += "/" + scenario.id;
-    fn = Request.put;
-  }
-
   let data = {};
 
   ["select", "input"].forEach(widgetType => {
@@ -107,11 +99,10 @@ const save = ev => {
     }
   });
 
-  fn(apiUrl,
-     { scenario: data },
-     resp => {
-       m.route.set("/scenarios/" + resp.data.id);
-     });
+  Request.putOrPost("/scenarios",
+                    scenario.id,
+                    { scenario: data },
+                    resp => m.route.set("/scenarios/" + resp.data.id));
 };
 
 

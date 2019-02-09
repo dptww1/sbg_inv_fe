@@ -70,16 +70,18 @@ const Request = {
     errors: prop(),
     messages: prop(),
 
-    get: (url, successFn) => {
-        return request("GET", url, null, successFn);
-    },
+    get: (url, successFn) => request("GET", url, null, successFn),
 
-    post: (url, data, successFn) => {
-        return request("POST", url, data, successFn);
-    },
+    post: (url, data, successFn) => request("POST", url, data, successFn),
 
-    put: (url, data, successFn) => {
-        return request("PUT", url, data, successFn);
+    put: (url, data, successFn) => request("PUT", url, data, successFn),
+
+    putOrPost: (url, id, data, successFn) => {
+      if (id) {
+        return Request.put(url + "/" + id, data, successFn);
+      } else {
+        return Request.post(url, data, successFn);
+      }
     }
 };
 

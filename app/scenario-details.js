@@ -312,31 +312,23 @@ const refresh = function() {
 
 //========================================================================
 const submitResourceForm = () => {
-  let apiUrl = "/scenarios/" + scenario().id + "/resource";
-  let fn;
-  if (resourceId()) {
-    fn = Request.put;
-    apiUrl += "/" + resourceId();
-  } else {
-    fn = Request.post;
-  }
-
-  fn(apiUrl,
-     {
-       resource: {
-         id:            resourceId() ? resourceId() : null,
-         resource_type: parseInt(resourceType(), 10),
-         title:         title(),
-         book:          book(),
-         issue:         parseInt(issue(), 10),
-         page:          parseInt(page(), 10),
-         url:           url()
-       }
-     },
-     resp => {
-       clearResourceForm();
-       refresh();
-     });
+  Request.putOrPost("/scenarios/" + scenario().id + "/resource",
+                    resourceId(),
+                    {
+                      resource: {
+                        id:            resourceId() ? resourceId() : null,
+                        resource_type: parseInt(resourceType(), 10),
+                        title:         title(),
+                        book:          book(),
+                        issue:         parseInt(issue(), 10),
+                        page:          parseInt(page(), 10),
+                        url:           url()
+                      }
+                   },
+                   resp => {
+                     clearResourceForm();
+                     refresh();
+                   });
 };
 
 //========================================================================
