@@ -18,11 +18,25 @@ const appendFigure = (role, target) => {
   role.figures.push({
     figure_id:   target.dataset.id,
     name:        target.dataset.name,
-    plural_name: target.dataset.name, // TODO
+    plural_name: target.dataset.plural_name || target.dataset.name,
     type:        target.dataset.type,
     unique:      false // TODO
   });
 }
+
+//========================================================================
+const computePlaceholder = role => {
+  if (role.name && role.name.length > 0) {
+    return role.name;
+  }
+
+  if (!role.figures || role.figures.length == 0) {
+    return "";
+  }
+
+  return (parseInt(role.amt, 10) > 0 ? role.figures[0].plural_name : role.figures[0].name)
+         .replace(/\s+\(.*$/, "")
+};
 
 //========================================================================
 const moveUp = (roles, idx) => {
@@ -69,6 +83,8 @@ const updateRoleName = (roles, roleIdx, ev) => {
 
 //========================================================================
 const RoleEditor = {
+  computePlaceholder: computePlaceholder,
+
   oninit: ({ attrs }) => {
     editIdx = -1;
   },
@@ -86,7 +102,7 @@ const RoleEditor = {
                     m("tr",
                       m("td",
                         { onclick: () => role._expanded = !role._expanded },
-                        role._expanded ? "-" : "+",
+                        role._expanded ? "v" : ">",
                         m("input[type=hidden]",
                           {
                             name: "id" + roleIdx,
@@ -99,7 +115,7 @@ const RoleEditor = {
                           })
                         ),
                       m("td", roleIdx === editIdx
-                                ? m("input[type=text][size=3]",
+                                ? m("input[type=number][min=1][max=300]",
                                     {
                                       name: "amount" + roleIdx,
                                       value: role.amount,
@@ -108,9 +124,10 @@ const RoleEditor = {
                                 : role.amount
                       ),
                       m("td", roleIdx === editIdx
-                                ? m("input[type=text][placeholder=Role Name]",
+                                ? m("input[type=text]",
                                     {
                                       name: "name" + roleIdx,
+                                      placeholder: computePlaceholder(role),
                                       value: role.name,
                                       onkeyup: ev => updateRoleName(attrs.roles, roleIdx, ev)
                                     })
@@ -156,7 +173,7 @@ const RoleEditor = {
         m("span.icon",
           {
             onclick: ev => {
-              attrs.roles.push({ amount: 0, name: "New Role", plural_name: "New Roles", figures: []});
+              attrs.roles.push({ amount: 0, name: "", plural_name: "", figures: [], _expanded: true });
               editIdx = attrs.roles.length - 1;
             }
           },

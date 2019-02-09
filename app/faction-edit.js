@@ -13,15 +13,22 @@ let faction = { roles: [] };
 
 //========================================================================
 const findCompletions = (s, typeahead) => {
-    console.log("FactionEdit#findCompletions: " + s);
-    Request.get("/search?type=f&q=" + s,
-                     resp => {
-                       typeahead.suggestions = resp.data.map(x => {
-                         x.len = s.length;
-                         return x;
-                       })
-                     });
+  Request.get("/search?type=f&q=" + s,
+              resp => {
+                typeahead.suggestions = resp.data.map(x => {
+                  x.len = s.length;
+                  return x;
+                });
+              });
 };
+
+//========================================================================
+const patchRoleNames = roles => {
+  roles.forEach(role => {
+      role.name = role.name || computePlaceholder(role);
+  });
+  return roles;
+}
 
 //========================================================================
 const refresh = () => {
@@ -69,6 +76,7 @@ const save = (_ev) => {
   faction.roles.forEach((r, idx) => {
     r.sort_order = idx + 1;
     r.scenario_faction_id = faction.id;
+    r.name = r.name || RoleEditor.computePlaceholder(r);
   });
 
   Request.put("/scenario-faction/" + faction.id,
