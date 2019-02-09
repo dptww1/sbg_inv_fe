@@ -12,17 +12,17 @@ let figure = { factions: [] };
 
 //========================================================================
 const assembleMultiSelectValues = ev => {
-    const opts = ev.target.options;
-    let ary = [];
+  const opts = ev.target.options;
+  let ary = [];
 
-    for (let i = 0; i < opts.length; ++i) {  // the DOM API *sigh*
-        const opt = opts.item(i);
-        if (opt.selected) {
-            ary.push(opt.value);
-        }
+  for (let i = 0; i < opts.length; ++i) {  // the DOM API *sigh*
+    const opt = opts.item(i);
+    if (opt.selected) {
+      ary.push(opt.value);
     }
+  }
 
-    figure.factions = ary;
+  figure.factions = ary;
 };
 
 //========================================================================
@@ -38,27 +38,27 @@ const refresh = () => {
 
 //========================================================================
 const submitFigure = (ev) => {
-    let apiUrl = "/figure"
-    let fn = Request.post;
+  let apiUrl = "/figure"
+  let fn = Request.post;
 
-    if (figure.id) {
-      apiUrl += "/" + figure.id;
-      fn = Request.put;
-    }
+  if (figure.id) {
+    apiUrl += "/" + figure.id;
+    fn = Request.put;
+  }
 
-    if (!figure.name) {
-        alert("Name is required!");
-        return;
-    }
+  if (!figure.name) {
+    alert("Name is required!");
+    return;
+  }
 
-    fn(apiUrl,
-       { figure: figure },
-       () => {
-         Request.messages("Saved " + figure.name);
-         figure = { factions: [] };
-         m.route.set("/figures")
-       }
-      );
+  fn(apiUrl,
+     { figure: figure },
+     () => {
+       Request.messages("Saved " + figure.name);
+       figure = { factions: [] };
+       m.route.set("/figures")
+     }
+    );
 };
 
 //========================================================================
