@@ -5,9 +5,6 @@ const Credentials        = require("credentials");
 const K                  = require("constants");
 const Request            = require("request");
 
-//                 m("div.errors", Request.errors() && Request.errors.errors ? domErrors() : null),
-//                 m("div.messages", Request.messages() ? domMessages() : null));
-
 //========================================================================
 const domErrors = () => {
     if (!Request.errors()) {
