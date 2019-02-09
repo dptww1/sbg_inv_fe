@@ -87,6 +87,7 @@ const FigureListScreen = {
           m("option", { value: "" }, "-- Select an Army --"),
           Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i === armyId }, K.FACTION_INFO[k].name)),
           m("option", { value: "-1" }, "Unaffiliated")),
+        Credentials.isAdmin() ? m("span.icon", { onclick: _ => m.route.set("/figure-edit") }, K.ICON_STRINGS.plus) : null,
         domArmyDetails())
     ];
   }
