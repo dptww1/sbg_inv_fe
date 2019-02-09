@@ -31,8 +31,6 @@ const StarRating = {
         const { id, active, votes, callback } = vnode.attrs;
         var   { rating, userRating = -1 }     = vnode.attrs;
 
-        //console.log("id: " + id + ", rating: " + rating + ", userRating: " + userRating + ", votes: " + votes);
-
         if (!active) {
             userRating = -1; // don't highlight anything
         }

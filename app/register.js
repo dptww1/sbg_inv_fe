@@ -14,7 +14,6 @@ const login = () => {
                  { user: { email: Credentials.email(), password: Credentials.password() } },
                  resp => {
                      Credentials.token(resp.data.token);
-                     console.log(resp.data.token);
                      m.route.set("/scenarios");
                  });
 };

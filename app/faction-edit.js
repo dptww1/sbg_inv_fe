@@ -71,8 +71,6 @@ const save = (_ev) => {
     r.scenario_faction_id = faction.id;
   });
 
-  console.dir(faction);
-
   Request.put("/scenario-faction/" + faction.id,
               { scenario_faction: faction },
               resp => {

@@ -60,13 +60,11 @@ const handleKey = (ev) => {
 
   case 38: // up
     selectedIdx = Math.max(0, selectedIdx - 1);
-    console.log("selectedIdx UP to " + selectedIdx);
     ev.preventDefault();
     break;
 
   case 40: // down
     selectedIdx = Math.min(selectedIdx + 1, data.suggestions.length - 1);
-    console.log("selectedIdx DOWN to " + selectedIdx);
     ev.preventDefault();
     break;
   }
@@ -83,8 +81,6 @@ const Typeahead = {
   oninit: (vnode) => {
     attrs = vnode.attrs;
     initData();
-    console.log("=== Typeahead#oninit attrs");
-    console.dir(attrs);
   },
 
   view: ({ attrs }) => {

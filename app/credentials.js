@@ -6,7 +6,6 @@ const prop = require("mithril/stream");
 //===========================================================================
 const Cookie = {
     delete: (name) => {
-        //console.log("*** DELETE COOKIE " + name);
         document.cookie = name + "=; expires=Wed, 01 Jan 1970";
     },
 
@@ -14,7 +13,6 @@ const Cookie = {
         const cookies = document.cookie.split(/\s*;\s*/);
         for (var i = 0; i < cookies.length; ++i) {
             if (cookies[i].indexOf(name) == 0) {
-                //console.log("*** READ COOKIE " + cookies[i].substring(name.length + 1));
                 return cookies[i].substring(name.length + 1);
             }
         }
@@ -25,7 +23,6 @@ const Cookie = {
         const d = new Date();
         d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
         document.cookie = name + '=' + value + "; expires = " + d.toUTCString();
-        //console.log("*** WRITE COOKIE " + document.cookie);
     }
 };
 
