@@ -4,8 +4,8 @@ const m           = require("mithril");
 const prop        = require("mithril/stream");
 const Credentials = require("credentials");
 
-const API_URL = "http://127.0.0.1:4000/api";
-//const API_URL = "http://scarce-untried-calf.gigalixirapp.com/api";
+//const API_URL = "http://127.0.0.1:4000/api";
+const API_URL = "http://homely-uncomfortable-wreckfish.gigalixirapp.com/api";
 
 //===========================================================================
 const clearText = _ => {
@@ -82,7 +82,9 @@ const Request = {
       } else {
         return Request.post(url, data, successFn);
       }
-    }
+    },
+
+    apiUrl: API_URL
 };
 
 module.exports = Request;

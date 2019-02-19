@@ -35,6 +35,8 @@ var AccountScreen = {
             m(Nav, { selected: "Account" }),
             m("div.main-content",
 
+              Credentials.isAdmin() ? m("div.text", "API URL: " + Request.apiUrl) : null,
+
               m("div.text", "Use this form to update your email address and/or password"),
 
               m("p.text",
