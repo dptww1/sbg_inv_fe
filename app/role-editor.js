@@ -135,7 +135,7 @@ const RoleEditor = {
                                       value: role.name,
                                       onkeyup: ev => updateRoleName(attrs.roles, roleIdx, ev)
                                     })
-                                : role.name
+                                : computePlaceholder(role)
                       ),
                       m("td",
                         m("span.icon", { onclick: () => editIdx = editIdx === roleIdx ? -1 : roleIdx }, K.ICON_STRINGS.edit),
