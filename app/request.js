@@ -5,100 +5,101 @@ const prop        = require("mithril/stream");
 const Credentials = require("credentials");
 
 const APIS = [
-   {
-      name: "prod",
-      url: "http://homely-uncomfortable-wreckfish.gigalixirapp.com/api"
-   },
-   {
-      name: "local",
-      url: "http://127.0.0.1:4000/api"
-   }
+  {
+    name: "prod",
+    url: "http://homely-uncomfortable-wreckfish.gigalixirapp.com/api"
+  },
+  {
+    name: "local",
+    url: "http://127.0.0.1:4000/api"
+  }
 ];
 
 var curApi = APIS[0];
 
 //===========================================================================
 const clearText = _ => {
-    Request.messages(null);
-    Request.errors(null);
+  Request.messages(null);
+  Request.errors(null);
 };
 
 //===========================================================================
 const extractFn = (xhr, xhrOptions) => {
-    window.setTimeout(clearText, 250);
+  window.setTimeout(clearText, 250);
 
-    if (xhr.status === 401 || xhr.status == 400) {
-        Credentials.clear();
-        return Request.errors({ errors: "Authentication failed. Please log in." });
+  if (xhr.status === 401 || xhr.status == 400) {
+    Credentials.clear();
+    return Request.errors({ errors: "Authentication failed. Please log in." });
 
-    } else {
-        return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
-    }
+  } else {
+    return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
+  }
 };
 
 //===========================================================================
 const failFn = (resp) => {
-    window.setTimeout(clearText, 250);
+  window.setTimeout(clearText, 250);
 
-    if (resp === null) {
-        Request.errors({ errors: "The server appears to be down. Please try again later." });
-    } else {
-        Request.errors({ errors: resp.errors });
-    }
+  if (resp === null) {
+    Request.errors({ errors: "The server appears to be down. Please try again later." });
+  } else {
+    Request.errors({ errors: resp.errors });
+  }
 };
 
 //===========================================================================
 const request = (httpMethod, url, data, successFn) => {
-    clearText();
+  clearText();
 
-    const opts = {
-        method: httpMethod,
-        url: curApi.url + url,
-        extract: extractFn,
-        timeout: 5000
+  const opts = {
+    method: httpMethod,
+    url: curApi.url + url,
+    extract: extractFn,
+    timeout: 5000
+  };
+
+  if (Credentials.token()) {
+    opts.config = function(xhr) {
+      xhr.onerror = () => failFn(null),
+      xhr.setRequestHeader("authorization", "Token token=" + Credentials.token());
     };
+  }
 
-    if (Credentials.token()) {
-        opts.config = function(xhr) {
-            xhr.onerror = () => failFn(null),
-            xhr.setRequestHeader("authorization", "Token token=" + Credentials.token());
-        };
-    }
+  if (data) {
+    opts.data = data;
+  }
 
-    if (data) {
-        opts.data = data;
-    }
-
-    return m.request(opts).then(
-        resp => successFn(resp),
-        resp => failFn(resp)
-    );
+  return m.request(opts).then(
+    resp => successFn(resp),
+    resp => failFn(resp)
+  );
 };
 
 //===========================================================================
 const Request = {
-    errors: prop(),
-    messages: prop(),
+  errors: prop(),
 
-    get: (url, successFn) => request("GET", url, null, successFn),
+  messages: prop(),
 
-    post: (url, data, successFn) => request("POST", url, data, successFn),
+  get: (url, successFn) => request("GET", url, null, successFn),
 
-    put: (url, data, successFn) => request("PUT", url, data, successFn),
+  post: (url, data, successFn) => request("POST", url, data, successFn),
 
-    putOrPost: (url, id, data, successFn) => {
-      if (id) {
-        return Request.put(url + "/" + id, data, successFn);
-      } else {
-        return Request.post(url, data, successFn);
-      }
-    },
+  put: (url, data, successFn) => request("PUT", url, data, successFn),
 
-    curApi: () => curApi,
+  putOrPost: (url, id, data, successFn) => {
+    if (id) {
+      return Request.put(url + "/" + id, data, successFn);
+    } else {
+      return Request.post(url, data, successFn);
+    }
+  },
 
-    apis: APIS,
+  curApi: () => curApi,
 
-    setApi: apiName => curApi = APIS.find(api => api.name === apiName)
+  apis: APIS,
+
+  setApi: apiName => curApi = APIS.find(api => api.name === apiName)
 };
 
 module.exports = Request;
