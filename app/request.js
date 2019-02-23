@@ -4,14 +4,24 @@ const m           = require("mithril");
 const prop        = require("mithril/stream");
 const Credentials = require("credentials");
 
-//const API_URL = "http://127.0.0.1:4000/api";
-const API_URL = "http://homely-uncomfortable-wreckfish.gigalixirapp.com/api";
+const APIS = [
+   {
+      name: "prod",
+      url: "http://homely-uncomfortable-wreckfish.gigalixirapp.com/api"
+   },
+   {
+      name: "local",
+      url: "http://127.0.0.1:4000/api"
+   }
+];
+
+var curApi = APIS[0];
 
 //===========================================================================
 const clearText = _ => {
     Request.messages(null);
     Request.errors(null);
-}
+};
 
 //===========================================================================
 const extractFn = (xhr, xhrOptions) => {
@@ -43,7 +53,7 @@ const request = (httpMethod, url, data, successFn) => {
 
     const opts = {
         method: httpMethod,
-        url: API_URL + url,
+        url: curApi.url + url,
         extract: extractFn,
         timeout: 5000
     };
@@ -84,7 +94,11 @@ const Request = {
       }
     },
 
-    apiUrl: API_URL
+    curApi: () => curApi,
+
+    apis: APIS,
+
+    setApi: apiName => curApi = APIS.find(api => api.name === apiName)
 };
 
 module.exports = Request;

@@ -9,6 +9,24 @@ const Nav         = require("nav");
 const Request     = require("request");
 
 //========================================================================
+const domBackEndAdmin = () => {
+  return [
+    m(".section-header", "Back End Admin"),
+    m("select.back-end",
+      {
+        onchange: ev => Request.setApi(ev.target.value)
+      },
+      Request.apis.map(api => m("option",
+                                {
+                                  selected: api.name === Request.curApi().name,
+                                  value: api.name
+                                },
+                                api.name))),
+    m("span.back-end-url", Request.curApi().url)
+  ];
+};
+
+//========================================================================
 const update = () => {
   var paramMap = {};
 
@@ -33,9 +51,11 @@ var AccountScreen = {
     return [
       m(Header),
       m(Nav, { selected: "Account" }),
-      m("div.main-content",
+      m("div.main-content back-end-admin",
 
-        Credentials.isAdmin() ? m("div.text", "API URL: " + Request.apiUrl) : null,
+        Credentials.isAdmin() ? domBackEndAdmin() : null,
+
+        m(".section-header", "Account Admin"),
 
         m("div.text", "Use this form to update your email address and/or password"),
 
