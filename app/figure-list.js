@@ -83,10 +83,23 @@ const FigureListScreen = {
       m(Header),
       m(Nav, { selected: "Figures" }),
       m("div.main-content figure-list-main-content",
-        m("select.faction", { onchange: ev => FigureListScreen.updateArmyDetails(ev) },
-          m("option", { value: "" }, "-- Select an Army --"),
-          Object.keys(K.FACTION_INFO).map((k, i) => m("option", { value: i, selected: i === armyId }, K.FACTION_INFO[k].name)),
-          m("option", { value: "-1" }, "Unaffiliated")),
+        m("select.faction",
+          { onchange: ev => FigureListScreen.updateArmyDetails(ev) },
+
+          m("option",
+            { value: "" },
+            "-- Select an Army --"),
+
+          K.SORTED_FACTION_NAMES.map(name => m("option",
+                                               {
+                                                 value: K.FACTION_ID_BY_NAME[name],
+                                                 selected: K.FACTION_ID_BY_NAME[name] + "" === armyId },
+                                               name)),
+
+          m("option",
+            { value: "-1" },
+            "Unaffiliated")),
+
         Credentials.isAdmin() ? m("span.icon", { onclick: _ => m.route.set("/figure-edit") }, K.ICON_STRINGS.plus) : null,
         domArmyDetails())
     ];

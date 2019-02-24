@@ -36,51 +36,82 @@ module.exports.BOOK_NAMES = {
 };
 
 module.exports.FACTION_INFO = {
-    angmar:          { name: "Angmar",                    letter: "a" },
-    army_thror:      { name: "Army of Thror",             letter: "o" },
-    arnor:           { name: "Arnor",                     letter: "A" },
-    azogs_hunters:   { name: "Azog's Hunters",            letter: "z" },
-    azogs_legion:    { name: "Azog's Legion",             letter: "Z" },
-    barad_dur:       { name: "Barad-Dûr",                 letter: "b" },
-    dale:            { name: "Dale",                      letter: "q" },
-    desolator_north: { name: "Desolator of the North",    letter: "D" },
-    dol_guldur:      { name: "Dol Guldur",                letter: "x" },
-    dunharrow:       { name: "The Dead of Dunharrow",     letter: "X" },
-    easterlings:     { name: "Easterlings",               letter: "e" },
-    erebor:          { name: "Erebor Reclaimed",          letter: "O" },
-    fangorn:         { name: "Fangorn",                   letter: "f" },
-    far_harad:       { name: "Far Harad",                 letter: "c" },
-    fellowship:      { name: "Fellowship",                letter: "f" },
-    fiefdoms:        { name: "The Fiefdoms",              letter: "F" },
-    goblintown:      { name: "Goblintown",                letter: "G" },
-    harad:           { name: "Harad and Umbar",           letter: "h" },
-    iron_hills:      { name: "Iron Hills",                letter: "I" },
-    isengard:        { name: "Isengard",                  letter: "i" },
-    khand:           { name: "Khand",                     letter: "k" },
-    khazad_dum:      { name: "Khazad-dûm",                letter: "K" },
-    laketown:        { name: "Lake-town",                 letter: "L" },
-    lothlorien:      { name: "Lothlorien and Mirkwood",   letter: "l" },
-    minas_tirith:    { name: "Minas Tirith",              letter: "g" },
-    mirkwood:        { name: "Dark Denizens of Mirkwood", letter: "w" },
-    misty_mountains: { name: "Misty Mountains",           letter: "y" },
-    mordor:          { name: "Mordor",                    letter: "M" },
-    moria:           { name: "Moria",                     letter: "m" },
-    numenor:         { name: "Númenor",                   letter: "N" },
-    radagast:        { name: "Radagast's Alliance",       letter: "J" },
-    rangers:         { name: "The Rangers",               letter: "R" },
-    rivendell:       { name: "Rivendell",                 letter: "n" },
-    rogues:          { name: "Sharkey's Rogues",          letter: "g" },
-    rohan:           { name: "Rohan",                     letter: "r" },
-    shire:           { name: "The Shire",                 letter: "s" },
-    survivors:       { name: "Survivors of Lake-town",    letter: "S" },
-    thorins_co:      { name: "Thorin's Company",          letter: "t" },
-    thranduil:       { name: "Thranduil's Halls",         letter: "H" },
-    trolls:          { name: "The Trolls",                letter: "T" },
-    umbar:           { name: "The Corsairs of Umbar",     letter: "U" },
-    wanderers:       { name: "Wanderers in the Wild",     letter: "W" },
-    white_council:   { name: "White Council",             letter: "w" },
-    wildmen:         { name: "The Wildmen of Drúadan",    letter: "E" }
+  angmar:          { name: "Angmar",                    letter: "a", id: 0 },
+  army_thror:      { name: "Army of Thrór",             letter: "o", id: 1 },
+  arnor:           { name: "Arnor",                     letter: "A", id: 2 },
+  azogs_hunters:   { name: "Azog's Hunters",            letter: "z", id: 3 },
+  azogs_legion:    { name: "Azog's Legion",             letter: "Z", id: 4 },
+  barad_dur:       { name: "Barad-Dûr",                 letter: "b", id: 5 },
+  dale:            { name: "Garrison of Dale",          letter: "q", id: 6 },
+  desolator_north: { name: "Desolator of the North",    letter: "D", id: 7 },
+  dol_guldur:      { name: "Dark Powers of Dol Guldur", letter: "x", id: 8 },
+  dunharrow:       { name: "Dead of Dunharrow",         letter: "X", id: 9 },
+  easterlings:     { name: "Easterlings",               letter: "e", id: 10 },
+  erebor:          { name: "Erebor Reclaimed",          letter: "O", id: 11 },
+  fangorn:         { name: "Fangorn",                   letter: "f", id: 12 },
+  far_harad:       { name: "Far Harad",                 letter: "c", id: 13 },
+  fellowship:      { name: "Fellowship",                letter: "f", id: 14 },
+  fiefdoms:        { name: "Fiefdoms",                  letter: "F", id: 15 },
+  goblintown:      { name: "Goblin-town",               letter: "G", id: 16 },
+  harad:           { name: "Serpent Horde",             letter: "h", id: 17 },
+  iron_hills:      { name: "Iron Hills",                letter: "I", id: 18 },
+  isengard:        { name: "Isengard",                  letter: "i", id: 19 },
+  khand:           { name: "Variags of Khand",          letter: "k", id: 20 },
+  khazad_dum:      { name: "Khazad-dûm",                letter: "K", id: 21 },
+  laketown:        { name: "Army of Lake-town",         letter: "L", id: 22 },
+  lothlorien:      { name: "Lothlórien",                letter: "l", id: 23 },
+  minas_tirith:    { name: "Minas Tirith",              letter: "g", id: 24 },
+  mirkwood:        { name: "Dark Denizens of Mirkwood", letter: "w", id: 25 },
+  misty_mountains: { name: "Misty Mountains",           letter: "y", id: 26 },
+  mordor:          { name: "Mordor",                    letter: "M", id: 27 },
+  moria:           { name: "Moria",                     letter: "m", id: 28 },
+  numenor:         { name: "Númenor",                   letter: "N", id: 29 },
+  radagast:        { name: "Radagast's Alliance",       letter: "J", id: 30 },
+  rangers:         { name: "Rangers",                   letter: "R", id: 31 },
+  rivendell:       { name: "Rivendell",                 letter: "n", id: 32 },
+  rogues:          { name: "Sharkey's Rogues",          letter: "g", id: 33 },
+  rohan:           { name: "Rohan",                     letter: "r", id: 34 },
+  shire:           { name: "Shire",                     letter: "s", id: 35 },
+  survivors:       { name: "Survivors of Lake-town",    letter: "S", id: 36 },
+  thorins_co:      { name: "Thorin's Company",          letter: "t", id: 37 },
+  thranduil:       { name: "Halls of Thranduil",        letter: "H", id: 38 },
+  trolls:          { name: "The Trolls",                letter: "T", id: 39 },
+  umbar:           { name: "Corsairs of Umbar",         letter: "U", id: 40 },
+  wanderers:       { name: "Wanderers in the Wild",     letter: "W", id: 41 },
+  white_council:   { name: "White Council",             letter: "w", id: 42 },
+  wildmen:         { name: "Wildmen of Drúadan",        letter: "E", id: 43 }
 };
+
+module.exports.SORTED_FACTION_NAMES =
+  Object.keys(module.exports.FACTION_INFO)
+        .map(abbr => module.exports.FACTION_INFO[abbr].name)
+        .sort((a, b) => {
+          let lca = a.toLowerCase();
+          let lcb = b.toLowerCase();
+          if (lca < lcb) {
+            return -1;
+          } else if (lcb < lca) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+
+module.exports.FACTION_ABBREV_BY_NAME =
+  Object.keys(module.exports.FACTION_INFO)
+        .reduce((acc, abbr) => {
+                  acc[module.exports.FACTION_INFO[abbr].name] = abbr;
+                  return acc;
+                },
+                {});
+
+module.exports.FACTION_ID_BY_NAME =
+  Object.keys(module.exports.FACTION_INFO)
+        .reduce((acc, abbr) => {
+                  acc[module.exports.FACTION_INFO[abbr].name] = module.exports.FACTION_INFO[abbr].id;
+                  return acc;
+                },
+                {});
 
 module.exports.USER_FIGURE_OPS = {
     buy_unpainted:  "Bought Unpainted",

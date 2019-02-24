@@ -64,6 +64,8 @@ const FigureEditScreen = {
       return null;
     }
 
+    debugger;
+
     return [
       m(Header),
       m(Nav),
@@ -116,13 +118,12 @@ const FigureEditScreen = {
                         {
                           onchange: assembleMultiSelectValues
                         },
-                        Object.keys(K.FACTION_INFO)
-                              .map(f => m("option",
-                                          {
-                                            value: f,
-                                            selected: figure.factions.indexOf(f) >= 0
-                                          },
-                                          K.FACTION_INFO[f].name))))),
+                        K.SORTED_FACTION_NAMES.map(name => m("option",
+                                                             {
+                                                               value: K.FACTION_ABBREV_BY_NAME[name],
+                                                               selected: figure.factions.indexOf(K.FACTION_ABBREV_BY_NAME[name]) >= 0
+                                                             },
+                                                             name))))),
 
             m("tr",
               m("td"),
