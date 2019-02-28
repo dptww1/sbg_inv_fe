@@ -38,7 +38,7 @@ const computePlaceholder = role => {
     return "";
   }
 
-  return (parseInt(role.amt, 10) > 0 ? role.figures[0].plural_name : role.figures[0].name)
+  return (parseInt(role.amount, 10) > 1 ? role.figures[0].plural_name : role.figures[0].name)
          .replace(/\s+\(.*$/, "")
 };
 
