@@ -81,6 +81,8 @@ const Request = {
 
   messages: prop(),
 
+  delete: (url, successFn) => request("DELETE", url, null, successFn),
+
   get: (url, successFn) => request("GET", url, null, successFn),
 
   post: (url, data, successFn) => request("POST", url, data, successFn),

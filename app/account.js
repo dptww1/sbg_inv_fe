@@ -4,14 +4,18 @@ const m           = require("mithril");
 const prop        = require("mithril/stream");
 
 const Credentials = require("credentials");
+const Editor      = require("components/user-figure-history-editor");
 const Header      = require("header");
+const K           = require("constants");
 const Nav         = require("nav");
 const Request     = require("request");
+
+let userHistory = [];
 
 //========================================================================
 const domBackEndAdmin = () => {
   return [
-    m(".section-header", "Back End Admin"),
+    m(".section-header back-end-admin", "Back End Admin"),
     m("select.back-end",
       {
         onchange: ev => Request.setApi(ev.target.value)
@@ -27,7 +31,17 @@ const domBackEndAdmin = () => {
 };
 
 //========================================================================
-const update = () => {
+const removeHistory = id => {
+  if (confirm("Are you sure you want to delete this item?")) {
+    Request.delete("/userhistory/" + id,
+                   resp => {
+                     Request.messages("Activity record deleted.");
+                   });
+  }
+};
+
+//========================================================================
+const updateAccount = () => {
   var paramMap = {};
 
   if (Credentials.email()) {
@@ -46,14 +60,49 @@ const update = () => {
 };
 
 //========================================================================
+const refreshHistory = _vnode => {
+  if (Credentials.isLoggedIn()) {
+    Request.get("/userhistory",
+                resp => {
+                  userHistory = resp.data;
+                  m.redraw();
+                });
+  }
+};
+
+//========================================================================
 var AccountScreen = {
-  view: (/*vnode*/) => {
+  oninit: refreshHistory,
+
+  view: (_vnode) => {
     return [
       m(Header),
       m(Nav, { selected: "Account" }),
-      m("div.main-content back-end-admin",
+      m("div.main-content",
 
         Credentials.isAdmin() ? domBackEndAdmin() : null,
+
+        m(".section-header", "Activity"),
+
+        m("p.text",
+          m("table.user-activity",
+            userHistory.map(hist =>
+                            m("tr",
+                              m("td", hist.op_date),
+                              m("td", hist.amount > 1 ? hist.plural_name : hist.name),
+                              m("td", K.USER_FIGURE_OPS[hist.op]),
+                              m("td", hist.amount),
+                              m("td",
+                                m("span.icon",
+                                  { onclick: _ => Editor.editHistory(hist) },
+                                  K.ICON_STRINGS.edit),
+                                m("span.icon",
+                                  { onclick: _ => removeHistory(hist.id) },
+                                  K.ICON_STRINGS.remove)),
+                              m("td", hist.notes)))
+           )),
+
+        m(Editor, { updateCallback: refreshHistory }),
 
         m(".section-header", "Account Admin"),
 
@@ -79,7 +128,7 @@ var AccountScreen = {
 
             m("tr",
               m("td", ""),
-              m("button[value=Update][name=update]", { onclick: () => update() }, "Update My Account")))))
+              m("button[value=Update][name=update]", { onclick: updateAccount }, "Update My Account")))))
     ];
   }
 };
