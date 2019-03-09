@@ -64,8 +64,6 @@ const FigureEditScreen = {
       return null;
     }
 
-    debugger;
-
     return [
       m(Header),
       m(Nav),
