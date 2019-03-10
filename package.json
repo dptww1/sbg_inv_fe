@@ -12,8 +12,8 @@
     "prod": "brunch build --production"
   },
   "dependencies": {
-    "mithril": "^1.0.0",
-    "rome":  "^2.1.22"
+    "mithril": "^1.1.6",
+    "rome": "^2.1.22"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.0.0",
