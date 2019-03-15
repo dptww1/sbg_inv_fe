@@ -154,7 +154,7 @@ const domTable = rawData => {
             m("span.date-age", ageAbbrev(scenario.date_age)),
             m("span.date-year", scenario.date_year),
             m("span.location", K.LOCATIONS[scenario.location])),
-          m("td.rating", m(StarRating, { isActive: Credentials.isLoggedIn(), scenario: scenario }))));
+          m("td.rating", m(StarRating, starParams))));
     }
   });
 
