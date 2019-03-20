@@ -1,3 +1,6 @@
+watch:
+	brunch watch --server
+
 dependency-graph:
 	madge --image modules.svg app
 	open -a "Google Chrome" modules.svg
@@ -8,3 +11,6 @@ update-fonts:
 	mv app/assets/fonts/icomoon.woff app/assets/fonts/sbg-resources.woff
 	mv app/assets/fonts/icomoon.eot app/assets/fonts/sbg-resources.eot
 	mv app/assets/fonts/icomoon.svg app/assets/fonts/sbg-resources.svg
+
+production-build:
+	brunch build --production
