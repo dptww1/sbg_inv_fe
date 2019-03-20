@@ -2,7 +2,6 @@
 
 const m          = require("mithril");
 const prop       = require("mithril/stream");
-const rome       = require("rome");
 
 const Request    = require("request");
 
@@ -13,31 +12,16 @@ const instrText = prop("");
 const notes     = prop("");
 
 let hist = {};
-let dateVnode;
 let callbackFn;
 
 //========================================================================
 const hidePopup = () => {
-  // Rome seems to bypass the `onchange` handler on the date widget, though it still works if the user
-  // manually enters the date.  So we have to copy the value manually when we are sure we want it.
-  date(document.getElementsByName("date")[0].value);
   document.getElementsByClassName("figure-inventory-popup")[0].style.display = "none";
   document.getElementsByClassName("figure-inventory-overlay")[0].style.display = "none";
 }
 
 //========================================================================
-const setUpRome = vnode => {
-  rome(vnode.dom, {
-    dayFormat: "D",
-    initialValue: hist.op_date,
-    inputFormat: "YYYY-MM-DD",
-    time: false
-  });
-};
-
-//========================================================================
 const showPopup = _ => {
-  setUpRome(dateVnode);
   document.getElementsByClassName("figure-inventory-popup-instructions")[0].textContent = instrText;
   document.getElementsByClassName("figure-inventory-popup")[0].style.display = "block";
   document.getElementsByClassName("figure-inventory-overlay")[0].style.display = "block";
@@ -57,10 +41,6 @@ const updateFigureInventory = _ => {
     document.getElementsByClassName("errors")[0].textContent = "Amount is required";
     return;
   }
-
-  // Rome seems to bypass the `onchange` handler on the date widget, though it still works if the user
-  // manually enters the date.  So we have to copy the value manually when we are sure we want it.
-  hist.op_date = document.getElementsByName("date")[0].value;
 
   hidePopup();
   Request.put("/userhistory/" + hist.id,
@@ -123,7 +103,6 @@ const UserFigureHistoryEditor = {
             m("label.right", " When "),
             m("input.right figure-inventory-popup-date[type=date][name=date]",
               {
-                oncreate: vnode => dateVnode = vnode,
                 onchange: ev => hist.op_date = ev.target.value,
                 value: hist.op_date
               })),
