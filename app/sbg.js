@@ -31,6 +31,19 @@ const AuthenticatingResolver = component => {
   };
 };
 
+// Courtesy of http://ratfactor.com/mithril-route-scroll
+m.route.setNoScroll = m.route.set;
+m.route.set = (path, data, options) => {
+  m.route.setNoScroll(path, data, options);
+  window.scrollTo(0, 0);
+};
+
+m.route.linkNoScroll = m.route.link;
+m.route.link = vnode => {
+  m.route.linkNoScroll(vnode);
+  window.scrollTo(0, 0);
+};
+
 m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"                  : About,
