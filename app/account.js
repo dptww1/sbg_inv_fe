@@ -96,7 +96,13 @@ var AccountScreen = {
               ? userHistory.map(hist =>
                                 m("tr",
                                   m("td", hist.op_date),
-                                  m("td", hist.amount > 1 ? hist.plural_name : hist.name),
+                                  m("td",
+                                    m("a",
+                                      {
+                                        oncreate: m.route.link,
+                                        href: "/figures/" + hist.figure_id
+                                      },
+                                      hist.amount > 1 ? hist.plural_name : hist.name)),
                                   m("td", K.USER_FIGURE_OPS[hist.op]),
                                   m("td", hist.amount),
                                   m("td",
