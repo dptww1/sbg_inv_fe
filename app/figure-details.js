@@ -42,7 +42,7 @@ const domHistory = () => {
   }
 
   return m(".figure-history",
-           m(".section-header", "History"),
+           m(".section-header", "Activity"),
            m("table",
              figure.history.map(h => {
                return m("tr",
