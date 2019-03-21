@@ -3,14 +3,16 @@
 const m           = require("mithril");
 const prop        = require("mithril/stream");
 
-const Credentials = require("credentials");
-const Editor      = require("components/user-figure-history-editor");
-const Header      = require("header");
-const K           = require("constants");
-const Nav         = require("nav");
-const Request     = require("request");
+const Credentials     = require("credentials");
+const DateRangePicker = require("components/date-range-picker");
+const Editor          = require("components/user-figure-history-editor");
+const Header          = require("header");
+const K               = require("constants");
+const Nav             = require("nav");
+const Request         = require("request");
 
 let userHistory = [];
+let dateRange = {};
 
 //========================================================================
 const domBackEndAdmin = () => {
@@ -61,19 +63,20 @@ const updateAccount = () => {
 
 //========================================================================
 const refreshHistory = _vnode => {
-  if (Credentials.isLoggedIn()) {
-    Request.get("/userhistory",
+  if (Credentials.isLoggedIn() &&
+      dateRange.fromDate &&
+      dateRange.fromDate.match(/\d\d\d\d-\d\d-\d\d/) &&
+      dateRange.toDate &&
+      dateRange.toDate.match(/\d\d\d\d-\d\d-\d\d/)) {
+    Request.get("/userhistory?from=" + dateRange.fromDate + "&to=" + dateRange.toDate,
                 resp => {
                   userHistory = resp.data;
-                  m.redraw();
                 });
   }
 };
 
 //========================================================================
 var AccountScreen = {
-  oninit: refreshHistory,
-
   view: (_vnode) => {
     return [
       m(Header),
@@ -85,21 +88,26 @@ var AccountScreen = {
         m(".section-header", "Activity"),
 
         m("p.text",
+          m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
+
+        m("p.text",
           m("table.user-activity",
-            userHistory.map(hist =>
-                            m("tr",
-                              m("td", hist.op_date),
-                              m("td", hist.amount > 1 ? hist.plural_name : hist.name),
-                              m("td", K.USER_FIGURE_OPS[hist.op]),
-                              m("td", hist.amount),
-                              m("td",
-                                m("span.icon",
-                                  { onclick: _ => Editor.editHistory(hist) },
-                                  K.ICON_STRINGS.edit),
-                                m("span.icon",
-                                  { onclick: _ => removeHistory(hist.id) },
-                                  K.ICON_STRINGS.remove)),
-                              m("td", hist.notes)))
+            userHistory.length > 0
+              ? userHistory.map(hist =>
+                                m("tr",
+                                  m("td", hist.op_date),
+                                  m("td", hist.amount > 1 ? hist.plural_name : hist.name),
+                                  m("td", K.USER_FIGURE_OPS[hist.op]),
+                                  m("td", hist.amount),
+                                  m("td",
+                                    m("span.icon",
+                                      { onclick: _ => Editor.editHistory(hist) },
+                                      K.ICON_STRINGS.edit),
+                                    m("span.icon",
+                                      { onclick: _ => removeHistory(hist.id) },
+                                      K.ICON_STRINGS.remove)),
+                                  m("td", hist.notes)))
+            : m("tr", m("td", "None!"))
            )),
 
         m(Editor, { updateCallback: refreshHistory }),
