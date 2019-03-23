@@ -33,9 +33,9 @@ const domBackEndAdmin = () => {
 };
 
 //========================================================================
-const removeHistory = id => {
+const removeHistory = rec => {
   if (confirm("Are you sure you want to delete this item?")) {
-    Request.delete("/userhistory/" + id,
+    Request.delete("/userhistory/" + rec.id,
                    resp => {
                      Request.messages("Activity record deleted.");
                      refreshHistory();
@@ -124,7 +124,7 @@ const AccountScreen = {
                                       { onclick: _ => Editor.editHistory(hist) },
                                       K.ICON_STRINGS.edit),
                                     m("span.icon",
-                                      { onclick: _ => removeHistory(hist.id) },
+                                      { onclick: _ => removeHistory(hist) },
                                       K.ICON_STRINGS.remove)),
                                   m("td", hist.notes)))
             : m("tr", m("td", "None!"))
