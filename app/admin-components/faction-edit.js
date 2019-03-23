@@ -6,7 +6,7 @@ const Header      = require("header");
 const K           = require("constants");
 const Nav         = require("nav");
 const Request     = require("request");
-const RoleEditor  = require("role-editor");
+const RoleEditor  = require("admin-components/role-editor");
 
 let scenario = {};
 let faction = { roles: [] };

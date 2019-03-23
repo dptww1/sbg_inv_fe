@@ -4,7 +4,7 @@ const m = require("mithril");
 
 const K         = require("constants");
 const Request   = require("request");
-const Typeahead = require("typeahead");
+const Typeahead = require("components/typeahead");
 
 //========================================================================
 let editIdx = -1;
