@@ -5,7 +5,7 @@ const prop        = require("mithril/stream");
 
 const Credentials     = require("credentials");
 const DateRangePicker = require("components/date-range-picker");
-const Editor          = require("components/user-figure-history-editor");
+const Editor          = require("components/figure-inventory-editor");
 const Header          = require("header");
 const K               = require("constants");
 const Nav             = require("nav");
@@ -38,6 +38,7 @@ const removeHistory = id => {
     Request.delete("/userhistory/" + id,
                    resp => {
                      Request.messages("Activity record deleted.");
+                     refreshHistory();
                    });
   }
 };
@@ -76,7 +77,20 @@ const refreshHistory = _vnode => {
 };
 
 //========================================================================
-var AccountScreen = {
+const update = hist => {
+  Request.put("/userhistory/" + hist.id,
+              {
+                history: hist
+              },
+              resp => {
+                Request.messages("Record updated");
+                refreshHistory();
+              });
+  return true;
+};
+
+//========================================================================
+const AccountScreen = {
   view: (_vnode) => {
     return [
       m(Header),
@@ -116,7 +130,7 @@ var AccountScreen = {
             : m("tr", m("td", "None!"))
            )),
 
-        m(Editor, { updateCallback: refreshHistory }),
+        m(Editor, { updateCallback: update }),
 
         m(".section-header", "Account Admin"),
 

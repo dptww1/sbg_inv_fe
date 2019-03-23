@@ -1,18 +1,25 @@
 /* global module require */
 
-const m          = require("mithril");
-const prop       = require("mithril/stream");
+const m    = require("mithril");
+const prop = require("mithril/stream");
 
-const Request    = require("request");
-
-const amt       = prop(0);
-const date      = prop((new Date()).toISOString().substring(0, 10));
-const id        = prop(null);
-const instrText = prop("");
-const notes     = prop("");
-
-let hist = {};
+let rec = {};
+let errors = [];
 let callbackFn;
+let instrText;
+
+//========================================================================
+const createPrompt = rec => {
+  const type = rec.op.indexOf("unpainted") >= 0 || rec.op === "painted"
+                 ? "unpainted"
+                 : "painted";
+  const verb = rec.op.startsWith("buy")
+                 ? "buy"
+                 : rec.op.startsWith("sell")
+                   ? "sell"
+                   : "paint";
+  return `How many ${type} ${rec.plural_name || rec.name} did you ${verb}?`;
+};
 
 //========================================================================
 const hidePopup = () => {
@@ -22,11 +29,8 @@ const hidePopup = () => {
 
 //========================================================================
 const showPopup = _ => {
-  document.getElementsByClassName("figure-inventory-popup-instructions")[0].textContent = instrText;
   document.getElementsByClassName("figure-inventory-popup")[0].style.display = "block";
   document.getElementsByClassName("figure-inventory-overlay")[0].style.display = "block";
-  document.getElementsByClassName("errors")[0].textContent = "";
-  document.getElementsByClassName("figure-inventory-popup-notes")[0].value = "";
 };
 
 //========================================================================
@@ -36,43 +40,53 @@ const swallowEvents = ev => {
 };
 
 //========================================================================
-const updateFigureInventory = _ => {
-  if (hist.amount <= 0) {
-    document.getElementsByClassName("errors")[0].textContent = "Amount is required";
+const update = _ => {
+  errors = [];
+
+  if (!rec.amount || rec.amount == 0) {
+    errors.push("Amount is required");
+  }
+
+  if (!rec.op_date) {
+    errors.push("Date is required");
+  }
+
+  if (errors.length > 0) {
     return;
   }
 
   hidePopup();
-  Request.put("/userhistory/" + hist.id,
-              {
-                history: hist
-              },
-              resp => {
-                Request.messages("Record updated");
-                callbackFn();
-              });
+  if (!callbackFn(rec)) {
+    showPopup();
+  }
 };
 
 //========================================================================
-const UserFigureHistoryEditor = {
-  createHistory: (type, verb) => {
-    hist = {
-      amount: 0,
+const FigureInventoryEditor = {
+  addError: msg => errors.push(msg),
+
+  createHistory: (figure, op) => {
+    errors = [];
+    rec = {
+      amount: "",
+      id: figure.id,
+      name: figure.name,
+      plural_name: figure.plural_name,
+      new_owned: figure.owned,
+      new_painted: figure.painted,
+      notes: "",
+      op: op,
       op_date: (new Date()).toISOString().substring(0, 10)
     };
+
+    instrText = createPrompt(rec);
+    showPopup();
   },
 
   editHistory: histRec => {
-    hist = histRec;
-    const type = histRec.op.indexOf("unpainted") >= 0 || histRec.op === "painted"
-                   ? "unpainted"
-                   : "painted";
-    const verb = histRec.op.startsWith("buy")
-                   ? "buy"
-                   : histRec.op.startsWith("sell")
-                     ? "sell"
-                     : "paint";
-    instrText(`How many ${type} ${histRec.plural_name || histRec.name} did you ${verb}?`);
+    errors = [];
+    rec = histRec;
+    instrText = createPrompt(rec);
     showPopup();
   },
 
@@ -89,22 +103,22 @@ const UserFigureHistoryEditor = {
         m("form.figure-inventory-popup-form",
 
           m(".figure-inventory-popup-row",
-            m("label"),
-            m(".errors", "")),
+            m("label", instrText),
+            m(".errors", errors.map(msg => m("span", msg, m("br")))),
 
           m(".figure-inventory-popup-row",
             m("label.left", "Amount "),
             m("input.left figure-inventory-popup-amount[type=number][name=amt][min=0][max=99999]",
               {
-                onchange: ev => hist.amount = ev.target.value,
-                value: hist.amount
+                onchange: ev => rec.amount = ev.target.value,
+                value: rec.amount
               },
-              hist.op_date),
+              rec.op_date),
             m("label.right", " When "),
             m("input.right figure-inventory-popup-date[type=date][name=date]",
               {
-                onchange: ev => hist.op_date = ev.target.value,
-                value: hist.op_date
+                onchange: ev => rec.op_date = ev.target.value,
+                value: rec.op_date
               })),
 
           m(".figure-inventory-popup-row",
@@ -113,17 +127,17 @@ const UserFigureHistoryEditor = {
           m(".figure-inventory-popup-row",
             m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=45]",
               {
-                onchange: ev => hist.notes = ev.target.value
+                onchange: ev => rec.notes = ev.target.value
               },
-              hist.notes))
+              rec.notes))
          ),
 
         m(".dialog-buttons",
           m("button.overlay-cancel", { onclick: hidePopup }, "Cancel"),
-          m("button.overlay-update", { onclick: updateFigureInventory }, "Update"))
-       )
+          m("button.overlay-update", { onclick: update }, "Save"))
+         ))
     ];
   }
 };
 
-module.exports = UserFigureHistoryEditor;
+module.exports = FigureInventoryEditor;
