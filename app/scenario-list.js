@@ -10,7 +10,7 @@ const K               = require("constants");
 const Nav             = require("nav");
 const Request         = require("request");
 const ScenarioUpdater = require("scenario-updater");
-const StarRating      = require("star-rating");
+const StarRating      = require("components/star-rating");
 
 const data = prop(false);
 

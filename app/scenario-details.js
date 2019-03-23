@@ -10,7 +10,7 @@ const Nav             = require("nav");
 const Pie             = require("components/pie");
 const Request         = require("request");
 const ScenarioUpdater = require("scenario-updater");
-const StarRating      = require("star-rating");
+const StarRating      = require("components/star-rating");
 
 const MONTH_NAMES = [
     "", "January", "February", "March", "April", "May", "June",
