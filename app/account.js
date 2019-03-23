@@ -44,25 +44,6 @@ const removeHistory = rec => {
 };
 
 //========================================================================
-const updateAccount = () => {
-  var paramMap = {};
-
-  if (Credentials.email()) {
-    paramMap["email"] = Credentials.email();
-  }
-
-  if (Credentials.password()) {
-    paramMap["password"] = Credentials.password();
-  }
-
-  Request.put("/users/" + Credentials.userId(),
-              { user: paramMap },
-              resp => {
-                Request.messages("Account updated.");
-              });
-};
-
-//========================================================================
 const refreshHistory = _vnode => {
   if (Credentials.isLoggedIn() &&
       dateRange.fromDate &&
@@ -87,6 +68,25 @@ const update = hist => {
                 refreshHistory();
               });
   return true;
+};
+
+//========================================================================
+const updateAccount = () => {
+  var paramMap = {};
+
+  if (Credentials.email()) {
+    paramMap["email"] = Credentials.email();
+  }
+
+  if (Credentials.password()) {
+    paramMap["password"] = Credentials.password();
+  }
+
+  Request.put("/users/" + Credentials.userId(),
+              { user: paramMap },
+              resp => {
+                Request.messages("Account updated.");
+              });
 };
 
 //========================================================================
