@@ -6,6 +6,7 @@ const prop        = require("mithril/stream");
 const Credentials     = require("credentials");
 const DateRangePicker = require("components/date-range-picker");
 const Editor          = require("components/figure-inventory-editor");
+const FigureHistory   = require("components/figure-history-list");
 const Header          = require("header");
 const K               = require("constants");
 const Nav             = require("nav");
@@ -33,17 +34,6 @@ const domBackEndAdmin = () => {
 };
 
 //========================================================================
-const removeHistory = rec => {
-  if (confirm("Are you sure you want to delete this item?")) {
-    Request.delete("/userhistory/" + rec.id,
-                   resp => {
-                     Request.messages("Activity record deleted.");
-                     refreshHistory();
-                   });
-  }
-};
-
-//========================================================================
 const refreshHistory = _vnode => {
   if (Credentials.isLoggedIn() &&
       dateRange.fromDate &&
@@ -55,19 +45,6 @@ const refreshHistory = _vnode => {
                   userHistory = resp.data;
                 });
   }
-};
-
-//========================================================================
-const update = hist => {
-  Request.put("/userhistory/" + hist.id,
-              {
-                history: hist
-              },
-              resp => {
-                Request.messages("Record updated");
-                refreshHistory();
-              });
-  return true;
 };
 
 //========================================================================
@@ -105,32 +82,14 @@ const AccountScreen = {
           m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
 
         m("p.text",
-          m("table.user-activity",
-            userHistory.length > 0
-              ? userHistory.map(hist =>
-                                m("tr",
-                                  m("td", hist.op_date),
-                                  m("td",
-                                    m("a",
-                                      {
-                                        oncreate: m.route.link,
-                                        href: "/figures/" + hist.figure_id
-                                      },
-                                      hist.amount > 1 ? hist.plural_name : hist.name)),
-                                  m("td", K.USER_FIGURE_OPS[hist.op]),
-                                  m("td", hist.amount),
-                                  m("td",
-                                    m("span.icon",
-                                      { onclick: _ => Editor.editHistory(hist) },
-                                      K.ICON_STRINGS.edit),
-                                    m("span.icon",
-                                      { onclick: _ => removeHistory(hist) },
-                                      K.ICON_STRINGS.remove)),
-                                  m("td", hist.notes)))
-            : m("tr", m("td", "None!"))
-           )),
+          m(FigureHistory,
+            {
+              list: userHistory,
+              hideName: false,
+              callbackFn: refreshHistory
+            })),
 
-        m(Editor, { updateCallback: update }),
+        m(Editor),
 
         m(".section-header", "Account Admin"),
 

@@ -23,7 +23,8 @@ const createPrompt = rec => {
 };
 
 //========================================================================
-const initDialog = rec => {
+const initDialog = (rec, callback) => {
+  callbackFn = callback;
   hide = false;
   errors = [];
   instrText = createPrompt(rec);
@@ -69,7 +70,7 @@ const update = _ => {
 const FigureInventoryEditor = {
   addError: msg => errors.push(msg),
 
-  createHistory: (figure, op) => {
+  createHistory: (figure, op, updateCallback) => {
     rec = {
       amount: "",
       id: figure.id,
@@ -82,16 +83,12 @@ const FigureInventoryEditor = {
       op_date: (new Date()).toISOString().substring(0, 10)
     };
 
-    initDialog(rec);
+    initDialog(rec, updateCallback);
   },
 
-  editHistory: histRec => {
+  editHistory: (histRec, updateCallback) => {
     rec = histRec;
-    initDialog(rec);
-  },
-
-  oninit: ({ attrs: { updateCallback } }) => {
-    callbackFn = updateCallback;
+    initDialog(rec, updateCallback);
   },
 
   view: vnode => {

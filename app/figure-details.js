@@ -3,14 +3,15 @@
 const m          = require("mithril");
 const prop       = require("mithril/stream");
 
-const Credentials = require("credentials");
-const FigureList  = require("figure-list");
-const Editor      = require("components/figure-inventory-editor");
-const Header      = require("header");
-const K           = require("constants");
-const Nav         = require("nav");
-const Pie         = require("components/pie");
-const Request     = require("request");
+const Credentials   = require("credentials");
+const FigureList    = require("figure-list");
+const Editor        = require("components/figure-inventory-editor");
+const FigureHistory = require("components/figure-history-list");
+const Header        = require("header");
+const K             = require("constants");
+const Nav           = require("nav");
+const Pie           = require("components/pie");
+const Request       = require("request");
 
 var figure = { factions: [], scenarios: [], history: [] };
 
@@ -38,15 +39,12 @@ const domHistory = () => {
 
   return m(".figure-history",
            m(".section-header", "Activity"),
-           m("table",
-             figure.history.map(h => {
-               return m("tr",
-                        m("td", h.date),
-                        m("td", K.USER_FIGURE_OPS[h.op]),
-                        m("td", h.amount),
-                        m("td", h.notes)
-                       );
-             })));
+           m(FigureHistory,
+             {
+               list: figure.history.map(rec => Object.assign(rec, { name: figure.name, plural_name: figure.plural_name})),
+               hideName: true,
+               callbackFn: _ => refresh(figure.id)
+             }));
 };
 
 //========================================================================
@@ -67,14 +65,14 @@ const domInventory = total => {
                m("td.action",
                  m("a",
                    {
-                     onclick: () => Editor.createHistory(figure, "buy_unpainted")
+                     onclick: () => Editor.createHistory(figure, "buy_unpainted", update)
                    },
                    K.ICON_STRINGS.plus)),
                figure.owned > 0
                  ? m("td.action",
                      m("a",
                        {
-                         onclick: () => Editor.createHistory(figure, "sell_unpainted")
+                         onclick: () => Editor.createHistory(figure, "sell_unpainted", update)
                        },
                        K.ICON_STRINGS.minus))
                  : null,
@@ -82,7 +80,7 @@ const domInventory = total => {
                  ? m("td.action",
                      m("a",
                        {
-                         onclick: () => Editor.createHistory(figure, "paint")
+                         onclick: () => Editor.createHistory(figure, "paint", update)
                        },
                        K.ICON_STRINGS.paint_figure))
                  : null),
@@ -93,14 +91,14 @@ const domInventory = total => {
                m("td.action",
                  m("a",
                    {
-                     onclick: () => Editor.createHistory(figure, "buy_painted")
+                     onclick: () => Editor.createHistory(figure, "buy_painted", update)
                    },
                    K.ICON_STRINGS.plus)),
                figure.painted > 0
                  ? m("td.action",
                      m("a",
                        {
-                         onclick: () => Editor.createHistory(figure, "sell_painted")
+                         onclick: () => Editor.createHistory(figure, "sell_painted", update)
                        },
                        K.ICON_STRINGS.minus))
                  : null)));
@@ -211,7 +209,7 @@ const FigureDetailScreen = {
         domFactions(),
         domScenarios(total),
         domHistory(),
-        m(Editor, { updateCallback: update })
+        m(Editor)
       ]),
     ];
   }
