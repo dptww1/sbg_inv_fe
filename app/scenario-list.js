@@ -5,7 +5,7 @@ const prop            = require("mithril/stream");
 
 const Credentials     = require("credentials");
 const Header          = require("header");
-const Pie             = require("pie");
+const Pie             = require("components/pie");
 const K               = require("constants");
 const Nav             = require("nav");
 const Request         = require("request");
