@@ -3,6 +3,7 @@
 const m    = require("mithril");
 const prop = require("mithril/stream");
 
+let hide = true;
 let rec = {};
 let errors = [];
 let callbackFn;
@@ -22,15 +23,10 @@ const createPrompt = rec => {
 };
 
 //========================================================================
-const hidePopup = () => {
-  document.getElementsByClassName("figure-inventory-popup")[0].style.display = "none";
-  document.getElementsByClassName("figure-inventory-overlay")[0].style.display = "none";
-}
-
-//========================================================================
-const showPopup = _ => {
-  document.getElementsByClassName("figure-inventory-popup")[0].style.display = "block";
-  document.getElementsByClassName("figure-inventory-overlay")[0].style.display = "block";
+const initDialog = rec => {
+  hide = false;
+  errors = [];
+  instrText = createPrompt(rec);
 };
 
 //========================================================================
@@ -63,9 +59,9 @@ const update = _ => {
     return;
   }
 
-  hidePopup();
+  hide = true;
   if (!callbackFn(rec)) {
-    showPopup();
+    hide = false;
   }
 };
 
@@ -74,7 +70,6 @@ const FigureInventoryEditor = {
   addError: msg => errors.push(msg),
 
   createHistory: (figure, op) => {
-    errors = [];
     rec = {
       amount: "",
       id: figure.id,
@@ -87,15 +82,12 @@ const FigureInventoryEditor = {
       op_date: (new Date()).toISOString().substring(0, 10)
     };
 
-    instrText = createPrompt(rec);
-    showPopup();
+    initDialog(rec);
   },
 
   editHistory: histRec => {
-    errors = [];
     rec = histRec;
-    instrText = createPrompt(rec);
-    showPopup();
+    initDialog(rec);
   },
 
   oninit: ({ attrs: { updateCallback } }) => {
@@ -103,8 +95,12 @@ const FigureInventoryEditor = {
   },
 
   view: vnode => {
+    if (hide) {
+      return null;
+    }
+
     return [
-      m(".figure-inventory-overlay", { onclick: hidePopup }),
+      m(".figure-inventory-overlay", { onclick: _ => hide = true }),
       m(".figure-inventory-popup", { onclick: swallowEvents },
         m(".figure-inventory-popup-instructions", ""),
 
@@ -141,7 +137,7 @@ const FigureInventoryEditor = {
          ),
 
         m(".dialog-buttons",
-          m("button.overlay-cancel", { onclick: hidePopup }, "Cancel"),
+          m("button.overlay-cancel", { onclick: _ => hide = true }, "Cancel"),
           m("button.overlay-update", { onclick: update }, "Save"))
          ))
     ];
