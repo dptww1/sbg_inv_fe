@@ -47,8 +47,16 @@ const update = _ => {
     errors.push("Amount is required");
   }
 
+  if (!rec.amount.match("^[1-9]\\d*$")) {
+    errors.push("Amount must be a positive integer");
+  }
+
   if (!rec.op_date) {
     errors.push("Date is required");
+  }
+
+  if (!rec.op_date.match("^\\d{4}-\\d{2}-\\d{2}$")) {
+    errors.push("Bad date format (expected YYYY-MM-DD, got " + rec.op_date + ")");
   }
 
   if (errors.length > 0) {
@@ -108,7 +116,7 @@ const FigureInventoryEditor = {
 
           m(".figure-inventory-popup-row",
             m("label.left", "Amount "),
-            m("input.left figure-inventory-popup-amount[type=number][name=amt][min=0][max=99999]",
+            m("input.left figure-inventory-popup-amount[type=number][name=amt][min=0][max=99999][step=1][pattern=\\d+]",
               {
                 onchange: ev => rec.amount = ev.target.value,
                 value: rec.amount
