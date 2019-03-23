@@ -43,7 +43,7 @@ const update = _ => {
     errors.push("Amount is required");
   }
 
-  if (!rec.amount.match("^[1-9]\\d*$")) {
+  if (!("" + rec.amount).match("^[1-9]\\d*$")) {
     errors.push("Amount must be a positive integer");
   }
 
