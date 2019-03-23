@@ -28,19 +28,6 @@ var url = prop();
 
 //========================================================================
 const clearResourceForm = () => {
-  let elts = document.getElementsByClassName("form");
-  for (let i = 0; i < elts.length; ++i) {
-    let elt = elts[i];
-    let inputs = elt.getElementsByTagName("input");
-    for (let j = 0; j < inputs.length; ++j) {
-      inputs[j].value = "";
-    }
-    inputs = elt.getElementsByTagName("select");
-    for (let j = 0; j < inputs.length; ++j) {
-      inputs[j].value = "-1";
-    }
-  }
-
   resourceId(null);
   resourceType("-1");
   title("");
@@ -170,7 +157,6 @@ const domResourcesRollup = () => {
              isEditResourceBook()   ? m("tr", m("td", "Issue"), m("td", domResourceTextInput("issue", issue))) : null,
              isEditResourceBook()   ? m("tr", m("td", "Page"),  m("td", domResourceTextInput("page", page)))   : null,
              isEditResourceOnline() ? m("tr", m("td", "Url"),   m("td", domResourceTextInput("url", url)))     : null,
-             m("tr", m("td", "Notes"), m("td", m("input[type=text][name=notes]"))),
              m("tr",
                m("td", m("button", { onclick: clearResourceForm  }, "Clear")),
                m("td", m("button", { onclick: submitResourceForm }, "Submit"))
