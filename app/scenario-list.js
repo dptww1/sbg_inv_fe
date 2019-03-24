@@ -111,8 +111,8 @@ const domTable = rawData => {
   ];
 
   const mobileRows = [
-    m("tr.mobile",
-      m("th.completion[data-sort-by=completion].section-header", "Ready?",   m("span.sort-arrow", NBSP)),
+    m("tr",
+      m("th.completion[data-sort-by=completion].section-header", "%",        m("span.sort-arrow", NBSP)),
       m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", NBSP)),
       m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", NBSP)))
   ];
@@ -149,7 +149,15 @@ const domTable = rawData => {
         m("tr",
           m("td.completion", m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })),
           m("td.name",
-            m("a", { class: "scenario-detail-link", oncreate: m.route.link, href: "/scenarios/" + scenario.id}, scenario.name),
+            m("a",
+              {
+                class: "scenario-detail-link",
+                oncreate: m.route.link,
+                href: "/scenarios/" + scenario.id
+              },
+              scenario.name),
+            NBSP,
+            scenarioSource(scenario) ? K.BOOK_SHORT_NAMES[scenarioSource(scenario).book] : "",
             m("br"),
             m("span.date-age", ageAbbrev(scenario.date_age)),
             m("span.date-year", scenario.date_year),

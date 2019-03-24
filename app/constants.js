@@ -1,5 +1,40 @@
 /* global module */
 
+module.exports.BOOK_SHORT_NAMES = {
+    bot5a:   "Bo5A (2014)",
+    bpf:     "BoPF (2004)",
+    dos:     "DoS (2013)",
+    fotn:    "FotN (2006)",
+    fotr:    "FotR (2001)",
+    fotr_jb: "FotR (2005)",
+    fp:      "FP (2011)",
+    fr:      "FR (2011)",
+    gif:     "GiF (2007)",
+    gt:      "EfG (2012)",
+    harad:   "Harad (2007)",
+    hobbit:  "HUJ (2012)",
+    kd:      "KD (2007)",
+    km:      "KoM (2011)",
+    ma:      "M&A (2011)",
+    mordor:  "Mordor (2011)",
+    omordor: "Mordor (2007)",
+    roa:     "RoA (2006)",
+    rotk:    "RotK (2003)",
+    rotk_jb: "RotK (2007)",
+    saf:     "S&F (2003)",
+    sbg:     "SBG Magazine",
+    site:    "SitE (2005)",
+    sog:     "SoG (2004)",
+    sots:    "SotS (2004)",
+    tba:     "T&BA (2016)",
+    ttt:     "TTT (2002)",
+    ttt_jb:  "TTT (2006)",
+    bpf_ss:  "BoPF (2018)",
+    alotr:   "ALotR (2018)",
+    ah:      "AH (2018)",
+    gaw:     "GaW (2019)"
+};
+
 module.exports.BOOK_NAMES = {
     bot5a:   "Battle of the Five Armies (2014)",
     bpf:     "Battle of the Pelennor Fields (2004)",
