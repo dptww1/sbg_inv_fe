@@ -55,10 +55,16 @@ const Pie = {
     // Use the most appropriate base circle color
     if (n == 0) {
       circleAttrs.fill = '#fff';
+
     } if (pctPainted == 1.0) {
       circleAttrs.fill = '#0a0';
+      circleAttrs.stroke = 'black';
+      circleAttrs.strokeWidth = 1;
+
     } else if (pctOwned == 1.0) {
       circleAttrs.fill = '#bb0';
+      circleAttrs.stroke = 'black';
+      circleAttrs.strokeWidth = 1;
     }
 
     return m("svg", { width: size, height: size },
