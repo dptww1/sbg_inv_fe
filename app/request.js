@@ -101,7 +101,12 @@ const Request = {
 
   apis: APIS,
 
-  setApi: apiName => curApi = APIS.find(api => api.name === apiName)
+  setApi: apiName => {
+    curApi = APIS.find(api => api.name === apiName);
+    Request.messages(`Now working with ${apiName} back end`);
+    Credentials.clear();
+    m.route.set("/login");
+  }
 };
 
 module.exports = Request;
