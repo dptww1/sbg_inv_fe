@@ -92,7 +92,7 @@ const domTotals = figuresMap => {
 //========================================================================
 const FigureListScreen = {
   refreshArmyDetails: () => {
-    if (armyId) {
+    if (armyId !== "") {
       Request.get("/faction/" + armyId,
                   resp => figuresMap = resp.data);
     }
@@ -107,8 +107,7 @@ const FigureListScreen = {
       monsters: [],
       siegers: []
     };
-    Request.get("/faction/" + armyId,
-                resp => figuresMap = resp.data);
+    FigureListScreen.refreshArmyDetails();
   },
 
   view: () => {
