@@ -18,22 +18,22 @@ const domArmyDetails = () => {
     return null;
   }
 
-  return [
-    m("table",
-      armyId >= 0
-      ? m("tr.table-header",
-          m("td", ""),
-          m("td", ""),
-          m("td.needed", "Needed"),
-          Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
-          Credentials.isLoggedIn() ? m("td.painted", "Painted") : null)
-      : null,
-      domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
-      domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
-      domFigureListByType("Warriors", figuresMap.warriors),
-      domFigureListByType("Monsters", figuresMap.monsters),
-      domFigureListByType("Siege Equipment", figuresMap.siegers))
-  ];
+  return m("table",
+           armyId >= 0
+             ? m("tr.table-header",
+                 m("td", ""),
+                 Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
+                 Credentials.isLoggedIn() ? m("td.painted", "Painted") : null,
+                 m("td", ""),
+                 m("td.needed", "Needed"),
+                 m("td", ""))
+             : null,
+           domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
+           domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
+           domFigureListByType("Warriors", figuresMap.warriors),
+           domFigureListByType("Monsters", figuresMap.monsters),
+           domFigureListByType("Siege Equipment", figuresMap.siegers),
+           domTotals(figuresMap));
 };
 
 //========================================================================
@@ -43,16 +43,52 @@ const domFigureListByType = (title, list) => {
   }
 
   return [
-    m("tr.figure-list-section", m("td.section-header", { colspan: 2}, title)),
+    m("tr.figure-list-section", m("td.section-header", { colspan: 2 }, title)),
     list.map(fig => {
       return m("tr",
-               m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })),
                m("td.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"])),
-               m("td.needed", fig.needed),
                Credentials.isLoggedIn() ? m("td.owned", fig.owned) : null,
-               Credentials.isLoggedIn() ? m("td.painted", fig.painted) : null
+               Credentials.isLoggedIn() ? m("td.painted", fig.painted) : null,
+               m("td.pie", m(Pie, { size: 24, n: fig.owned, nPainted: fig.painted, nOwned: fig.owned })),
+               m("td.needed", fig.needed),
+               m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })),
               );
     })
+  ];
+};
+
+//========================================================================
+const domTotals = figuresMap => {
+  if (armyId === "" || !Credentials.isLoggedIn()) {
+    return null;
+  }
+
+  const key = Object.keys(K.FACTION_INFO)
+                    .find(key => K.FACTION_INFO[key].id === parseInt(armyId, 10));
+
+  const name = K.FACTION_INFO[key].name;
+
+  const stats = Object.keys(figuresMap)
+                      .reduce((acc, key) => {
+                                figuresMap[key].forEach(fig => {
+                                                          acc.needed += fig.needed;
+                                                          acc.owned += fig.owned;
+                                                          acc.painted += fig.painted;
+                                });
+                               return acc;
+                              },
+                              { needed: 0, owned: 0, painted: 0 });
+
+  return [
+    m("tr.figure-list-section", m("td.section-header", { colspan: 2 }, "Totals")),
+    m("tr",
+      m("td.name", name),
+      m("td.owned", stats.owned),
+      m("td.painted", stats.painted),
+      m("td.pie", m(Pie, { size: 24, n: stats.owned, nPainted: stats.painted, nOwned: stats.owned })),
+      m("td.needed", stats.needed),
+      m("td.pie", m(Pie, { size: 24, n: stats.needed, nPainted: stats.painted, nOwned: stats.owned }))
+     )
   ];
 };
 
