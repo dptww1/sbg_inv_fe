@@ -23,10 +23,8 @@ const domArmyDetails = () => {
              ? m("tr.table-header",
                  m("td", ""),
                  Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
-                 Credentials.isLoggedIn() ? m("td.painted", "Painted") : null,
-                 m("td", ""),
-                 m("td.needed", "Needed"),
-                 m("td", ""))
+                 Credentials.isLoggedIn() ? m("td.painted[colspan=2]", "Painted") : null,
+                 m("td.needed[colspan=2]", "Needed"))
              : null,
            domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
            domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
@@ -49,9 +47,9 @@ const domFigureListByType = (title, list) => {
                m("td.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"])),
                Credentials.isLoggedIn() ? m("td.owned", fig.owned) : null,
                Credentials.isLoggedIn() ? m("td.painted", fig.painted) : null,
-               m("td.pie", m(Pie, { size: 24, n: fig.owned, nPainted: fig.painted, nOwned: fig.owned })),
+               Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: fig.owned, nPainted: fig.painted, nOwned: fig.owned })) : null,
                m("td.needed", fig.needed),
-               m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })),
+               Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })) : null
               );
     })
   ];
@@ -59,7 +57,7 @@ const domFigureListByType = (title, list) => {
 
 //========================================================================
 const domTotals = figuresMap => {
-  if (armyId === "" || !Credentials.isLoggedIn()) {
+  if (armyId === "") {
     return null;
   }
 
@@ -80,14 +78,13 @@ const domTotals = figuresMap => {
                               { needed: 0, owned: 0, painted: 0 });
 
   return [
-    m("tr.figure-list-section", m("td.section-header", { colspan: 2 }, "Totals")),
-    m("tr",
-      m("td.name", name),
-      m("td.owned", stats.owned),
-      m("td.painted", stats.painted),
-      m("td.pie", m(Pie, { size: 24, n: stats.owned, nPainted: stats.painted, nOwned: stats.owned })),
+    m("tr.figure-list-section",
+      m("td.section-header", "Totals"),
+      Credentials.isLoggedIn() ? m("td.owned", stats.owned) : null,
+      Credentials.isLoggedIn() ? m("td.painted", stats.painted) : null,
+      Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: stats.owned, nPainted: stats.painted, nOwned: stats.owned })) : null,
       m("td.needed", stats.needed),
-      m("td.pie", m(Pie, { size: 24, n: stats.needed, nPainted: stats.painted, nOwned: stats.owned }))
+      Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: stats.needed, nPainted: stats.painted, nOwned: stats.owned })) : null
      )
   ];
 };
