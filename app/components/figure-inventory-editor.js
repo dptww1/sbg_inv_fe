@@ -105,7 +105,7 @@ const FigureInventoryEditor = {
 
           m(".figure-inventory-popup-row",
             m("label", instrText),
-            m(".errors", errors.map(msg => m("span", msg, m("br")))),
+            m(".errors", errors.map(msg => m("span", msg, m("br"))))),
 
           m(".figure-inventory-popup-row",
             m("label.left", "Amount "),
@@ -128,15 +128,15 @@ const FigureInventoryEditor = {
           m(".figure-inventory-popup-row",
             m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=45]",
               {
-                onchange: ev => rec.notes = ev.target.value
-              },
-              rec.notes))
+                onchange: ev => rec.notes = ev.target.value,
+                value: rec.notes
+              }))
          ),
 
         m(".dialog-buttons",
           m("button.overlay-cancel", { onclick: _ => hide = true }, "Cancel"),
           m("button.overlay-update", { onclick: update }, "Save"))
-         ))
+         )
     ];
   }
 };
