@@ -11,21 +11,6 @@ const Request     = require("request");
 let figure = { factions: [], type: "hero" };
 
 //========================================================================
-const assembleMultiSelectValues = ev => {
-  const opts = ev.target.options;
-  let ary = [];
-
-  for (let i = 0; i < opts.length; ++i) {  // the DOM API *sigh*
-    const opt = opts.item(i);
-    if (opt.selected) {
-      ary.push(opt.value);
-    }
-  }
-
-  figure.factions = ary;
-};
-
-//========================================================================
 const refresh = () => {
   if (m.route.param("id")) {
     Request.get("/figure/" + m.route.param("id"),
@@ -51,6 +36,16 @@ const submitFigure = (ev) => {
                       figure = { factions: [], type: "hero" };
                       m.route.set("/figures")
                     });
+};
+
+//========================================================================
+const updateFactions = ev => {
+  if (ev.target.checked) {
+    figure.factions.push(ev.target.value);
+
+  } else {
+    figure.factions = figure.factions.filter(x => x != ev.target.value);
+  }
 };
 
 //========================================================================
@@ -111,17 +106,21 @@ const FigureEditScreen = {
                        ))),
 
             m("tr",
-              m("td", "Factions"),
-              m("td", m("select[multiple=true]",
-                        {
-                          onchange: assembleMultiSelectValues
-                        },
-                        K.SORTED_FACTION_NAMES.map(name => m("option",
-                                                             {
-                                                               value: K.FACTION_ABBREV_BY_NAME[name],
-                                                               selected: figure.factions.indexOf(K.FACTION_ABBREV_BY_NAME[name]) >= 0
-                                                             },
-                                                             name))))),
+              m("td.valign-top", "Factions"),
+              m("td",
+                K.SORTED_FACTION_NAMES.map(f => {
+                  return [
+                    m("input[type=checkbox]",
+                      {
+                        id: K.FACTION_ABBREV_BY_NAME[f],
+                        value: K.FACTION_ABBREV_BY_NAME[f],
+                        checked: figure.factions.indexOf(K.FACTION_ABBREV_BY_NAME[f]) >= 0,
+                        onchange: updateFactions
+                      }),
+                    m("label", { for: K.FACTION_ABBREV_BY_NAME[f] }, f),
+                    m("br")
+                  ]
+                }))),
 
             m("tr",
               m("td"),
