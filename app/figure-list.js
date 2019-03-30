@@ -125,7 +125,7 @@ const FigureListScreen = {
           K.SORTED_FACTION_NAMES.map(name => m("option",
                                                {
                                                  value: K.FACTION_ID_BY_NAME[name],
-                                                 selected: K.FACTION_ID_BY_NAME[name] + "" === armyId
+                                                 selected: K.FACTION_ID_BY_NAME[name] === armyId
                                                },
                                                name)),
 
