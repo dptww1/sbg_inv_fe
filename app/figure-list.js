@@ -11,11 +11,32 @@ const Request     = require("request");
 
 var armyId = "";
 var figuresMap = {};
+var factionOverviewMap = {};
 
 //========================================================================
 const domArmyDetails = () => {
   if (armyId === "") {
-    return null;
+    if (Credentials.isLoggedIn()) {
+      return m("table.striped",
+               m("tr.table-header",
+                 m("td", ""),
+                 m("td.owned", "Owned"),
+                 m("td.painted[colspan=2]", "Painted")),
+
+               K.SORTED_FACTION_NAMES.map(name => {
+                 let factionId = Object.entries(K.FACTION_INFO)
+                                       .find(ary => ary[1].name === name)[0];
+                 let thisMap = factionOverviewMap[factionId];
+                 return m("tr",
+                          m("td", name),
+                          m("td.owned", thisMap ? thisMap.owned : ""),
+                          m("td.painted", thisMap ? thisMap.painted : ""),
+                          m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
+                         );
+               }));
+    } else {
+      return null;
+    }
   }
 
   return m("table",
@@ -92,7 +113,12 @@ const domTotals = figuresMap => {
 //========================================================================
 const FigureListScreen = {
   refreshArmyDetails: () => {
-    if (armyId !== "") {
+    if (armyId === "") {
+      if (Credentials.isLoggedIn()) {
+        Request.get("/faction",
+                    resp => factionOverviewMap = resp.data);
+      }
+    } else {
       Request.get("/faction/" + armyId,
                   resp => figuresMap = resp.data);
     }
@@ -107,6 +133,10 @@ const FigureListScreen = {
       monsters: [],
       siegers: []
     };
+    FigureListScreen.refreshArmyDetails();
+  },
+
+  oncreate: () => {
     FigureListScreen.refreshArmyDetails();
   },
 
