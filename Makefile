@@ -11,6 +11,7 @@ update-fonts:
 	mv app/assets/fonts/icomoon.woff app/assets/fonts/sbg-resources.woff
 	mv app/assets/fonts/icomoon.eot app/assets/fonts/sbg-resources.eot
 	mv app/assets/fonts/icomoon.svg app/assets/fonts/sbg-resources.svg
+	mv ~/Downloads/icomoon.zip ~/Downloads/icomoon.zip.bak
 
 production-build:
 	brunch build --production
