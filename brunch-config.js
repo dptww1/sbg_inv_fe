@@ -11,5 +11,13 @@ module.exports = {
 
   plugins: {
     babel: {presets: ['es2015']}
+  },
+
+  overrides: {
+    production: {
+      optimize: true,
+      sourceMaps: true,
+      plugins: {autoReload: {enabled: false}}
+    }
   }
 };
