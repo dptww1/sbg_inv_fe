@@ -7,7 +7,7 @@ const Credentials = require("credentials");
 const APIS = [
   {
     name: "prod",
-    url: "http://homely-uncomfortable-wreckfish.gigalixirapp.com/api"
+    url: "https://homely-uncomfortable-wreckfish.gigalixirapp.com/api"
   },
   {
     name: "local",
