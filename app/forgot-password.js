@@ -21,6 +21,8 @@ const reset_password = () => {
 //========================================================================
 var ForgotPassword = {
   view() {
+    Request.errors({errors: "Automatic password reset isn't working at the moment. Send email to dave@davetownsend.org and I'll reset your password manually."});
+
     return [
       m(Header),
       m(Nav, { selected: "Login" }),

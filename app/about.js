@@ -50,8 +50,7 @@ const AboutScreen = {
             m("p.text",
               "You'll need to sign up for an account to track your inventory.  This will also give you ability to rate ",
               "scenarios, to help your fellow gamers find an overlooked gem. When you sign up, the site will use a cookie to ",
-              "remember who you are, but nothing other than that will be done with your information. Let's treat others as we ",
-              "ourselves would like to be treated -- and I hate being spammed."),
+              "remember who you are, but nothing other than that will be done with your information. I hate spam, too."),
 
             m("p.text",
               "If you note any incorrect information, find bugs, or have ideas for improvement, I'd love to hear from you at ",
@@ -60,7 +59,8 @@ const AboutScreen = {
 
             m("p.text",
               "Financial contributions are not required but are always appreciated.  (In a perfect world I would raise enough ",
-              "money to work on this full-time. But the world ain't perfect.)  You can PayPal me a donation at the above email address."),
+              "money to work on this full-time. But the world ain't perfect.)  You can PayPal me a donation at the above email address. ",
+              "I have no Patreon set up at the moment, but if you'd like to contribute that way, let me know."),
 
             m("p.text", "I hope you find this useful!"),
 
