@@ -11,29 +11,29 @@ const email = prop();
 
 //========================================================================
 const reset_password = () => {
-    Request.post("/reset-password",
-                 { user: { email: email() } },
-                 resp => {
-                     Request.messages({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
-                 });
+  Request.post("/reset-password",
+               { user: { email: email() } },
+               resp => {
+                 Request.messages({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
+               });
 };
 
 //========================================================================
 var ForgotPassword = {
-    view() {
-        return [
-            m(Header),
-            m(Nav, { selected: "Login" }),
-            m("div.main-content", [
-                m("p.text", "Forgot your password?"),
-                m("div", [
-                    m("p.text", "Enter your email address to reset your password:"),
-                    m("p.text", m("input.email[type=email][size=40]", { onchange: m.withAttr("value", email) })),
-                    m("p.text", m("button", { onclick: () => reset_password() }, "Reset"))
-                ])
-            ])
-        ];
-    }
+  view() {
+    return [
+      m(Header),
+      m(Nav, { selected: "Login" }),
+      m("div.main-content", [
+        m("p.text", "Forgot your password?"),
+        m("div", [
+          m("p.text", "Enter your email address to reset your password:"),
+          m("p.text", m("input.email[type=email][size=40]", { onchange: m.withAttr("value", email) })),
+          m("p.text", m("button", { onclick: () => reset_password() }, "Reset"))
+        ])
+      ])
+    ];
+  }
 };
 
 module.exports = ForgotPassword;
