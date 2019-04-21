@@ -17,7 +17,7 @@ var figure = { factions: [], scenarios: [], history: [] };
 
 //========================================================================
 const chooseFaction = (fid) => {
-  FigureList.updateArmyDetails({ target: { value: Object.keys(K.FACTION_INFO).findIndex(f => f == fid ) } });
+  FigureList.updateArmyDetails(Object.keys(K.FACTION_INFO).findIndex(f => f == fid ));
   m.route.set("/figures");
 };
 

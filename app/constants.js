@@ -132,6 +132,14 @@ module.exports.SORTED_FACTION_NAMES =
           }
         });
 
+module.exports.FACTION_NAME_BY_ID =
+  Object.keys(module.exports.FACTION_INFO)
+  .reduce((acc, abbr) => {
+            acc[module.exports.FACTION_INFO[abbr].id] = module.exports.FACTION_INFO[abbr].name;
+            return acc;
+          },
+          {});
+
 module.exports.FACTION_ABBREV_BY_NAME =
   Object.keys(module.exports.FACTION_INFO)
         .reduce((acc, abbr) => {

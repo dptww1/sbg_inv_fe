@@ -12,41 +12,77 @@ const Request     = require("request");
 var armyId = "";
 var figuresMap = {};
 var factionOverviewMap = {};
+var unaffiliatedFigureMap = {};
+
+//========================================================================
+const computeTotals = figureList => {
+  return figureList.reduce((acc, val) => {
+                             acc.needed += val.needed;
+                             acc.owned += val.owned;
+                             acc.painted += val.painted;
+                             return acc;
+                           },
+                           { needed: 0, owned: 0, painted: 0 });
+};
+
+//========================================================================
+const computeUnaffiliatedTotals = figureMap => {
+  return Object.keys(figureMap)
+               .reduce((acc, key) => {
+                         const subTotals = computeTotals(figureMap[key]);
+                         acc.needed += subTotals.needed;
+                         acc.owned += subTotals.owned;
+                         acc.painted += subTotals.painted;
+                         return acc;
+                       },
+                       { needed: 0, owned: 0, painted: 0 });
+};
 
 //========================================================================
 const domArmyDetails = () => {
   if (armyId === "") {
-    if (Credentials.isLoggedIn()) {
-      return m("table.striped",
-               m("tr.table-header",
-                 m("td", ""),
-                 m("td.owned", "Owned"),
-                 m("td.painted[colspan=2]", "Painted")),
+    return m("table.striped",
+             m("tr.table-header",
+               m("td", ""),
+               Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
+               Credentials.isLoggedIn() ? m("td.painted[colspan=2]", "Painted") : null),
 
-               K.SORTED_FACTION_NAMES.map(name => {
-                 let factionId = Object.entries(K.FACTION_INFO)
-                                       .find(ary => ary[1].name === name)[0];
-                 let thisMap = factionOverviewMap[factionId];
-                 return m("tr",
-                          m("td", name),
-                          m("td.owned", thisMap ? thisMap.owned : ""),
-                          m("td.painted", thisMap ? thisMap.painted : ""),
-                          m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
-                         );
-               }));
-    } else {
-      return null;
-    }
+             K.SORTED_FACTION_NAMES.map(name => {
+               let faction = K.FACTION_ABBREV_BY_NAME[name];
+               let thisMap = factionOverviewMap[faction];
+               return m("tr",
+                        m("td",
+                          m("a", { onclick: _ => FigureListScreen.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
+                        m("td.owned", thisMap ? thisMap.owned : ""),
+                        m("td.painted", thisMap ? thisMap.painted : ""),
+                        m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
+                       );
+             }),
+
+             m("tr",
+               m("td",
+                 m("a", { onclick: _ => FigureListScreen.updateArmyDetails(-1) }, "Unaffiliated")),
+               unaffiliatedFigureMap
+                 ? [
+                     m("td.owned", unaffiliatedFigureMap.owned),
+                     m("td.painted", unaffiliatedFigureMap.painted),
+                     m("td", m(Pie, { size: 24, n: unaffiliatedFigureMap.owned, nPainted: unaffiliatedFigureMap.painted, nOwned: unaffiliatedFigureMap.owned }))
+                   ]
+                 : [
+                     m("td.owned", ""),
+                     m("td.painted", ""),
+                     m("td", "")
+                   ]
+              )
+            );
   }
 
   return m("table",
-           armyId >= 0
-             ? m("tr.table-header",
-                 m("td", ""),
-                 Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
-                 Credentials.isLoggedIn() ? m("td.painted[colspan=2]", "Painted") : null,
-                 m("td.needed[colspan=2]", "Needed"))
-             : null,
+           m("tr.table-header",
+             m("td.section-header"),
+             Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
+             Credentials.isLoggedIn() ? m("td.painted[colspan=2]", "Painted") : null,
+             m("td.needed[colspan=2]", "Needed")),
            domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
            domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
            domFigureListByType("Warriors", figuresMap.warriors),
@@ -85,16 +121,15 @@ const domTotals = figuresMap => {
   const key = Object.keys(K.FACTION_INFO)
                     .find(key => K.FACTION_INFO[key].id === parseInt(armyId, 10));
 
-  const name = K.FACTION_INFO[key].name;
+  const name = key ? K.FACTION_INFO[key].name : "Unaffiliated";
 
   const stats = Object.keys(figuresMap)
                       .reduce((acc, key) => {
-                                figuresMap[key].forEach(fig => {
-                                                          acc.needed += fig.needed;
-                                                          acc.owned += fig.owned;
-                                                          acc.painted += fig.painted;
-                                });
-                               return acc;
+                                const totalsMap = computeTotals(figuresMap[key]);
+                                acc.needed += totalsMap.needed;
+                                acc.owned += totalsMap.owned;
+                                acc.painted += totalsMap.painted;
+                                return acc;
                               },
                               { needed: 0, owned: 0, painted: 0 });
 
@@ -116,7 +151,19 @@ const FigureListScreen = {
     if (armyId === "") {
       if (Credentials.isLoggedIn()) {
         Request.get("/faction",
-                    resp => factionOverviewMap = resp.data);
+                    resp => {
+                      factionOverviewMap = resp.data;
+                      Request.get("/faction/-1",
+                                  uresp => unaffiliatedFigureMap = computeTotals(uresp.data));
+                    });
+      } else {
+        factionOverviewMap = {
+          factions: K.SORTED_FACTION_NAMES.reduce((acc, name) => {
+                                                    acc[K.FACTION_ABBREV_BY_NAME[name]] = { owned: 0, painted: 0 };
+                                                    return acc;
+                                                  },
+                                                  {})
+        };
       }
     } else {
       Request.get("/faction/" + armyId,
@@ -124,8 +171,8 @@ const FigureListScreen = {
     }
   },
 
-  updateArmyDetails: (ev) => {
-    armyId = ev.target.value;
+  updateArmyDetails: id => {
+    armyId = id;
     figuresMap = {
       characters: [],
       heroes: [],
@@ -133,6 +180,7 @@ const FigureListScreen = {
       monsters: [],
       siegers: []
     };
+    unaffiliatedFigureMap = {};
     FigureListScreen.refreshArmyDetails();
   },
 
@@ -145,28 +193,12 @@ const FigureListScreen = {
       m(Header),
       m(Nav, { selected: "Figures" }),
       m("div.main-content figure-list-main-content",
-        m("select.faction",
-          { onchange: ev => FigureListScreen.updateArmyDetails(ev) },
-
-          m("option",
-            { value: "" },
-            "-- Select an Army --"),
-
-          K.SORTED_FACTION_NAMES.map(name => m("option",
-                                               {
-                                                 value: K.FACTION_ID_BY_NAME[name],
-                                                 selected: K.FACTION_ID_BY_NAME[name] === armyId
-                                               },
-                                               name)),
-
-          m("option",
-            {
-              value: "-1",
-              selected: armyId === "-1"
-            },
-            "Unaffiliated")),
-
-        Credentials.isAdmin() ? m("span.icon", { onclick: _ => m.route.set("/figure-edit") }, K.ICON_STRINGS.plus) : null,
+        Credentials.isAdmin() ? [ m("button", { onclick: _ => m.route.set("/figure-edit") }, "Add New Figure"), m("br") ] : null,
+        armyId !== "" ? m("a",
+                          { onclick: _ => FigureListScreen.updateArmyDetails("") },
+                          m("span.icon", K.ICON_STRINGS.log_out),
+                          armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
+                      : null,
         domArmyDetails())
     ];
   }
