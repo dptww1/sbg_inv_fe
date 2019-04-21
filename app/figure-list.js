@@ -154,7 +154,7 @@ const FigureListScreen = {
                     resp => {
                       factionOverviewMap = resp.data;
                       Request.get("/faction/-1",
-                                  uresp => unaffiliatedFigureMap = computeTotals(uresp.data));
+                                  uresp => unaffiliatedFigureMap = computeUnaffiliatedTotals(uresp.data));
                     });
       } else {
         factionOverviewMap = {
