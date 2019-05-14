@@ -175,6 +175,7 @@ module.exports.ICON_STRINGS = {
     paint_figure: "\ue90b",
     plus:         "\uea0a",
     register:     "\ue969",
+    search:       "\ue986",
     scenarios:    "\ue920",
 
     // Resource Icons
