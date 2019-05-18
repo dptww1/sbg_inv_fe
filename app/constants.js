@@ -189,7 +189,7 @@ module.exports.ICON_STRINGS = {
   edit:   "\ue905",
   remove: "\uea0e",
   up:     "\uea3a"
-}
+};
 
 module.exports.LOCATIONS = {
   amon_hen:     "Amon Hen",
@@ -221,4 +221,4 @@ module.exports.LOCATIONS = {
   rohan:        "Rohan",
   the_shire:    "The Shire",
   weathertop:   "Weathertop"
-}
+};
