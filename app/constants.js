@@ -32,7 +32,8 @@ module.exports.BOOK_SHORT_NAMES = {
   bpf_ss:  "BoPF (2018)",
   alotr:   "ALotR (2018)",
   ah:      "AH (2018)",
-  gaw:     "GaW (2019)"
+  gaw:     "GaW (2019)",
+  bgime:   "BGiME (2002-)"
 };
 
 module.exports.BOOK_NAMES = {
@@ -67,7 +68,8 @@ module.exports.BOOK_NAMES = {
   bpf_ss:  "Battle of the Pelennor Fields (2018)",
   alotr:   "Armies of the Lord of the Rings (2018)",
   ah:      "Armies of the Hobbit (2018)",
-  gaw:     "Gondor at War (2019)"
+  gaw:     "Gondor at War (2019)",
+  bgime:   "Battle Games in Middle Earth (2002)"
 };
 
 module.exports.FACTION_INFO = {
