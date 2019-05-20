@@ -46,11 +46,11 @@ const domFaction = n => {
                       { name: "faction" + n, value: scenario.scenario_factions[n].faction },
                       Object.keys(K.FACTION_INFO).map(k => m("option", { value: k }, K.FACTION_INFO[k].name))),
 
-    suggested_points: (i) => m("input[type=text]",
-                               { name: "suggested_points" + n, value: scenario.scenario_factions[n].suggested_points }),
+    suggested_points: i => m("input[type=text]",
+                             { name: "suggested_points" + n, value: scenario.scenario_factions[n].suggested_points }),
 
-    actual_points: (i) => m("input[type=text]",
-                            { name: "actual_points" + n,  value: scenario.scenario_factions[n].actual_points })
+    actual_points: i => m("input[type=text]",
+                          { name: "actual_points" + n,  value: scenario.scenario_factions[n].actual_points })
   };
 
   return [
