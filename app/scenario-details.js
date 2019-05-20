@@ -11,6 +11,7 @@ const Pie             = require("components/pie");
 const Request         = require("request");
 const ScenarioUpdater = require("scenario-updater");
 const StarRating      = require("components/star-rating");
+const U               = require("utils");
 
 const MONTH_NAMES = [
     "", "January", "February", "March", "April", "May", "June",
@@ -129,7 +130,7 @@ const domResourcesRollupAddSource = (eltArray, resources) => {
     resources.source.forEach(function(resource) {
       eltArray.push(m("div.scenario-source", [
         m("span.scenario-source-title", "Source: "),
-        m("span.scenario-source-book-title", K.BOOK_NAMES[resource.book]),
+        m("span.scenario-source-book-title", U.resourceLabel(resource)),
         m("span.scenario-source-book-page", ", page " + resource.page)
       ]));
     });

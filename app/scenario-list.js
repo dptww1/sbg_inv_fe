@@ -11,6 +11,7 @@ const Nav             = require("nav");
 const Request         = require("request");
 const ScenarioUpdater = require("scenario-updater");
 const StarRating      = require("components/star-rating");
+const U               = require("utils");
 
 const data = prop(false);
 
@@ -137,7 +138,7 @@ const domTable = rawData => {
           m("td.location", K.LOCATIONS[scenario.location]),
           m("td.date-age", ageAbbrev(scenario.date_age)),
           m("td.date-year", scenario.date_year),
-          m("td.source", (scenarioSource(scenario) ? scenarioSource(scenario).title : "")),
+          m("td.source", U.resourceLabel(scenarioSource(scenario))),
           m("td.size", scenario.size),
           m("td.map", scenario.map_width + "\" x " + scenario.map_height + "\""),
           m("td.rating", m(StarRating, starParams)),
@@ -157,7 +158,7 @@ const domTable = rawData => {
               },
               scenario.name),
             NBSP,
-            scenarioSource(scenario) ? K.BOOK_SHORT_NAMES[scenarioSource(scenario).book] : "",
+            U.shortResourceLabel(scenarioSource(scenario)),
             m("br"),
             m("span.date-age", ageAbbrev(scenario.date_age)),
             m("span.date-year", scenario.date_year),
