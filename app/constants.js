@@ -162,7 +162,7 @@ module.exports.USER_FIGURE_OPS = {
   buy_unpainted:  "Bought Unpainted",
   sell_unpainted: "Sell Unpainted",
   buy_painted:    "Buy Painted",
-  sell_unpainted: "Sell Painted",
+  sell_painted:   "Sell Painted",
   paint:          "Painted"
 };
 
