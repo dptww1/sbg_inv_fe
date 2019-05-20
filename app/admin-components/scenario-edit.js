@@ -42,9 +42,9 @@ const FIELDS = {
 //========================================================================
 const domFaction = n => {
   const FACTION_FIELDS = {
-    faction: (i) => m("select",
-                      { name: "faction" + n, value: scenario.scenario_factions[n].faction },
-                      Object.keys(K.FACTION_INFO).map(k => m("option", { value: k }, K.FACTION_INFO[k].name))),
+    faction: i => m("select",
+                    { name: "faction" + n, value: scenario.scenario_factions[n].faction },
+                    K.SORTED_FACTION_NAMES.map(k => m("option", { value: K.FACTION_ABBREV_BY_NAME[k] }, k))),
 
     suggested_points: i => m("input[type=text]",
                              { name: "suggested_points" + n, value: scenario.scenario_factions[n].suggested_points }),
