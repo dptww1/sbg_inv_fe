@@ -222,5 +222,6 @@ module.exports.LOCATIONS = {
   rhun:         "Rhûn",
   rohan:        "Rohan",
   the_shire:    "The Shire",
-  weathertop:   "Weathertop"
+  weathertop:   "Weathertop",
+  orthanc:      "Orthanc"
 };

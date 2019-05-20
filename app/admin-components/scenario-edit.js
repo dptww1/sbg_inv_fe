@@ -36,7 +36,7 @@ const FIELDS = {
   map_height: () => m("input[type=text][name=map_height]", { value: scenario.map_height }),
 
   location: () => m("select[name=location]", { value: scenario.location },
-                    Object.keys(K.LOCATIONS).map(k => m("option", { value: k }, K.LOCATIONS[k])))
+                    Object.keys(K.LOCATIONS).sort().map(k => m("option", { value: k }, K.LOCATIONS[k])))
 };
 
 //========================================================================
