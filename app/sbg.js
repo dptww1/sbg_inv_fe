@@ -48,11 +48,11 @@ m.route.prefix("#");
 m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"                  : About,
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEdit),
-  "/figures/:id"            : FigureDetails,
+  "/figures/:key"           : FigureDetails,
   "/figure-edit/:id"        : AuthenticatingResolver(FigureEdit),
   "/figure-edit"            : AuthenticatingResolver(FigureEdit),
   "/figures"                : FigureList,
-  "/scenarios/:id"          : ScenarioDetails,
+  "/scenarios/:key"         : ScenarioDetails,
   "/scenarios"              : ScenarioList,
   "/scenario-edit/:id"      : AuthenticatingResolver(ScenarioEdit),
   "/scenario-edit"          : AuthenticatingResolver(ScenarioEdit),

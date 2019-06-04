@@ -77,12 +77,12 @@ const doSelect = target => {
   switch (target.dataset.type) {
   case "f":
     showSearch = false;
-    m.route.set("/figures/" + target.dataset.id);
+    m.route.set("/figures/:id", { id: target.dataset.id });
     break;
 
   case "s":
     showSearch = false;
-    m.route.set("/scenarios/" + target.dataset.id);
+    m.route.set("/scenarios/:id", { id: target.dataset.id });
     break;
   }
 };

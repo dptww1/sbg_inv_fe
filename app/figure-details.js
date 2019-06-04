@@ -190,7 +190,7 @@ const update = hist => {
 const FigureDetailScreen = {
   oninit: (/*vnode*/) => {
     figure = { factions: [], scenarios: [] };
-    requestFigureModelData(m.route.param("id"));
+    requestFigureModelData(m.route.param("key"));
   },
 
   view() {

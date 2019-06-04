@@ -291,7 +291,7 @@ const menuShow = (id) => {
 
 //========================================================================
 const refresh = function() {
-  Request.get("/scenarios/" + m.route.param("id"),
+  Request.get("/scenarios/" + m.route.param("key"),
               resp => {
                 scenario(resp.data);
               });
