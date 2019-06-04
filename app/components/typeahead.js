@@ -87,6 +87,7 @@ const Typeahead = {
     return m('.typeahead-container',
              m('input[type=search]',
                {
+                 oncreate: vnode => vnode.dom.focus(),
                  placeholder: attrs.placeholder || 'Search...',
                  onkeyup: handleKey
                }),
