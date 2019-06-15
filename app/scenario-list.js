@@ -130,7 +130,7 @@ const domTable = rawData => {
           m("td.date-year", scenario.date_year),
           m("td.source", U.resourceLabel(scenarioSource(scenario))),
           m("td.size", scenario.size),
-          m("td.map", scenario.map_width + "\" x " + scenario.map_height + "\""),
+          m("td.map nobr", scenario.map_width + "\" x " + scenario.map_height + "\""),
           m("td.rating", m(StarRating, starParams)),
           m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
           m("td.faction faction2", {title: f2 && f2.name}, f2.letter),

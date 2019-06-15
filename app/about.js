@@ -13,7 +13,7 @@ var news = [];
 const domNews = () => {
     var s = m("table.news",
               news.map(item => m("tr",
-                                 m("td", item.item_date),
+                                 m("td.nobr", item.item_date),
                                  m("td", item.item_text))));
     return s;
 };
