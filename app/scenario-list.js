@@ -20,7 +20,19 @@ const ICON_RIGHT      = "\u25b6";  // ▶
 const ICON_ASCENDING  = "\u25b2"; // ▲
 const NBSP            = "\u00a0";
 
+const sorters = {
+  completion: (a, b) => sortByCompletion(a, b),
+  date:       (a, b) => sortByDate(a, b),
+  location:   (a, b) => sortByLocation(a, b),
+  map:        (a, b) => sortByMap(a, b),
+  name:       (a, b) => sortByName(a, b),
+  rating:     (a, b) => sortByRating(a, b),
+  size:       (a, b) => sortBySize(a, b),
+  source:     (a, b) => sortBySource(a, b)
+};
+
 let collapsedFilters = true;
+let curSorter = "date";
 
 //========================================================================
 const ageAbbrev = ageNumber =>
@@ -86,26 +98,29 @@ const domResourceIcons = resources => {
 };
 
 //========================================================================
+const domSortIcon = sortType => m("span.sort-arrow", curSorter == sortType ? ICON_ASCENDING : NBSP);
+
+//========================================================================
 const domTable = rawData => {
   const desktopRows = [
     m("tr",
-      m("th.completion[data-sort-by=completion].section-header", "%",        m("span.sort-arrow", NBSP)),
-      m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", NBSP)),
-      m("th.location[data-sort-by=location].section-header",     "Location", m("span.sort-arrow", NBSP)),
-      m("th.date[data-sort-by=date][colspan=2].section-header",  "Date",     m("span.sort-arrow", ICON_ASCENDING)),
-      m("th.source[data-sort-by=source].section-header",         "Source",   m("span.sort-arrow", NBSP)),
-      m("th.size[data-sort-by=size].section-header",             "Models",   m("span.sort-arrow", NBSP)),
-      m("th.map[data-sort-by=map].section-header",               "Map Size", m("span.sort-arrow", NBSP)),
-      m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", NBSP)),
+      m("th.completion[data-sort-by=completion].section-header", "%",        domSortIcon("completion")),
+      m("th.name[data-sort-by=name].section-header",             "Scenario", domSortIcon("name")),
+      m("th.location[data-sort-by=location].section-header",     "Location", domSortIcon("location")),
+      m("th.date[data-sort-by=date][colspan=2].section-header",  "Date",     domSortIcon("date")),
+      m("th.source[data-sort-by=source].section-header",         "Source",   domSortIcon("source")),
+      m("th.size[data-sort-by=size].section-header",             "Models",   domSortIcon("size")),
+      m("th.map[data-sort-by=map].section-header",               "Map Size", domSortIcon("map")),
+      m("th.rating[data-sort-by=rating].section-header",         "Rating",   domSortIcon("rating")),
       m("th.factions[colspan=2].section-header",                 "Factions"),
       m("th.resources.section-header",                           "Resources"))
   ];
 
   const mobileRows = [
     m("tr",
-      m("th.completion[data-sort-by=completion].section-header", "%",        m("span.sort-arrow", NBSP)),
-      m("th.name[data-sort-by=name].section-header",             "Scenario", m("span.sort-arrow", NBSP)),
-      m("th.rating[data-sort-by=rating].section-header",         "Rating",   m("span.sort-arrow", NBSP)))
+      m("th.completion[data-sort-by=completion].section-header", "%",        domSortIcon("completion")),
+      m("th.name[data-sort-by=name].section-header",             "Scenario", domSortIcon("name")),
+      m("th.rating[data-sort-by=rating].section-header",         "Rating",   domSortIcon("rating")))
   ];
 
   rawData.forEach(scenario => {
@@ -309,19 +324,8 @@ const sortByTitle = (a, b) => U.strCmp(a, b);
 const tableSorter = list => {
   return {
     onclick: function(ev) {
-      var prop = ev.target.getAttribute("data-sort-by");
-      if (prop) {
-        var sorters = {
-          completion: sortByCompletion,
-          date:       sortByDate,
-          location:   sortByLocation,
-          map:        sortByMap,
-          name:       sortByName,
-          rating:     sortByRating,
-          size:       sortBySize,
-          source:     sortBySource
-        };
-
+      curSorter = ev.target.getAttribute("data-sort-by");
+      if (curSorter) {
         var arrowNodes = document.getElementsByClassName("sort-arrow");
         for (var i = 0; i < arrowNodes.length; ++i) {
           arrowNodes[i].innerHTML = "&nbsp;";
@@ -329,7 +333,7 @@ const tableSorter = list => {
 
         var arrowChar = "&#9650;";   // ^
         var firstId = list[0].id;
-        list.sort(sorters[prop]);
+        list.sort(sorters[curSorter]);
         if (firstId === list[0].id) {
           list.reverse();
           arrowChar = "&#9660;";   // v
@@ -405,7 +409,7 @@ const ScenarioListScreen = {
   oninit: (/*vnode*/) =>
     Request.get("/scenarios",
                 resp => {
-                  data({ data: resp.data.sort(sortByDate) });
+                  data({ data: resp.data.sort(sorters[curSorter]) });
                   m.redraw();
                 }),
 
