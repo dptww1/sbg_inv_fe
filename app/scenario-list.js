@@ -35,19 +35,9 @@ const alphabetizedOptionsByValue = hash => {
     return map;
   }, {});
 
-  var values = Object.keys(reverseMap).sort((a, b) => {
-    a = a.replace(/^The /, "").replace(/^A /, "");
-    b = b.replace(/^The /, "").replace(/^A /, "");
-
-    return cmp(a, b);
-  });
+  var values = Object.keys(reverseMap).sort(U.strCmp);
 
   return values.reduce((list, val) => list.concat([val + "=" + reverseMap[val]]), []);
-};
-
-//========================================================================
-const cmp = (a, b) => {
-  return a > b ? 1 : a < b ? -1 : 0;
 };
 
 //========================================================================
@@ -242,18 +232,18 @@ const scenarioSource = scenario => {
 
 //========================================================================
 const sortByCompletion = (a, b) => {
-  return cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
-         cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
-         cmp(b.size, a.size) ||
+  return U.cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
+         U.cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
+         U.cmp(b.size, a.size) ||
          sortBySource(a, b);
 };
 
 //========================================================================
 const sortByDate = (a, b) => {
-  return cmp(a.date_age, b.date_age) ||
-         cmp(a.date_year, b.date_year) ||
-         cmp(a.date_month, b.date_month) ||
-         cmp(a.date_day, b.date_day) ||
+  return U.cmp(a.date_age, b.date_age) ||
+         U.cmp(a.date_year, b.date_year) ||
+         U.cmp(a.date_month, b.date_month) ||
+         U.cmp(a.date_day, b.date_day) ||
          sortBySource(a, b);
 }
 
@@ -265,8 +255,8 @@ const sortByLocation = (a, b) => {
 
 //========================================================================
 const sortByMap = (a, b) => {
-  return cmp(a.map_width, b.map_width) ||
-         cmp(a.map_height, b.map_height) ||
+  return U.cmp(a.map_width, b.map_width) ||
+         U.cmp(a.map_height, b.map_height) ||
          sortBySource(a, b);
 };
 
@@ -278,15 +268,15 @@ const sortByName = (a, b) => {
 
 //========================================================================
 const sortByRating = (a, b) => {
-  return cmp(a.rating, b.rating) ||
-         cmp(a.name, b.name) ||
+  return U.cmp(a.rating, b.rating) ||
+         U.strCmp(a.name, b.name) ||
          sortBySource(a, b);
 };
 
 //========================================================================
 const sortBySize = (a, b) => {
-  return cmp(a.size, b.size) ||
-         cmp(a.name, b.name) ||
+  return U.cmp(a.size, b.size) ||
+         U.strCmp(a.name, b.name) ||
          sortBySource(a, b);
 };
 
@@ -308,17 +298,12 @@ const sortBySource = (a, b) => {
   }
 
   return sortByTitle(aSrc.title, bSrc.title) ||
-         cmp(aSrc.issue, bSrc.issue) ||
-         cmp(aSrc.sort_order, bSrc.sort_order);
+         U.cmp(aSrc.issue, bSrc.issue) ||
+         U.cmp(aSrc.sort_order, bSrc.sort_order);
 };
 
 //========================================================================
-const sortByTitle = (a, b) => {
-  a = a.replace(/^The /, "").replace(/^A /, "").replace("É", "E");
-  b = b.replace(/^The /, "").replace(/^A /, "").replace("É", "E");
-
-  return cmp(a, b);
-};
+const sortByTitle = (a, b) => U.strCmp(a, b);
 
 //========================================================================
 const tableSorter = list => {

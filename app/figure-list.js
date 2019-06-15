@@ -8,6 +8,7 @@ const K           = require("constants");
 const Nav         = require("nav");
 const Pie         = require("components/pie");
 const Request     = require("request");
+const U           = require("utils");
 
 var armyId = "";
 var figuresMap = {};
@@ -167,7 +168,11 @@ const FigureListScreen = {
       }
     } else {
       Request.get("/faction/" + armyId,
-                  resp => figuresMap = resp.data);
+                  resp => {
+                    figuresMap = resp.data;
+                    Object.keys(figuresMap)
+                          .forEach(k => figuresMap[k].sort((a, b) => U.strCmp(a.name, b.name)));
+                  });
     }
   },
 
