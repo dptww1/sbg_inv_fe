@@ -157,18 +157,17 @@ const RoleEditor = {
                               m("td", m("span.icon", { onclick: ev => removeFigure(attrs.roles, roleIdx, figureIdx) }, "-"))
                             )
                           ).concat(
-                            m("tr.figure",
-                              m("td"),
-                              m("td"),
-                              m("td",
-                                m(Typeahead, {
-                                    placeholder: "Figure name",
-                                    findMatches: attrs.findCompletions,
-                                    onItemSelect: (target) => appendFigure(role, target)
-                                  }
-                                )
-                              )
-                            )
+                            roleIdx === editIdx
+                              ? m("tr.figure",
+                                  m("td"),
+                                  m("td"),
+                                  m("td",
+                                    m(Typeahead, {
+                                      placeholder: "Figure name",
+                                      findMatches: attrs.findCompletions,
+                                      onItemSelect: (target) => appendFigure(role, target)
+                                    })))
+                            : null
                           )
                         : null
            ])
