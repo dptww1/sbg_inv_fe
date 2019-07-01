@@ -33,6 +33,7 @@ const sorters = {
 
 let collapsedFilters = true;
 let curSorter = "date";
+let curSortReversed = false;
 
 //========================================================================
 const ageAbbrev = ageNumber =>
@@ -98,7 +99,9 @@ const domResourceIcons = resources => {
 };
 
 //========================================================================
-const domSortIcon = sortType => m("span.sort-arrow", curSorter == sortType ? ICON_ASCENDING : NBSP);
+const domSortIcon = sortType => m("span.sort-arrow", curSorter == sortType
+                                                       ? (curSortReversed ? ICON_DOWN : ICON_ASCENDING)
+                                                       : NBSP);
 
 //========================================================================
 const domTable = rawData => {
@@ -336,6 +339,7 @@ const tableSorter = list => {
         list.sort(sorters[curSorter]);
         if (firstId === list[0].id) {
           list.reverse();
+          curSortReversed = !curSortReversed;
           arrowChar = "&#9660;";   // v
         }
         ev.target.getElementsByClassName("sort-arrow")[0].innerHTML = arrowChar;
@@ -409,7 +413,11 @@ const ScenarioListScreen = {
   oninit: (/*vnode*/) =>
     Request.get("/scenarios",
                 resp => {
-                  data({ data: resp.data.sort(sorters[curSorter]) });
+                  resp.data.sort(sorters[curSorter]);
+                  if (curSortReversed) {
+                    resp.data.reverse();
+                  }
+                  data({ data: resp.data });
                   m.redraw();
                 }),
 
