@@ -41,7 +41,7 @@ const FigureHistoryList = {
     return m("table.user-activity",
              list.map(rec =>
                       m("tr",
-                        m("td", rec.op_date),
+                        m("td.nobr", rec.op_date),
                         hideName
                           ? null
                           : m("td",
