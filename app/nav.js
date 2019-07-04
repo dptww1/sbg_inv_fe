@@ -5,6 +5,7 @@ const Credentials  = require("credentials");
 const K            = require("constants");
 const Request      = require("request");
 const Typeahead    = require("components/typeahead");
+const U            = require("utils");
 
 let showSearch = false;
 
@@ -92,6 +93,8 @@ const findCompletions = (s, typeahead) => {
   Request.get("/search?q=" + s,
               resp => {
                 typeahead.suggestions = resp.data.map(x => {
+                  const bookStr = U.shortResourceLabel(x);
+                  x.name = x.name + (bookStr ? " [" + bookStr + "]" : "");
                   x.len = s.length;
                   return x;
                 });
