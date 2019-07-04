@@ -17,7 +17,10 @@ module.exports = {
     production: {
       optimize: true,
       sourceMaps: true,
-      plugins: {autoReload: {enabled: false}}
+      plugins: {
+        autoReload: {enabled: false},
+        off: ['autoReload']
+      }
     }
   }
 };
