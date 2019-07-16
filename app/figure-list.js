@@ -42,6 +42,7 @@ const computeUnaffiliatedTotals = figureMap => {
 //========================================================================
 const domArmyDetails = () => {
   if (armyId === "") {
+    const totals = computeTotals(Object.values(factionOverviewMap));
     return m("table.striped",
              m("tr.table-header",
                m("td", ""),
@@ -74,7 +75,14 @@ const domArmyDetails = () => {
                      m("td.painted", ""),
                      m("td", "")
                    ]
-              )
+              ),
+             Credentials.isLoggedIn()
+               ? m("tr",
+                   m("td", "Totals"),
+                   m("td.owned", totals.owned),
+                   m("td.painted", totals.painted),
+                   m("td", m(Pie, { size: 24, n: totals.owned, nPainted: totals.painted, nOwned: totals.owned })))
+               : null
             );
   }
 
