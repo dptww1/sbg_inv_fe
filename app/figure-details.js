@@ -12,6 +12,7 @@ const K             = require("constants");
 const Nav           = require("nav");
 const Pie           = require("components/pie");
 const Request       = require("request");
+const U             = require("utils");
 
 var figure = { factions: [], scenarios: [], history: [] };
 
@@ -115,6 +116,7 @@ const domScenarios = total => {
                                       m("td.pie", m(Pie, { size: 24, n: s.amount, nPainted: figure.painted, nOwned: figure.owned })),
                                       m("td.scenario-name",
                                         m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name)),
+                                        m("span", " " + U.shortResourceLabel(s.source)),
                                       m("td.scenario-amount", total > 1 ? s.amount : null))))
   ]);
 };
