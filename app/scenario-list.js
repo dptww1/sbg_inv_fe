@@ -4,6 +4,7 @@ const m               = require("mithril");
 const prop            = require("mithril/stream");
 
 const Credentials     = require("credentials");
+const Filters         = require("components/filters");
 const Header          = require("header");
 const Pie             = require("components/pie");
 const K               = require("constants");
@@ -40,40 +41,6 @@ const ageAbbrev = ageNumber =>
   (1 <= ageNumber && ageNumber <= 3)
     ? ["?", "FA", "SA", "TA"][ageNumber]
     : "??";
-
-//========================================================================
-const alphabetizedOptionsByValue = hash => {
-  var reverseMap = Object.keys(hash).reduce((map, key) => {
-    map[hash[key]] = key;
-    return map;
-  }, {});
-
-  var values = Object.keys(reverseMap).sort(U.strCmp);
-
-  return values.reduce((list, val) => list.concat([val + "=" + reverseMap[val]]), []);
-};
-
-//========================================================================
-const domFilterDiv = () => {
-  const domEdit = Credentials.admin() ? m("a.icon", { href: "/scenario-edit", oncreate: m.route.link }, K.ICON_STRINGS.plus) : null;
-
-  if (collapsedFilters) {
-    const flabel = scenarioFilters.map(f => f.summaryLabel()).filter(f => f != null).join("; ") || "None";
-    return m("div.filters",
-             m(".arrow", { onclick: () => collapsedFilters = false }, ICON_RIGHT),
-             m("span.label", { onclick: () => collapsedFilters = false }, "Filters: " + flabel),
-             domEdit);
-
-  } else {
-    return m("div.filters",
-             m(".arrow",  { onclick: () => collapsedFilters = true }, ICON_DOWN),
-             m("span.label", { onclick: () => collapsedFilters = true }, "Filter"),
-             scenarioFilters.map(f => m(f)),
-             numFiltersSet() > 1 ? m("div.filter-group",
-                                     m("ul.active-filters", m("li", { onclick: _ => unsetAllFilters() }, "Remove all filters")))
-                                 : null);
-    }
-};
 
 //========================================================================
 const domResourceIcons = resources => {
@@ -138,7 +105,7 @@ const domTable = rawData => {
 
     const f1 = K.FACTION_INFO[scenario.scenario_factions[0].faction];
     const f2 = K.FACTION_INFO[scenario.scenario_factions[1].faction];
-    if (filter(scenario)) {
+    if (Filters.filter(scenario)) {
       desktopRows.push(
         m("tr",
           m("td.completion", m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })),
@@ -146,7 +113,7 @@ const domTable = rawData => {
           m("td.location", K.LOCATIONS[scenario.location]),
           m("td.date-age", ageAbbrev(scenario.date_age)),
           m("td.date-year", scenario.date_year),
-          m("td.source", U.resourceLabel(scenarioSource(scenario))),
+          m("td.source", U.resourceLabel(U.scenarioSource(scenario))),
           m("td.size", scenario.size),
           m("td.map nobr", scenario.map_width + "\" x " + scenario.map_height + "\""),
           m("td.rating", m(StarRating, starParams)),
@@ -166,7 +133,7 @@ const domTable = rawData => {
               },
               scenario.name),
             NBSP,
-            U.shortResourceLabel(scenarioSource(scenario)),
+            U.shortResourceLabel(U.scenarioSource(scenario)),
             m("br"),
             m("span.date-age", ageAbbrev(scenario.date_age)),
             m("span.date-year", scenario.date_year),
@@ -187,68 +154,6 @@ const domTable = rawData => {
 };
 
 //========================================================================
-const filter = rec => scenarioFilters.every(filter => filter.matches(rec));
-
-//========================================================================
-const numFiltersSet = () => scenarioFilters.reduce((sum, filter) => sum + filter.numActive(), 0);
-
-//========================================================================
-const unsetAllFilters = () => scenarioFilters.forEach(f => f.clearActiveFilters());
-
-//========================================================================
-const scenarioFilters = [
-  new SelectFilter("Location",
-                   alphabetizedOptionsByValue(K.LOCATIONS),
-                   (rec, activeOpts) => activeOpts.includes(rec.location)),
-
-  new SelectFilter("Book",
-                   alphabetizedOptionsByValue(K.BOOK_NAMES),
-                   (rec, activeOpts) => activeOpts.includes(scenarioSource(rec) ? scenarioSource(rec).book : null)),
-
-  new SelectFilter("Models",
-                   ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
-                   (rec, activeOpts) => {
-                     for (var i = 0; i < activeOpts.length; ++i) {
-                       switch (activeOpts[i]) {
-                       case  "20": if (                  rec.size <= 20)  return true;  break;
-                       case  "40": if (21 <= rec.size && rec.size <= 40)  return true;  break;
-                       case  "60": if (41 <= rec.size && rec.size <= 60)  return true;  break;
-                       case "100": if (61 <= rec.size && rec.size <= 100) return true;  break;
-                       case   "0": if (100 < rec.size)                    return true;  break;
-                       }
-                     }
-                     return false;
-                   }),
-
-  new SelectFilter("Map Size",
-                   ["Tiny (<24\")=24", "Small (36\")=36", "Medium (48\")=48", "Large (>48\")=0"],
-                   (rec, activeOpts) => {
-                     for (var i = 0; i < activeOpts.length; ++i) {
-                       switch (activeOpts[i]) {
-                       case "24": if (rec.map_width <= 24) return true; break;
-                       case "36": if (rec.map_width == 36) return true; break;
-                       case "48": if (rec.map_width == 48) return true; break;
-                       case  "0": if (rec.map_width >  48) return true; break;
-                       }
-                     }
-                     return false;
-                   }),
-
-  new SelectFilter("Resources",
-                   ["Magazine=magazine_replay", "Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
-                   (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length))
-];
-
-//========================================================================
-const scenarioSource = scenario => {
-  return scenario.scenario_resources &&
-         scenario.scenario_resources.source &&
-         scenario.scenario_resources.source.length > 0
-           ? scenario.scenario_resources.source[0]
-           : null;
-}
-
-//========================================================================
 const sortByCompletion = (a, b) => {
   return U.cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
          U.cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
@@ -263,7 +168,7 @@ const sortByDate = (a, b) => {
          U.cmp(a.date_month, b.date_month) ||
          U.cmp(a.date_day, b.date_day) ||
          sortBySource(a, b);
-}
+};
 
 //========================================================================
 const sortByLocation = (a, b) => {
@@ -300,8 +205,8 @@ const sortBySize = (a, b) => {
 
 //========================================================================
 const sortBySource = (a, b) => {
-  var aSrc = scenarioSource(a);
-  var bSrc = scenarioSource(b);
+  var aSrc = U.scenarioSource(a);
+  var bSrc = U.scenarioSource(b);
 
   if (!aSrc && !bSrc) {
     return 0;
@@ -349,66 +254,6 @@ const tableSorter = list => {
 };
 
 //========================================================================
-function SelectFilter(name, optionList, matchFn) {
-  var self = this;
-
-  this.label          = name;
-  this.internalName   = name.sub(/[^A-Za-z0-9]/g, "-");
-  this.optionMap      = {};   // key: orderedOptions[n]  value: { label: string, active: boolean}
-  this.orderedOptions = [];
-  this.activeOptions  = 0;
-
-  optionList.forEach(opt => {
-    var [optLabel, optVal] = opt.split(/\s*=\s*/);
-    optVal = optVal || optLabel;
-    this.orderedOptions.push(optVal);
-    this.optionMap[optVal] = { label: optLabel, active: false };
-  });
-
-  this.view = _ => {
-    return m("div.filter-group", [
-      m("select",
-        {
-          name: self.internalName,
-          onchange: ev => { self.optionMap[ev.target.value].active = true; ++self.activeOptions; }
-        },
-        m("option[value=]", "... by " + self.label),
-        self.orderedOptions.map(optVal => {
-          return self.optionMap[optVal].active ? null : m("option", { value: optVal }, self.optionMap[optVal].label);
-        })),
-
-      m("ul.active-filters", self.orderedOptions.filter(opt => self.optionMap[opt].active).map(f => {
-        return m("li",
-                 { onclick: ev => { self.optionMap[f].active = false; --self.activeOptions; } },
-                 self.optionMap[f].label);
-      }))
-    ]);
-  };
-
-  this.matches = (rec) => self.activeOptions == 0 || matchFn(rec, self.orderedOptions.filter(o => self.optionMap[o].active));
-
-  this.numActive = () => {
-    return self.activeOptions;
-  };
-
-  this.clearActiveFilters = () => {
-    self.orderedOptions.forEach(opt => self.optionMap[opt].active = false);
-    self.activeOptions = 0;
-  };
-
-  this.summaryLabel = () => {
-    if (self.activeOptions === 0) {
-      return null;
-    }
-
-    return self.label + ": " +
-           self.orderedOptions.filter(opt => self.optionMap[opt].active)
-                              .map(opt => self.optionMap[opt].label)
-                              .join(",");
-  };
-}
-
-//========================================================================
 const ScenarioListScreen = {
   oninit: (/*vnode*/) =>
     Request.get("/scenarios",
@@ -424,7 +269,7 @@ const ScenarioListScreen = {
     view: () => [
       m(Header),
       m(Nav, { selected: "Scenario List" }),
-      domFilterDiv(),
+      m(Filters),
       m("div.main-content",
         data() ? domTable(data().data) : "Loading...")
     ]

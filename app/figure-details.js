@@ -5,6 +5,7 @@ const prop       = require("mithril/stream");
 
 const Credentials   = require("credentials");
 const FigureList    = require("figure-list");
+const Filters       = require("components/filters");
 const Editor        = require("components/figure-inventory-editor");
 const FigureHistory = require("components/figure-history-list");
 const Header        = require("header");
@@ -107,17 +108,18 @@ const domInventory = total => {
 
 //========================================================================
 const domScenarios = total => {
+  const filteredScenarios = figure.scenarios.filter(f => Filters.filter(f));
   return m(".figure-scenarios", [
     m(".section-header", "Scenarios"),
     m("table",
-      figure.scenarios.length == 0
+      filteredScenarios == 0
         ? m("tr", m("td", "None"))
-        : figure.scenarios.map(s => m("tr",
-                                      m("td.pie", m(Pie, { size: 24, n: s.amount, nPainted: figure.painted, nOwned: figure.owned })),
-                                      m("td.scenario-name",
-                                        m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name)),
-                                        m("span", " " + U.shortResourceLabel(s.source)),
-                                      m("td.scenario-amount", total > 1 ? s.amount : null))))
+        : filteredScenarios.map(s => m("tr",
+                                       m("td.pie", m(Pie, { size: 24, n: s.amount, nPainted: figure.painted, nOwned: figure.owned })),
+                                       m("td.scenario-name",
+                                         m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name),
+                                         m("span", " " + U.shortResourceLabel(s.source))),
+                                       m("td.scenario-amount", total > 1 ? s.amount : null))))
   ]);
 };
 
@@ -202,6 +204,7 @@ const FigureDetailScreen = {
       m(Header),
       m(Nav, { selected: "Figure Details" }),
       m("div.main-content", [
+        m(Filters, { activeFilters: "Book" }),
         m(".detail-page-title", figure.name),
         Credentials.isAdmin() ? m("button",
                                   { onclick: ev => m.route.set("/figure-edit/" + figure.id) },

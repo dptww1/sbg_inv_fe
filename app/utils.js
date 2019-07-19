@@ -5,6 +5,18 @@ const K = require("constants");
 const sortOrderMap = {};
 
 //========================================================================
+module.exports.alphabetizedOptionsByValue = hash => {
+  var reverseMap = Object.keys(hash).reduce((map, key) => {
+    map[hash[key]] = key;
+    return map;
+  }, {});
+
+  var values = Object.keys(reverseMap).sort(module.exports.strCmp);
+
+  return values.reduce((list, val) => list.concat([val + "=" + reverseMap[val]]), []);
+};
+
+//========================================================================
 const asNormalized = s => {
   let s2 = sortOrderMap[s] ||
            s.normalize('NFD')
@@ -23,6 +35,15 @@ module.exports.resourceLabel = res =>
   res && res.book
     ? K.BOOK_NAMES[res.book] + (res.issue ? " #" + res.issue : "")
     : "";
+
+//========================================================================
+// Used by both scenarios and figures, which have different source formats.
+// Really should fix the API...
+//------------------------------------------------------------------------
+module.exports.scenarioSource = rec =>
+  rec.scenario_resources && rec.scenario_resources.source && rec.scenario_resources.source.length > 0
+    ? rec.scenario_resources.source[0]  // scenario
+    : rec.source;                       // figure
 
 //========================================================================
 module.exports.shortResourceLabel = res =>
