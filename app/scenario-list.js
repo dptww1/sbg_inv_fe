@@ -1,7 +1,6 @@
 /* global module require */
 
 const m               = require("mithril");
-const prop            = require("mithril/stream");
 
 const Credentials     = require("credentials");
 const Filters         = require("components/filters");
@@ -13,8 +12,6 @@ const Request         = require("request");
 const ScenarioUpdater = require("scenario-updater");
 const StarRating      = require("components/star-rating");
 const U               = require("utils");
-
-const data = prop(false);
 
 const ICON_DOWN       = "\u25bc";  // ▼
 const ICON_RIGHT      = "\u25b6";  // ▶
@@ -35,6 +32,8 @@ const sorters = {
 let collapsedFilters = true;
 let curSorter = "date";
 let curSortReversed = false;
+
+let data = null;
 
 //========================================================================
 const ageAbbrev = ageNumber =>
@@ -262,7 +261,7 @@ const ScenarioListScreen = {
                   if (curSortReversed) {
                     resp.data.reverse();
                   }
-                  data({ data: resp.data });
+                  data = resp.data;
                   m.redraw();
                 }),
 
@@ -271,17 +270,17 @@ const ScenarioListScreen = {
       m(Nav, { selected: "Scenario List" }),
       m(Filters),
       m("div.main-content",
-        data() ? domTable(data().data) : "Loading...")
+        data ? domTable(data) : "Loading...")
     ]
 };
 
 //========================================================================
 ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
-  if (!data()) {
+  if (!data) {
     return;
   }
 
-  const scenarioList = data().data;
+  const scenarioList = data;
 
   var idx = scenarioList.findIndex(elt => elt.id === id);
   if (idx >= 0) {
