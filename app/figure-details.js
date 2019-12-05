@@ -124,6 +124,13 @@ const domScenarios = total => {
 };
 
 //========================================================================
+const domSilhouette = _ =>
+      figure.slug
+        ? m(".silhouette",
+            m("img", { src: "/images/factions" + figure.slug + ".png" }))
+        : null;
+
+//========================================================================
 const requestFigureModelData = figureId => {
   Request.get("/figure/" + figureId,
               resp => {
@@ -210,6 +217,7 @@ const FigureDetailScreen = {
                                   { onclick: ev => m.route.set("/figure-edit/" + figure.id) },
                                   "Edit Figure")
                               : null,
+        domSilhouette(),
         domInventory(total),
         domFactions(),
         domScenarios(total),

@@ -106,6 +106,15 @@ const FigureEditScreen = {
                        ))),
 
             m("tr",
+              m("td", "Slug"),
+              m("td", m("input[type=text][name=slug][size=40]",
+                        {
+                          onchange: ev => figure.slug = ev.target.value,
+                          value: figure.slug
+                        }
+                       ))),
+
+            m("tr",
               m("td.valign-top", "Factions"),
               m("td",
                 K.SORTED_FACTION_NAMES.map(f => {
