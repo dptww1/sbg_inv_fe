@@ -33,7 +33,7 @@ const updateHistory = (hist, callbackFn) => {
 //========================================================================
 // caller must add m(Editor) to its view nodes!
 const FigureHistoryList = {
-  view: ({ attrs: { list, hideName, callbackFn } }) => {
+  view: ({ attrs: { list, hideName, callbackFn, showTotals } }) => {
     if (!list || list.length === 0) {
       return m("p.text", "None");
     }
@@ -64,7 +64,14 @@ const FigureHistoryList = {
                               onclick: _ => removeHistory(rec, callbackFn)
                             },
                             K.ICON_STRINGS.remove)),
-                        m("td", rec.notes))));
+                        m("td", rec.notes))),
+             showTotals
+               ? m("tr",
+                   m("td", ""),
+                   m("td", "Totals"),
+                   m("td", ""),
+                   m("td", list.reduce((acc, val) => acc += val.amount, 0)))
+               : null);
   }
 };
 

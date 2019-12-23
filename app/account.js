@@ -14,6 +14,26 @@ const Request         = require("request");
 
 let userHistory = [];
 let dateRange = {};
+let historyFilters = [];
+
+const figureHistoryOptions = [
+  {
+    label: "Show All",
+    filters: []
+  },
+  {
+    label: "Show Only Bought",
+    filters: [ "buy_unpainted", "buy_painted" ]
+  },
+  {
+    label: "Show Only Painted",
+    filters: [ "paint" ]
+  },
+  {
+    label: "Show Only Sold",
+    filters: [ "sell_unpainted", "sell_painted" ]
+  }
+];
 
 //========================================================================
 const domBackEndAdmin = () => {
@@ -31,6 +51,13 @@ const domBackEndAdmin = () => {
                                 api.name))),
     m("span.back-end-url", Request.curApi().url)
   ];
+};
+
+//========================================================================
+const domHistoryTypeFilter = () => {
+  return m("select",
+           { onchange: ev => historyFilters = figureHistoryOptions[ev.target.value].filters },
+           figureHistoryOptions.map((o, i) => m("option", { value: i }, o.label)));
 };
 
 //========================================================================
@@ -79,14 +106,18 @@ const AccountScreen = {
         m(".section-header", "Activity"),
 
         m("p.text",
+          domHistoryTypeFilter()),
+
+        m("p.text",
           m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
 
         m("p.text",
           m(FigureHistory,
             {
-              list: userHistory,
+              list: userHistory.filter(h => !historyFilters.length || historyFilters.includes(h.op)),
               hideName: false,
-              callbackFn: refreshHistory
+              callbackFn: refreshHistory,
+              showTotals: historyFilters.length
             })),
 
         m(Editor),
