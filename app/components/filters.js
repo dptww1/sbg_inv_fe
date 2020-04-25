@@ -12,6 +12,15 @@ const ICON_RIGHT      = "\u25b6";  // ▶
 var collapsed = true;
 
 //========================================================================
+// Creates a filter used to narrow down a list of items.
+
+// name - String, used as name of <select> and default "... by [name]"
+// optionList - array of "name=value" strings which populate the <options>
+// matchFn - (rec, activeOps) => boolean
+//     function deciding whether this filter will allow an item or not
+//         rec - current item to consider
+//         activeOps - list of "value" strings in `optionList` which are currently active
+//------------------------------------------------------------------------
 function SelectFilter(name, optionList, matchFn) {
   var self = this;
 
@@ -107,7 +116,13 @@ const filters = [
 
   new SelectFilter("Resources",
                    ["Magazine=magazine_replay", "Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
-                   (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length))
+                   (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length)),
+
+  new SelectFilter("Ownership",
+                   ["Completely Painted=painted", "Completely Owned=owned"],
+                   (rec, activeOpts) => rec.user_scenario != null &&
+                       ((activeOpts.includes("painted") && rec.user_scenario.painted === rec.size) ||
+                        (activeOpts.includes("owned") && rec.user_scenario.owned == rec.size)))
 ];
 
 //========================================================================
