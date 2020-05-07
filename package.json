@@ -12,7 +12,7 @@
     "prod": "brunch build --production"
   },
   "dependencies": {
-    "mithril": "^1.1.6"
+    "mithril": "^2.0.4"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2.0.0",

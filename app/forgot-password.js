@@ -30,7 +30,7 @@ var ForgotPassword = {
         m("p.text", "Forgot your password?"),
         m("div", [
           m("p.text", "Enter your email address to reset your password:"),
-          m("p.text", m("input.email[type=email][size=40]", { onchange: m.withAttr("value", email) })),
+          m("p.text", m("input.email[type=email][size=40]", { onchange: ev => email(ev.target.value) })),
           m("p.text", m("button", { onclick: () => reset_password() }, "Reset"))
         ])
       ])

@@ -80,7 +80,7 @@ const domFiguresRollup = (role, figuresList) => {
                            m(Pie, { size: 24, n: role.amount, nPainted: f.painted, nOwned: f.owned }),
                            f.owned > 1 ? m("div.figure-line-amount", f.owned) : null,
                            m("div.figure-line-name",
-                             m("a", {href: "/figures/" + f.figure_id, oncreate: m.route.link}, f.name))));
+                             m(m.route.Link, { href: "/figures/" + f.figure_id }, f.name))));
                 return acc;
               }, []));
   }
@@ -198,7 +198,7 @@ const domResourceTextInput = (name, prop) => {
   return m("input[type=text]",
            {
              name: name,
-             onchange: m.withAttr("value", prop),
+             onchange: ev => prop(ev.target.value),
              value: prop() ? prop() : ""
            });
 };
@@ -219,7 +219,7 @@ const domRolesRollup = (rolesList) => {
                            onmouseout: () => menuHide(r.id)
                          },
                          r.name)
-                     : m("a", {href: "/figures/" + r.figures[0].figure_id, oncreate: m.route.link}, r.name)),
+                     : m(m.route.Link, { href: "/figures/" + r.figures[0].figure_id }, r.name)),
                    domFiguresRollup(r, r.figures)));
     });
 

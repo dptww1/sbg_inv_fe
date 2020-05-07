@@ -117,7 +117,7 @@ const domScenarios = total => {
         : filteredScenarios.map(s => m("tr",
                                        m("td.pie", m(Pie, { size: 24, n: s.amount, nPainted: figure.painted, nOwned: figure.owned })),
                                        m("td.scenario-name",
-                                         m("a", { oncreate: m.route.link, href: "/scenarios/" + s.scenario_id }, s.name),
+                                         m(m.route.Link, { href: "/scenarios/" + s.scenario_id }, s.name),
                                          m("span", " " + U.shortResourceLabel(s.source))),
                                        m("td.scenario-amount", total > 1 ? s.amount : null))))
   ]);

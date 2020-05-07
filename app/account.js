@@ -136,12 +136,12 @@ const AccountScreen = {
             m("tr",
               m("td", "Email"),
               m("td", m("input[type=text][name=email][size=40]",
-                        { onchange: m.withAttr("value", Credentials.email), value: Credentials.email() }))),
+                        { onchange: ev => Credentials.email(ev.target.value), value: Credentials.email() }))),
 
             m("tr",
               m("td", "New Password"),
               m("td", m("input[type=password][name=password][size=40]",
-                        { onchange: m.withAttr("value", Credentials.password), value: Credentials.password() })),
+                        { onchange: ev => Credentials.password(ev.target.value), value: Credentials.password() })),
               m("td", m("span.field-note", "(leave empty to keep the same password)"))),
 
             m("tr",

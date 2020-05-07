@@ -108,7 +108,7 @@ const domTable = rawData => {
       desktopRows.push(
         m("tr",
           m("td.completion", m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })),
-          m("td.name", [ m("a", { class: "scenario-detail-link", oncreate: m.route.link, href: "/scenarios/" + scenario.id}, scenario.name) ]),
+          m("td.name", [ m(m.route.Link, { class: "scenario-detail-link", href: "/scenarios/" + scenario.id}, scenario.name) ]),
           m("td.location", K.LOCATIONS[scenario.location]),
           m("td.date-age", ageAbbrev(scenario.date_age)),
           m("td.date-year", scenario.date_year),
@@ -124,10 +124,9 @@ const domTable = rawData => {
         m("tr",
           m("td.completion", m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })),
           m("td.name",
-            m("a",
+            m(m.route.Link,
               {
                 class: "scenario-detail-link",
-                oncreate: m.route.link,
                 href: "/scenarios/" + scenario.id
               },
               scenario.name),

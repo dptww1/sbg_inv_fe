@@ -141,7 +141,7 @@ const Filters = {
   oninit: ({ attrs: { activeFilters } }) => filters.forEach(f => f.active = !activeFilters || activeFilters.includes(f.label)),
 
   view: (vnode) => {
-    const domEdit = Credentials.isAdmin() ? m("a.icon", { href: "/scenario-edit", oncreate: m.route.link }, K.ICON_STRINGS.plus) : null;
+    const domEdit = Credentials.isAdmin() ? m(m.route.Link, { class: "icon", href: "/scenario-edit" }, K.ICON_STRINGS.plus) : null;
 
     return m("div.filters",
              collapsed

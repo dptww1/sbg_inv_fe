@@ -39,16 +39,16 @@ const RegisterScreen = {
                 m("table",
                     m("tr",
                       m("td", "Name"),
-                      m("td", m("input[type=text][name=name][size=40]", { onchange: m.withAttr("value", Credentials.name) }))),
+                      m("td", m("input[type=text][name=name][size=40]", { onchange: ev => Credentials.name(ev.target.value) }))),
 
                     m("tr",
                       m("td", "Email"),
-                      m("td", m("input[type=text][name=email][size=40]", { onchange: m.withAttr("value", Credentials.email) }))),
+                      m("td", m("input[type=text][name=email][size=40]", { onchange: ev => Credentials.email(ev.target.value) }))),
 
                     m("tr",
                       m("td", "Password"),
                       m("td",
-                        m("input[type=password][name=password][size=40]", { onchange: m.withAttr("value", Credentials.password) }))),
+                        m("input[type=password][name=password][size=40]", { onchange: ev => Credentials.password(ev.target.value) }))),
 
                     m("tr",
                       m("td", ""),

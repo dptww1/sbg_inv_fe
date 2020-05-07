@@ -66,7 +66,7 @@ const request = (httpMethod, url, data, successFn) => {
   }
 
   if (data) {
-    opts.data = data;
+    opts.body = data;
   }
 
   return m.request(opts).then(

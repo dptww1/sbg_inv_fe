@@ -38,13 +38,13 @@ m.route.set = (path, data, options) => {
   window.scrollTo(0, 0);
 };
 
-m.route.linkNoScroll = m.route.link;
-m.route.link = vnode => {
-  m.route.linkNoScroll(vnode);
-  window.scrollTo(0, 0);
-};
+//m.route.linkNoScroll = m.route.link;
+//m.route.link = vnode => {
+//  m.route.linkNoScroll(vnode);
+//  window.scrollTo(0, 0);
+//};
 
-m.route.prefix("#");
+m.route.prefix = "#";
 m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"                  : About,
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEdit),

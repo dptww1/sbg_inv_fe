@@ -110,7 +110,7 @@ const domFigureListByType = (title, list) => {
     m("tr.figure-list-section", m("td.section-header", { colspan: 2 }, title)),
     list.map(fig => {
       return m("tr",
-               m("td.name", m("a", { href: "/figures/" + fig.id, oncreate: m.route.link }, fig["name"])),
+               m("td.name", m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])),
                Credentials.isLoggedIn() ? m("td.owned", fig.owned) : null,
                Credentials.isLoggedIn() ? m("td.painted", fig.painted) : null,
                Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: fig.owned, nPainted: fig.painted, nOwned: fig.owned })) : null,

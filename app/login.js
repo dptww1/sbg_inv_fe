@@ -29,21 +29,21 @@ const LoginScreen = {
             m("div.main-content forgot-password",
               m("p.text",
                 "Log in using your email and password. New user? ",
-                m("a[href=/register]", { oncreate: m.route.link }, "Sign up!")
+                m(m.route.Link, { href: "/register" }, "Sign up!")
                ),
               m("p.text",
                 m("table",
                   m("tr",
                     m("td", "Email"),
                     m("td",
-                      m("input[type=email][name=email][size=40]", { onchange: m.withAttr("value", Credentials.email) }))),
+                      m("input[type=email][name=email][size=40]", { onchange: ev => Credentials.email(ev.target.value) }))),
 
                   m("tr",
                     m("td", "Password"),
                     m("td",
-                      m("input[type=password][name=password][size=40]", { onchange: m.withAttr("value", Credentials.password) })),
+                      m("input[type=password][name=password][size=40]", { onchange: ev => Credentials.password(ev.target.value) })),
                     m("td",
-                      m("a.forgot-pw[href=/forgot-pw]", { oncreate: m.route.link }, "Forgot your password?"))),
+                      m(m.route.Link, { class: "forgot-pw", href: "/forgot-pw" }, "Forgot your password?"))),
 
                   m("tr",
                     m("td", ""),

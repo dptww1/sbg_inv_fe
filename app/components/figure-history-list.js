@@ -45,9 +45,8 @@ const FigureHistoryList = {
                         hideName
                           ? null
                           : m("td",
-                              m("a",
+                              m(m.route.Link,
                                 {
-                                  oncreate: m.route.link,
                                   href: "/figures/" + rec.figure_id
                                 },
                                 rec.amount > 1 ? rec.plural_name : rec.name)),
