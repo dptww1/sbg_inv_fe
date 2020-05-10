@@ -73,7 +73,7 @@ module.exports.BOOK_NAMES = {
   gaw:     "Gondor at War (2019)",
   bgime:   "Battle Games in Middle Earth (2002)",
   sos2:    "The Scouring of the Shire (2019)",
-  wfr:     "War for Rohan (2019)"
+  wfr:     "War in Rohan (2019)"
 };
 
 module.exports.FACTION_INFO = {
