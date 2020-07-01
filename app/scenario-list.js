@@ -230,8 +230,10 @@ const sortByTitle = (a, b) => U.strCmp(a, b);
 const tableSorter = list => {
   return {
     onclick: function(ev) {
-      curSorter = ev.target.getAttribute("data-sort-by");
-      if (curSorter) {
+      const newSorter = ev.target.getAttribute("data-sort-by");
+      // click on scenario title runs through here, so don't erase existing value
+      if (newSorter) {
+        curSorter = newSorter;
         var arrowNodes = document.getElementsByClassName("sort-arrow");
         for (var i = 0; i < arrowNodes.length; ++i) {
           arrowNodes[i].innerHTML = "&nbsp;";
