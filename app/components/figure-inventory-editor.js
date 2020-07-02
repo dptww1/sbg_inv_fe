@@ -11,14 +11,16 @@ let instrText;
 
 //========================================================================
 const createPrompt = rec => {
-  const type = rec.op.indexOf("unpainted") >= 0 || rec.op === "painted"
-                 ? "unpainted"
-                 : "painted";
   const verb = rec.op.startsWith("buy")
                  ? "buy"
                  : rec.op.startsWith("sell")
                    ? "sell"
                    : "paint";
+  const type = verb == "paint"
+                   ? ""
+                   : rec.op.indexOf("unpainted") >= 0 || rec.op === "painted"
+                         ? "unpainted"
+                         : "painted";
   return `How many ${type} ${rec.plural_name || rec.name} did you ${verb}?`;
 };
 
@@ -126,7 +128,7 @@ const FigureInventoryEditor = {
             m("label.left", "Notes")),
 
           m(".figure-inventory-popup-row",
-            m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=45]",
+            m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=35]",
               {
                 onchange: ev => rec.notes = ev.target.value,
                 value: rec.notes
