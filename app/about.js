@@ -7,23 +7,36 @@ const Nav     = require("nav");
 const Request = require("request");
 
 var news = [];
+var numNewsItems = 5;
+var showMore = true;
 
 //========================================================================
 const domNews = () => {
-  var s = m("table.news",
-            news.map(item => m("tr",
-                               m("td.nobr", item.item_date),
-                               m("td", item.item_text))));
-  return s;
+  return m("table.news",
+           news.map(item => m("tr",
+                              m("td.nobr", item.item_date),
+                              m("td", item.item_text))),
+           showMore
+             ? m("tr", m("td", m("button", { onclick: updateNews }, "Older News")))
+             : null);
 };
+
+//========================================================================
+const updateNews = () => {
+  numNewsItems += 5;
+  Request.get("/newsitem?n=" + numNewsItems,
+              resp => {
+                const oldNumItems = news.length;
+                news = resp.data;
+                showMore = news.length > oldNumItems;
+              });
+}
 
 //========================================================================
 const AboutScreen = {
   oninit: (/*vnode*/) => {
-    Request.get("/newsitem",
-                resp => {
-                  news = resp.data;
-                });
+    numNewsItems = 0;
+    updateNews();
   },
 
   view() {
