@@ -35,6 +35,8 @@ const figureHistoryOptions = [
   }
 ];
 
+let curFigureHistoryOptionLabel = figureHistoryOptions[0].label;
+
 //========================================================================
 const domBackEndAdmin = () => {
   return [
@@ -56,8 +58,20 @@ const domBackEndAdmin = () => {
 //========================================================================
 const domHistoryTypeFilter = () => {
   return m("select",
-           { onchange: ev => historyFilters = figureHistoryOptions[ev.target.value].filters },
-           figureHistoryOptions.map((o, i) => m("option", { value: i }, o.label)));
+           {
+             onchange: ev => {
+               curFigureHistoryOptionLabel = figureHistoryOptions[ev.target.value].label;
+               historyFilters = figureHistoryOptions[ev.target.value].filters;
+
+             }
+           },
+           figureHistoryOptions.map((o, i) =>
+                                    m("option",
+                                      {
+                                        value: i,
+                                        selected: o.label === curFigureHistoryOptionLabel
+                                      },
+                                      o.label)));
 };
 
 //========================================================================
