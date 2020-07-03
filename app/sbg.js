@@ -60,5 +60,6 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/register"               : Register,
   "/forgot-pw"              : ForgotPassword,
   "/account"                : Account,
+  "/"                       : ScenarioList,
   "/:404..."                : Page404
 });
