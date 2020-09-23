@@ -49,7 +49,7 @@ const FigureHistoryList = {
                                 {
                                   href: "/figures/" + rec.figure_id
                                 },
-                                rec.amount > 1 ? rec.plural_name : rec.name)),
+                                rec.amount > 1 && rec.plural_name ? rec.plural_name : rec.name)),
                         m("td", K.USER_FIGURE_OPS[rec.op]),
                         m("td", rec.amount),
                         m("td",
