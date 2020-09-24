@@ -3,6 +3,7 @@
 const m           = require("mithril");
 
 const Credentials = require("credentials");
+const Editor2     = require("components/figure-inventory-editor2");
 const Header      = require("header");
 const K           = require("constants");
 const Nav         = require("nav");
@@ -108,16 +109,27 @@ const domFigureListByType = (title, list) => {
 
   return [
     m("tr.figure-list-section", m("td.section-header", { colspan: 2 }, title)),
-    list.map(fig => {
-      return m("tr",
-               m("td.name", m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])),
-               Credentials.isLoggedIn() ? m("td.owned", fig.owned) : null,
-               Credentials.isLoggedIn() ? m("td.painted", fig.painted) : null,
-               Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: fig.owned, nPainted: fig.painted, nOwned: fig.owned })) : null,
-               m("td.needed", fig.needed),
-               Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })) : null
-              );
-    })
+    list.map(fig => Credentials.isLoggedIn()
+             ? m("tr",
+                 m("td.name", m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])),
+                 m("td.owned",
+                   m("a",
+                     { onclick: () => Editor2.createUnpaintedHistory(fig, FigureListScreen.refreshArmyDetails) },
+                     fig.owned)),
+                 m("td.painted",
+                   fig.painted < fig.owned
+                   ? m("a",
+                       { onclick: () => Editor2.createPaintedHistory(fig, FigureListScreen.refreshArmyDetails) },
+                       fig.painted)
+                   : fig.painted),
+                 m("td.pie", m(Pie, { size: 24, n: fig.owned, nPainted: fig.painted, nOwned: fig.owned })),
+                 m("td.needed", fig.needed),
+                 m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })))
+
+             : m("tr",
+                 m("td.name", m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])),
+                 m("td.needed", fig.needed))
+            )
   ];
 };
 
@@ -212,7 +224,8 @@ const FigureListScreen = {
                           m("span.icon", K.ICON_STRINGS.log_out),
                           armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
                       : null,
-        domArmyDetails())
+        domArmyDetails()),
+      m(Editor2)
     ];
   }
 };
