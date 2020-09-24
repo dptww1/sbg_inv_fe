@@ -3,6 +3,8 @@
 const m    = require("mithril");
 const prop = require("mithril/stream");
 
+const U = require("utils.js")
+
 let hide = true;
 let rec = {};
 let errors = [];
@@ -82,7 +84,7 @@ const FigureInventoryEditor = {
       new_painted: figure.painted,
       notes: "",
       op: op,
-      op_date: (new Date()).toISOString().substring(0, 10)
+      op_date: U.currentDate()
     };
 
     initDialog(rec, updateCallback);

@@ -31,6 +31,15 @@ const asNormalized = s => {
 module.exports.cmp = (a, b) => a > b ? 1 : a < b ? -1 : 0;
 
 //========================================================================
+module.exports.currentDate = () => {
+  let d = new Date();
+
+  return new Date(d.getTime() - (d.getTimezoneOffset() * 60000))
+      .toISOString()
+      .substring(0, 10);
+}
+
+//========================================================================
 module.exports.resourceLabel = res =>
   res && res.book
     ? K.BOOK_NAMES[res.book] + (res.issue ? " #" + res.issue : "")
