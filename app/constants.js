@@ -35,7 +35,8 @@ module.exports.BOOK_SHORT_NAMES = {
   gaw:     "GaW (2019)",
   bgime:   "BGiME (2002-)",
   sos2:    "SotS (2019)",
-  wfr:     "WfR (2019)"
+  wfr:     "WfR (2019)",
+  qrb:     "Quest (2020)"
 };
 
 module.exports.BOOK_NAMES = {
@@ -73,7 +74,8 @@ module.exports.BOOK_NAMES = {
   gaw:     "Gondor at War (2019)",
   bgime:   "Battle Games in Middle Earth (2002)",
   sos2:    "The Scouring of the Shire (2019)",
-  wfr:     "War in Rohan (2019)"
+  wfr:     "War in Rohan (2019)",
+  qrb:     "Quest of the Ringbearer (2020)"
 };
 
 module.exports.FACTION_INFO = {
