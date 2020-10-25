@@ -37,7 +37,17 @@ module.exports.currentDate = () => {
   return new Date(d.getTime() - (d.getTimezoneOffset() * 60000))
       .toISOString()
       .substring(0, 10);
-}
+};
+
+//========================================================================
+module.exports.resourceIcon = res => {
+  switch (res.resource_type) {
+  case "podcast":      return K.ICON_STRINGS.podcast;
+  case "video_replay": return K.ICON_STRINGS.video_replay;
+  case "web_replay":   return K.ICON_STRINGS.web_replay;
+  default:             return "";
+  }
+};
 
 //========================================================================
 module.exports.resourceLabel = res =>

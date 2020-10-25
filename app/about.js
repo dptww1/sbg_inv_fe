@@ -5,10 +5,15 @@ const m       = require("mithril");
 const Header  = require("header");
 const Nav     = require("nav");
 const Request = require("request");
+const U       = require("utils");
 
 var news = [];
 var numNewsItems = 5;
 var showMore = true;
+
+var resources = []
+var numResources = 5;
+var showMoreResources = true;
 
 //========================================================================
 const domNews = () => {
@@ -17,7 +22,21 @@ const domNews = () => {
                               m("td.nobr", item.item_date),
                               m("td", item.item_text))),
            showMore
-             ? m("tr", m("td", m("button", { onclick: updateNews }, "Older News")))
+             ? m("tr", m("td[colspan=2]", m("button", { onclick: updateNews }, "Older News")))
+             : null);
+};
+
+//========================================================================
+const domResources = () => {
+  return m("table.resources",
+           resources.map(resource =>
+                         m("tr",
+                           m("td.nobr", resource.date),
+                           m("td", m(m.route.Link, { href: "/scenarios/" + resource.scenario_id }, resource.scenario_name)),
+                           m("td.icon", U.resourceIcon(resource)),
+                           m("td", m("a", { href: resource.url }, resource.title)))),
+           showMoreResources
+             ? m("tr", m("td[colspan=2]", m("button", { onclick: updateResources }, "Older Reports")))
              : null);
 };
 
@@ -30,13 +49,27 @@ const updateNews = () => {
                 news = resp.data;
                 showMore = news.length > oldNumItems;
               });
-}
+};
+
+//========================================================================
+const updateResources = () => {
+  numResources += 5;
+  Request.get("/scenarios/-1/resource?n=" + numResources,
+              resp => {
+                const oldNumResources = resources.length;
+                resources = resp.data;
+                showMoreResources = resources.length > oldNumResources;
+              });
+};
 
 //========================================================================
 const AboutScreen = {
   oninit: (/*vnode*/) => {
     numNewsItems = 0;
     updateNews();
+
+    numResources = 0;
+    updateResources();
   },
 
   view() {
@@ -46,7 +79,10 @@ const AboutScreen = {
       m("p.text",
         m(".main-content",
           m("div.section-header", "News"),
-          domNews())),
+          domNews(),
+          m("div.section-header", "Recent Battle Reports"),
+          domResources()
+         )),
 
       m("div.section-header text", "Welcome!"),
       m("p.text",
