@@ -43,48 +43,61 @@ const computeUnaffiliatedTotals = figureMap => {
 //========================================================================
 const domArmyDetails = () => {
   if (armyId === "") {
-    const totals = computeTotals(Object.values(factionOverviewMap));
-    return m("table.striped",
-             m("tr.table-header",
-               m("td", ""),
-               Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
-               Credentials.isLoggedIn() ? m("td.painted[colspan=2]", "Painted") : null),
+    const totals = factionOverviewMap["Totals"]
+                   || { owned: 0, painted: 0 }
+    return [
+      m("table.striped",
+        m("tr.table-header",
+          m("td", ""),
+          Credentials.isLoggedIn() ? m("td.owned", "Owned") : null,
+          Credentials.isLoggedIn() ? m("td.painted[colspan=2]", "Painted") : null),
 
-             K.SORTED_FACTION_NAMES.map(name => {
-               let faction = K.FACTION_ABBREV_BY_NAME[name];
-               let thisMap = factionOverviewMap[faction];
-               return m("tr",
-                        m("td",
-                          m("a", { onclick: _ => FigureListScreen.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
-                        m("td.owned", thisMap ? thisMap.owned : ""),
-                        m("td.painted", thisMap ? thisMap.painted : ""),
-                        m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
-                       );
-             }),
+        K.SORTED_FACTION_NAMES.map(name => {
+          let faction = K.FACTION_ABBREV_BY_NAME[name];
+          let thisMap = factionOverviewMap[faction];
+          return m("tr",
+                   m("td",
+                     m("a", { onclick: _ => FigureListScreen.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
+                   m("td.owned", thisMap ? thisMap.owned : ""),
+                   m("td.painted", thisMap ? thisMap.painted : ""),
+                   m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
+                  );
+        }),
 
-             m("tr",
-               m("td",
-                 m("a", { onclick: _ => FigureListScreen.updateArmyDetails(-1) }, "Unaffiliated")),
-               unaffiliatedFigureMap
-                 ? [
-                     m("td.owned", unaffiliatedFigureMap.owned),
-                     m("td.painted", unaffiliatedFigureMap.painted),
-                     m("td", m(Pie, { size: 24, n: unaffiliatedFigureMap.owned, nPainted: unaffiliatedFigureMap.painted, nOwned: unaffiliatedFigureMap.owned }))
-                   ]
-                 : [
-                     m("td.owned", ""),
-                     m("td.painted", ""),
-                     m("td", "")
-                   ]
-              ),
-             Credentials.isLoggedIn()
-               ? m("tr",
-                   m("td", "Totals"),
-                   m("td.owned", totals.owned),
-                   m("td.painted", totals.painted),
-                   m("td", m(Pie, { size: 24, n: totals.owned, nPainted: totals.painted, nOwned: totals.owned })))
-               : null
-            );
+        m("tr",
+          m("td",
+            m("a", { onclick: _ => FigureListScreen.updateArmyDetails(-1) }, "Unaffiliated")),
+            unaffiliatedFigureMap
+              ? [
+                  m("td.owned", unaffiliatedFigureMap.owned),
+                  m("td.painted", unaffiliatedFigureMap.painted),
+                  m("td",
+                    Credentials.isLoggedIn()
+                      ? m(Pie, { size: 24, n: unaffiliatedFigureMap.owned, nPainted: unaffiliatedFigureMap.painted, nOwned: unaffiliatedFigureMap.owned })
+                      : null)
+                ]
+              : [
+                  m("td.owned", ""),
+                  m("td.painted", ""),
+                  m("td", "")
+              ]
+         ),
+        Credentials.isLoggedIn()
+          ? [
+              m("tr",
+                m("td", "Totals"),
+                m("td.owned", totals.owned),
+                m("td.painted", totals.painted),
+                m("td", m(Pie, { size: 24, n: totals.owned, nPainted: totals.painted, nOwned: totals.owned })))
+            ]
+          : null
+       ),
+       Credentials.isLoggedIn()
+         ? m("div.note",
+             "(Because figures can belong to multiple factions, Totals are not the sum of the faction numbers. " +
+             "They are the actual number of figures in your collection.)")
+         : null
+     ];
   }
 
   return m("table",
