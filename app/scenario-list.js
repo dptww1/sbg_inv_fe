@@ -219,7 +219,8 @@ const sortBySource = (a, b) => {
   }
 
   return sortByTitle(aSrc.title, bSrc.title) ||
-         U.cmp(aSrc.issue, bSrc.issue) ||
+         U.cmp(isNaN(aSrc.issue) ? aSrc.issue : +aSrc.issue,
+               isNaN(bSrc.issue) ? bSrc.issue : +bSrc.issue) ||
          U.cmp(aSrc.sort_order, bSrc.sort_order);
 };
 
