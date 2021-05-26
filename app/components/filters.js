@@ -119,10 +119,17 @@ const filters = [
                    (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length)),
 
   new SelectFilter("Ownership",
-                   ["Completely Painted=painted", "Completely Owned=owned"],
+                   [
+                     "Completely Painted=painted",
+                     "Completely Owned=owned",
+                     "Has Unpainted=unpainted",
+                     "Has Unowned=unowned"
+                   ],
                    (rec, activeOpts) => rec.user_scenario != null &&
                        ((activeOpts.includes("painted") && rec.user_scenario.painted === rec.size) ||
-                        (activeOpts.includes("owned") && rec.user_scenario.owned == rec.size)))
+                        (activeOpts.includes("owned") && rec.user_scenario.owned == rec.size) ||
+                        (activeOpts.includes("unpainted") && rec.user_scenario.painted !== rec.size) ||
+                        (activeOpts.includes("unowned") && rec.user_scenario.owned !== rec.size)))
 ];
 
 //========================================================================
