@@ -433,10 +433,33 @@ select.date-range-picker-select {
     font-size: 67%;
   }
 
+  td.hasSilhouette:hover:before {
+    display: block;
+  }
+
+  td.hasSilhouette:before {
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+    content: var(--img);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    display: none;
+  }
+
   td.name {
-    padding: 0;
     a {
       margin-left: 0.25em;
+    }
+    padding: 0;
+    position: relative;
+
+    .silhouettePopup {
+        display: none;
+        position: relative;
     }
   }
 

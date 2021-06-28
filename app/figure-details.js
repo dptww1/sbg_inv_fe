@@ -127,7 +127,7 @@ const domScenarios = total => {
 const domSilhouette = _ =>
       figure.slug
         ? m(".silhouette",
-            m("img", { src: "/images/factions" + figure.slug + ".png" }))
+            m("img", { src: U.silhouetteUrl(figure.slug) }))
         : null;
 
 //========================================================================

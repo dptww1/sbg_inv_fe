@@ -71,6 +71,9 @@ module.exports.shortResourceLabel = res =>
     : "";
 
 //========================================================================
+module.exports.silhouetteUrl = slug => "/images/factions" + slug + ".png";
+
+//========================================================================
 module.exports.strCmp = (a, b) => {
   let a2 = asNormalized(a);
   let b2 = asNormalized(b);

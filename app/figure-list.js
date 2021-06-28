@@ -124,7 +124,13 @@ const domFigureListByType = (title, list) => {
     m("tr.figure-list-section", m("td.section-header", { colspan: 2 }, title)),
     list.map(fig => Credentials.isLoggedIn()
              ? m("tr",
-                 m("td.name", m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])),
+                 m("td",
+                   {
+                     class: "name" + (fig.slug ? " hasSilhouette" : ""),
+                     style: "--img: url('" + U.silhouetteUrl(fig.slug) + "')"
+                   },
+                   m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])
+                  ),
                  m("td.owned",
                    m("a",
                      { onclick: () => Editor2.createUnpaintedHistory(fig, FigureListScreen.refreshArmyDetails) },
@@ -140,7 +146,10 @@ const domFigureListByType = (title, list) => {
                  m("td.pie", m(Pie, { size: 24, n: fig.needed, nPainted: fig.painted, nOwned: fig.owned })))
 
              : m("tr",
-                 m("td.name", m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])),
+                 m("td.name",
+                   m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"]),
+                   //TODO
+                  ),
                  m("td.needed", fig.needed))
             )
   ];
