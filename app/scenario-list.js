@@ -234,6 +234,7 @@ const tableSorter = list => {
       const newSorter = ev.target.getAttribute("data-sort-by");
       // click on scenario title runs through here, so don't erase existing value
       if (newSorter) {
+        localStorage.setItem("scenario-list--sort", newSorter);
         curSorter = newSorter;
         var arrowNodes = document.getElementsByClassName("sort-arrow");
         for (var i = 0; i < arrowNodes.length; ++i) {
@@ -256,7 +257,8 @@ const tableSorter = list => {
 
 //========================================================================
 const ScenarioListScreen = {
-  oninit: (/*vnode*/) =>
+  oninit: (/*vnode*/) => {
+    curSorter = localStorage.getItem("scenario-list--sort") || "date";
     Request.get("/scenarios",
                 resp => {
                   resp.data.sort(sorters[curSorter]);
@@ -265,7 +267,8 @@ const ScenarioListScreen = {
                   }
                   data = resp.data;
                   m.redraw();
-                }),
+                })
+    },
 
     view: () => [
       m(Header),
