@@ -1,4 +1,4 @@
-/* global module require */
+/* global localStorage module require */
 
 const m = require("mithril");
 
@@ -10,6 +10,28 @@ const ICON_DOWN       = "\u25bc";  // ▼
 const ICON_RIGHT      = "\u25b6";  // ▶
 
 var collapsed = true;
+
+//========================================================================
+const saveFilterSettings = (filterName, orderedOptions, optionMap) => {
+  const saveKey = "scenario-filter--" + filterName;
+
+  if (!orderedOptions || !optionMap) {
+    localStorage.removeItem(saveKey);
+    return;
+  }
+
+  const saveVal = orderedOptions
+        .filter(v => optionMap[v].active)
+        .map(v => optionMap[v].label)
+        .join("|");
+
+  if (!saveVal) {
+    localStorage.removeItem(saveKey);
+    return;
+  }
+
+  localStorage.setItem(saveKey, saveVal);
+};
 
 //========================================================================
 // Creates a filter used to narrow down a list of items.
@@ -35,25 +57,50 @@ function SelectFilter(name, optionList, matchFn) {
     var [optLabel, optVal] = opt.split(/\s*=\s*/);
     optVal = optVal || optLabel;
     this.orderedOptions.push(optVal);
-    this.optionMap[optVal] = { label: optLabel, active: false };
+    this.optionMap[optVal] = {
+      label: optLabel,
+      active: false
+    };
   });
+
+  this.initFromStorage = _ => {
+    const activeOptionsStr = localStorage.getItem("scenario-filter--" + self.internalName) || "";
+    activeOptionsStr
+      .split("|")
+      .forEach(label => self.optionMap[label].active = true);
+  };
 
   this.view = _ => {
     return m("div.filter-group", [
       m("select",
         {
           name: self.internalName,
-          onchange: ev => { self.optionMap[ev.target.value].active = true; ++self.activeOptions; }
+          onchange: ev => {
+            self.optionMap[ev.target.value].active = true;
+            ++self.activeOptions;
+            saveFilterSettings(self.internalName, self.orderedOptions, self.optionMap);
+          }
         },
         m("option[value=]", "... by " + self.label),
         self.orderedOptions.map(optVal => {
-          return self.optionMap[optVal].active ? null : m("option", { value: optVal }, self.optionMap[optVal].label);
+          return self.optionMap[optVal].active
+            ? null
+            : m("option", { value: optVal }, self.optionMap[optVal].label);
         })),
 
-      m("ul.active-filters", self.orderedOptions.filter(opt => self.optionMap[opt].active).map(f => {
-        return m("li",
-                 { onclick: ev => { self.optionMap[f].active = false; --self.activeOptions; } },
-                 self.optionMap[f].label);
+      m("ul.active-filters",
+        self.orderedOptions
+            .filter(opt => self.optionMap[opt].active)
+            .map(f => {
+                  return m("li",
+                           {
+                             onclick: ev => {
+                               self.optionMap[f].active = false;
+                               --self.activeOptions;
+                               saveFilterSettings(self.internalName, self.orderedOptions, self.optionMap);
+                             }
+                           },
+                           self.optionMap[f].label);
       }))
     ]);
   };
@@ -65,6 +112,7 @@ function SelectFilter(name, optionList, matchFn) {
   this.clearActiveFilters = () => {
     self.orderedOptions.forEach(opt => self.optionMap[opt].active = false);
     self.activeOptions = 0;
+    saveFilterSettings(self.internalName, null, null);
   };
 
   this.summaryLabel = () => !self.active || self.activeOptions === 0
@@ -145,7 +193,10 @@ const unsetAllFilters = _ => filters.forEach(f => f.clearActiveFilters());
 const Filters = {
   filter: rec => filters.every(filter => !filter.active || filter.matches(rec)),
 
-  oninit: ({ attrs: { activeFilters } }) => filters.forEach(f => f.active = !activeFilters || activeFilters.includes(f.label)),
+  oninit: ({ attrs: { activeFilters } }) => filters.forEach(f => {
+    f.initFromStorage();
+    return f.active = !activeFilters || activeFilters.includes(f.label);
+  }),
 
   view: (vnode) => {
     const domEdit = Credentials.isAdmin() ? m(m.route.Link, { class: "icon", href: "/scenario-edit" }, K.ICON_STRINGS.plus) : null;
