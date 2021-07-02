@@ -176,7 +176,7 @@ const filters = [
                    (rec, activeOpts) => rec.user_scenario != null &&
                        ((activeOpts.includes("painted") && rec.user_scenario.painted === rec.size) ||
                         (activeOpts.includes("owned") && rec.user_scenario.owned == rec.size) ||
-                        (activeOpts.includes("unpainted") && rec.user_scenario.painted !== rec.size) ||
+                        (activeOpts.includes("unpainted") && rec.user_scenario.painted !== rec.user_scenario.owned) ||
                         (activeOpts.includes("unowned") && rec.user_scenario.owned !== rec.size)))
 ];
 
