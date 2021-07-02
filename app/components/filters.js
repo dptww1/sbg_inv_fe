@@ -22,7 +22,6 @@ const saveFilterSettings = (filterName, orderedOptions, optionMap) => {
 
   const saveVal = orderedOptions
         .filter(v => optionMap[v].active)
-        .map(v => optionMap[v].label)
         .join("|");
 
   if (!saveVal) {
@@ -64,10 +63,13 @@ function SelectFilter(name, optionList, matchFn) {
   });
 
   this.initFromStorage = _ => {
-    const activeOptionsStr = localStorage.getItem("scenario-filter--" + self.internalName) || "";
-    activeOptionsStr
+    (localStorage.getItem("scenario-filter--" + self.internalName) || "")
       .split("|")
-      .forEach(label => self.optionMap[label].active = true);
+      .filter(x => !x.match(/^\s*$/))
+      .forEach(abbrev => {
+        self.optionMap[abbrev].active = true;
+        self.activeOptions += 1;
+      });
   };
 
   this.view = _ => {
