@@ -25,7 +25,7 @@ function SelectFilter(name, optionList, matchFn) {
   var self = this;
 
   this.label          = name;
-  this.internalName   = name.sub(/[^A-Za-z0-9]/g, "-");
+  this.internalName   = name.replaceAll(/[^A-Za-z0-9]/g, "-");
   this.optionMap      = {};   // key: orderedOptions[n]  value: { label: string, active: boolean}
   this.orderedOptions = [];
   this.activeOptions  = 0;
