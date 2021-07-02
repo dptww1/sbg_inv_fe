@@ -35,7 +35,7 @@ module.exports.BOOK_SHORT_NAMES = {
   gaw:     "GaW (2019)",
   bgime:   "BGiME (2002-)",
   sos2:    "SotS (2019)",
-  wfr:     "WfR (2019)",
+  wfr:     "WiR (2019)",
   qrb:     "Quest (2020)"
 };
 
