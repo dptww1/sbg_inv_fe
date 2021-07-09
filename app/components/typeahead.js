@@ -53,8 +53,9 @@ const handleKey = (ev) => {
     ev.preventDefault();
     break;
 
-  case 27: // esc
+  case 27: // esc: cancel search
     initData();
+    attrs.onItemSelect(null);
     ev.preventDefault();
     break;
 

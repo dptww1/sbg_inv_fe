@@ -71,6 +71,12 @@ const domLoggedOutTabs = (loginActive) => {
 
 //========================================================================
 const doSelect = target => {
+   // cancelled?
+  if (target == null) {
+    showSearch = false;
+    return;
+  }
+
   if (target.className === "highlight") {
     target = target.parentElement;
   }
