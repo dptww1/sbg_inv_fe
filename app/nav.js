@@ -142,13 +142,6 @@ const Nav = {
 
         m(".nav-header",
           m(".search-container",
-            /*
-              m(Typeahead,
-              {
-              findMatches: findCompletions,
-              onItemSelect: doSelect
-              })*/
-            //                  m("input[name=search][type=text][placeholder=Search for...]"),
             m("span.icon search", { onclick: () => showSearch = !showSearch }, K.ICON_STRINGS.search)
            ))
        ),
