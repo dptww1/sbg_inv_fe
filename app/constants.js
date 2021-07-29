@@ -185,6 +185,7 @@ module.exports.ICON_STRINGS = {
   register:     "\ue969",
   search:       "\ue986",
   scenarios:    "\ue920",
+  stats:        "\ue99c",
 
   // Resource Icons
   magazine_replay: "\ue91f",

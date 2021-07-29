@@ -16,6 +16,7 @@ const Register        = require("register");
 const ScenarioDetails = require("scenario-details");
 const ScenarioEdit    = require("admin-components/scenario-edit");
 const ScenarioList    = require("scenario-list");
+const Stats           = require("stats");
 
 const AuthenticatingResolver = component => {
   return {
@@ -60,6 +61,7 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/register"               : Register,
   "/forgot-pw"              : ForgotPassword,
   "/account"                : Account,
+  "/stats"                  : Stats,
   "/"                       : ScenarioList,
   "/:404..."                : Page404
 });

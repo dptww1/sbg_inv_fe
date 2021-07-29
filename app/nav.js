@@ -111,11 +111,12 @@ const findCompletions = (s, typeahead) => {
 const Nav = {
 
   view(vnode) {
-    var aboutActive        = vnode.attrs.selected == "About";
-    var accountActive      = vnode.attrs.selected == "Account";
-    var loginActive        = vnode.attrs.selected == "Login";
-    var figureListActive   = vnode.attrs.selected == "Figures";
-    var scenarioListActive = vnode.attrs.selected == "Scenario List";
+    const aboutActive        = vnode.attrs.selected == "About";
+    const accountActive      = vnode.attrs.selected == "Account";
+    const loginActive        = vnode.attrs.selected == "Login";
+    const figureListActive   = vnode.attrs.selected == "Figures";
+    const scenarioListActive = vnode.attrs.selected == "Scenario List";
+    const statsActive        = vnode.attrs.selected == "Stats";
 
     return [
       m("div.nav",
@@ -139,6 +140,11 @@ const Nav = {
             domLoggedInTabs(accountActive),
 
             domLoggedOutTabs(loginActive),
+
+            m("div.nav-header", { class: statsActive ? "nav-content-selected" : "" },
+              m(m.route.Link, { href: "/stats" },
+                m("span.icon", K.ICON_STRINGS.stats),
+                m("span.desktop", "Stats"))),
 
             m(".nav-header", { class: aboutActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/about" },
