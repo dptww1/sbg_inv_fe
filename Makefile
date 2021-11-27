@@ -14,4 +14,5 @@ update-fonts:
 	mv ~/Downloads/icomoon.zip ~/Downloads/icomoon.zip.bak
 
 production-build:
+	read -p 'Did you remember to set request.js to [0]? ' ignored
 	brunch build --production

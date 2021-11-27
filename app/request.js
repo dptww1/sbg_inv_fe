@@ -15,7 +15,7 @@ const APIS = [
   }
 ];
 
-var curApi = APIS[0];
+var curApi = APIS[1];
 
 //===========================================================================
 const clearText = _ => {
