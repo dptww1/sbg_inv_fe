@@ -40,7 +40,13 @@ const StatsScreen = {
         stats.users && stats.users.total
           ? [
               m("div.section-header", "Registered Users"),
-              m("p.text", stats.users.total)
+              m("p.text", stats.users.total),
+
+              m("div.section-header", "Total Models Collected"),
+              m("p.text", stats.models.totalOwned),
+
+              m("div.section-header", "Total Models Painted"),
+              m("p.text", stats.models.totalPainted)
             ]
           : null,
 
