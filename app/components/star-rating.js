@@ -42,7 +42,7 @@ const StarRating = {
              { class: `rating ${active ? "active" : ""}` },
              [1, 2, 3, 4, 5].map( n => {
                return m("div.rating-star-container",
-                        active ? { onclick: ev => callback(id, n) } : {},
+                        active ? { onclick: ev => callback(id, n == userRating ? 0 : n) } : {},
                         m("div", { class: `rating-star ${highlightClassName(n, userRating)}` },
                           STAR_OUTLINE,
                           n <= ratingCeiling ? domStarSolid(n, rating, userRating) : null));
