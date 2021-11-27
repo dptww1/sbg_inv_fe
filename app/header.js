@@ -4,11 +4,11 @@ var m = require("mithril");
 
 //======================================================================
 var Header = {
-    view: function() {
-        return m(".page-header", [
-            m(".title", "Middle Earth SBG Inventory")
-        ]);
-    }
+  view: function() {
+    return m(".page-header", [
+      m(".title", "Middle Earth SBG Inventory")
+    ]);
+  }
 };
 
 module.exports = Header;
