@@ -5,6 +5,7 @@ module.exports.BOOK_SHORT_NAMES = {
   bpf:     "BoPF (2004)",
   dos:     "DoS (2013)",
   fotn:    "FotN (2006)",
+  fotn2:   "FotN (2021)",
   fotr:    "FotR (2001)",
   fotr_jb: "FotR (2005)",
   fp:      "FP (2011)",
@@ -36,7 +37,8 @@ module.exports.BOOK_SHORT_NAMES = {
   bgime:   "BGiME (2002-)",
   sos2:    "SotS (2019)",
   wfr:     "WiR (2019)",
-  qrb:     "Quest (2020)"
+  qrb:     "Quest (2020)",
+  fotn2:   "FotN (2021)"
 };
 
 module.exports.BOOK_NAMES = {
@@ -44,6 +46,7 @@ module.exports.BOOK_NAMES = {
   bpf:     "Battle of the Pelennor Fields (2004)",
   dos:     "Desolation of Smaug (2013)",
   fotn:    "Fall of the Necromancer (2006)",
+  fotn2:   "Fall of the Necromancer (2021)",
   fotr:    "Fellowship of the Ring (2001)",
   fotr_jb: "Fellowship of the Ring (2005)",
   fp:      "Free Peoples (2011)",
@@ -75,7 +78,8 @@ module.exports.BOOK_NAMES = {
   bgime:   "Battle Games in Middle Earth (2002)",
   sos2:    "The Scouring of the Shire (2019)",
   wfr:     "War in Rohan (2019)",
-  qrb:     "Quest of the Ringbearer (2020)"
+  qrb:     "Quest of the Ringbearer (2020)",
+  fotn2:   "Fall of the Necromancer (2021)"
 };
 
 module.exports.FACTION_INFO = {
