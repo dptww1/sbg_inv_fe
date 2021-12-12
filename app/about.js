@@ -2,10 +2,11 @@
 
 const m       = require("mithril");
 
-const Header  = require("header");
-const Nav     = require("nav");
-const Request = require("request");
-const U       = require("utils");
+const Credentials = require("credentials")
+const Header      = require("header");
+const Nav         = require("nav");
+const Request     = require("request");
+const U           = require("utils");
 
 var news = [];
 var numNewsItems = 5;
@@ -15,15 +16,37 @@ var resources = []
 var numResources = 5;
 var showMoreResources = true;
 
+const newNewsItem = {
+  item_date: "",
+  item_text: ""
+}
+
 //========================================================================
 const domNews = () => {
   return m("table.news",
            news.map(item => m("tr",
                               m("td.nobr", item.item_date),
                               m("td", item.item_text))),
+
            showMore
-             ? m("tr", m("td[colspan=2]", m("button", { onclick: updateNews }, "Older News")))
-             : null);
+             ? m("tr",
+                 m("td[colspan=2]",
+                   m("button", { onclick: updateNews }, "Older News")))
+             : null,
+
+           Credentials.admin()
+             ? m("tr",
+                 m("td",
+                   m("input[type=date][name=item_date]",
+                     { onchange: ev => newNewsItem.item_date = ev.target.value },
+                     newNewsItem.item_date)),
+                 m("td",
+                   m("input[type=text][name=item_text][size=80]",
+                     { onchange: ev => newNewsItem.item_text = ev.target.value },
+                     newNewsItem.item_text)),
+                 m("button", { onclick: addNewsItem }, "Save"))
+             : null
+          )
 };
 
 //========================================================================
@@ -39,6 +62,16 @@ const domResources = () => {
              ? m("tr", m("td[colspan=2]", m("button", { onclick: updateResources }, "Older Reports")))
              : null);
 };
+
+//========================================================================
+const addNewsItem = () => {
+  Request.post("/newsitem",
+               { news_item: newNewsItem },
+               resp => {
+                 newNewsItem.item_date = "";
+                 newNewsItem.item_text = "";
+               });
+}
 
 //========================================================================
 const updateNews = () => {
