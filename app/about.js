@@ -135,7 +135,7 @@ const AboutScreen = {
 
       m("p.text",
         "If you note any incorrect information, find bugs, or have ideas for improvement, I'd love to hear from you at ",
-        m("a[target=_new]", {href: "mailto:davetownsend.org"}, "dave@davetownsend.org"),
+        m("a[target=_new]", {href: "mailto:dave@davetownsend.org"}, "dave@davetownsend.org"),
         "."),
 
       m("p.text",
