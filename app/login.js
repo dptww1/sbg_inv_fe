@@ -28,7 +28,7 @@ const LoginScreen = {
             m(Nav, { selected: "Login" }),
             m("div.main-content forgot-password",
               m("p.text",
-                "Log in using your email and password. New user? ",
+                "Log in using your email and password. Both are case-sensitive!  New user? ",
                 m(m.route.Link, { href: "/register" }, "Sign up!")
                ),
               m("p.text",
