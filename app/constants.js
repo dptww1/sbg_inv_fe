@@ -38,7 +38,8 @@ module.exports.BOOK_SHORT_NAMES = {
   sos2:    "SotS (2019)",
   wfr:     "WiR (2019)",
   qrb:     "Quest (2020)",
-  fotn2:   "FotN (2021)"
+  fotn2:   "FotN (2021)",
+  dotn:    "DotN (2022)"
 };
 
 module.exports.BOOK_NAMES = {
@@ -79,7 +80,8 @@ module.exports.BOOK_NAMES = {
   sos2:    "The Scouring of the Shire (2019)",
   wfr:     "War in Rohan (2019)",
   qrb:     "Quest of the Ringbearer (2020)",
-  fotn2:   "Fall of the Necromancer (2021)"
+  fotn2:   "Fall of the Necromancer (2021)",
+  dotn:    "Defence of the North (2022)"
 };
 
 module.exports.FACTION_INFO = {
