@@ -16,7 +16,10 @@ const FIELDS = {
 
   blurb: () => m("input[type=text][name=blurb]", { value: scenario.blurb }),
 
-  date_age: () => m("select[name=date_age]", { value: scenario.date_age },
+  date_age: () => m("select[name=date_age]",
+                    {
+                      value: scenario.date_age || 3
+                    },
                     m("option[value=3]", 3),
                     m("option[value=2]", 2),
                     m("option[value=1]", 1)),
@@ -47,10 +50,16 @@ const domFaction = n => {
                     K.SORTED_FACTION_NAMES.map(k => m("option", { value: K.FACTION_ABBREV_BY_NAME[k] }, k))),
 
     suggested_points: i => m("input[type=text]",
-                             { name: "suggested_points" + n, value: scenario.scenario_factions[n].suggested_points }),
+                             {
+                               name: "suggested_points" + n,
+                               value: scenario.scenario_factions[n].suggested_points || 0
+                             }),
 
     actual_points: i => m("input[type=text]",
-                          { name: "actual_points" + n,  value: scenario.scenario_factions[n].actual_points })
+                          {
+                            name: "actual_points" + n,
+                            value: scenario.scenario_factions[n].actual_points || 0
+                          })
   };
 
   return [

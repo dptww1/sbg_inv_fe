@@ -172,7 +172,7 @@ const domResourceSelectBook = () => {
   return m("select[name=book]",
            { onchange: ev => book(ev.target.value) },
            m("option", { value: "-1" }, "-- Select a Book --"),
-           Object.keys(K.BOOK_NAMES).reduce(
+           Object.keys(K.BOOK_NAMES).sort().reduce(
              (acc, key) => {
                acc.push(m("option", { value: key, selected: book() == key }, K.BOOK_NAMES[key]));
                return acc;

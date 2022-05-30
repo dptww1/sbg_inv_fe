@@ -122,7 +122,7 @@ const RoleEditor = {
                                 ? m("input[type=number][min=1][max=300]",
                                     {
                                       name: "amount" + roleIdx,
-                                      value: role.amount,
+                                      value: role.amount || 1,
                                       onkeyup: ev => updateRoleAmount(attrs.roles, roleIdx, ev)
                                     })
                                 : role.amount
@@ -132,7 +132,7 @@ const RoleEditor = {
                                     {
                                       name: "name" + roleIdx,
                                       placeholder: computePlaceholder(role),
-                                      value: role.name,
+                                      value: computePlaceholder(role),
                                       onkeyup: ev => updateRoleName(attrs.roles, roleIdx, ev)
                                     })
                                 : computePlaceholder(role)
