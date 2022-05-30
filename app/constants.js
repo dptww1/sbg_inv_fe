@@ -128,7 +128,8 @@ module.exports.FACTION_INFO = {
   umbar:           { name: "Corsairs of Umbar",         letter: "U", id: 40 },
   wanderers:       { name: "Wanderers in the Wild",     letter: "W", id: 41 },
   white_council:   { name: "White Council",             letter: "w", id: 42 },
-  wildmen:         { name: "Wildmen of Drúadan",        letter: "E", id: 43 }
+  wildmen:         { name: "Wildmen of Drúadan",        letter: "E", id: 43 },
+  beornings:       { name: "Beornings",                 letter: "B", id: 44 }
 };
 
 module.exports.SORTED_FACTION_NAMES =
