@@ -12,5 +12,5 @@ This project was written in [Mithril](https://mithril.js.org).  While
 it might seem like an appropriate choice just based on the
 Tolkien-inspired name, I didn't choose it just to be cute.   It's
 compact, speedy, and very well supported on its dedicated
-[Gitter Channel](https://gitter.im/mithriljs/mithril.js).
+[Zulip Channel](https://mithril.zulipchat.com).
 I can't recommend it highly enough.
