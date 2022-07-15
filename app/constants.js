@@ -1,88 +1,66 @@
 /* global module */
 
-module.exports.BOOK_SHORT_NAMES = {
-  bot5a:   "Bo5A (2014)",
-  bpf:     "BoPF (2004)",
-  dos:     "DoS (2013)",
-  fotn:    "FotN (2006)",
-  fotn2:   "FotN (2021)",
-  fotr:    "FotR (2001)",
-  fotr_jb: "FotR (2005)",
-  fp:      "FP (2011)",
-  fr:      "FR (2011)",
-  gif:     "GiF (2007)",
-  gt:      "EfG (2012)",
-  harad:   "Harad (2007)",
-  hobbit:  "HUJ (2012)",
-  kd:      "KD (2007)",
-  km:      "KoM (2011)",
-  ma:      "M&A (2011)",
-  mordor:  "Mordor (2011)",
-  omordor: "Mordor (2007)",
-  roa:     "RoA (2006)",
-  rotk:    "RotK (2003)",
-  rotk_jb: "RotK (2007)",
-  saf:     "S&F (2003)",
-  sbg:     "SBG Magazine",
-  site:    "SitE (2005)",
-  sog:     "SoG (2004)",
-  sots:    "SotS (2004)",
-  tba:     "T&BA (2016)",
-  ttt:     "TTT (2002)",
-  ttt_jb:  "TTT (2006)",
-  bpf_ss:  "BoPF (2018)",
-  alotr:   "ALotR (2018)",
-  ah:      "AH (2018)",
-  gaw:     "GaW (2019)",
-  bgime:   "BGiME (2002-)",
-  sos2:    "SotS (2019)",
-  wfr:     "WiR (2019)",
-  qrb:     "Quest (2020)",
-  fotn2:   "FotN (2021)",
-  dotn:    "DotN (2022)"
-};
+// Indexes here must match sbg_inv_be project's :ecto_enums.ex
+module.exports.BOOKS = [
+  { key: "bot5a",   shortName: "Bo5A (2014)",   name: "Battle of the Five Armies (2014)" },
+  { key: "bpf",     shortName: "BoPF (2004)",   name: "Battle of the Pelennor Fields (2004)" },
+  { key: "dos",     shortName: "DoS (2013)",    name: "Desolation of Smaug (2013)" },
+  { key: "fotn",    shortName: "FotN (2006)",   name: "Fall of the Necromancer (2006)" },
+  { key: "fotn2",   shortName: "FotN (2021)",   name: "Fall of the Necromancer (2021)" },
+  { key: "fotr",    shortName: "FotR (2001)",   name: "Fellowship of the Ring (2001)" },
+  { key: "fotr_jb", shortName: "FotR (2005)",   name: "Fellowship of the Ring (2005)" },
+  { key: "fp",      shortName: "FP (2011)",     name: "Free Peoples (2011)" },
+  { key: "fr",      shortName: "FR (2011)",     name: "Fallen Realms (2011)" },
+  { key: "gif",     shortName: "GiF (2007)",    name: "Gondor in Flames (2007)" },
+  { key: "gt",      shortName: "EfG (2012)",    name: "Escape from Goblintown (2012)" },
+  { key: "harad",   shortName: "Harad (2007)",  name: "Harad (2007)" },
+  { key: "hobbit",  shortName: "HUJ (2012)",    name: "The Hobbit: An Unexpected Journey (2012)" },
+  { key: "kd",      shortName: "KD (2007)",     name: "Khazad-dûm (2007)" },
+  { key: "km",      shortName: "KoM (2011)",    name: "Kingdoms of Men (2011)" },
+  { key: "ma",      shortName: "M&A (2011)",    name: "Moria & Angmar (2011)" },
+  { key: "mordor",  shortName: "Mordor (2011)", name: "Mordor (2011)" },
+  { key: "omordor", shortName: "Mordor (2007)", name: "Mordor (2007)" },
+  { key: "roa",     shortName: "RoA (2006)",    name: "Ruin of Arnor (2006)" },
+  { key: "rotk",    shortName: "RotK (2003)",   name: "Return of the King (2003)" },
+  { key: "rotk_jb", shortName: "RotK (2007)",   name: "Return of the King (2007)" },
+  { key: "saf",     shortName: "S&F (2003)",    name: "Shadow & Flame (2003)" },
+  { key: "sbg",     shortName: "SBG Magazine",  name: "SBG Magazine" },
+  { key: "site",    shortName: "SitE (2005)",   name: "A Shadow in the East (2005)" },
+  { key: "sog",     shortName: "SoG (2004)",    name: "Siege of Gondor (2004)" },
+  { key: "sots",    shortName: "SotS (2004)",   name: "The Scouring of the Shire (2004)" },
+  { key: "tba",     shortName: "T&BA (2016)",   name: "There and Back Again (2016)" },
+  { key: "ttt",     shortName: "TTT (2002)",    name: "The Two Towers (2002)" },
+  { key: "ttt_jb",  shortName: "TTT (2006)",    name: "The Two Towers (2006)" },
+  { key: "bpf_ss",  shortName: "BoPF (2018)",   name: "Battle of the Pelennor Fields (2018)" },
+  { key: "alotr",   shortName: "ALotR (2018)",  name: "Armies of the Lord of the Rings (2018)" },
+  { key: "ah",      shortName: "AH (2018)",     name: "Armies of the Hobbit (2018)" },
+  { key: "gaw",     shortName: "GaW (2019)",    name: "Gondor at War (2019)" },
+  { key: "bgime",   shortName: "BGiME (2002-)", name: "Battle Games in Middle Earth (2002-)" },
+  { key: "sos2",    shortName: "SotS (2019)",   name: "The Scouring of the Shire (2019)" },
+  { key: "wfr",     shortName: "WiR (2019)",    name: "War in Rohan (2019)" },
+  { key: "qrb",     shortName: "Quest (2020)",  name: "Quest of the Ringbearer (2020)" },
+  { key: "dotn",    shortName: "DotN (2022)",   name: "Defence of the North (2022)" }
+];
 
-module.exports.BOOK_NAMES = {
-  bot5a:   "Battle of the Five Armies (2014)",
-  bpf:     "Battle of the Pelennor Fields (2004)",
-  dos:     "Desolation of Smaug (2013)",
-  fotn:    "Fall of the Necromancer (2006)",
-  fotn2:   "Fall of the Necromancer (2021)",
-  fotr:    "Fellowship of the Ring (2001)",
-  fotr_jb: "Fellowship of the Ring (2005)",
-  fp:      "Free Peoples (2011)",
-  fr:      "Fallen Realms (2011)",
-  gif:     "Gondor in Flames (2007)",
-  gt:      "Escape from Goblintown (2012)",
-  harad:   "Harad (2007)",
-  hobbit:  "The Hobbit: An Unexpected Journey (2012)",
-  kd:      "Khazad-dûm (2007)",
-  km:      "Kingdoms of Men (2011)",
-  ma:      "Moria & Angmar (2011)",
-  mordor:  "Mordor (2011)",
-  omordor: "Mordor (2007)",
-  roa:     "Ruin of Arnor (2006)",
-  rotk:    "Return of the King (2003)",
-  rotk_jb: "Return of the King (2007)",
-  saf:     "Shadow & Flame (2003)",
-  sbg:     "SBG Magazine",
-  site:    "A Shadow in the East (2005)",
-  sog:     "Siege of Gondor (2004)",
-  sots:    "The Scouring of the Shire (2004)",
-  tba:     "There and Back Again (2016)",
-  ttt:     "The Two Towers (2002)",
-  ttt_jb:  "The Two Towers (2006)",
-  bpf_ss:  "Battle of the Pelennor Fields (2018)",
-  alotr:   "Armies of the Lord of the Rings (2018)",
-  ah:      "Armies of the Hobbit (2018)",
-  gaw:     "Gondor at War (2019)",
-  bgime:   "Battle Games in Middle Earth (2002)",
-  sos2:    "The Scouring of the Shire (2019)",
-  wfr:     "War in Rohan (2019)",
-  qrb:     "Quest of the Ringbearer (2020)",
-  fotn2:   "Fall of the Necromancer (2021)",
-  dotn:    "Defence of the North (2022)"
-};
+module.exports.BOOKS.forEach((book, i) => book.index = i);
+
+// Key: BOOKS[key]  Value: BOOKS[shortName]
+module.exports.BOOK_SHORT_NAMES =
+  module.exports.BOOKS.reduce(
+    (prev, cur) => {
+      prev[cur["key"]] = cur["shortName"];
+      return prev;
+    },
+    {});
+
+// Key: BOOKS[key]  Value: BOOKS[name]
+module.exports.BOOK_NAMES =
+  module.exports.BOOKS.reduce(
+    (prev, cur) => {
+      prev[cur["key"]] = cur["name"];
+      return prev;
+    },
+    {});
 
 module.exports.FACTION_INFO = {
   angmar:          { name: "Angmar",                    letter: "a", id: 0 },
