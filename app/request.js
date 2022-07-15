@@ -29,7 +29,10 @@ const extractFn = (xhr, xhrOptions) => {
 
   if (xhr.status === 401 || xhr.status == 400) {
     Credentials.clear();
-    return Request.errors({ errors: "Authentication failed. Please log in." });
+    Request.errors({ errors: "Authentication failed. Please log in." });
+
+  } else if (xhr.status >= 300) {
+    failFn(null);
 
   } else {
     return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
@@ -42,9 +45,12 @@ const failFn = (resp) => {
 
   if (resp === null) {
     Request.errors({ errors: "The server appears to be down. Please try again later." });
+
   } else {
     Request.errors({ errors: resp.errors });
   }
+
+  throw Request.errors().errors;
 };
 
 //===========================================================================
@@ -69,10 +75,7 @@ const request = (httpMethod, url, data, successFn) => {
     opts.body = data;
   }
 
-  return m.request(opts).then(
-    resp => successFn(resp),
-    resp => failFn(resp)
-  );
+  return m.request(opts).then(resp => successFn(resp))
 };
 
 //===========================================================================
