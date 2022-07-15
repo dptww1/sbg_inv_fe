@@ -127,12 +127,12 @@ const Nav = {
               onItemSelect: doSelect
             })
         : [
-            m("div.nav-header", { class: scenarioListActive ? "nav-content-selected" : "" },
+            m(".nav-header", { class: scenarioListActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/scenarios" },
                 m("span.icon", K.ICON_STRINGS.scenarios),
                 m("span.desktop", "Scenarios"))),
 
-            m("div.nav-header", { class: figureListActive ? "nav-content-selected" : "" },
+            m(".nav-header", { class: figureListActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/figures" },
                 m("span.icon", K.ICON_STRINGS.figures),
                 m("span.desktop", "Figures"))),
@@ -141,7 +141,7 @@ const Nav = {
 
             domLoggedOutTabs(loginActive),
 
-            m("div.nav-header", { class: statsActive ? "nav-content-selected" : "" },
+            m(".nav-header", { class: statsActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/stats" },
                 m("span.icon", K.ICON_STRINGS.stats),
                 m("span.desktop", "Stats"))),
@@ -149,7 +149,13 @@ const Nav = {
             m(".nav-header", { class: aboutActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/about" },
                 m("span.icon", K.ICON_STRINGS.about),
-                m("span.desktop", "About")))
+                m("span.desktop", "About"))),
+
+            Credentials.isAdmin()
+            ? m(".nav-header",
+                m(m.route.Link, { href: "/characters" },
+                  m("span.desktop", "Ch")))
+            : null
         ],
 
         m(".nav-header",

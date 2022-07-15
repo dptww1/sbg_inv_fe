@@ -4,6 +4,7 @@ const m = require("mithril");
 
 const About           = require("about");
 const Account         = require("account");
+const CharacterEdit   = require("character");
 const Credentials     = require("credentials");
 const FactionEdit     = require("admin-components/faction-edit");
 const FigureDetails   = require("figure-details");
@@ -39,15 +40,10 @@ m.route.set = (path, data, options) => {
   window.scrollTo(0, 0);
 };
 
-//m.route.linkNoScroll = m.route.link;
-//m.route.link = vnode => {
-//  m.route.linkNoScroll(vnode);
-//  window.scrollTo(0, 0);
-//};
-
 m.route.prefix = "#";
 m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"                  : About,
+  "/characters"             : AuthenticatingResolver(CharacterEdit),
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEdit),
   "/figures/:key"           : FigureDetails,
   "/figure-edit/:id"        : AuthenticatingResolver(FigureEdit),
