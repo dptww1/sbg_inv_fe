@@ -15,7 +15,7 @@ const Pie           = require("components/pie");
 const Request       = require("request");
 const U             = require("utils");
 
-var figure = { factions: [], scenarios: [], history: [] };
+var figure = { factions: [], scenarios: [], history: [], rules: [] };
 
 //========================================================================
 const chooseFaction = (fid) => {
@@ -104,6 +104,24 @@ const domInventory = total => {
                        },
                        K.ICON_STRINGS.minus))
                  : null)));
+};
+
+//========================================================================
+const domRules = () => {
+  if (!figure.rules || figure.rules.length === 0) {
+    return null;
+  }
+
+  return [
+    m(".section-header", "Rules"),
+
+    figure.rules.length == 1
+      ?
+        m("", K.BOOK_NAMES[figure.rules[0].book], " page ", figure.rules[0].page)
+      :
+        figure.rules.map(ch =>
+          m("", ch.name, " ", K.BOOK_NAMES[ch.book], " page ", ch.page, m("br"))),
+  ];
 };
 
 //========================================================================
@@ -200,7 +218,7 @@ const update = hist => {
 //========================================================================
 const FigureDetailScreen = {
   oninit: (/*vnode*/) => {
-    figure = { factions: [], scenarios: [] };
+    figure = { factions: [], scenarios: [], rules: [] };
     requestFigureModelData(m.route.param("key"));
   },
 
@@ -219,6 +237,7 @@ const FigureDetailScreen = {
                               : null,
         domSilhouette(),
         domInventory(total),
+        domRules(),
         domFactions(),
         domScenarios(total),
         domHistory(),
