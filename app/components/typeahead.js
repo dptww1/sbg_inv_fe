@@ -78,6 +78,30 @@ const handleKey = (ev) => {
 };
 
 //========================================================================
+// Usage: m(Typeahead, {opts})
+// Options:
+//   - onItemSelect (function(target))
+//       Callback when user selects a choice. `target` will be the selected
+//       DOM element, with `data-x` attribute for each field returned by the
+//       `findMatches` callback.  For example, if `findMatches` populates
+//       the suggestions array with `{id: 12, name:"abc"}` and the user
+//       selects that choice, then `target.dataset.id === 12` and
+//       `target.dataset.name === "abc"`.
+//       If the user cancels the search, `target` == `null`.
+//
+//   - placeholder (string)
+//       Optional placeholder text for the input widget
+//
+//   - findMatches (function(searchString, data)
+//       callback function to get suggestions with parameters:
+//         - searchString: string to search for
+//         - data: object of form { suggestions: [] }; `findMatches` should
+//             populate the `suggestions` array with objects with at least
+//             the following fields:
+//               . name  - text to show
+//               . start - 0-based starting position of the match of `searchString` within `name`
+//               . len   - length of `searchString`
+//------------------------------------------------------------------------
 const Typeahead = {
   oninit: (vnode) => {
     attrs = vnode.attrs;
