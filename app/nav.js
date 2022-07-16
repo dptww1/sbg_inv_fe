@@ -77,10 +77,6 @@ const doSelect = target => {
     return;
   }
 
-  if (target.className === "highlight") {
-    target = target.parentElement;
-  }
-
   switch (target.dataset.type) {
   case "f":
     showSearch = false;

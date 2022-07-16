@@ -15,10 +15,6 @@ const appendFigure = (role, target) => {
     role.figures = [];
   }
 
-  if (target.className === "highlight") {
-    target = target.parentElement;
-  }
-
   role.figures.push({
     figure_id:   target.dataset.id,
     name:        target.dataset.name,

@@ -24,6 +24,14 @@ const initData = () => {
 const selectSuggestion = target => {
   target.closest("div.typeahead-container").getElementsByTagName("input")[0].value = "";
   initData();
+
+  // If the user clicks on the highlighted portion of the suggestion, the target is
+  // different than if they click the unhighlighted portion. Don't make the client deal
+  // with that. Instead just pretend it's always the unhighlighted portion which is clicked.
+  if (target.className === "highlight") {
+    target = target.parentElement;
+  }
+
   attrs.onItemSelect(target);
 };
 
