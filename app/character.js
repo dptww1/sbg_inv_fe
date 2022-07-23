@@ -9,10 +9,13 @@ const K             = require("constants");
 const Nav           = require("nav");
 const Request       = require("request");
 const SelectBook    = require("components/select-book");
+const SelectFaction = require("components/select-faction");
+const Typeahead     = require("components/typeahead");
 
 const character = {
   id: null,
   name: null,
+  faction: null,
   book: null,
   page: null,
   figure_ids: []
@@ -21,25 +24,164 @@ const character = {
 // Array of {id: x, name: "abc"}
 const figures = [];
 
-//========================================================================
-const initCharacterForm = () => {
-  character.id = null;
-  character.name = null;
-  character.book = null;
-  character.page = null;
-  character.figure_ids = [];
+// When true, character name field acts as lookup of existing
+// character; when false, user is adding a new character
+var figure_lookup_mode = false;
 
-  figures.length = 0;
+//========================================================================
+const characterSelect = target => {
+  if (!target.dataset.id) {
+    debugger;
+    return null;
+  }
+
+  Request.get("/character/" + target.dataset.id,
+              resp => {
+                initCharacterForm();
+
+                character.id = resp.data.id;
+                character.name = resp.data.name;
+                character.faction = resp.data.faction;
+                character.book = resp.data.book;
+                character.page = resp.data.page;
+                character.figure_ids = resp.data.figures.map(f => f.id);
+
+                figures.length = 0;
+                resp.data.figures.forEach(f => {
+                  figures.push({id: f.id, name: f.name });
+                });
+              });
 };
 
 //========================================================================
-const onItemSelect = (target) => {
+const domEditCharacter = () => {
+  return [
+    "Character Name",
+    m("br"),
+    m("input[name=name][size=50]",
+      {
+        value: character.name,
+        onchange: ev => character.name = ev.target.value
+      }
+     ),
+    m("br"),
+    m("br"),
+
+    "Faction",
+    m("br"),
+    m(SelectFaction,
+      {
+        initialValue: character.faction,
+        onchange: ev => {
+          character.faction = ev.target.value;
+          return true;
+        }
+      }
+     ),
+    m("br"),
+    m("br"),
+
+    m("table",
+      m("tr",
+        m("td", "Book"),
+        m("td", "Page")),
+      m("tr",
+        m("td",
+          m(SelectBook,
+            {
+              initialValue: character.book,
+              onchange: ev => character.book = ev.target.value
+            }
+           )),
+        m("td",
+          m("input[name=page][type=number][size=5]",
+            {
+              value: character.page,
+              onchange: ev => character.page = parseInt(ev.target.value, 10)
+            }
+           )))),
+
+    "Figures",
+    m("br"),
+    m(FiguresEditor,
+      {
+        onItemSelect: figureSelect
+      }
+     ),
+
+    figures.length !== 0
+      ? figures.map((f, idx)  =>
+          m(".figure-list-figure",
+            {
+              id: "fig" + f.id
+            },
+            f.name,
+            m("span.icon",
+              {
+                onclick: ev => removeFigure(idx)
+              },
+              K.ICON_STRINGS.remove)
+           ))
+      : null,
+    m("br"),
+    m("br"),
+
+    m("button", { onclick: ev => saveCharacter() }, "Save"),
+    " ",
+    m("button", { onclick: ev => initCharacterForm() }, "New Character")
+  ];
+};
+
+//========================================================================
+const domFigureLookup = () => {
+  return [
+    "Character Name",
+    m("br"),
+
+    m(Typeahead,
+      {
+        findMatches: findMatches,
+        onItemSelect: characterSelect,
+      }),
+    m("br")
+  ];
+};
+
+//========================================================================
+const figureSelect = (target) => {
   if (target === null) {
+    debugger;
     return;
   }
 
   figures.push({ id: target.dataset.id, name: target.dataset.name });
   character.figure_ids = figures.map(f => f.id);
+};
+
+//========================================================================
+const findMatches = (searchString, typeahead) => {
+  Request.get("/search?type=c&q=" + searchString,
+              resp => {
+                typeahead.suggestions = resp.data.map(x => {
+                  x.len = searchString.length;
+                  return x;
+                });
+              }
+             );
+};
+
+//========================================================================
+const initCharacterForm = () => {
+  character.id = null;
+  character.name = null;
+  character.faction = null;
+  character.book = null;
+  character.page = null;
+  character.figure_ids = [];
+
+  figures.length = 0;
+
+  figure_lookup_mode = false;
 };
 
 //========================================================================
@@ -50,9 +192,6 @@ const removeFigure = idx => {
 
 //========================================================================
 const saveCharacter = () => {
-  console.log("+++ saving ");
-  console.log(JSON.parse(JSON.stringify(character)));
-
   if (!character.name) {
     Request.errors("Name is required");
     return;
@@ -78,74 +217,19 @@ const CharacterDetailScreen = {
     return [
       m(Header),
       m(Nav),
-      m("div.main-content", [
+      m("div.main-content.character-details", [
 
-        "Character Name",
-        m("br"),
-        m("input[name=name][size=50]",
+        m("input[type=checkbox]",
           {
-            value: character.name,
-            onchange: ev => character.name = ev.target.value
-          }
-         ),
+            checked: figure_lookup_mode,
+            onclick: ev => figure_lookup_mode = !figure_lookup_mode
+          }),
+        " Edit Mode",
         m("br"),
 
-        m("table",
-          m("tr",
-            m("td", "Book"),
-            m("td", "Page")),
-          m("tr",
-            m("td",
-              m(SelectBook,
-                {
-                  onchange: ev => character.book = parseInt(ev.target.value, 10)
-                }
-               )),
-            m("td",
-              m("input[name=page][type=number][size=5]",
-                {
-                  value: character.page,
-                  onchange: ev => character.page = parseInt(ev.target.value, 10)
-                }
-               ))),
-          m("tr",
-            m("td",
-              m(FiguresEditor,
-                {
-                  onItemSelect: onItemSelect
-                }
-               ),
-
-              figures.length !== 0
-                ? figures.map((f, idx)  =>
-                    m(".figure-list-figure",
-                      {
-                        id: "fig" + f.id
-                      },
-                      f.name,
-                      m("span.icon",
-                        {
-                          onclick: ev => removeFigure(idx)
-                        },
-                        K.ICON_STRINGS.remove))
-                  )
-                : null,
-
-             ))),
-
-        m("button",
-          {
-            onclick: ev => saveCharacter()
-          },
-          "Save"),
-
-        " ",
-
-        m("button",
-          {
-            onclick: ev => initCharacterForm()
-          },
-          "New Character")
+        figure_lookup_mode
+          ? domFigureLookup()
+          : domEditCharacter()
       ])
     ];
   }

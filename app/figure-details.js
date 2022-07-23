@@ -29,7 +29,17 @@ const domFactions = () => {
            m(".section-header", "Army Lists"),
            m("table",
              figure.factions.length > 0
-               ? figure.factions.map(f => m("tr", m("td.faction-name", m("a", { onclick: _ => chooseFaction(f) }, K.FACTION_INFO[f].name))))
+               ? figure.factions.map(f =>
+                 m("tr",
+                   m("td.faction-name",
+                     m("a",
+                       {
+                         onclick: _ => chooseFaction(f)
+                       },
+                       K.FACTION_INFO[f].name),
+                     " ",
+                     domRules(f)
+                    )))
                : m("tr", m("td", "None"))));
 };
 
@@ -107,21 +117,21 @@ const domInventory = total => {
 };
 
 //========================================================================
-const domRules = () => {
+const domRules = faction => {
   if (!figure.rules || figure.rules.length === 0) {
     return null;
   }
 
-  return [
-    m(".section-header", "Rules"),
+  const chars = figure.rules.filter(r =>
+    r.faction === faction && r.book && r.page);
 
-    figure.rules.length == 1
-      ?
-        m("", K.BOOK_NAMES[figure.rules[0].book], " page ", figure.rules[0].page)
-      :
-        figure.rules.map(ch =>
-          m("", ch.name, " ", K.BOOK_NAMES[ch.book], " page ", ch.page, m("br"))),
-  ];
+  if (chars.length === 0) {
+    return null;
+  }
+
+  return " : "
+    + chars.map(c => K.BOOK_NAMES[c.book] + ", p." + c.page)
+           .join("; ");
 };
 
 //========================================================================
@@ -237,7 +247,6 @@ const FigureDetailScreen = {
                               : null,
         domSilhouette(),
         domInventory(total),
-        domRules(),
         domFactions(),
         domScenarios(total),
         domHistory(),

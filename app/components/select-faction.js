@@ -6,13 +6,14 @@ const K = require("constants")
 const U = require("utils")
 
 //========================================================================
-const SelectBook = ({ attrs: { onchange: callbackFn, initialValue } }) => {
+const SelectFaction = ({ attrs: { onchange: callbackFn, initialValue } }) => {
 
   var selectedValue = initialValue;
 
+
   return {
     view: (/*vnode*/) =>
-      m("select[name=book]",
+      m("select[name=faction]",
         {
           value: selectedValue,
           onchange: ev => {
@@ -20,15 +21,15 @@ const SelectBook = ({ attrs: { onchange: callbackFn, initialValue } }) => {
             callbackFn(ev);
           }
         },
-        K.BOOKS
-          .sort((a, b) => U.strCmp(a.name, b.name))
-          .map(book =>
+        Object.keys(K.FACTION_INFO)
+          .sort((a, b) => U.strCmp(K.FACTION_INFO[a].name, K.FACTION_INFO[b].name))
+          .map(key =>
             m("option",
               {
-                value: book.key
+                value: key
               },
-              book.name)))
+              K.FACTION_INFO[key].name)))
   }
 }
 
-module.exports = SelectBook;
+module.exports = SelectFaction;
