@@ -33,7 +33,7 @@ var Header = {
     const updateDate = getLastUpdateDate();
 
     return m(".page-header", [
-      m(".title", "Middle Earth SBG Inventory"),
+      m(".title", "Middle Earth SBG Inventory", Request.curApi().name === "local" ? "(LOCAL)" : ""),
       updateDate
         ? m(".last-update", m(m.route.Link, { href: "/about" }, "Last Update: " + updateDate))
         : null

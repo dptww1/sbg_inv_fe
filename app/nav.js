@@ -47,12 +47,12 @@ const domLoggedInTabs = (loginActive) => {
   return [
     m("div.nav-header", { class: loginActive ? "nav-content-selected" : "" },
       m(m.route.Link, { href: "/account" },
-        m("span.icon", K.ICON_STRINGS.account),
-        Credentials.name())),
+        m("span.action", K.ICON_STRINGS.account),
+        m("span.desktop", Credentials.name()))),
 
     m("div.nav-header",
       m(m.route.Link, { href: "/scenarios", onclick: () => { Credentials.clear(); } },
-        m("span.icon", K.ICON_STRINGS.log_out),
+        m("span.action", K.ICON_STRINGS.log_out),
         m("span.desktop", "Log Out")))
   ];
 };
@@ -65,7 +65,7 @@ const domLoggedOutTabs = (loginActive) => {
 
   return m("div.nav-header", { class: loginActive ? "nav-content-selected" : "" },
            m(m.route.Link, { href: "/login" },
-             m("span.icon", K.ICON_STRINGS.log_in),
+             m("span.action", K.ICON_STRINGS.log_in),
              m("span.desktop", "Login")));
 };
 
@@ -125,12 +125,12 @@ const Nav = {
         : [
             m(".nav-header", { class: scenarioListActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/scenarios" },
-                m("span.icon", K.ICON_STRINGS.scenarios),
+                m("span.action", K.ICON_STRINGS.scenarios),
                 m("span.desktop", "Scenarios"))),
 
             m(".nav-header", { class: figureListActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/figures" },
-                m("span.icon", K.ICON_STRINGS.figures),
+                m("span.action", K.ICON_STRINGS.figures),
                 m("span.desktop", "Figures"))),
 
             domLoggedInTabs(accountActive),
@@ -139,12 +139,12 @@ const Nav = {
 
             m(".nav-header", { class: statsActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/stats" },
-                m("span.icon", K.ICON_STRINGS.stats),
+                m("span.action", K.ICON_STRINGS.stats),
                 m("span.desktop", "Stats"))),
 
             m(".nav-header", { class: aboutActive ? "nav-content-selected" : "" },
               m(m.route.Link, { href: "/about" },
-                m("span.icon", K.ICON_STRINGS.about),
+                m("span.action", K.ICON_STRINGS.about),
                 m("span.desktop", "About"))),
 
             Credentials.isAdmin()
@@ -156,7 +156,7 @@ const Nav = {
 
         m(".nav-header",
           m(".search-container",
-            m("span.icon search", { onclick: () => showSearch = !showSearch }, K.ICON_STRINGS.search)
+            m("span.action search", { onclick: () => showSearch = !showSearch }, K.ICON_STRINGS.search)
            ))
        ),
 

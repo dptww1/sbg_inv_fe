@@ -46,19 +46,19 @@ const domResourceIcons = resources => {
   var r = [];
 
   if (resources.magazine_replay != null && resources.magazine_replay.length > 0) {
-    r.push(m("span", K.ICON_STRINGS.magazine_replay));
+    r.push(m("span.icon", K.ICON_STRINGS.magazine_replay));
   }
 
   if (resources.web_replay != null && resources.web_replay.length > 0) {
-    r.push(m("span", K.ICON_STRINGS.web_replay));
+    r.push(m("span.icon", K.ICON_STRINGS.web_replay));
   }
 
   if (resources.video_replay != null && resources.video_replay.length > 0) {
-    r.push(m("span", K.ICON_STRINGS.video_replay));
+    r.push(m("span.icon", K.ICON_STRINGS.video_replay));
   }
 
   if (resources.podcast != null && resources.podcast.length > 0) {
-    r.push(m("span", K.ICON_STRINGS.podcast));
+    r.push(m("span.icon", K.ICON_STRINGS.podcast));
   }
 
   return r;
@@ -72,83 +72,62 @@ const domSortIcon = sortType => m("span.sort-arrow", curSorter == sortType
 //========================================================================
 const domTable = rawData => {
   const desktopRows = [
-    m("tr",
-      m("th.completion[data-sort-by=completion].section-header", "%",        domSortIcon("completion")),
-      m("th.name[data-sort-by=name].section-header",             "Scenario", domSortIcon("name")),
-      m("th.location[data-sort-by=location].section-header",     "Location", domSortIcon("location")),
-      m("th.date[data-sort-by=date][colspan=2].section-header",  "Date",     domSortIcon("date")),
-      m("th.source[data-sort-by=source].section-header",         "Source",   domSortIcon("source")),
-      m("th.size[data-sort-by=size].section-header",             "Models",   domSortIcon("size")),
-      m("th.map[data-sort-by=map].section-header",               "Map Size", domSortIcon("map")),
-      m("th.rating[data-sort-by=rating].section-header",         "Rating",   domSortIcon("rating")),
-      m("th.factions[colspan=2].section-header",                 "Factions"),
-      m("th.resources.section-header",                           "Resources"))
+    m("tr.section-header.clickable",
+      Credentials.isLoggedIn()
+        ? m("td.completion[data-sort-by=completion].section-header", "%",        domSortIcon("completion"))
+        : null,
+      m("td.name[data-sort-by=name].section-header",             "Scenario", domSortIcon("name")),
+      m("td.location[data-sort-by=location].section-header",     "Location", domSortIcon("location")),
+      m("td.date[data-sort-by=date][colspan=2].section-header",  "Date",     domSortIcon("date")),
+      m("td.source[data-sort-by=source].section-header",         "Source",   domSortIcon("source")),
+      m("td.size[data-sort-by=size].section-header.numeric",     "Models",   domSortIcon("size")),
+      m("td.map[data-sort-by=map].section-header",               "Map Size", domSortIcon("map")),
+      m("td.rating[data-sort-by=rating].section-header",         "Rating",   domSortIcon("rating")),
+      m("td.resources.section-header",                           "Resources"))
   ];
 
-  const mobileRows = [
-    m("tr",
-      m("th.completion[data-sort-by=completion].section-header", "%",        domSortIcon("completion")),
-      m("th.name[data-sort-by=name].section-header",             "Scenario", domSortIcon("name")),
-      m("th.rating[data-sort-by=rating].section-header",         "Rating",   domSortIcon("rating")))
-  ];
-
-  rawData.forEach(scenario => {
+  rawData.forEach(s => {
     const starParams = {
-      id: scenario.id,
+      id: s.id,
       active: Credentials.isLoggedIn(),
-      votes: scenario.num_votes,
-      rating: scenario.rating,
-      userRating: scenario.user_scenario.rating,
+      votes: s.num_votes,
+      rating: s.rating,
+      userRating: s.user_scenario.rating,
       callback: ScenarioUpdater.update
     };
 
-    const f1 = K.FACTION_INFO[scenario.scenario_factions[0].faction];
-    const f2 = K.FACTION_INFO[scenario.scenario_factions[1].faction];
-    if (Filters.filter(scenario)) {
+    const f1 = K.FACTION_INFO[s.scenario_factions[0].faction];
+    const f2 = K.FACTION_INFO[s.scenario_factions[1].faction];
+    if (Filters.filter(s)) {
       desktopRows.push(
         m("tr",
-          m("td.completion", m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })),
-          m("td.name", [ m(m.route.Link, { class: "scenario-detail-link", href: "/scenarios/" + scenario.id}, scenario.name) ]),
-          m("td.location", K.LOCATIONS[scenario.location]),
-          m("td.date-age", ageAbbrev(scenario.date_age)),
-          m("td.date-year", scenario.date_year),
-          m("td.source", U.resourceLabel(U.scenarioSource(scenario))),
-          m("td.size", scenario.size),
-          m("td.map nobr", scenario.map_width + "\" x " + scenario.map_height + "\""),
-          m("td.rating", m(StarRating, starParams)),
-          m("td.faction faction1", {title: f1 && f1.name}, f1.letter),
-          m("td.faction faction2", {title: f2 && f2.name}, f2.letter),
-          m("td.resources", domResourceIcons(scenario.scenario_resources))));
-
-      mobileRows.push(
-        m("tr",
-          m("td.completion", m(Pie, { size: 24, n: scenario.size, nPainted: scenario.user_scenario.painted, nOwned: scenario.user_scenario.owned })),
+          Credentials.isLoggedIn()
+            ? m("td.completion",
+                m(Pie, { size: 24, n: s.size, nPainted: s.user_scenario.painted, nOwned: s.user_scenario.owned }))
+            : null,
           m("td.name",
-            m(m.route.Link,
-              {
-                class: "scenario-detail-link",
-                href: "/scenarios/" + scenario.id
-              },
-              scenario.name),
-            NBSP,
-            U.shortResourceLabel(U.scenarioSource(scenario)),
-            m("br"),
-            m("span.date-age", ageAbbrev(scenario.date_age)),
-            m("span.date-year", scenario.date_year),
-            m("span.location", K.LOCATIONS[scenario.location])),
-          m("td.rating", m(StarRating, starParams))));
+            m(m.route.Link, { class: "scenario-detail-link", href: "/scenarios/" + s.id}, s.name),
+            m("br.splitter"),
+            m("span.line2", U.shortResourceLabel(U.scenarioSource(s)))
+           ),
+          m("td.location", K.LOCATIONS[s.location]),
+          m("td.date-age", ageAbbrev(s.date_age)),
+          m("td.date-year", s.date_year),
+          m("td.source-short", U.shortResourceLabel(U.scenarioSource(s))),
+          m("td.source-full", U.resourceLabel(U.scenarioSource(s))),
+          m("td.size.numeric", s.size),
+          m("td.map nobr", s.map_width + "\" x " + s.map_height + "\""),
+          m("td.rating-stars", m(StarRating, starParams)),
+          m("td.rating-numeric", s.rating ? U.formatNumber(s.rating) : ""),
+          m("td.resources", domResourceIcons(s.scenario_resources))));
     }
   });
 
   if (desktopRows.length === 1) {
     desktopRows.push(m("tr", m("td[colspan=8]", "There are no scenarios matching those search criteria!")));
-    mobileRows.push(m("tr", m("td[colspan=8]", "There are no such scenarios!")));
   }
 
-  return [
-    m("table.scenario-list.striped.desktop", tableSorter(rawData), desktopRows),
-    m("table.scenario-list.striped.mobile", tableSorter(rawData), mobileRows)
-  ];
+  return m("table.scenario-list.striped", tableSorter(rawData), desktopRows)
 };
 
 //========================================================================

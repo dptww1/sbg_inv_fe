@@ -18,20 +18,36 @@ const character = {
   faction: null,
   book: null,
   page: null,
-  figure_ids: []
+  figure_ids: [],
+  resources: []
 };
 
 // Array of {id: x, name: "abc"}
 const figures = [];
+
+// The resource currently being edited
+const stagingResource = {
+  title: "",
+  book: "",
+  issue: "",
+  page: null,
+  type: "",
+  url: ""
+};
 
 // When true, character name field acts as lookup of existing
 // character; when false, user is adding a new character
 var figure_lookup_mode = false;
 
 //========================================================================
+const addResource = () => {
+  character.resources.push(Object.assign({}, stagingResource)); // shallow copy
+  resetStagingResource();
+};
+
+//========================================================================
 const characterSelect = target => {
   if (!target.dataset.id) {
-    debugger;
     return null;
   }
 
@@ -45,6 +61,7 @@ const characterSelect = target => {
                 character.book = resp.data.book;
                 character.page = resp.data.page;
                 character.figure_ids = resp.data.figures.map(f => f.id);
+                character.resources = resp.data.resources;
 
                 figures.length = 0;
                 resp.data.figures.forEach(f => {
@@ -100,7 +117,41 @@ const domEditCharacter = () => {
               onchange: ev => character.page = parseInt(ev.target.value, 10)
             }
            )))),
+    m("br"),
+    m("br"),
 
+    domFigures(),
+    m("br"),
+    m("br"),
+
+    domResources(),
+    m("br"),
+    m("br"),
+
+    m("button", { onclick: ev => saveCharacter() }, "Save"),
+    " ",
+    m("button", { onclick: ev => initCharacterForm() }, "New Character")
+  ];
+};
+
+//========================================================================
+const domFigureLookup = () => {
+  return [
+    "Character Name",
+    m("br"),
+
+    m(Typeahead,
+      {
+        findMatches: findMatches,
+        onItemSelect: characterSelect,
+      }),
+    m("br")
+  ];
+};
+
+//========================================================================
+const domFigures = () => {
+  return [
     "Figures",
     m("br"),
     m(FiguresEditor,
@@ -123,27 +174,95 @@ const domEditCharacter = () => {
               K.ICON_STRINGS.remove)
            ))
       : null,
-    m("br"),
-    m("br"),
-
-    m("button", { onclick: ev => saveCharacter() }, "Save"),
-    " ",
-    m("button", { onclick: ev => initCharacterForm() }, "New Character")
   ];
 };
 
 //========================================================================
-const domFigureLookup = () => {
+const domResources = () => {
   return [
-    "Character Name",
+    m(".section-header", "Resources"),
+
+    m("table",
+      character.resources.map(
+        (rsrc, idx) => {
+          return m("tr",
+                   m("td",
+                     resourceElements(rsrc)),
+                   m("td",
+                     m("span.icon",
+                       {
+                         onclick: () => character.resources.splice(idx, 1)
+                       },
+                       K.ICON_STRINGS.remove)));
+        })),
+
+    m("b", "Add New Resource"),
     m("br"),
 
-    m(Typeahead,
-      {
-        findMatches: findMatches,
-        onItemSelect: characterSelect,
-      }),
-    m("br")
+    m("table",
+      m("tr",
+        m("td", "Type "),
+        m("td",
+          m("select[name=type]",
+            {
+              value: stagingResource.type,
+              onchange: ev => stagingResource.type = ev.target.value
+            },
+            m("option", { value: "painting_guide", selected: stagingResource.type == "painting_guide" }, "Painting Guide"),
+            m("option", { value: "analysis", selected: stagingResource.type == "analysis" }, "Analysis")))),
+
+      m("tr",
+        m("td", "Title"),
+        m("td",
+          m("input[type=text][name=title][size=40]",
+            {
+              value: stagingResource.title,
+              onchange: ev => stagingResource.title = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Book"),
+        m("td", m(SelectBook,
+                  {
+                    value: stagingResource.book,
+                    onchange: ev => stagingResource.book = ev.target.value
+                  }))),
+
+      m("tr",
+        m("td", "Issue"),
+        m("td",
+          m("input[type=text][name=issue][size=15]",
+            {
+              value: stagingResource.issue,
+              onchange: ev => stagingResource.issue = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Page"),
+        m("td",
+          m("input[type=number][name=page][size=5]",
+            {
+              value: stagingResource.page,
+              onchange: ev => stagingResource.page = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "URL"),
+        m("td",
+          m("input[type=text][name=url][size=80]",
+            {
+              value: stagingResource.url,
+              onchange: ev => stagingResource.url = ev.target.value
+            }))),
+
+      m("tr",
+        m("td"),
+        m("td",
+          m("button",
+            {
+              onclick: ev => addResource()
+            },
+            "Add Resource")))),
   ];
 };
 
@@ -191,6 +310,39 @@ const removeFigure = idx => {
 };
 
 //========================================================================
+const resetStagingResource = () => {
+  stagingResource.title = "";
+  stagingResource.book = "";
+  stagingResource.issue = "";
+  stagingResource.page = null;
+  stagingResource.type = "";
+  stagingResource.url = "";
+};
+
+//========================================================================
+const resourceElements = r => {
+  const fields = [ m("span.icon", m.trust(K.IMAGE_STRINGS[r.type])) ];
+
+  if (r.url) {
+    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
+  }
+
+  if (r.book) {
+    fields.push(" " + K.BOOK_NAMES[r.book]);
+  }
+
+  if (r.issue) {
+    fields.push(" #" + r.issue);
+  }
+
+  if (r.page) {
+    fields.push(" p." + r.page);
+  }
+
+  return fields;
+};
+
+//========================================================================
 const saveCharacter = () => {
   if (!character.name) {
     Request.errors("Name is required");
@@ -203,7 +355,6 @@ const saveCharacter = () => {
     { character: character },
     () => {
       Request.messages("Saved " + character.name);
-      initCharacterForm();
     });
 };
 

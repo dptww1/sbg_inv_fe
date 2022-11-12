@@ -1,4 +1,4 @@
-/* global module, require */
+/* global module, require, Intl */
 
 const K = require("constants");
 
@@ -38,6 +38,13 @@ module.exports.currentDate = () => {
       .toISOString()
       .substring(0, 10);
 };
+
+//========================================================================
+const NUMERIC_FMT = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+module.exports.formatNumber = n => NUMERIC_FMT.format(n);
 
 //========================================================================
 module.exports.resourceIcon = res => {

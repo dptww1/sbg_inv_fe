@@ -7,7 +7,7 @@
  *
  * Alternative to FigureInventoryEditor which doesn't handle all operations
  * allowed by the /userfigure API call.  Implementing just the most common ops
- * seems a good compromise allowinginventory editing on the figure-list.js screen
+ * seems a good compromise allowing inventory editing on the figure-list.js screen
  * without muddying the UI there with additional widgets which would be needed to
  * handle the full range of operations (which the other FigureInventoryEditor does).
  *
@@ -178,7 +178,7 @@ const FigureInventoryEditor2 = {
             m("label.left", "Notes")),
 
           m(".figure-inventory-popup-row",
-            m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=35]",
+            m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=29]",
               {
                 onchange: ev => rec.notes = ev.target.value,
                 value: rec.notes

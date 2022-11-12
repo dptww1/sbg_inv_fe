@@ -13,18 +13,19 @@ var stats = {};
 const toTitleCase = s => s.charAt(0).toUpperCase() + s.substring(1);
 
 //========================================================================
-const domFigureStats = (jsonRoot, label) => [
-  m("div.section-header", label),
-  m("table",
-    COLLECTION_KEYS.map(key =>
-      jsonRoot[key].map((fig, idx) =>
-        m("tr", { className: idx === 0 ? "padded-top" : "" },
-          m("td", idx === 0 ? toTitleCase(key) : ""),
-          m("td", m(m.route.Link, { href: "/figures/" + fig.id }, fig.name)),
-          m("td", fig.total))
-      )),
-   )
-];
+const domFigureStats = (jsonRoot, label) =>
+  m("div.stacked-column",
+    m("div.section-header", label),
+    m("table.striped",
+      COLLECTION_KEYS.map(key =>
+        jsonRoot[key].map((fig, idx) =>
+          m("tr",
+            m("td", idx === 0 ? toTitleCase(key) : ""),
+            m("td", m(m.route.Link, { href: "/figures/" + fig.id }, fig.name)),
+            m("td.numeric", fig.total))
+        )),
+     )
+   );
 
 //========================================================================
 const StatsScreen = {
@@ -50,15 +51,17 @@ const StatsScreen = {
             ]
           : null,
 
-        stats.models && stats.models.mostCollected
-          ? domFigureStats(stats.models.mostCollected, "Most Collected Models")
-          : null,
+        m(".flex-container",
+          stats.models && stats.models.mostCollected
+            ? domFigureStats(stats.models.mostCollected, "Most Collected Models")
+            : null,
 
-        m("div", m.trust("&nbsp;")),
+          m("div", m.trust("&nbsp;")),
 
-        stats.models && stats.models.mostPainted
-          ? domFigureStats(stats.models.mostPainted, "Most Painted Models")
-          : null
+          stats.models && stats.models.mostPainted
+            ? domFigureStats(stats.models.mostPainted, "Most Painted Models")
+            : null
+         )
        )
     ];
   }

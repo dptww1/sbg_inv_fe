@@ -172,7 +172,7 @@ module.exports.ICON_STRINGS = {
   scenarios:    "\ue920",
   stats:        "\ue99c",
 
-  // Resource Icons
+  // Scenario Resource Icons
   magazine_replay: "\ue91f",
   podcast:         "\uea27",
   video_replay:    "\ue912",
@@ -182,8 +182,14 @@ module.exports.ICON_STRINGS = {
   down:   "\uea3e",
   edit:   "\ue905",
   remove: "\uea0e",
-  up:     "\uea3a"
+  up:     "\uea3a",
 };
+
+module.exports.IMAGE_STRINGS = {
+  // Figure Resource Icons
+  analysis:       "<img src='/images/icons/analysis.svg', width='16', height='16'>",
+  painting_guide: "<img src='/images/icons/painting_guide.svg' width='16' height='16'>"
+}
 
 module.exports.LOCATIONS = {
   amon_hen:     "Amon Hen",

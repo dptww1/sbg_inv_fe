@@ -119,13 +119,13 @@ const AccountScreen = {
 
         m(".section-header", "Activity"),
 
-        m("p.text",
+        m("p",
           domHistoryTypeFilter()),
 
-        m("p.text",
+        m("p",
           m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
 
-        m("p.text",
+        m("p",
           m(FigureHistory,
             {
               list: userHistory.filter(h => !historyFilters.length || historyFilters.includes(h.op)),
@@ -138,9 +138,9 @@ const AccountScreen = {
 
         m(".section-header", "Account Admin"),
 
-        m("div.text", "Use this form to update your email address and/or password"),
+        m("p", "Use this form to update your email address and/or password"),
 
-        m("p.text",
+        m("p",
           m("table",
 
             m("tr",
@@ -155,12 +155,16 @@ const AccountScreen = {
             m("tr",
               m("td", "New Password"),
               m("td", m("input[type=password][name=password][size=40]",
-                        { onchange: ev => Credentials.password(ev.target.value), value: Credentials.password() })),
-              m("td", m("span.field-note", "(leave empty to keep the same password)"))),
+                        { onchange: ev => Credentials.password(ev.target.value), value: Credentials.password() }))),
+
+            m("tr.field-note",
+              m("td", ""),
+              m("td", "(leave empty to keep the same password)")),
 
             m("tr",
               m("td", ""),
-              m("button[value=Update][name=update]", { onclick: updateAccount }, "Update My Account")))))
+              m("td", m("button[value=Update][name=update]", { onclick: updateAccount }, "Update My Account")))))
+       )
     ];
   }
 };

@@ -15,7 +15,7 @@ const Pie           = require("components/pie");
 const Request       = require("request");
 const U             = require("utils");
 
-var figure = { factions: [], scenarios: [], history: [], rules: [] };
+var figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
 
 //========================================================================
 const chooseFaction = (fid) => {
@@ -79,14 +79,14 @@ const domInventory = total => {
                    {
                      onclick: () => Editor.createHistory(figure, "buy_unpainted", update)
                    },
-                   K.ICON_STRINGS.plus)),
+                   m("span.action", K.ICON_STRINGS.plus))),
                figure.owned > 0
                  ? m("td.action",
                      m("a",
                        {
                          onclick: () => Editor.createHistory(figure, "sell_unpainted", update)
                        },
-                       K.ICON_STRINGS.minus))
+                       m("span.action", K.ICON_STRINGS.minus)))
                  : null,
                figure.owned > 0 && figure.owned > figure.painted
                  ? m("td.action",
@@ -94,7 +94,7 @@ const domInventory = total => {
                        {
                          onclick: () => Editor.createHistory(figure, "paint", update)
                        },
-                       K.ICON_STRINGS.paint_figure))
+                       m("span.action", K.ICON_STRINGS.paint_figure)))
                  : null),
 
              m("tr",
@@ -105,15 +105,52 @@ const domInventory = total => {
                    {
                      onclick: () => Editor.createHistory(figure, "buy_painted", update)
                    },
-                   K.ICON_STRINGS.plus)),
+                   m("span.action", K.ICON_STRINGS.plus))),
                figure.painted > 0
                  ? m("td.action",
                      m("a",
                        {
                          onclick: () => Editor.createHistory(figure, "sell_painted", update)
                        },
-                       K.ICON_STRINGS.minus))
+                       m("span.action", K.ICON_STRINGS.minus)))
                  : null)));
+};
+
+//========================================================================
+const domResources = () => {
+  if (figure.resources === null || figure.resources.length === 0) {
+    return null;
+  }
+
+  return [
+    m(".section-header", "Resources"),
+    domResourcesForType(figure.resources, "painting_guide", "Painting Guides"),
+    domResourcesForType(figure.resources, "analysis", "Analysis")
+  ];
+};
+
+//========================================================================
+const domResourcesForType = (resourceList, type, title) => {
+  const activeResources = resourceList.filter(r => r.type === type);
+
+  if (!activeResources.length) {
+    return null;
+  }
+
+  return m("div.figure-resource-list",
+           m("span.figure-resource-icon",
+             m("span.icon", m.trust(K.IMAGE_STRINGS[type]))),
+           m("span.figure-resource-type.section-subheader",
+             title),
+           m("table.figure-resources",
+             activeResources.map(r => {
+               const title = r.title || K.BOOK_NAMES[r.book];
+               return m("tr",
+                        m("td",
+                          r.url
+                            ? m("a", { href: r.url }, title)
+                            : `${title}${r.issue ? '#' + r.issue : ''}, page ${r.page}`));
+             })));
 };
 
 //========================================================================
@@ -157,6 +194,16 @@ const domSilhouette = _ =>
         ? m(".silhouette",
             m("img", { src: U.silhouetteUrl(figure.slug) }))
         : null;
+
+//========================================================================
+const initializeFigure = () => {
+  figure = {
+    factions: [],
+    scenarios: [],
+    rules: [],
+    resources: []
+  };
+};
 
 //========================================================================
 const requestFigureModelData = figureId => {
@@ -228,7 +275,7 @@ const update = hist => {
 //========================================================================
 const FigureDetailScreen = {
   oninit: (/*vnode*/) => {
-    figure = { factions: [], scenarios: [], rules: [] };
+    initializeFigure();
     requestFigureModelData(m.route.param("key"));
   },
 
@@ -240,7 +287,7 @@ const FigureDetailScreen = {
       m(Nav, { selected: "Figure Details" }),
       m("div.main-content", [
         m(Filters, { activeFilters: "Book" }),
-        m(".detail-page-title", figure.name),
+        m(".page-title", figure.name),
         Credentials.isAdmin() ? m("button",
                                   { onclick: ev => m.route.set("/figure-edit/" + figure.id) },
                                   "Edit Figure")
@@ -249,6 +296,7 @@ const FigureDetailScreen = {
         domInventory(total),
         domFactions(),
         domScenarios(total),
+        domResources(),
         domHistory(),
         m(Editor)
       ]),

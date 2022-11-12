@@ -38,7 +38,7 @@ const FigureHistoryList = {
       return m("p.text", "None");
     }
 
-    return m("table.user-activity",
+    return m("table.striped.user-activity",
              list.map(rec =>
                       m("tr",
                         m("td.nobr", rec.op_date),
@@ -51,25 +51,25 @@ const FigureHistoryList = {
                                 },
                                 rec.amount > 1 && rec.plural_name ? rec.plural_name : rec.name)),
                         m("td", K.USER_FIGURE_OPS[rec.op]),
-                        m("td", rec.amount),
+                        m("td.numeric", rec.amount),
                         m("td",
-                          m("span.icon",
+                          m("span.action",
                             {
                               onclick: _ => Editor.editHistory(rec, _ => updateHistory(rec, callbackFn))
                             },
                             K.ICON_STRINGS.edit),
-                          m("span.icon",
+                          m("span.action",
                             {
                               onclick: _ => removeHistory(rec, callbackFn)
                             },
                             K.ICON_STRINGS.remove)),
                         m("td", rec.notes))),
              showTotals
-               ? m("tr",
+               ? m("tr.totals",
+                   m("td[colspan=2]", "Totals"),
                    m("td", ""),
-                   m("td", "Totals"),
-                   m("td", ""),
-                   m("td", list.reduce((acc, val) => acc += val.amount, 0)))
+                   m("td", list.reduce((acc, val) => acc += val.amount, 0)),
+                   m("td[colspan=2]", ""))
                : null);
   }
 };

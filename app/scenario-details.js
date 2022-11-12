@@ -43,11 +43,12 @@ const clearResourceForm = () => {
 //========================================================================
 const domFactionRollup = (faction) => {
   return m("div.faction",
-           m("div.faction-name", K.FACTION_INFO[faction.faction].name),
-           Credentials.isAdmin() ? m("button",
-                                     { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
-                                     "Edit Faction")
-                                 : null,
+           m("div.section-subheader", K.FACTION_INFO[faction.faction].name),
+           Credentials.isAdmin()
+             ? m("button",
+                 { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
+                 "Edit Faction")
+             : null,
            domRolesRollup(faction.roles));
 };
 
@@ -116,7 +117,7 @@ const domResourcesRollupAdd = (eltArray, resourceArray, className, titleStr, ico
         return m("li", { className: "span.scenario-" + className + "-url" }, domResourceItem(res));
       });
       eltArray.push(m("span.icon", iconCharStr)),
-      eltArray.push(m("span.scenario-" + className + "-title", titleStr + "s: "));
+      eltArray.push(m("span.scenario-" + className + "-title", titleStr + "s"));
       eltArray.push(m("ul.resource-list", items));
     }
   }
@@ -369,7 +370,7 @@ var ScenarioDetailScreen = {
       m(Nav, { selected: "Scenario Details" }),
         it && m("div.main-content", [
           m("div.scenario-details", [
-            m("div.detail-page-title", it.name),
+            m("div.page-title", it.name),
             Credentials.isAdmin()
               ? m("button", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, "Edit Scenario")
               : null,
