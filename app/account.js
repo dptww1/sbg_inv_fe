@@ -117,6 +117,11 @@ const AccountScreen = {
 
         Credentials.isAdmin() ? domBackEndAdmin() : null,
 
+        m(m.route.Link,
+          { href: "/scenarios", onclick: () => { Credentials.clear(); } },
+          m("span.action", K.ICON_STRINGS.log_out),
+          "Log Out"),
+
         m(".section-header", "Activity"),
 
         m("p",

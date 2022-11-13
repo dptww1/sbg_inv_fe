@@ -39,23 +39,14 @@ const domMessages = () => {
 };
 
 //========================================================================
-const domLoggedInTabs = (loginActive) => {
-  if (!Credentials.token()) {
-    return null;
-  }
-
-  return [
-    m("div.nav-header", { class: loginActive ? "nav-content-selected" : "" },
-      m(m.route.Link, { href: "/account" },
-        m("span.action", K.ICON_STRINGS.account),
-        m("span.desktop", Credentials.name()))),
-
-    m("div.nav-header",
-      m(m.route.Link, { href: "/scenarios", onclick: () => { Credentials.clear(); } },
-        m("span.action", K.ICON_STRINGS.log_out),
-        m("span.desktop", "Log Out")))
-  ];
-};
+const domLoggedInTabs = loginActive =>
+  Credentials.token()
+    ? m("div.nav-header",
+        { class: loginActive ? "nav-content-selected" : "" },
+        m(m.route.Link, { href: "/account" },
+          m("span.action", K.ICON_STRINGS.account),
+          m("span.desktop", Credentials.name())))
+    : null;
 
 //========================================================================
 const domLoggedOutTabs = (loginActive) => {
