@@ -318,10 +318,16 @@ tr.totals {
 
 .page-header {
   .title {
-    font-size: 20pt;
+    font-size: 18pt;
     font-family: @header-font-family;
     font-weight: bold;
     text-align: center;
+  }
+
+  @media (min-width: 450px) {
+    .title {
+      font-size: 20pt;
+    }
   }
 
   .last-update {
