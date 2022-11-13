@@ -43,8 +43,8 @@ const domNews = () => {
                  m("td",
                    m("input[type=text][name=item_text][size=80]",
                      { onchange: ev => newNewsItem.item_text = ev.target.value },
-                     newNewsItem.item_text)),
-                 m("button", { onclick: addNewsItem }, "Save"))
+                     newNewsItem.item_text),
+                   m("button", { onclick: addNewsItem }, "Save")))
              : null
           )
 };
@@ -68,8 +68,10 @@ const addNewsItem = () => {
   Request.post("/newsitem",
                { news_item: newNewsItem },
                resp => {
+                 updateNews();
                  newNewsItem.item_date = "";
                  newNewsItem.item_text = "";
+                 Request.messages("Added News Item");
                });
 }
 
