@@ -58,7 +58,7 @@ const update = _ => {
   }
 
   if (!("" + rec.amount).match("^-?[1-9]\\d*$")) {
-    errors.push("Amount must be a non-zero number");
+    errors.push("Amount must be a positive integer");
   }
 
   let amt = parseInt(rec.amount, 10);
@@ -159,26 +159,31 @@ const FigureInventoryEditor2 = {
             m("label", instrText),
             m(".errors", errors.map(msg => m("span", msg, m("br"))))),
 
-          m(".figure-inventory-popup-row",
-            m("label.left", "Amount "),
-            m("input.left figure-inventory-popup-amount[type=number][name=amt][min=-9999][max=9999][step=1][pattern=\\d+]",
-              {
-                onchange: ev => rec.amount = ev.target.value,
-                value: rec.amount
-              },
-              rec.op_date),
-            m("label.right", " When "),
-            m("input.right figure-inventory-popup-date[type=date][name=date]",
-              {
-                onchange: ev => rec.op_date = ev.target.value,
-                value: rec.op_date
-              })),
+          m(".figure-inventory-popup-row.flex-container",
+            m(".stack-column.field-container-with-label",
+              m("label", "Amount "),
+              // 'size' needed because even with width set via CSS, following
+              // inline elements are rendered as if the input was at its default size.
+              m("input#popup-amt[type=number][name=amt][min=1][max=9999][step=1][pattern=\\d+][size=4]",
+                {
+                  onchange: ev => rec.amount = ev.target.value,
+                  value: rec.amount
+                },
+                rec.op_date)),
+
+            m(".stacked-column.field-container-with-label",
+              m("label", " When "),
+              m("input[type=date][name=date][id=popup-date]",
+                {
+                  onchange: ev => rec.op_date = ev.target.value,
+                  value: rec.op_date
+                }))),
+
+          m(".figure-inventory-popup-row.field-container-with-label",
+            m("label[for=foo]", "Notes")),
 
           m(".figure-inventory-popup-row",
-            m("label.left", "Notes")),
-
-          m(".figure-inventory-popup-row",
-            m("textarea.figure-inventory-popup-notes[name=notes][rows=5][cols=29]",
+            m("textarea#foo.figure-inventory-popup-notes[name=notes][rows=5]",
               {
                 onchange: ev => rec.notes = ev.target.value,
                 value: rec.notes

@@ -44,7 +44,7 @@ const swallowEvents = ev => {
 const update = _ => {
   errors = [];
 
-  if (!rec.amount || rec.amount == 0) {
+  if (!rec.amount) {
     errors.push("Amount is required");
   }
 
@@ -116,7 +116,7 @@ const FigureInventoryEditor = {
               m("label", "Amount "),
               // 'size' needed because even with width set via CSS, following
               // inline elements are rendered as if the input was at its default size.
-              m("input#popup-amt][min=1][max=9999][step=1][pattern=\\d+][size=4]",
+              m("input#popup-amt[type=number][name=amt][min=1][max=9999][step=1][pattern=\\d+][size=4]",
                 {
                   onchange: ev => rec.amount = ev.target.value,
                   value: rec.amount
