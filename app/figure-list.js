@@ -170,9 +170,9 @@ const domFigureListByType = (title, list) => {
 //========================================================================
 const domResources = fig => {
   return [
-    fig.num_painting_guides ? m("span.icon", m.trust(K.IMAGE_STRINGS["painting_guide"])) : "",
+    fig.num_painting_guides ? m("span", m.trust(K.IMAGE_STRINGS["painting_guide"])) : "",
     " ",
-    fig.num_analyses ? m("span.icon", m.trust(K.IMAGE_STRINGS["analysis"])) : ""
+    fig.num_analyses ? m("span", m.trust(K.IMAGE_STRINGS["analysis"])) : ""
   ];
 };
 
