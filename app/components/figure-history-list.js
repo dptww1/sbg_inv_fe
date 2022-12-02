@@ -3,7 +3,7 @@
 const m = require("mithril");
 
 const K       = require("constants.js");
-const Editor  = require("components/figure-inventory-editor");
+const Dialog  = require("components/figure-inventory-dialog");
 const Request = require("request.js");
 
 //========================================================================
@@ -31,7 +31,7 @@ const updateHistory = (hist, callbackFn) => {
 };
 
 //========================================================================
-// caller must add m(Editor) to its view nodes!
+// caller must add m(Dialog) to its view nodes!
 const FigureHistoryList = {
   view: ({ attrs: { list, hideName, callbackFn, showTotals } }) => {
     if (!list || list.length === 0) {
@@ -55,7 +55,7 @@ const FigureHistoryList = {
                         m("td",
                           m("span.action",
                             {
-                              onclick: _ => Editor.editHistory(rec, _ => updateHistory(rec, callbackFn))
+                              onclick: _ => Dialog.editHistory(rec, _ => updateHistory(rec, callbackFn))
                             },
                             K.ICON_STRINGS.edit),
                           m("span.action",

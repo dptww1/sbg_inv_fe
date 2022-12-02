@@ -5,7 +5,7 @@ const prop        = require("mithril/stream");
 
 const Credentials     = require("credentials");
 const DateRangePicker = require("components/date-range-picker");
-const Editor          = require("components/figure-inventory-editor");
+const Dialog          = require("components/figure-inventory-dialog");
 const FigureHistory   = require("components/figure-history-list");
 const Header          = require("header");
 const K               = require("constants");
@@ -139,7 +139,7 @@ const AccountScreen = {
               showTotals: historyFilters.length
             })),
 
-        m(Editor),
+        m(Dialog),
 
         m(".section-header", "Account Admin"),
 

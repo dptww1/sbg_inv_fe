@@ -1,46 +1,33 @@
 /* global module require */
 
-/**
- * FigureInventoryEditor2
- *
- * Component for editing user inventory of a particular figure.
- *
- * Alternative to FigureInventoryEditor which doesn't handle all operations
- * allowed by the /userfigure API call.  Implementing just the most common ops
- * seems a good compromise allowing inventory editing on the figure-list.js screen
- * without muddying the UI there with additional widgets which would be needed to
- * handle the full range of operations (which the other FigureInventoryEditor does).
- *
- *   .createPaintedHistory(figure, callback)
- *       For user to paint unpainted models (but not buying/selling of painted figures)
- *
- *   .createUnpaintedHistory(figure, callback)
- *       For user to buy or sell unpainted (only) models
- *
- * `figure`: a figure record with user information as returned from the backend API.
- * `callback`: method to call after inventory is updated.
- */
+const m = require("mithril");
 
-const m    = require("mithril");
-const prop = require("mithril/stream");
+const Request = require("request");
+const U       = require("utils");
 
-const Request = require("request.js");
-const U       = require("utils.js");
-
+let callbackFn;
+let curPrompt;
+let errors = [];
 let hide = true;
 let rec = {};
-let errors = [];
-let callbackFn;
-let instrText;
 
 //========================================================================
-const initDialog = (rec, callback) => {
+const initDialog = (figure, prompt, callback) => {
   callbackFn = callback;
-  hide = false;
+  curPrompt = prompt;
   errors = [];
-  instrText = rec.op === "paint"
-    ? `How many ${rec.plural_name || rec.name} did you paint?`
-    : `Enter the amount to change your unpainted ${rec.plural_name || rec.name}?`
+
+  rec = {
+    amount: "",
+    id: figure.id,
+    name: figure.name,
+    plural_name: figure.plural_name,
+    new_owned: figure.owned,
+    new_painted: figure.painted,
+    notes: "",
+    op: null,
+    op_date: U.currentDate()
+  };
 };
 
 //========================================================================
@@ -57,24 +44,19 @@ const update = _ => {
     errors.push("Amount is required");
   }
 
-  if (!("" + rec.amount).match("^-?[1-9]\\d*$")) {
-    errors.push("Amount must be a positive integer");
+  if (!("" + rec.amount).match("^[1-9]\\d*$")) {
+    errors.push("Amount must be a positive number!");
   }
 
   let amt = parseInt(rec.amount, 10);
+  if (rec.op.match("^sell.*")) {
+    amt = -amt;
+  }
 
   if (rec.op == "paint") {
-    if (amt < 0) {
-      errors.push("You can't unpaint models. Click the figure name and update your inventory there.");
-    }
     if (amt + rec.new_painted > rec.new_owned) {
       errors.push("You can't paint more models than you have.");
     }
-  }
-
-  // Negative buying is the same as selling
-  if (amt < 0 && rec.op == "buy_unpainted" && -amt > rec.new_owned) {
-      errors.push("You can't have less than 0 figures");
   }
 
   if (!rec.op_date) {
@@ -90,57 +72,55 @@ const update = _ => {
   }
 
   // No errors. Now safe to patch up rec.
-  if (rec.op == "paint") {
+  if (rec.op === "buy_painted" || rec.op === "sell_painted") {
     rec.new_painted += amt;
+    rec.new_owned += amt;
+
+  } else if (rec.op === "paint") {
+    rec.new_painted += amt;
+
   } else {
     rec.new_owned += amt;
   }
 
-  if (amt < 0 && rec.op == "buy_unpainted") {
-    rec.amount = -amt;
-    rec.op = "sell_unpainted";
-  }
-
-  hide = true;
-
   Request.post("/userfigure",
                { user_figure: rec },
-               resp => callbackFn()
-              );
+               resp => {
+                 hide = true;
+                 callbackFn();
+               });
 };
 
 //========================================================================
-const FigureInventoryEditor2 = {
-  createPaintedHistory: (figure, updateCallback) => {
-    rec = {
-      amount: "",
-      id: figure.id,
-      name: figure.name,
-      plural_name: figure.plural_name,
-      new_owned: figure.owned,
-      new_painted: figure.painted,
-      notes: "",
-      op: "paint",
-      op_date: U.currentDate()
-    };
-
-    initDialog(rec, updateCallback);
+const FigureInventoryDialog = {
+  editHistory: (historyRec, callbackFn) => {
+    rec = historyRec;
   },
 
-  createUnpaintedHistory: (figure, updateCallback) => {
-    rec = {
-      amount: "",
-      id: figure.id,
-      name: figure.name,
-      plural_name: figure.plural_name,
-      new_owned: figure.owned,
-      new_painted: figure.painted,
-      notes: "",
-      op: "buy_unpainted",
-      op_date: U.currentDate()
-    };
+  updatePainted: (figure, callbackFn, selling) => {
+    rec.op = selling ? "sell_painted" : "buy_painted";
+    const prompt = selling
+          ? `Subtract how many painted ${U.pluralName(figure)}?`
+          : `Add how many painted ${U.pluralName(figure)}?`;
 
-    initDialog(rec, updateCallback);
+    initDialog(figure, prompt, callbackFn);
+    hide = false;
+  },
+
+  updatePainting: (figure, callbackFn) => {
+    rec.op = "paint";
+    initDialog(figure, `How many ${U.pluralName(figure)} did you paint?`, callbackFn);
+    hide = false;
+  },
+
+  updateUnpainted: (figure, callbackFn, selling) => {
+    rec.op = selling ? "sell_unpainted" : "buy_unpainted";
+    const prompt = selling
+          ? `Subtract how many ${U.pluralName(figure)}?`
+          : `Add how many new ${U.pluralName(figure)}?`;
+
+    initDialog(figure, prompt, callbackFn);
+    hide = false;
   },
 
   view: vnode => {
@@ -156,7 +136,7 @@ const FigureInventoryEditor2 = {
         m("form.figure-inventory-popup-form",
 
           m(".figure-inventory-popup-row",
-            m("label", instrText),
+            m("label", curPrompt),
             m(".errors", errors.map(msg => m("span", msg, m("br"))))),
 
           m(".figure-inventory-popup-row.flex-container",
@@ -164,7 +144,7 @@ const FigureInventoryEditor2 = {
               m("label", "Amount "),
               // 'size' needed because even with width set via CSS, following
               // inline elements are rendered as if the input was at its default size.
-              m("input#popup-amt[type=number][name=amt][min=1][max=9999][step=1][pattern=\\d+][size=4]",
+              m("input#popup-amt[type=number][name=amt][min=1][max=9999][step=1][pattern=\\d+][size=3]",
                 {
                   onchange: ev => rec.amount = ev.target.value,
                   value: rec.amount
@@ -198,4 +178,4 @@ const FigureInventoryEditor2 = {
   }
 };
 
-module.exports = FigureInventoryEditor2;
+module.exports = FigureInventoryDialog;

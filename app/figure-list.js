@@ -3,7 +3,7 @@
 const m           = require("mithril");
 
 const Credentials = require("credentials");
-const Editor2     = require("components/figure-inventory-editor2");
+const Dialog      = require("components/figure-inventory-dialog");
 const Header      = require("header");
 const K           = require("constants");
 const Nav         = require("nav");
@@ -128,18 +128,25 @@ const domFigureListByType = (title, list) => {
                  m("td",
                    {
                      class: "name" + (fig.slug ? " hasSilhouette" : ""),
-                     style: "--img: url('" + U.silhouetteUrl(fig.slug) + "')"
+                     style: `--img: url('${U.silhouetteUrl(fig.slug)}')`
                    },
                    m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])
                   ),
                  m("td.numeric",
                    m("a",
-                     { onclick: () => Editor2.createUnpaintedHistory(fig, FigureListScreen.refreshArmyDetails) },
+                     {
+                       onclick: () => Dialog.updateUnpainted(
+                         fig,
+                         FigureListScreen.refreshArmyDetails) },
                      fig.owned)),
                  m("td.numeric",
                    fig.painted < fig.owned
                      ? m("a",
-                         { onclick: () => Editor2.createPaintedHistory(fig, FigureListScreen.refreshArmyDetails) },
+                         {
+                           onclick: () => Dialog.updatePainting(
+                             fig,
+                             FigureListScreen.refreshArmyDetails)
+                         },
                          fig.painted)
                      : fig.painted),
                  m("td.pie", m(Pie, { size: 24, n: fig.owned, nPainted: fig.painted, nOwned: fig.owned })),
@@ -268,7 +275,7 @@ const FigureListScreen = {
                           armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
                       : null,
         domArmyDetails()),
-      m(Editor2)
+      m(Dialog)
     ];
   }
 };

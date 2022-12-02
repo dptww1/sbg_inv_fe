@@ -4,9 +4,9 @@ const m          = require("mithril");
 const prop       = require("mithril/stream");
 
 const Credentials   = require("credentials");
+const Dialog        = require("components/figure-inventory-dialog");
 const FigureList    = require("figure-list");
 const Filters       = require("components/filters");
-const Editor        = require("components/figure-inventory-editor");
 const FigureHistory = require("components/figure-history-list");
 const Header        = require("header");
 const K             = require("constants");
@@ -77,14 +77,14 @@ const domInventory = total => {
                m("td.action",
                  m("a",
                    {
-                     onclick: () => Editor.createHistory(figure, "buy_unpainted", update)
+                     onclick: () => Dialog.updateUnpainted(figure, () => refresh(figure.id))
                    },
                    m("span.action", K.ICON_STRINGS.plus))),
                figure.owned > 0
                  ? m("td.action",
                      m("a",
                        {
-                         onclick: () => Editor.createHistory(figure, "sell_unpainted", update)
+                         onclick: () => Dialog.updateUnpainted(figure, () => refresh(figure.id), true)
                        },
                        m("span.action", K.ICON_STRINGS.minus)))
                  : null,
@@ -92,7 +92,7 @@ const domInventory = total => {
                  ? m("td.action",
                      m("a",
                        {
-                         onclick: () => Editor.createHistory(figure, "paint", update)
+                         onclick: () => Dialog.updatePainting(figure, () => refresh(figure.id))
                        },
                        m("span.action", K.ICON_STRINGS.paint_figure)))
                  : null),
@@ -103,14 +103,14 @@ const domInventory = total => {
                m("td.action",
                  m("a",
                    {
-                     onclick: () => Editor.createHistory(figure, "buy_painted", update)
+                     onclick: () => Dialog.updatePainted(figure, () => refresh(figure.id))
                    },
                    m("span.action", K.ICON_STRINGS.plus))),
                figure.painted > 0
                  ? m("td.action",
                      m("a",
                        {
-                         onclick: () => Editor.createHistory(figure, "sell_painted", update)
+                         onclick: () => Dialog.updatePainted(figure, () => refresh(figure.id), true)
                        },
                        m("span.action", K.ICON_STRINGS.minus)))
                  : null)));
@@ -220,59 +220,6 @@ const refresh = id => {
 };
 
 //========================================================================
-const update = hist => {
-  const amt = parseInt(hist.amount, 10);
-
-  switch (hist.op) {
-  case "buy_unpainted":
-    hist.new_owned += amt;
-    break;
-
-  case "buy_painted":
-    hist.new_owned += amt;
-    hist.new_painted += amt;
-    break;
-
-  case "paint":
-    if (amt > (hist.new_owned - hist.new_painted)) {
-      Editor.addError("You can't paint more figures than you own!");
-      return false;
-    }
-    hist.new_painted += amt;
-    break;
-
-  case "sell_unpainted":
-    if (amt > (hist.new_owned - hist.new_painted)) {
-      Editor.addError("You can't sell more figures than you own!");
-      return false;
-    }
-    hist.new_owned -= amt;
-    break;
-
-  case "sell_painted":
-    if (amt > hist.new_owned || amt > hist.new_painted) {
-      Editor.addError("You can't sell more figures than you own!");
-      return false;
-    }
-    hist.new_owned -= amt;
-    hist.new_painted -= amt;
-    break;
-
-  default:
-    alert(`Unknown op #{hist.op}!`);
-    return false;
-  }
-
-  Request.post("/userfigure",
-               { user_figure: hist },
-               resp => {
-                 refresh(figure.id);
-               });
-
-  return true;
-};
-
-//========================================================================
 const FigureDetailScreen = {
   oninit: (/*vnode*/) => {
     initializeFigure();
@@ -298,7 +245,7 @@ const FigureDetailScreen = {
         domScenarios(total),
         domResources(),
         domHistory(),
-        m(Editor)
+        m(Dialog)
       ]),
     ];
   }

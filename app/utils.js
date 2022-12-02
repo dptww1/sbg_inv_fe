@@ -47,6 +47,9 @@ const NUMERIC_FMT = new Intl.NumberFormat("en-US", {
 module.exports.formatNumber = n => NUMERIC_FMT.format(n);
 
 //========================================================================
+module.exports.pluralName = figure => figure.plural_name || figure.name;
+
+//========================================================================
 module.exports.resourceIcon = res => {
   switch (res.resource_type) {
   case "podcast":      return K.ICON_STRINGS.podcast;
