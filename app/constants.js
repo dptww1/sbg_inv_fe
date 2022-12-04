@@ -39,7 +39,8 @@ module.exports.BOOKS = [
   { key: "sos2",    shortName: "SotS (2019)",   name: "The Scouring of the Shire (2019)" },
   { key: "wfr",     shortName: "WiR (2019)",    name: "War in Rohan (2019)" },
   { key: "qrb",     shortName: "Quest (2020)",  name: "Quest of the Ringbearer (2020)" },
-  { key: "dotn",    shortName: "DotN (2022)",   name: "Defence of the North (2022)" }
+  { key: "dotn",    shortName: "DotN (2022)",   name: "Defence of the North (2022)" },
+  { key: "bog",     shortName: "BoO (2022)",    name: "Battle of Osgiliath (2022)" }
 ];
 
 module.exports.BOOKS.forEach((book, i) => book.index = i);
