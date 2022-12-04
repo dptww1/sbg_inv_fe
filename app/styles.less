@@ -109,19 +109,17 @@ td:first-child {
 }
 
 td.hasSilhouette:hover:before {
-  display: block;
-}
-
-td.hasSilhouette:before {
   backdrop-filter: blur(2px);
   border-radius: 10px;
   content: var(--img);
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 20%;
+  transform: translateX(100%) translateY(-50%);
   width: 200px;
   height: 200px;
+  display: block;
+}
+
+td.hasSilhouette:before {
   display: none;
 }
 
@@ -191,7 +189,7 @@ tr.totals {
   left: 50%;
   max-width: 33vw;
   opacity: 1.0;
-  position: absolute;
+  position: fixed;
   padding: 2em;
   top: 50%;
   transform: translate(-50%, -50%);
