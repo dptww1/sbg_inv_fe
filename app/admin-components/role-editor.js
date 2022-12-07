@@ -66,10 +66,6 @@ const removeFigure = (roles, roleIdx, figureIdx) => {
 //========================================================================
 const updateRoleAmount = (roles, roleIdx, ev) => {
   roles[roleIdx].amount = ev.target.value;
-
-  if (ev.which === 13) { // enter
-    editIdx = -1;
-  }
 };
 
 //========================================================================
@@ -119,7 +115,7 @@ const RoleEditor = {
                                     {
                                       name: "amount" + roleIdx,
                                       value: role.amount || 1,
-                                      onkeyup: ev => updateRoleAmount(attrs.roles, roleIdx, ev)
+                                      onchange: ev => updateRoleAmount(attrs.roles, roleIdx, ev)
                                     })
                                 : role.amount
                       ),
