@@ -12,6 +12,7 @@
     "prod": "brunch build --production"
   },
   "dependencies": {
+    "madge": "^5.0.1",
     "mithril": "^2.0.4"
   },
   "devDependencies": {
