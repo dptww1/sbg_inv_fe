@@ -2,8 +2,8 @@ watch:
 	brunch watch --server
 
 dependency-graph:
-	madge --image modules.svg app
-	open -a "Google Chrome" modules.svg
+	./node_modules/madge/bin/cli.js --image modules.svg app
+	open -a "Firefox" modules.svg
 
 update-fonts:
 	unzip -j -d app/assets/fonts ~/Downloads/icomoon.zip 'fonts/*'
