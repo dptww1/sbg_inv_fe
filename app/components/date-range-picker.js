@@ -90,20 +90,22 @@ const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
           m("option[value=custom]",    { selected: selectedRange == "custom"    }, "Custom")
           ),
         m("span.date-range-picker-from",
-          customMode ? m("input[type=date][size=10]",
-                         {
-                           onchange: ev => range.fromDate = ev.target.value,
-                           value: range.fromDate
-                         })
-                     : range.fromDate),
+          customMode
+            ? m("input[type=date][size=10]",
+                {
+                  onchange: ev => range.fromDate = ev.target.value,
+                  value: range.fromDate
+                })
+            : range.fromDate),
         m("span", " - "),
         m("span.date-range-picker-to",
-          customMode ? m("input[type=date][placeholder=YYYY-MM-DD][size=10]",
-                         {
-                           onchange: ev => range.toDate = ev.target.value,
-                           value: range.toDate
-                         })
-                     : range.toDate),
+          customMode
+            ? m("input[type=date][placeholder=YYYY-MM-DD][size=10]",
+                {
+                  onchange: ev => range.toDate = ev.target.value,
+                  value: range.toDate
+                })
+            : range.toDate),
         customMode
           ? m("button",
               { onclick: _ => callbackFn(range) },
