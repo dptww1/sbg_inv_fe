@@ -74,45 +74,45 @@ const domInventory = total => {
              m("tr",
                m("td.figure-owned", "# Owned"),
                m("td", figure.owned),
-               m("td.action",
-                 m("a",
+               m("td",
+                 m("span.action",
                    {
                      onclick: () => Dialog.updateUnpainted(figure, () => refresh(figure.id))
                    },
-                   m("span.action", K.ICON_STRINGS.plus))),
+                   K.ICON_STRINGS.plus)),
                figure.owned > 0
-                 ? m("td.action",
-                     m("a",
+                 ? m("td",
+                     m("span.action",
                        {
                          onclick: () => Dialog.updateUnpainted(figure, () => refresh(figure.id), true)
                        },
-                       m("span.action", K.ICON_STRINGS.minus)))
+                       K.ICON_STRINGS.minus))
                  : null,
                figure.owned > 0 && figure.owned > figure.painted
-                 ? m("td.action",
-                     m("a",
+                 ? m("td",
+                     m("span.action",
                        {
                          onclick: () => Dialog.updatePainting(figure, () => refresh(figure.id))
                        },
-                       m("span.action", K.ICON_STRINGS.paint_figure)))
+                       K.ICON_STRINGS.paint_figure))
                  : null),
 
              m("tr",
                m("td.figure-painted", "# Painted"),
                m("td", figure.painted),
-               m("td.action",
-                 m("a",
+               m("td",
+                 m("span.action",
                    {
                      onclick: () => Dialog.updatePainted(figure, () => refresh(figure.id))
                    },
-                   m("span.action", K.ICON_STRINGS.plus))),
+                   K.ICON_STRINGS.plus)),
                figure.painted > 0
-                 ? m("td.action",
-                     m("a",
+                 ? m("td",
+                     m("span.action",
                        {
                          onclick: () => Dialog.updatePainted(figure, () => refresh(figure.id), true)
                        },
-                       m("span.action", K.ICON_STRINGS.minus)))
+                       K.ICON_STRINGS.minus))
                  : null)));
 };
 
