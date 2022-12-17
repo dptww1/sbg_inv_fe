@@ -1,9 +1,9 @@
 /* global module require */
 
-const m = require("mithril")
+const m = require("mithril");
 
-const K = require("constants")
-const U = require("utils")
+const K = require("constants");
+const U = require("utils");
 
 //========================================================================
 const SelectBook = ({ attrs: { onchange: callbackFn, initialValue } }) => {
