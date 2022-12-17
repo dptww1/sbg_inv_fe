@@ -2,9 +2,10 @@
 
 const m = require("mithril");
 
-const K       = require("constants.js");
-const Dialog  = require("components/figure-inventory-dialog");
-const Request = require("request.js");
+const K       = require("constants");
+const Dialog  = require("components/edit-dialog");
+const Request = require("request");
+const U       = require("utils");
 
 //========================================================================
 const removeHistory = (rec, callbackFn) => {
@@ -49,7 +50,7 @@ const FigureHistoryList = {
                                 {
                                   href: "/figures/" + rec.figure_id
                                 },
-                                rec.amount > 1 && rec.plural_name ? rec.plural_name : rec.name)),
+                                rec.amount > 1 ? U.pluralName(rec) : rec.name)),
                         m("td", K.USER_FIGURE_OPS[rec.op]),
                         m("td.numeric", rec.amount),
                         m("td",

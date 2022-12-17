@@ -5,7 +5,7 @@ const prop        = require("mithril/stream");
 
 const Credentials     = require("credentials");
 const DateRangePicker = require("components/date-range-picker");
-const Dialog          = require("components/figure-inventory-dialog");
+const EditDialog      = require("components/edit-dialog");
 const FigureHistory   = require("components/figure-history-list");
 const Header          = require("header");
 const K               = require("constants");
@@ -139,8 +139,6 @@ const AccountScreen = {
               showTotals: historyFilters.length
             })),
 
-        m(Dialog),
-
         m(".section-header", "Account Admin"),
 
         m("p", "Use this form to update your email address and/or password"),
@@ -169,7 +167,9 @@ const AccountScreen = {
             m("tr",
               m("td", ""),
               m("td", m("button[value=Update][name=update]", { onclick: updateAccount }, "Update My Account")))))
-       )
+       ),
+
+      m(EditDialog),
     ];
   }
 };

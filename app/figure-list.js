@@ -1,15 +1,16 @@
 /* global require module */
 
-const m           = require("mithril");
+const m = require("mithril");
 
-const Credentials = require("credentials");
-const Dialog      = require("components/figure-inventory-dialog");
-const Header      = require("header");
-const K           = require("constants");
-const Nav         = require("nav");
-const Pie         = require("components/pie");
-const Request     = require("request");
-const U           = require("utils");
+const Credentials         = require("credentials");
+const EditDialog          = require("components/edit-dialog");
+const EditInventoryDialog = require("components/edit-inventory-dialog");
+const Header              = require("header");
+const K                   = require("constants");
+const Nav                 = require("nav");
+const Pie                 = require("components/pie");
+const Request             = require("request");
+const U                   = require("utils");
 
 var armyId = "";
 var figuresMap = {};
@@ -135,16 +136,18 @@ const domFigureListByType = (title, list) => {
                  m("td.numeric",
                    m("a",
                      {
-                       onclick: () => Dialog.updateUnpainted(
+                       onclick: () => EditInventoryDialog.show(
                          fig,
+                         "buy_unpainted",
                          FigureListScreen.refreshArmyDetails) },
                      fig.owned)),
                  m("td.numeric",
                    fig.painted < fig.owned
                      ? m("a",
                          {
-                           onclick: () => Dialog.updatePainting(
+                           onclick: () => EditInventoryDialog.show(
                              fig,
+                             "paint",
                              FigureListScreen.refreshArmyDetails)
                          },
                          fig.painted)
@@ -275,7 +278,7 @@ const FigureListScreen = {
                           armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
                       : null,
         domArmyDetails()),
-      m(Dialog)
+      m(EditDialog)
     ];
   }
 };

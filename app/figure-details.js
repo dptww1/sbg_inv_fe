@@ -3,17 +3,18 @@
 const m          = require("mithril");
 const prop       = require("mithril/stream");
 
-const Credentials   = require("credentials");
-const Dialog        = require("components/figure-inventory-dialog");
-const FigureList    = require("figure-list");
-const Filters       = require("components/filters");
-const FigureHistory = require("components/figure-history-list");
-const Header        = require("header");
-const K             = require("constants");
-const Nav           = require("nav");
-const Pie           = require("components/pie");
-const Request       = require("request");
-const U             = require("utils");
+const Credentials         = require("credentials");
+const EditDialog          = require("components/edit-dialog");
+const EditInventoryDialog = require("components/edit-inventory-dialog");
+const FigureList          = require("figure-list");
+const Filters             = require("components/filters");
+const FigureHistory       = require("components/figure-history-list");
+const Header              = require("header");
+const K                   = require("constants");
+const Nav                 = require("nav");
+const Pie                 = require("components/pie");
+const Request             = require("request");
+const U                   = require("utils");
 
 var figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
 
@@ -77,14 +78,14 @@ const domInventory = total => {
                m("td",
                  m("span.action",
                    {
-                     onclick: () => Dialog.updateUnpainted(figure, () => refresh(figure.id))
+                     onclick: () => EditInventoryDialog.show(figure, "buy_unpainted", () => refresh(figure.id))
                    },
                    K.ICON_STRINGS.plus)),
                figure.owned > 0
                  ? m("td",
                      m("span.action",
                        {
-                         onclick: () => Dialog.updateUnpainted(figure, () => refresh(figure.id), true)
+                         onclick: () => EditInventoryDialog.show(figure, "sell_unpainted", () => refresh(figure.id)),
                        },
                        K.ICON_STRINGS.minus))
                  : null,
@@ -92,7 +93,7 @@ const domInventory = total => {
                  ? m("td",
                      m("span.action",
                        {
-                         onclick: () => Dialog.updatePainting(figure, () => refresh(figure.id))
+                         onclick: () => EditInventoryDialog.show(figure, "paint", () => refresh(figure.id))
                        },
                        K.ICON_STRINGS.paint_figure))
                  : null),
@@ -103,14 +104,14 @@ const domInventory = total => {
                m("td",
                  m("span.action",
                    {
-                     onclick: () => Dialog.updatePainted(figure, () => refresh(figure.id))
+                     onclick: () => EditInventoryDialog.show(figure, "buy_painted", () => refresh(figure.id))
                    },
                    K.ICON_STRINGS.plus)),
                figure.painted > 0
                  ? m("td",
                      m("span.action",
                        {
-                         onclick: () => Dialog.updatePainted(figure, () => refresh(figure.id), true)
+                         onclick: () => EditInventoryDialog.show(figure, "sell_painted", () => refresh(figure.id))
                        },
                        K.ICON_STRINGS.minus))
                  : null)));
@@ -245,7 +246,7 @@ const FigureDetailScreen = {
         domScenarios(total),
         domResources(),
         domHistory(),
-        m(Dialog)
+        m(EditDialog)
       ]),
     ];
   }
