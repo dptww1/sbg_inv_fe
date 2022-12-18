@@ -271,12 +271,20 @@ const FigureListScreen = {
       m(Header),
       m(Nav, { selected: "Figures" }),
       m("div.main-content figure-list-main-content",
-        Credentials.isAdmin() ? [ m("button", { onclick: _ => m.route.set("/figure-edit") }, "Add New Figure"), m("br") ] : null,
-        armyId !== "" ? m("a",
-                          { onclick: _ => FigureListScreen.updateArmyDetails("") },
-                          m("span.icon", K.ICON_STRINGS.log_out),
-                          armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
-                      : null,
+        Credentials.isAdmin()
+          ? [
+              m("button", { onclick: _ => m.route.set("/figure-edit") }, "Add New Figure"),
+              m("br")
+            ]
+          : null,
+        armyId !== ""
+          ? [
+              m("span.action",
+                { onclick: _ => FigureListScreen.updateArmyDetails("") },
+                K.ICON_STRINGS.log_out),
+              m(".page-title", armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
+            ]
+          : null,
         domArmyDetails()),
       m(EditDialog)
     ];
