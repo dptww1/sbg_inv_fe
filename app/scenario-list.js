@@ -1,4 +1,4 @@
-/* global module require */
+/* global module require localStorage */
 
 const m               = require("mithril");
 
@@ -71,7 +71,7 @@ const domSortIcon = sortType => m("span.sort-arrow", curSorter == sortType
 
 //========================================================================
 const domTable = rawData => {
-  const desktopRows = [
+  const rows = [
     m("tr.section-header.clickable",
       Credentials.isLoggedIn()
         ? m("td.completion[data-sort-by=completion].section-header", "%",        domSortIcon("completion"))
@@ -99,7 +99,7 @@ const domTable = rawData => {
     const f1 = K.FACTION_INFO[s.scenario_factions[0].faction];
     const f2 = K.FACTION_INFO[s.scenario_factions[1].faction];
     if (Filters.filter(s)) {
-      desktopRows.push(
+      rows.push(
         m("tr",
           Credentials.isLoggedIn()
             ? m("td.completion",
@@ -123,11 +123,11 @@ const domTable = rawData => {
     }
   });
 
-  if (desktopRows.length === 1) {
-    desktopRows.push(m("tr", m("td[colspan=8]", "There are no scenarios matching those search criteria!")));
+  if (rows.length === 1) {
+    rows.push(m("tr", m("td[colspan=8]", "There are no scenarios matching those search criteria!")));
   }
 
-  return m("table.scenario-list.striped", tableSorter(rawData), desktopRows)
+  return m("table.scenario-list.striped", tableSorter(rawData), rows);
 };
 
 //========================================================================
@@ -246,7 +246,7 @@ const ScenarioListScreen = {
                   }
                   data = resp.data;
                   m.redraw();
-                })
+                });
     },
 
     view: () => [
