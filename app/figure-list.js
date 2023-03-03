@@ -282,6 +282,9 @@ const FigureListScreen = {
               m("span.action",
                 { onclick: _ => FigureListScreen.updateArmyDetails("") },
                 K.ICON_STRINGS.log_out),
+              m("span.clickable",
+                { onclick: _ => FigureListScreen.updateArmyDetails("") },
+                "Back"),
               m(".page-title", armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
             ]
           : null,
