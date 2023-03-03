@@ -201,7 +201,11 @@ const Filters = {
   }),
 
   view: (vnode) => {
-    const domEdit = Credentials.isAdmin() ? m(m.route.Link, { class: "icon", href: "/scenario-edit" }, K.ICON_STRINGS.plus) : null;
+    const domEdit = Credentials.isAdmin()
+          ? m("button",
+              { onclick: () => m.route.set("/scenario-edit") },
+              "Add Scenario")
+          : null;
 
     return m("div.filters",
              collapsed
@@ -222,7 +226,7 @@ const Filters = {
                          m("ul.active-filters",
                            m("li", { onclick: unsetAllFilters }, "Remove All Filters")))
                      : null
-                   ]
+                 ]
             );
   }
 };

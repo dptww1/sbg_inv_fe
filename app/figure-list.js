@@ -273,7 +273,7 @@ const FigureListScreen = {
       m("div.main-content figure-list-main-content",
         Credentials.isAdmin()
           ? [
-              m("button", { onclick: _ => m.route.set("/figure-edit") }, "Add New Figure"),
+              m("button", { onclick: _ => m.route.set("/figure-edit") }, "Add Figure"),
               m("br")
             ]
           : null,

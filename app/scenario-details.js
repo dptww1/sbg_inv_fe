@@ -43,12 +43,13 @@ const clearResourceForm = () => {
 //========================================================================
 const domFactionRollup = (faction) => {
   return m("div.faction",
-           m("div.section-subheader", K.FACTION_INFO[faction.faction].name),
-           Credentials.isAdmin()
-             ? m("button",
-                 { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
-                 "Edit Faction")
-             : null,
+           m("div.section-subheader",
+             K.FACTION_INFO[faction.faction].name,
+             Credentials.isAdmin()
+               ? m("button",
+                   { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
+                   "Edit")
+               : null),
            domRolesRollup(faction.roles));
 };
 
@@ -370,10 +371,11 @@ var ScenarioDetailScreen = {
       m(Nav, { selected: "Scenario Details" }),
         it && m("div.main-content", [
           m("div.scenario-details", [
-            m("div.page-title", it.name),
-            Credentials.isAdmin()
-              ? m("button", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, "Edit Scenario")
-              : null,
+            m("div.page-title",
+              it.name,
+              Credentials.isAdmin()
+                ? m("button", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, "Edit")
+                : null),
             m("div.scenario-rating", m(StarRating, starParams)),
             m("div.scenario-date", formatDate(it.date_age, it.date_year, it.date_month, it.date_day)),
             m("div.scenario-location", K.LOCATIONS[it.location]),
