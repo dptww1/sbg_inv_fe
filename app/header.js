@@ -1,4 +1,4 @@
-/* global module require */
+/* global module require localStorage */
 
 var m = require("mithril");
 
