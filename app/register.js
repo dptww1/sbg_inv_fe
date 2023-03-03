@@ -10,19 +10,32 @@ const Request     = require("request");
 
 //========================================================================
 const login = () => {
-  Request.post("/sessions",
-               { user: { email: Credentials.email(), password: Credentials.password() } },
-               resp => {
-                 Credentials.token(resp.data.token);
-                 m.route.set("/scenarios");
-               });
+  Request.post(
+    "/sessions",
+    {
+      user: {
+        email: Credentials.email(),
+        password: Credentials.password()
+      }
+    },
+    resp => {
+      Credentials.token(resp.data.token);
+      m.route.set("/scenarios");
+    });
 };
 
 //========================================================================
 const register = () => {
-  Request.post("/users",
-               { user: { name: Credentials.name(), email: Credentials.email(), password: Credentials.password() } },
-               login);
+  Request.post(
+    "/users",
+    {
+      user: {
+        name: Credentials.name(),
+        email: Credentials.email(),
+        password: Credentials.password()
+      }
+    },
+    login);
 };
 
 //========================================================================
