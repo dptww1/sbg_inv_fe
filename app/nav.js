@@ -29,8 +29,10 @@ const domErrors = () => {
   }
 
   return m(".errors.text",
-           Object.keys(errObj)
-                 .map((k, idx) => [ idx > 0 ? m("br") : null,  m("span", k + ": " + errObj[k]) ]));
+           Object.keys(errObj).map((k, idx) => [
+             idx > 0 ? m("br") : null,
+             m("span", k + ": " + stringify(errObj[k]))
+           ]));
 };
 
 //========================================================================
@@ -92,6 +94,29 @@ const findCompletions = (s, typeahead) => {
                   return x;
                 });
               });
+};
+
+//========================================================================
+const stringify = obj => {
+  if (typeof obj === "string") {
+    return obj;
+  }
+
+  if (typeof obj === "number") {
+    return "" + obj;
+  }
+
+  // *sigh*, Javascript...
+  if (Array.isArray(obj)) {
+    return obj.join("; ");
+  }
+
+  if (!obj) {
+    return "";
+  }
+
+  // Not sure what should happen with object
+  return obj;
 };
 
 //========================================================================

@@ -24,7 +24,7 @@ const clearText = _ => {
 };
 
 //===========================================================================
-const extractFn = (xhr, xhrOptions) => {
+const extractFn = xhr => {
   window.setTimeout(clearText, 250);
 
   if (xhr.status === 401 || xhr.status == 400) {
@@ -32,22 +32,22 @@ const extractFn = (xhr, xhrOptions) => {
     Request.errors({ errors: "Authentication failed. Please log in." });
 
   } else if (xhr.status >= 300) {
-    failFn(null);
+    failFn(xhr.response);
 
   } else {
-    return JSON.parse(xhr.responseText || "{}");  // some legal responses return no data (e.g. HTTP 204)
+    return xhr.response || "{}";  // some legal responses return no data (e.g. HTTP 204)
   }
 };
 
 //===========================================================================
-const failFn = (resp) => {
+const failFn = resp => {
   window.setTimeout(clearText, 250);
 
-  if (resp === null) {
-    Request.errors({ errors: "The server appears to be down. Please try again later." });
+  if (typeof resp === "object" && typeof resp.errors === "object") {
+    Request.errors(resp.errors);
 
   } else {
-    Request.errors({ errors: resp.errors });
+    Request.errors({ errors: "The server appears to be down. Please try again later." });
   }
 
   throw Request.errors().errors;
@@ -61,7 +61,8 @@ const request = (httpMethod, url, data, successFn) => {
     method: httpMethod,
     url: curApi.url + url,
     extract: extractFn,
-    timeout: 5000
+    timeout: 5000,
+    responseType: "json"
   };
 
   if (Credentials.token()) {
@@ -75,7 +76,7 @@ const request = (httpMethod, url, data, successFn) => {
     opts.body = data;
   }
 
-  return m.request(opts).then(resp => successFn(resp))
+  return m.request(opts).then(resp => successFn(resp));
 };
 
 //===========================================================================
