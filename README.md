@@ -14,3 +14,9 @@ Tolkien-inspired name, I didn't choose it just to be cute.   It's
 compact, speedy, and very well supported on its dedicated
 [Zulip Channel](https://mithril.zulipchat.com).
 I can't recommend it highly enough.
+
+## Tips
+
+You can edit or even delete the records in the Activity section of the Figures Details screen.
+But if you do, they won't affect your inventory. The edit feature there isn't really designed
+for regular use, but for cleaning up if you accidentally create the wrong inventory.
