@@ -2,7 +2,7 @@
 
 const m       = require("mithril");
 
-const Credentials = require("credentials")
+const Credentials = require("credentials");
 const Header      = require("header");
 const Nav         = require("nav");
 const Request     = require("request");
@@ -12,7 +12,7 @@ var news = [];
 var numNewsItems = 5;
 var showMore = true;
 
-var resources = []
+var resources = [];
 var numResources = 5;
 var showMoreResources = true;
 
@@ -46,7 +46,7 @@ const domNews = () => {
                      newNewsItem.item_text),
                    m("button", { onclick: addNewsItem }, "Save")))
              : null
-          )
+          );
 };
 
 //========================================================================
@@ -146,7 +146,7 @@ const AboutScreen = {
 
         m("p", "I hope you find this useful!"),
 
-        m("p", "Dave Townsend")
+        m("p", "Dave Townsend / ", m("a", { href: "mailto:dave@davetownsend.org"}, "dave@davetownsend.org"))
        )
     ];
   }
