@@ -149,7 +149,7 @@ const sortByDate = (a, b) => {
 
 //========================================================================
 const sortByLocation = (a, b) => {
-  return sortByTitle(a.location, b.location) ||
+  return U.strCmp(a.location, b.location) ||
          sortBySource(a, b);
 };
 
@@ -162,7 +162,7 @@ const sortByMap = (a, b) => {
 
 //========================================================================
 const sortByName = (a, b) => {
-  return sortByTitle(a.name, b.name) ||
+  return U.strCmp(a.name, b.name) ||
          sortBySource(a, b);
 };
 
@@ -197,14 +197,11 @@ const sortBySource = (a, b) => {
     return 1;
   }
 
-  return sortByTitle(aSrc.title, bSrc.title) ||
+  return U.strCmp(aSrc.title, bSrc.title) ||
          U.cmp(isNaN(aSrc.issue) ? aSrc.issue : +aSrc.issue,
                isNaN(bSrc.issue) ? bSrc.issue : +bSrc.issue) ||
          U.cmp(aSrc.sort_order, bSrc.sort_order);
 };
-
-//========================================================================
-const sortByTitle = (a, b) => U.strCmp(a, b);
 
 //========================================================================
 const tableSorter = list => {
