@@ -1,4 +1,4 @@
-/* global module, require, Intl */
+/* global module, localStorage, require, Intl */
 
 const K = require("constants");
 
@@ -45,6 +45,12 @@ const NUMERIC_FMT = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2
 });
 module.exports.formatNumber = n => NUMERIC_FMT.format(n);
+
+//========================================================================
+module.exports.getLocalStorageBoolean = keyName => {
+  const strVal = localStorage.getItem(keyName);
+  return strVal === "true";
+};
 
 //========================================================================
 module.exports.pluralName = figure => figure.plural_name || figure.name;

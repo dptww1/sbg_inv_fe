@@ -18,6 +18,10 @@ const ICON_RIGHT      = "\u25b6";  // ▶
 const ICON_ASCENDING  = "\u25b2"; // ▲
 const NBSP            = "\u00a0";
 
+const STORAGE_KEY_SORT         = "scenario-list--sort";
+const STORAGE_KEY_REVERSE_SORT = "scenario-list--sort-reverse";
+const STORAGE_KEY_UNPAINTED    = "scenario-list--sort-prefer-unpainted";
+
 const sorters = {
   completion: (a, b) => sortByCompletion(a, b),
   date:       (a, b) => sortByDate(a, b),
@@ -32,6 +36,7 @@ const sorters = {
 let collapsedFilters = true;
 let curSorter = "date";
 let curSortReversed = false;
+let pctSortByUnpainted = true;
 
 let data = null;
 
@@ -65,16 +70,28 @@ const domResourceIcons = resources => {
 };
 
 //========================================================================
-const domSortIcon = sortType => m("span.sort-arrow", curSorter == sortType
-                                                       ? (curSortReversed ? ICON_DOWN : ICON_ASCENDING)
-                                                       : NBSP);
+const domSortIcon = sortType =>
+      m("span.sort-arrow",
+        curSorter == sortType
+          ? (curSortReversed ? ICON_DOWN : ICON_ASCENDING)
+          : NBSP);
+
+//========================================================================
+const domSortPctIcon = sortType =>
+      m("span.sort-pct-arrow",
+        {
+          className: (pctSortByUnpainted ? "unpainted" : "")
+        },
+        curSorter == sortType
+          ? (curSortReversed ? ICON_DOWN : ICON_ASCENDING)
+          : NBSP);
 
 //========================================================================
 const domTable = rawData => {
   const rows = [
     m("tr.section-header.clickable",
       Credentials.isLoggedIn()
-        ? m("td.completion[data-sort-by=completion].section-header", "%",        domSortIcon("completion"))
+        ? m("td.completion[data-sort-by=completion].section-header", "%", domSortPctIcon("completion"))
         : null,
       m("td.name[data-sort-by=name].section-header",             "Scenario", domSortIcon("name")),
       m("td.location[data-sort-by=location].section-header",     "Location", domSortIcon("location")),
@@ -132,10 +149,15 @@ const domTable = rawData => {
 
 //========================================================================
 const sortByCompletion = (a, b) => {
-  return U.cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
-         U.cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
-         U.cmp(b.size, a.size) ||
-         sortBySource(a, b);
+  return pctSortByUnpainted
+    ? U.cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
+      U.cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
+      U.cmp(b.size, a.size) ||
+      sortBySource(a, b)
+    : U.cmp(a.user_scenario.painted / a.size, b.user_scenario.painted / b.size) ||
+      U.cmp(a.user_scenario.owned / a.size, b.user_scenario.owned / b.size) ||
+      U.cmp(b.size, a.size) ||
+      sortBySource(a, b);
 };
 
 //========================================================================
@@ -206,26 +228,48 @@ const sortBySource = (a, b) => {
 //========================================================================
 const tableSorter = list => {
   return {
-    onclick: function(ev) {
-      const newSorter = ev.target.getAttribute("data-sort-by");
-      // click on scenario title runs through here, so don't erase existing value
-      if (newSorter) {
-        localStorage.setItem("scenario-list--sort", newSorter);
-        curSorter = newSorter;
-        var arrowNodes = document.getElementsByClassName("sort-arrow");
-        for (var i = 0; i < arrowNodes.length; ++i) {
-          arrowNodes[i].innerHTML = "&nbsp;";
-        }
+    onclick: ev => {
+      let newSorter = ev.target.getAttribute("data-sort-by");
 
-        var arrowChar = "&#9650;";   // ^
-        var firstId = list[0].id;
-        list.sort(sorters[curSorter]);
-        if (firstId === list[0].id) {
-          list.reverse();
+      // User might have clicked on the sort arrow itself rather than the label
+      if (!newSorter) {
+        newSorter = ev.target.parentNode.getAttribute("data-sort-by");
+      }
+
+      if (newSorter) {
+        if (newSorter === curSorter) {
+          // The user clicked on the same sorter; reverse the current sort
           curSortReversed = !curSortReversed;
-          arrowChar = "&#9660;";   // v
+          localStorage.setItem(STORAGE_KEY_REVERSE_SORT, curSortReversed);
+
+          // The completion sort is a special case because it has four
+          // states (painted up, painted down, unpainted up, unpainted down)
+          // rather than just two.
+          if (curSorter === "completion" && !curSortReversed) {
+
+            // Each time we end up going back to normal from reversed,
+            // we need to reset the unpainted flag, and then since the
+            // sorting logic changed (not just the direction of the results),
+            // we need to re-sort.
+            pctSortByUnpainted = !pctSortByUnpainted;
+            localStorage.setItem(STORAGE_KEY_UNPAINTED, pctSortByUnpainted);
+
+            list.sort(sorters[curSorter]);
+
+          } else {
+            list.reverse();
+          }
+
+        } else {
+          // Otherwise the user clicked on a new sorter. Reset the reversal
+          // flag, but leave the sort-by-unpainted flag alone so it's in
+          // the proper state if the user clicks back there again.
+          curSorter = newSorter;
+          curSortReversed = false;
+          localStorage.setItem(STORAGE_KEY_SORT, newSorter);
+          localStorage.setItem(STORAGE_KEY_REVERSE_SORT, false);
+          list.sort(sorters[curSorter]);
         }
-        ev.target.getElementsByClassName("sort-arrow")[0].innerHTML = arrowChar;
       }
     }
   };
@@ -234,7 +278,10 @@ const tableSorter = list => {
 //========================================================================
 const ScenarioListScreen = {
   oninit: (/*vnode*/) => {
-    curSorter = localStorage.getItem("scenario-list--sort") || "date";
+    curSorter = localStorage.getItem(STORAGE_KEY_SORT) || "date";
+    curSortReversed = U.getLocalStorageBoolean(STORAGE_KEY_REVERSE_SORT) || false;
+    pctSortByUnpainted = U.getLocalStorageBoolean(STORAGE_KEY_UNPAINTED) || false;
+
     Request.get("/scenarios",
                 resp => {
                   resp.data.sort(sorters[curSorter]);
@@ -244,15 +291,15 @@ const ScenarioListScreen = {
                   data = resp.data;
                   m.redraw();
                 });
-    },
+  },
 
-    view: () => [
-      m(Header),
-      m(Nav, { selected: "Scenario List" }),
-      m(Filters),
-      m("div.main-content",
-        data ? domTable(data) : "Loading...")
-    ]
+  view: () => [
+    m(Header),
+    m(Nav, { selected: "Scenario List" }),
+    m(Filters),
+    m("div.main-content",
+      data ? domTable(data) : "Loading...")
+  ]
 };
 
 //========================================================================
