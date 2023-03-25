@@ -141,7 +141,7 @@ const AboutScreen = {
 
         m("p",
           "Financial contributions are not required but are always appreciated.  (In a perfect world I would raise enough ",
-          "money to work on this full-time. But the world ain't perfect.)  You can PayPal me a donation at the above email",
+          "money to work on this full-time. But the world ain't perfect.)  You can PayPal me a donation at the above email ",
           "address. I have no Patreon set up at the moment, but if you'd like to contribute that way, let me know."),
 
         m("p", "I hope you find this useful!"),
