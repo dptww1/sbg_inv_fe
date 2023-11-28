@@ -22,7 +22,7 @@ const domFigureStats = (jsonRoot, label) =>
           m("tr",
             m("td", idx === 0 ? toTitleCase(key) : ""),
             m("td", m(m.route.Link, { href: "/figures/" + fig.id }, fig.name)),
-            m("td.numeric", fig.total))
+            m("td.numeric", fig.total.toLocaleString()))
         )),
      )
    );
@@ -41,13 +41,13 @@ const StatsScreen = {
         stats.users && stats.users.total
           ? [
               m("div.section-header", "Registered Users"),
-              m("p.text", stats.users.total),
+              m("p.text", stats.users.total.toLocaleString()),
 
               m("div.section-header", "Total Models Collected"),
-              m("p.text", stats.models.totalOwned),
+              m("p.text", stats.models.totalOwned.toLocaleString()),
 
               m("div.section-header", "Total Models Painted"),
-              m("p.text", stats.models.totalPainted)
+              m("p.text", stats.models.totalPainted.toLocaleString())
             ]
           : null,
 

@@ -87,8 +87,8 @@ const domArmyDetails = () => {
           ? [
               m("tr.totals",
                 m("td", "Totals"),
-                m("td.numeric", totals.owned),
-                m("td.numeric", totals.painted),
+                m("td.numeric", totals.owned.toLocaleString()),
+                m("td.numeric", totals.painted.toLocaleString()),
                 m("td", m(Pie, { size: 24, n: totals.owned, nPainted: totals.painted, nOwned: totals.owned })))
             ]
           : null
