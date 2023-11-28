@@ -101,9 +101,11 @@ const updateResources = () => {
 const AboutScreen = {
   oninit: (/*vnode*/) => {
     numNewsItems = 0;
+    news = [];
     updateNews();
 
     numResources = 0;
+    resources = [];
     updateResources();
   },
 
