@@ -10,7 +10,7 @@ module.exports = {
   },
 
   plugins: {
-    babel: {presets: ['es2015']}
+    babel: {presets: ['@babel/preset-env']}
   },
 
   overrides: {
