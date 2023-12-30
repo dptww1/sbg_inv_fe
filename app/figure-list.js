@@ -1,16 +1,14 @@
-/* global require module */
+import m from "mithril";
 
-const m = require("mithril");
-
-const Credentials         = require("credentials");
-const EditDialog          = require("components/edit-dialog");
-const EditInventoryDialog = require("components/edit-inventory-dialog");
-const Header              = require("header");
-const K                   = require("constants");
-const Nav                 = require("nav");
-const Pie                 = require("components/pie");
-const Request             = require("request");
-const U                   = require("utils");
+import { Credentials         } from "./credentials.js";
+import { EditDialog          } from "./components/edit-dialog.js";
+import { EditInventoryDialog } from "./components/edit-inventory-dialog.js";
+import { Header              } from "./header.js";
+import * as K                  from "./constants.js";
+import { Nav                 } from "./nav.js";
+import { Pie                 } from "./components/pie.js";
+import { Request             } from "./request.js";
+import * as U                  from "./utils.js";
 
 var armyId = "";
 var figuresMap = {};
@@ -58,7 +56,7 @@ const domArmyDetails = () => {
           let thisMap = factionOverviewMap[faction];
           return m("tr",
                    m("td",
-                     m("a", { onclick: _ => FigureListScreen.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
+                     m("a", { onclick: _ => FigureList.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
                    m("td.numeric", thisMap ? thisMap.owned : ""),
                    m("td.numeric", thisMap ? thisMap.painted : ""),
                    m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
@@ -67,7 +65,7 @@ const domArmyDetails = () => {
 
         m("tr",
           m("td",
-            m("a", { onclick: _ => FigureListScreen.updateArmyDetails(-1) }, "Unaffiliated")),
+            m("a", { onclick: _ => FigureList.updateArmyDetails(-1) }, "Unaffiliated")),
             unaffiliatedFigureMap
               ? [
                   m("td.numeric", unaffiliatedFigureMap.owned),
@@ -139,7 +137,7 @@ const domFigureListByType = (title, list) => {
                        onclick: () => EditInventoryDialog.show(
                          fig,
                          "buy_unpainted",
-                         FigureListScreen.refreshArmyDetails) },
+                         FigureList.refreshArmyDetails) },
                      fig.owned)),
                  m("td.numeric",
                    fig.painted < fig.owned
@@ -148,7 +146,7 @@ const domFigureListByType = (title, list) => {
                            onclick: () => EditInventoryDialog.show(
                              fig,
                              "paint",
-                             FigureListScreen.refreshArmyDetails)
+                             FigureList.refreshArmyDetails)
                          },
                          fig.painted)
                      : fig.painted),
@@ -220,7 +218,7 @@ const domTotals = figuresMap => {
 };
 
 //========================================================================
-const FigureListScreen = {
+export const FigureList = {
   refreshArmyDetails: () => {
     if (armyId === "") {
       if (Credentials.isLoggedIn()) {
@@ -259,11 +257,11 @@ const FigureListScreen = {
       siegers: []
     };
     unaffiliatedFigureMap = {};
-    FigureListScreen.refreshArmyDetails();
+    FigureList.refreshArmyDetails();
   },
 
   oncreate: () => {
-    FigureListScreen.refreshArmyDetails();
+    FigureList.refreshArmyDetails();
   },
 
   view: () => {
@@ -280,10 +278,10 @@ const FigureListScreen = {
         armyId !== ""
           ? [
               m("span.action",
-                { onclick: _ => FigureListScreen.updateArmyDetails("") },
+                { onclick: _ => FigureList.updateArmyDetails("") },
                 K.ICON_STRINGS.log_out),
               m("span.clickable",
-                { onclick: _ => FigureListScreen.updateArmyDetails("") },
+                { onclick: _ => FigureList.updateArmyDetails("") },
                 "Back"),
               m(".page-title", armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
             ]
@@ -293,5 +291,3 @@ const FigureListScreen = {
     ];
   }
 };
-
-module.exports = FigureListScreen;

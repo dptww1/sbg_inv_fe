@@ -1,11 +1,9 @@
-/* global require module */
+import m from "mithril";
 
-const m           = require("mithril");
-
-const Credentials = require("credentials");
-const Header      = require("header");
-const Nav         = require("nav");
-const Request     = require("request");
+import { Credentials } from "./credentials.js";
+import { Header      } from "./header.js";
+import { Nav         } from "./nav.js";
+import { Request     } from "./request.js";
 
 //========================================================================
 const login = () => {
@@ -21,7 +19,7 @@ const login = () => {
 };
 
 //========================================================================
-const LoginScreen = {
+export const Login = {
   view: (/*vnode*/) => {
     return [
       m(Header),
@@ -56,5 +54,3 @@ const LoginScreen = {
     ];
   }
 };
-
-module.exports = LoginScreen;

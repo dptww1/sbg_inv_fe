@@ -1,23 +1,21 @@
-/* global require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const About           = require("about");
-const Account         = require("account");
-const CharacterEdit   = require("character");
-const Credentials     = require("credentials");
-const FactionEdit     = require("admin-components/faction-edit");
-const FigureDetails   = require("figure-details");
-const FigureEdit      = require("admin-components/figure-edit");
-const FigureList      = require("figure-list");
-const ForgotPassword  = require("forgot-password");
-const Login           = require("login");
-const Page404         = require("page-404");
-const Register        = require("register");
-const ScenarioDetails = require("scenario-details");
-const ScenarioEdit    = require("admin-components/scenario-edit");
-const ScenarioList    = require("scenario-list");
-const Stats           = require("stats");
+import { About }           from "./about.js";
+import { Account }         from "./account.js";
+import { CharacterEdit }   from "./character.js";
+import { Credentials }     from "./credentials.js";
+import { FactionEdit }     from "./admin-components/faction-edit.js";
+import { FigureDetails }   from "./figure-details.js";
+import { FigureEdit }      from "./admin-components/figure-edit.js";
+import { FigureList }      from "./figure-list.js";
+import { ForgotPassword }  from "./forgot-password.js";
+import { Login }           from "./login.js";
+import { Page404 }         from "./page-404.js";
+import { Register }        from "./register.js";
+import { ScenarioDetails } from "./scenario-details.js";
+import { ScenarioEdit }    from "./admin-components/scenario-edit.js";
+import { ScenarioList }    from "./scenario-list.js";
+import { Stats }           from "./stats.js";
 
 const AuthenticatingResolver = component => {
   return {

@@ -1,12 +1,10 @@
-/* global module require */
+import m from "mithril";
 
-const m       = require("mithril");
-
-const Header      = require("header");
-const K           = require("constants");
-const Nav         = require("nav");
-const Request     = require("request");
-const RoleEditor  = require("admin-components/role-editor");
+import { Header      } from "../header.js";
+import * as K          from "../constants.js";
+import { Nav         } from "../nav.js";
+import { Request     } from "../request.js";
+import { RoleEditor  } from "./role-editor.js";
 
 let scenario = {};
 let faction = { roles: [] };
@@ -25,7 +23,7 @@ const findCompletions = (s, typeahead) => {
 //========================================================================
 const patchRoleNames = roles => {
   roles.forEach(role => {
-      role.name = role.name || computePlaceholder(role);
+      role.name = role.name || RoleEditor.computePlaceholder(role);
   });
   return roles;
 }
@@ -82,12 +80,12 @@ const save = (_ev) => {
   Request.put("/scenario-faction/" + faction.id,
               { scenario_faction: faction },
               resp => {
-                m.route.set("/scenarios/" + scenario.id)
+                m.route.set("/scenarios/" + scenario.id);
               });
 };
 
 //========================================================================
-const FactionEditScreen = {
+export const FactionEdit = {
   oninit: (vnode) => {
     refresh();
   },
@@ -127,5 +125,3 @@ const FactionEditScreen = {
     ];
   }
 };
-
-module.exports = FactionEditScreen;

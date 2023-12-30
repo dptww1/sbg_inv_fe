@@ -1,8 +1,7 @@
-/* global require module */
+import m from "mithril";
+import prop from "mithril/stream";
 
-const m           = require("mithril");
-const prop        = require("mithril/stream");
-const Credentials = require("credentials");
+import { Credentials } from "./credentials.js";
 
 const APIS = [
   {
@@ -80,7 +79,7 @@ const request = (httpMethod, url, data, successFn) => {
 };
 
 //===========================================================================
-const Request = {
+export const Request = {
   errors: prop(),
 
   messages: prop(),
@@ -112,5 +111,3 @@ const Request = {
     m.route.set("/login");
   }
 };
-
-module.exports = Request;

@@ -1,6 +1,4 @@
-/* global module require */
-
-const m = require("mithril");
+import m from "mithril";
 
 const CELL_WIDTH   = 16;
 const STAR_OUTLINE = "\u2606"; // ☆
@@ -26,7 +24,7 @@ const ratingSpanWidth = (idx, userRating) =>
 //==================================================================================================================================
 // m(StarRating, { id: <val>, active: <bool>, votes: <n>, rating: <n>, userRating: <n>, callback: fn(id, newRating) })
 //----------------------------------------------------------------------------------------------------------------------------------
-const StarRating = {
+export const StarRating = {
   view: function(vnode) {
     const { id, active, votes, callback } = vnode.attrs;
     var   { rating, userRating = -1 }     = vnode.attrs;
@@ -50,5 +48,3 @@ const StarRating = {
              votes > 0 ? m("span.votes", "(" + votes + ")") : null);
   }
 };
-
-module.exports = StarRating;

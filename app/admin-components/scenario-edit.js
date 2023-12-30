@@ -1,11 +1,9 @@
-/* global module require */
+import m from "mithril";
 
-const m       = require("mithril");
-
-const Header      = require("header");
-const K           = require("constants");
-const Nav         = require("nav");
-const Request     = require("request");
+import { Header }  from "../header.js";
+import * as K      from "../constants.js";
+import { Nav }     from "../nav.js";
+import { Request } from "../request.js";
 
 //========================================================================
 let scenario = {};
@@ -116,7 +114,7 @@ const save = ev => {
 
 
 //========================================================================
-const ScenarioEditScreen = {
+export const ScenarioEdit = {
   oninit: (vnode) => {
     refresh();
   },
@@ -135,5 +133,3 @@ const ScenarioEditScreen = {
     ];
   }
 };
-
-module.exports = ScenarioEditScreen;

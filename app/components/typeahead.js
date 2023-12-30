@@ -1,6 +1,4 @@
-/* global module require */
-
-const m = require("mithril");
+import m from "mithril";
 
 let attrs;
 
@@ -110,7 +108,7 @@ const handleKey = (ev) => {
 //               . start - 0-based starting position of the match of `searchString` within `name`
 //               . len   - length of `searchString`
 //------------------------------------------------------------------------
-const Typeahead = {
+export const Typeahead = {
   oninit: (vnode) => {
     attrs = vnode.attrs;
     initData();
@@ -132,5 +130,3 @@ const Typeahead = {
                                                             decorateName(s.name, s.start, s.len))))));
   }
 };
-
-module.exports = Typeahead;

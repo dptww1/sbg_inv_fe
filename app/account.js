@@ -1,16 +1,15 @@
-/* global module require */
+import m         from "mithril";
+import prop      from "mithril/stream";
 
-const m           = require("mithril");
-const prop        = require("mithril/stream");
-
-const Credentials     = require("credentials");
-const DateRangePicker = require("components/date-range-picker");
-const EditDialog      = require("components/edit-dialog");
-const FigureHistory   = require("components/figure-history-list");
-const Header          = require("header");
-const K               = require("constants");
-const Nav             = require("nav");
-const Request         = require("request");
+import { Credentials       } from "./credentials.js";
+import { DateRangePicker   } from "./components/date-range-picker.js";
+import { EditDialog        } from "./components/edit-dialog.js";
+import { FigureHistoryList } from "./components/figure-history-list.js";
+import { Header            } from "./header.js";
+import * as K                from "./constants.js";
+import { Nav               } from "./nav.js";
+import { Request           } from "./request.js";
+import * as U                from "./utils.js";
 
 let userHistory = [];
 let dateRange = {};
@@ -62,7 +61,6 @@ const domHistoryTypeFilter = () => {
              onchange: ev => {
                curFigureHistoryOptionLabel = figureHistoryOptions[ev.target.value].label;
                historyFilters = figureHistoryOptions[ev.target.value].filters;
-
              }
            },
            figureHistoryOptions.map((o, i) =>
@@ -108,8 +106,8 @@ const updateAccount = () => {
 };
 
 //========================================================================
-const AccountScreen = {
-  view: (_vnode) => {
+export const Account = {
+  view: _vnode => {
     return [
       m(Header),
       m(Nav, { selected: "Account" }),
@@ -131,7 +129,7 @@ const AccountScreen = {
           m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
 
         m("p",
-          m(FigureHistory,
+          m(FigureHistoryList,
             {
               list: userHistory.filter(h => !historyFilters.length || historyFilters.includes(h.op)),
               hideName: false,
@@ -173,5 +171,3 @@ const AccountScreen = {
     ];
   }
 };
-
-module.exports = AccountScreen;

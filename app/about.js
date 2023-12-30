@@ -1,12 +1,10 @@
-/* global require module */
+import m from "mithril";
 
-const m       = require("mithril");
-
-const Credentials = require("credentials");
-const Header      = require("header");
-const Nav         = require("nav");
-const Request     = require("request");
-const U           = require("utils");
+import { Credentials } from "./credentials.js";
+import { Header      } from "./header.js";
+import { Nav         } from "./nav.js";
+import { Request     } from "./request.js";
+import * as U          from "./utils.js";
 
 var news = [];
 var numNewsItems = 5;
@@ -98,7 +96,7 @@ const updateResources = () => {
 };
 
 //========================================================================
-const AboutScreen = {
+export const About = {
   oninit: (/*vnode*/) => {
     numNewsItems = 0;
     news = [];
@@ -153,5 +151,3 @@ const AboutScreen = {
     ];
   }
 };
-
-module.exports = AboutScreen;

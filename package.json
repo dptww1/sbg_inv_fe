@@ -1,30 +1,25 @@
 {
-  "name": "My-SBG-Inventory",
-  "description": "Description",
+  "name": "SBG-Inventory",
+  "description": "description goes here",
   "author": "Dave Townsend",
   "version": "0.0.1",
+  "type": "module",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/dptww1/sbg_inv_fe"
   },
   "scripts": {
-    "start": "brunch watch --server",
-    "prod": "brunch build --production"
+    "build": "rollup -c"
   },
   "dependencies": {
     "chart.js": "^4.4.1",
     "madge": "^6.1.0",
     "mithril": "^2.0.4",
-    "postcss-brunch": "^3.0.0"
+    "npm": "^10.2.5",
+    "rollup": "^4.9.1"
   },
   "devDependencies": {
-    "auto-reload-brunch": "^3.0.1",
-    "babel-brunch": "^7.0.1",
-    "babel-preset-env": "^1.7.0",
-    "brunch": "^4.0.2",
-    "clean-css-brunch": "^3.0.0",
-    "javascript-brunch": "^2.0.0",
-    "less-brunch": "^2.7.1",
-    "uglify-js-brunch": "^2.0.0"
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3"
   }
 }

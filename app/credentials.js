@@ -1,7 +1,5 @@
-/* global require module */
-
-const m    = require("mithril");
-const prop = require("mithril/stream");
+import m from "mithril";
+import prop from "mithril/stream";
 
 //===========================================================================
 const Cookie = {
@@ -43,7 +41,7 @@ const propCookie = (cookieName) => {
 };
 
 //===========================================================================
-const Credentials = {
+export const Credentials = {
     name: propCookie("name"),
     email: prop(),
     admin: prop(),
@@ -66,5 +64,3 @@ const Credentials = {
         return Credentials.token();
     }
 };
-
-module.exports = Credentials;

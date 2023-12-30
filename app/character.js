@@ -1,16 +1,14 @@
-/* global module, require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const Credentials   = require("credentials");
-const FiguresEditor = require("admin-components/figure-list-edit");
-const Header        = require("header");
-const K             = require("constants");
-const Nav           = require("nav");
-const Request       = require("request");
-const SelectBook    = require("components/select-book");
-const SelectFaction = require("components/select-faction");
-const Typeahead     = require("components/typeahead");
+import { Credentials      } from "./credentials.js";
+import { FigureListEditor } from "./admin-components/figure-list-edit.js";
+import { Header           } from "./header.js";
+import * as K               from "./constants.js";
+import { Nav              } from "./nav.js";
+import { Request          } from "./request.js";
+import { SelectBook       } from "./components/select-book.js";
+import { SelectFaction    } from "./components/select-faction.js";
+import { Typeahead        } from "./components/typeahead.js";
 
 const character = {
   id: null,
@@ -359,7 +357,7 @@ const saveCharacter = () => {
 };
 
 //========================================================================
-const CharacterDetailScreen = {
+export const CharacterEdit = {
   oninit: (/*vnode*/) => {
     initCharacterForm();
   },
@@ -385,5 +383,3 @@ const CharacterDetailScreen = {
     ];
   }
 };
-
-module.exports = CharacterDetailScreen;
