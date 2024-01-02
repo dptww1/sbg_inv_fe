@@ -1,6 +1,7 @@
 import m         from "mithril";
 import prop      from "mithril/stream";
 
+import { ActivityChart     } from "./components/activity-chart.js";
 import { Credentials       } from "./credentials.js";
 import { DateRangePicker   } from "./components/date-range-picker.js";
 import { EditDialog        } from "./components/edit-dialog.js";
@@ -64,12 +65,12 @@ const domHistoryTypeFilter = () => {
              }
            },
            figureHistoryOptions.map((o, i) =>
-                                    m("option",
-                                      {
-                                        value: i,
-                                        selected: o.label === curFigureHistoryOptionLabel
-                                      },
-                                      o.label)));
+             m("option",
+               {
+                 value: i,
+                 selected: o.label === curFigureHistoryOptionLabel
+               },
+               o.label)));
 };
 
 //========================================================================
@@ -108,6 +109,9 @@ const updateAccount = () => {
 //========================================================================
 export const Account = {
   view: _vnode => {
+    const filteredActivityList = userHistory.filter(
+      h => !historyFilters.length || historyFilters.includes(h.op));
+
     return [
       m(Header),
       m(Nav, { selected: "Account" }),
@@ -128,10 +132,12 @@ export const Account = {
         m("p",
           m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
 
+        m(ActivityChart, { activityList: filteredActivityList }),
+
         m("p",
           m(FigureHistoryList,
             {
-              list: userHistory.filter(h => !historyFilters.length || historyFilters.includes(h.op)),
+              list: filteredActivityList,
               hideName: false,
               callbackFn: refreshHistory,
               showTotals: historyFilters.length
