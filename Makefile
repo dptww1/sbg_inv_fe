@@ -1,5 +1,10 @@
-watch:
-	brunch watch --server
+build-dev:
+	./mkcss
+	rollup -c
+	date
+	cp -r app/assets/* public
+	pushd public && python3 -m http.server 3333
+	popd
 
 dependency-graph:
 	./node_modules/madge/bin/cli.js --image modules.svg app
@@ -14,5 +19,7 @@ update-fonts:
 	mv ~/Downloads/icomoon.zip ~/Downloads/icomoon.zip.bak
 
 production-build:
-	read -p 'Did you remember to set request.js to [0]? ' ignored
-	brunch build --production
+	PRODUCTION=true ./mkcss
+	BACKEND=0 rollup -c
+	cp -r app/assets/* public
+	date

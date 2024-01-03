@@ -1,2 +1,14 @@
 #/bin/bash
-lessc --source-map=public/app.css.map app/styles.less public/app.css
+
+if [ "$PRODUCTION" != "" ]
+then
+    OUTPUT_FILE="public/app.min.css"
+    MAP_FILE="public/app.min.css.map"
+    EXTRA_OPTS="--compress"
+else
+    OUTPUT_FILE="public/app.css"
+    MAP_FILE="public/app.css.map"
+    EXTRA_OPTS=""
+fi
+
+lessc "$EXTRA_OPTS" --source-map="$MAP_FILE" app/styles.less "$OUTPUT_FILE"
