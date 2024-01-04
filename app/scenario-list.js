@@ -1,17 +1,17 @@
 /* global module require localStorage */
 
-const m               = require("mithril");
+import m from "mithril";
 
-const Credentials     = require("credentials");
-const Filters         = require("components/filters");
-const Header          = require("header");
-const Pie             = require("components/pie");
-const K               = require("constants");
-const Nav             = require("nav");
-const Request         = require("request");
-const ScenarioUpdater = require("scenario-updater");
-const StarRating      = require("components/star-rating");
-const U               = require("utils");
+import { Credentials     } from "./credentials.js";
+import { Filters         } from "./components/filters.js";
+import { Header          } from "./header.js";
+import { Pie             } from "./components/pie.js";
+import * as K              from "./constants.js";
+import { Nav             } from "./nav.js";
+import { Request         } from "./request.js";
+import { ScenarioUpdater } from "./scenario-updater.js";
+import { StarRating      } from "./components/star-rating.js";
+import * as U              from "./utils.js";
 
 const ICON_DOWN       = "\u25bc";  // ▼
 const ICON_RIGHT      = "\u25b6";  // ▶
@@ -276,7 +276,7 @@ const tableSorter = list => {
 };
 
 //========================================================================
-const ScenarioListScreen = {
+export const ScenarioList = {
   oninit: (/*vnode*/) => {
     curSorter = localStorage.getItem(STORAGE_KEY_SORT) || "date";
     curSortReversed = U.getLocalStorageBoolean(STORAGE_KEY_REVERSE_SORT) || false;
@@ -317,5 +317,3 @@ ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
     scenarioList[idx].num_votes = newNumVotes;
   }
 });
-
-module.exports = ScenarioListScreen;

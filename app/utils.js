@@ -1,23 +1,23 @@
-/* global module, localStorage, require, Intl */
+/* global localStorage, Intl */
 
-const K = require("constants");
+import * as K from "./constants.js";
 
 const sortOrderMap = {};
 
 //========================================================================
-module.exports.alphabetizedOptionsByValue = hash => {
+export const alphabetizedOptionsByValue = hash => {
   var reverseMap = Object.keys(hash).reduce((map, key) => {
     map[hash[key]] = key;
     return map;
   }, {});
 
-  var values = Object.keys(reverseMap).sort(module.exports.strCmp);
+  var values = Object.keys(reverseMap).sort(strCmp);
 
   return values.reduce((list, val) => list.concat([val + "=" + reverseMap[val]]), []);
 };
 
 //========================================================================
-const asNormalized = s => {
+export const asNormalized = s => {
   let s2 = sortOrderMap[s] ||
            s.normalize('NFD')
             .replace(/[\u0300-\u036f]/g, "")
@@ -28,10 +28,10 @@ const asNormalized = s => {
 };
 
 //========================================================================
-module.exports.cmp = (a, b) => a > b ? 1 : a < b ? -1 : 0;
+export const cmp = (a, b) => a > b ? 1 : a < b ? -1 : 0;
 
 //========================================================================
-module.exports.currentDate = () => {
+export const currentDate = () => {
   let d = new Date();
 
   return new Date(d.getTime() - (d.getTimezoneOffset() * 60000))
@@ -40,23 +40,39 @@ module.exports.currentDate = () => {
 };
 
 //========================================================================
+export const daysBetween = (d1, d2) => {
+  if (d1.match(/\d\d\d\d-\d\d-\d\d/) &&
+      d2.match(/\d\d\d\d-\d\d-\d\d/)) {
+
+    const utc1 = Date.UTC(d1.substring(0, 4), d1.substring(5, 7), d1.substring(8));
+    const utc2 = Date.UTC(d2.substring(0, 4), d2.substring(5, 7), d2.substring(8));
+
+    return Math.floor(Math.abs(utc1 - utc2) / (1000 * 60 * 60 * 24));
+  }
+
+  return 0;
+};
+
+//========================================================================
 const NUMERIC_FMT = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2
 });
-module.exports.formatNumber = n => NUMERIC_FMT.format(n);
 
 //========================================================================
-module.exports.getLocalStorageBoolean = keyName => {
+export const formatNumber = n => NUMERIC_FMT.format(n);
+
+//========================================================================
+export const getLocalStorageBoolean = keyName => {
   const strVal = localStorage.getItem(keyName);
   return strVal === "true";
 };
 
 //========================================================================
-module.exports.pluralName = figure => figure.plural_name || figure.name;
+export const pluralName = figure => figure.plural_name || figure.name;
 
 //========================================================================
-module.exports.resourceIcon = res => {
+export const resourceIcon = res => {
   switch (res.resource_type) {
   case "podcast":      return K.ICON_STRINGS.podcast;
   case "video_replay": return K.ICON_STRINGS.video_replay;
@@ -66,7 +82,7 @@ module.exports.resourceIcon = res => {
 };
 
 //========================================================================
-module.exports.resourceLabel = res =>
+export const resourceLabel = res =>
   res && res.book
     ? K.BOOK_NAMES[res.book] + (res.issue ? " #" + res.issue : "")
     : "";
@@ -75,22 +91,22 @@ module.exports.resourceLabel = res =>
 // Used by both scenarios and figures, which have different source formats.
 // Really should fix the API...
 //------------------------------------------------------------------------
-module.exports.scenarioSource = rec =>
+export const scenarioSource = rec =>
   rec.scenario_resources && rec.scenario_resources.source && rec.scenario_resources.source.length > 0
     ? rec.scenario_resources.source[0]  // scenario
     : rec.source;                       // figure
 
 //========================================================================
-module.exports.shortResourceLabel = res =>
+export const shortResourceLabel = res =>
   res && res.book
     ? K.BOOK_SHORT_NAMES[res.book] + (res.issue ? " #" + res.issue : "")
     : "";
 
 //========================================================================
-module.exports.silhouetteUrl = slug => "/images/factions" + slug + ".png";
+export const silhouetteUrl = slug => "/images/factions" + slug + ".png";
 
 //========================================================================
-module.exports.strCmp = (a, b) => {
+export const strCmp = (a, b) => {
   let a2 = asNormalized(a);
   let b2 = asNormalized(b);
 

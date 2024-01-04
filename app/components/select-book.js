@@ -1,12 +1,10 @@
-/* global module require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const K = require("constants");
-const U = require("utils");
+import * as K from "../constants.js";
+import * as U from "../utils.js";
 
 //========================================================================
-const SelectBook = ({ attrs: { onchange: callbackFn, initialValue } }) => {
+export const SelectBook = ({ attrs: { onchange: callbackFn, initialValue } }) => {
 
   var selectedValue = initialValue;
 
@@ -28,7 +26,5 @@ const SelectBook = ({ attrs: { onchange: callbackFn, initialValue } }) => {
                 value: book.key
               },
               book.name)))
-  }
-}
-
-module.exports = SelectBook;
+  };
+};

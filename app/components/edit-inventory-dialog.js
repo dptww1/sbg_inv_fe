@@ -1,10 +1,8 @@
-/* global module require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const EditDialog = require("components/edit-dialog");
-const Request    = require("request");
-const U          = require("utils");
+import { EditDialog } from "./edit-dialog.js";
+import { Request } from "../request.js";
+import * as U from "../utils.js";
 
 let callbackFn;
 
@@ -80,11 +78,9 @@ const update = rec => {
 // Client code must add the EditDialog markup to their page using
 // `m(EditDialog)`.
 //------------------------------------------------------------------------
-const EditInventoryDialog = {
+export const EditInventoryDialog = {
   show: (figure, op, callback) => {
     callbackFn = callback;
     EditDialog.editInventory(figure, op, update);
   }
 };
-
-module.exports = EditInventoryDialog;

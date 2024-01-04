@@ -1,9 +1,7 @@
-/* global module require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const Request   = require("request");
-const Typeahead = require("components/typeahead");
+import { Request   } from "../request.js";
+import { Typeahead } from "../components/typeahead.js";
 
 //========================================================================
 const findMatches = (searchString, typeahead) => {
@@ -22,7 +20,7 @@ const findMatches = (searchString, typeahead) => {
 //   - onItemSelect
 //       callback; same interface as Typeahead component's `onItemSelect`
 //------------------------------------------------------------------------
-const FigureListEditor = {
+export const FigureListEditor = {
   view: ({ attrs }) =>
     m(".form-container figure-list-edit-row",
       m(Typeahead, {
@@ -31,5 +29,3 @@ const FigureListEditor = {
         onItemSelect: attrs.onItemSelect
       }))
 };
-
-module.exports = FigureListEditor;

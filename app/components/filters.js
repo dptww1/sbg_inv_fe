@@ -1,10 +1,10 @@
-/* global localStorage module require */
+/* global localStorage */
 
-const m = require("mithril");
+import m from "mithril";
 
-const Credentials = require("credentials");
-const K           = require("constants");
-const U           = require("utils");
+import { Credentials } from "../credentials.js";
+import * as K from "../constants.js";
+import * as U from "../utils.js";
 
 const ICON_DOWN       = "\u25bc";  // ▼
 const ICON_RIGHT      = "\u25b6";  // ▶
@@ -192,7 +192,7 @@ const toggleFilters = _ => collapsed = !collapsed;
 const unsetAllFilters = _ => filters.forEach(f => f.clearActiveFilters());
 
 //========================================================================
-const Filters = {
+export const Filters = {
   filter: rec => filters.every(filter => !filter.active || filter.matches(rec)),
 
   oninit: ({ attrs: { activeFilters } }) => filters.forEach(f => {
@@ -230,5 +230,3 @@ const Filters = {
             );
   }
 };
-
-module.exports = Filters;

@@ -1,17 +1,15 @@
-/* global module, require */
+import m from "mithril";
+import prop from "mithril/stream";
 
-const m               = require("mithril");
-const prop            = require("mithril/stream");
-
-const Credentials     = require("credentials");
-const Header          = require("header");
-const K               = require("constants");
-const Nav             = require("nav");
-const Pie             = require("components/pie");
-const Request         = require("request");
-const ScenarioUpdater = require("scenario-updater");
-const StarRating      = require("components/star-rating");
-const U               = require("utils");
+import { Credentials     } from "./credentials.js";
+import { Header          } from "./header.js";
+import * as K              from "./constants.js";
+import { Nav             } from "./nav.js";
+import { Pie             } from "./components/pie.js";
+import { Request         } from "./request.js";
+import { ScenarioUpdater } from "./scenario-updater.js";
+import { StarRating      } from "./components/star-rating.js";
+import * as U              from "./utils.js";
 
 const MONTH_NAMES = [
     "", "January", "February", "March", "April", "May", "June",
@@ -345,7 +343,7 @@ const RatingBreakdown = {
 };
 
 //========================================================================
-var ScenarioDetailScreen = {
+export const ScenarioDetails = {
   oninit: function(/*vnode*/) {
     refresh();
   },
@@ -396,5 +394,3 @@ ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
     refresh();
   }
 });
-
-module.exports = ScenarioDetailScreen;

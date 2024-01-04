@@ -1,8 +1,8 @@
-/* global module require localStorage */
+/* global localStorage */
 
-var m = require("mithril");
+import m from "mithril";
 
-var Request = require("request");
+import { Request } from "./request.js";
 
 var lastUpdateDate = null;
 var nextUpdateDate = null;
@@ -28,7 +28,7 @@ const getLastUpdateDate = _ => {
 };
 
 //======================================================================
-var Header = {
+export const Header = {
   view: function() {
     const updateDate = getLastUpdateDate();
 
@@ -40,5 +40,3 @@ var Header = {
         : "...Checking News..."));
   }
 };
-
-module.exports = Header;

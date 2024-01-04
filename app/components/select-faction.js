@@ -1,12 +1,10 @@
-/* global module require */
+import m from "mithril";
 
-const m = require("mithril")
-
-const K = require("constants")
-const U = require("utils")
+import * as K from "../constants.js";
+import * as U from "../utils.js";
 
 //========================================================================
-const SelectFaction = ({ attrs: { onchange: callbackFn, initialValue } }) => {
+export const SelectFaction = ({ attrs: { onchange: callbackFn, initialValue } }) => {
 
   var selectedValue = initialValue;
 
@@ -29,7 +27,5 @@ const SelectFaction = ({ attrs: { onchange: callbackFn, initialValue } }) => {
                 value: key
               },
               K.FACTION_INFO[key].name)))
-  }
-}
-
-module.exports = SelectFaction;
+  };
+};

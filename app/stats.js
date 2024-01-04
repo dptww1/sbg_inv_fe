@@ -1,10 +1,8 @@
-/* global require module */
+import m from "mithril";
 
-const m           = require("mithril");
-
-const Header      = require("header");
-const Nav         = require("nav");
-const Request     = require("request");
+import { Header  } from "./header.js";
+import { Nav     } from "./nav.js";
+import { Request } from "./request.js";
 
 const COLLECTION_KEYS = [ "character", "hero", "warrior", "monster" ];
 
@@ -28,7 +26,7 @@ const domFigureStats = (jsonRoot, label) =>
    );
 
 //========================================================================
-const StatsScreen = {
+export const Stats = {
   oninit: (/*vnode*/) => {
     Request.get("/stats", resp => stats = resp.data);
   },
@@ -66,5 +64,3 @@ const StatsScreen = {
     ];
   }
 };
-
-module.exports = StatsScreen;

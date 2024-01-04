@@ -1,6 +1,4 @@
-/* global module require */
-
-const m = require("mithril");
+import m from "mithril";
 
 //========================================================================
 const slice = (circleAttrs, pctStart, pctEnd, fill) => {
@@ -45,7 +43,7 @@ const title = (pctPainted, pctOwned) => {
 };
 
 //========================================================================
-const Pie = {
+export const Pie = {
   view: function(vnode) {
     const { size, n, nPainted, nOwned } = vnode.attrs;
     const circleAttrs = { cx: size/2, cy: size/2, r: size/2 - 2, fill: '#ccc' };
@@ -75,5 +73,3 @@ const Pie = {
                slice(circleAttrs, pctPainted, pctOwned, "#bb0")));
   }
 };
-
-module.exports = Pie;

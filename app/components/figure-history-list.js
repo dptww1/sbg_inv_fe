@@ -1,11 +1,9 @@
-/* global module require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const K       = require("constants");
-const Dialog  = require("components/edit-dialog");
-const Request = require("request");
-const U       = require("utils");
+import * as K         from "../constants.js";
+import { EditDialog } from "./edit-dialog.js";
+import { Request }    from "../request.js";
+import * as U         from "../utils.js";
 
 //========================================================================
 const removeHistory = (rec, callbackFn) => {
@@ -33,7 +31,7 @@ const updateHistory = (hist, callbackFn) => {
 
 //========================================================================
 // caller must add m(Dialog) to its view nodes!
-const FigureHistoryList = {
+export const FigureHistoryList = {
   view: ({ attrs: { list, hideName, callbackFn, showTotals } }) => {
     if (!list || list.length === 0) {
       return m("p.text", "None");
@@ -56,7 +54,7 @@ const FigureHistoryList = {
                         m("td",
                           m("span.action",
                             {
-                              onclick: _ => Dialog.editHistory(rec, _ => updateHistory(rec, callbackFn))
+                              onclick: _ => EditDialog.editHistory(rec, _ => updateHistory(rec, callbackFn))
                             },
                             K.ICON_STRINGS.edit),
                           m("span.action",
@@ -74,5 +72,3 @@ const FigureHistoryList = {
                : null);
   }
 };
-
-module.exports = FigureHistoryList;

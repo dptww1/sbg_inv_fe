@@ -1,10 +1,8 @@
-/* global module require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const K         = require("constants");
-const Request   = require("request");
-const Typeahead = require("components/typeahead");
+import * as K        from "../constants.js";
+import { Request }   from "../request.js";
+import { Typeahead } from "../components/typeahead.js";
 
 //========================================================================
 let editIdx = -1;
@@ -78,7 +76,7 @@ const updateRoleName = (roles, roleIdx, ev) => {
 };
 
 //========================================================================
-const RoleEditor = {
+export const RoleEditor = {
   computePlaceholder: computePlaceholder,
 
   oninit: ({ attrs }) => {
@@ -175,5 +173,3 @@ const RoleEditor = {
           K.ICON_STRINGS.plus)
     )
 };
-
-module.exports = RoleEditor;

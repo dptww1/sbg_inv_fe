@@ -1,7 +1,5 @@
-/* global module */
-
 // Indexes here must match sbg_inv_be project's :ecto_enums.ex
-module.exports.BOOKS = [
+export const BOOKS = [
   { key: "bot5a",   shortName: "Bo5A (2014)",   name: "Battle of the Five Armies (2014)" },
   { key: "bpf",     shortName: "BoPF (2004)",   name: "Battle of the Pelennor Fields (2004)" },
   { key: "dos",     shortName: "DoS (2013)",    name: "Desolation of Smaug (2013)" },
@@ -43,11 +41,11 @@ module.exports.BOOKS = [
   { key: "bog",     shortName: "BoO (2022)",    name: "Battle of Osgiliath (2022)" }
 ];
 
-module.exports.BOOKS.forEach((book, i) => book.index = i);
+BOOKS.forEach((book, i) => book.index = i);
 
 // Key: BOOKS[key]  Value: BOOKS[shortName]
-module.exports.BOOK_SHORT_NAMES =
-  module.exports.BOOKS.reduce(
+export const BOOK_SHORT_NAMES =
+  BOOKS.reduce(
     (prev, cur) => {
       prev[cur["key"]] = cur["shortName"];
       return prev;
@@ -55,15 +53,15 @@ module.exports.BOOK_SHORT_NAMES =
     {});
 
 // Key: BOOKS[key]  Value: BOOKS[name]
-module.exports.BOOK_NAMES =
-  module.exports.BOOKS.reduce(
+export const BOOK_NAMES =
+  BOOKS.reduce(
     (prev, cur) => {
       prev[cur["key"]] = cur["name"];
       return prev;
     },
     {});
 
-module.exports.FACTION_INFO = {
+export const FACTION_INFO = {
   angmar:          { name: "Angmar",                    letter: "a", id: 0 },
   army_thror:      { name: "Army of Thrór",             letter: "o", id: 1 },
   arnor:           { name: "Arnor",                     letter: "A", id: 2 },
@@ -111,9 +109,9 @@ module.exports.FACTION_INFO = {
   beornings:       { name: "Beornings",                 letter: "B", id: 44 }
 };
 
-module.exports.SORTED_FACTION_NAMES =
-  Object.keys(module.exports.FACTION_INFO)
-        .map(abbr => module.exports.FACTION_INFO[abbr].name)
+export const SORTED_FACTION_NAMES =
+  Object.keys(FACTION_INFO)
+        .map(abbr => FACTION_INFO[abbr].name)
         .sort((a, b) => {
           let lca = a.toLowerCase();
           let lcb = b.toLowerCase();
@@ -126,31 +124,31 @@ module.exports.SORTED_FACTION_NAMES =
           }
         });
 
-module.exports.FACTION_NAME_BY_ID =
-  Object.keys(module.exports.FACTION_INFO)
-  .reduce((acc, abbr) => {
-            acc[module.exports.FACTION_INFO[abbr].id] = module.exports.FACTION_INFO[abbr].name;
+export const FACTION_NAME_BY_ID =
+  Object.keys(FACTION_INFO)
+        .reduce((acc, abbr) => {
+            acc[FACTION_INFO[abbr].id] = FACTION_INFO[abbr].name;
             return acc;
           },
           {});
 
-module.exports.FACTION_ABBREV_BY_NAME =
-  Object.keys(module.exports.FACTION_INFO)
+export const FACTION_ABBREV_BY_NAME =
+  Object.keys(FACTION_INFO)
         .reduce((acc, abbr) => {
-                  acc[module.exports.FACTION_INFO[abbr].name] = abbr;
+                  acc[FACTION_INFO[abbr].name] = abbr;
                   return acc;
                 },
                 {});
 
-module.exports.FACTION_ID_BY_NAME =
-  Object.keys(module.exports.FACTION_INFO)
+export const FACTION_ID_BY_NAME =
+  Object.keys(FACTION_INFO)
         .reduce((acc, abbr) => {
-                  acc[module.exports.FACTION_INFO[abbr].name] = module.exports.FACTION_INFO[abbr].id;
+                  acc[FACTION_INFO[abbr].name] = FACTION_INFO[abbr].id;
                   return acc;
                 },
                 {});
 
-module.exports.USER_FIGURE_OPS = {
+export const USER_FIGURE_OPS = {
   buy_unpainted:  "Bought Unpainted",
   sell_unpainted: "Sell Unpainted",
   buy_painted:    "Buy Painted",
@@ -158,7 +156,7 @@ module.exports.USER_FIGURE_OPS = {
   paint:          "Painted"
 };
 
-module.exports.ICON_STRINGS = {
+export const ICON_STRINGS = {
   // Tab Icons
   about:        "\uea09",
   account:      "\ue902",
@@ -186,13 +184,13 @@ module.exports.ICON_STRINGS = {
   up:     "\uea3a",
 };
 
-module.exports.IMAGE_STRINGS = {
+export const IMAGE_STRINGS = {
   // Figure Resource Icons
   analysis:       "<img src='/images/icons/analysis.svg', width='16', height='16'>",
   painting_guide: "<img src='/images/icons/painting_guide.svg' width='16' height='16'>"
-}
+};
 
-module.exports.LOCATIONS = {
+export const LOCATIONS = {
   amon_hen:     "Amon Hen",
   arnor:        "Arnor",
   dale:         "Dale",

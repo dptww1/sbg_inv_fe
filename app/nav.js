@@ -1,11 +1,10 @@
-/* global module require */
+import m from "mithril";
 
-const m            = require("mithril");
-const Credentials  = require("credentials");
-const K            = require("constants");
-const Request      = require("request");
-const Typeahead    = require("components/typeahead");
-const U            = require("utils");
+import { Credentials } from "./credentials.js";
+import * as K          from "./constants.js";
+import { Request }     from "./request.js";
+import { Typeahead }   from "./components/typeahead.js";
+import * as U          from "./utils.js";
 
 let showSearch = false;
 
@@ -120,7 +119,7 @@ const stringify = obj => {
 };
 
 //========================================================================
-const Nav = {
+export const Nav = {
 
   view(vnode) {
     const aboutActive        = vnode.attrs.selected == "About";
@@ -181,5 +180,3 @@ const Nav = {
     ];
   }
 };
-
-module.exports = Nav;

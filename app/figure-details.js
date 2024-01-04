@@ -1,20 +1,18 @@
-/* global module, require */
+import m from "mithril";
+import prop from "mithril/stream";
 
-const m          = require("mithril");
-const prop       = require("mithril/stream");
-
-const Credentials         = require("credentials");
-const EditDialog          = require("components/edit-dialog");
-const EditInventoryDialog = require("components/edit-inventory-dialog");
-const FigureList          = require("figure-list");
-const Filters             = require("components/filters");
-const FigureHistory       = require("components/figure-history-list");
-const Header              = require("header");
-const K                   = require("constants");
-const Nav                 = require("nav");
-const Pie                 = require("components/pie");
-const Request             = require("request");
-const U                   = require("utils");
+import { Credentials         } from "./credentials.js";
+import { EditDialog          } from "./components/edit-dialog.js";
+import { EditInventoryDialog } from "./components/edit-inventory-dialog.js";
+import { FigureList          } from "./figure-list.js";
+import { Filters             } from "./components/filters.js";
+import { FigureHistoryList   } from "./components/figure-history-list.js";
+import { Header              } from "./header.js";
+import * as K                  from "./constants.js";
+import { Nav                 } from "./nav.js";
+import { Pie                 } from "./components/pie.js";
+import { Request             } from "./request.js";
+import * as U                  from "./utils.js";
 
 var figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
 
@@ -52,7 +50,7 @@ const domHistory = () => {
 
   return m(".figure-history",
            m(".section-header", "Activity"),
-           m(FigureHistory,
+           m(FigureHistoryList,
              {
                list: figure.history.map(rec => Object.assign(rec, { name: figure.name, plural_name: figure.plural_name})),
                hideName: true,
@@ -221,7 +219,7 @@ const refresh = id => {
 };
 
 //========================================================================
-const FigureDetailScreen = {
+export const FigureDetails = {
   oninit: (/*vnode*/) => {
     initializeFigure();
     requestFigureModelData(m.route.param("key"));
@@ -251,5 +249,3 @@ const FigureDetailScreen = {
     ];
   }
 };
-
-module.exports = FigureDetailScreen;

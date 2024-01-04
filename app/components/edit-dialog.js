@@ -1,9 +1,7 @@
-/* global module require */
+import m from "mithril";
 
-const m = require("mithril");
-
-const Request = require("request");
-const U       = require("utils");
+import { Request } from "../request.js";
+import * as U      from "../utils.js";
 
 let callbackFn;
 let curPrompt;
@@ -144,7 +142,7 @@ const validate = _ => {
 //         . "paint"
 //     callback: function per above
 //------------------------------------------------------------------------
-const EditDialog = {
+export const EditDialog = {
   addError: msg => errors.push(msg),
 
   editHistory: (historyRec, callback) => {
@@ -224,5 +222,3 @@ const EditDialog = {
     ];
   }
 };
-
-module.exports = EditDialog;

@@ -1,12 +1,10 @@
-/* global module require */
+import m from "mithril";
+import prop from "mithril/stream";
 
-const m           = require("mithril");
-const prop        = require("mithril/stream");
-
-const Credentials = require("credentials");
-const Header      = require("header");
-const Nav         = require("nav");
-const Request     = require("request");
+import { Credentials } from "./credentials.js";
+import { Header      } from "./header.js";
+import { Nav         } from "./nav.js";
+import { Request     } from "./request.js";
 
 //========================================================================
 const login = () => {
@@ -39,7 +37,7 @@ const register = () => {
 };
 
 //========================================================================
-const RegisterScreen = {
+export const Register = {
   view: (/*vnode*/) => {
     return [
       m(Header),
@@ -70,5 +68,3 @@ const RegisterScreen = {
     ];
   }
 };
-
-module.exports = RegisterScreen;

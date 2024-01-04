@@ -1,11 +1,9 @@
-/* global require module */
+import m from "mithril";
+import prop from "mithril/stream";
 
-const m       = require("mithril");
-const prop    = require("mithril/stream");
-
-const Header  = require("header");
-const Nav     = require("nav");
-const Request = require("request");
+import { Header  } from "./header.js";
+import { Nav     } from "./nav.js";
+import { Request } from "./request.js";
 
 const email = prop();
 
@@ -19,7 +17,7 @@ const reset_password = () => {
 };
 
 //========================================================================
-var ForgotPassword = {
+export const ForgotPassword = {
   view() {
     Request.errors({errors: "Automatic password reset isn't working at the moment. Send email to dave@davetownsend.org and I'll reset your password manually."});
 
@@ -37,5 +35,3 @@ var ForgotPassword = {
     ];
   }
 };
-
-module.exports = ForgotPassword;

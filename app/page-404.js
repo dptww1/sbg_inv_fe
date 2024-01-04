@@ -1,11 +1,9 @@
-/* global require module */
+import m from "mithril";
 
-const m      = require("mithril");
+import { Header } from "./header.js";
+import { Nav    } from "./nav.js";
 
-const Header = require("header");
-const Nav    = require("nav");
-
-const Page404 = {
+export const Page404 = {
     view: () => {
         return [
             m(Header),
@@ -16,5 +14,3 @@ const Page404 = {
         ];
     }
 };
-
-module.exports = Page404;

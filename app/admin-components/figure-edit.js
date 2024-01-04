@@ -1,12 +1,10 @@
-/* global require module */
+import m from "mithril";
 
-const m    = require("mithril");
-
-const Header      = require("header");
-const Credentials = require("credentials");
-const K           = require("constants");
-const Nav         = require("nav");
-const Request     = require("request");
+import { Header      } from "../header.js";
+import { Credentials } from "../credentials.js";
+import * as K          from "../constants.js";
+import { Nav         } from "../nav.js";
+import { Request     } from "../request.js";
 
 let figure = { factions: [], type: "hero" };
 
@@ -34,7 +32,7 @@ const submitFigure = (ev) => {
                     () => {
                       Request.messages("Saved " + figure.name);
                       figure = { factions: [], type: "hero" };
-                      m.route.set("/figures")
+                      m.route.set("/figures");
                     });
 };
 
@@ -49,7 +47,7 @@ const updateFactions = ev => {
 };
 
 //========================================================================
-const FigureEditScreen = {
+export const FigureEdit = {
   oninit: (/*vnode*/) => {
     refresh();
   },
@@ -128,7 +126,7 @@ const FigureEditScreen = {
                       }),
                     m("label", { for: K.FACTION_ABBREV_BY_NAME[f] }, f),
                     m("br")
-                  ]
+                  ];
                 }))),
 
             m("tr",
@@ -138,5 +136,3 @@ const FigureEditScreen = {
     ];
   }
 };
-
-module.exports = FigureEditScreen;

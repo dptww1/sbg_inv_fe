@@ -1,12 +1,11 @@
-/* global module, require */
+import m from "mithril";
 
-const m       = require("mithril");
-const Request = require("request");
+import { Request } from "./request.js";
 
 var observers = [];
 
 //==================================================================================================================================
-const ScenarioUpdater = {
+export const ScenarioUpdater = {
     // fn(id, newAvgRating, userRating, newNumVotes)
     // id and userRating are the same as the parameters to update(), which just passes them through.
     addObserver: (fn) => {
@@ -21,5 +20,3 @@ const ScenarioUpdater = {
                      });
     }
 };
-
-module.exports = ScenarioUpdater;

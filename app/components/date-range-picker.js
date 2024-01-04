@@ -1,11 +1,9 @@
-/* global module require */
-
-const m = require("mithril");
+import m from "mithril";
 
 let selectedRange = "month";
 
 //========================================================================
-const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
+export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
   let customMode = false;
   let now = new Date();
 
@@ -115,5 +113,3 @@ const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
     }
   };
 };
-
-module.exports = DateRangePicker;
