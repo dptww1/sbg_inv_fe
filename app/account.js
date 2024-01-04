@@ -1,6 +1,7 @@
 import m         from "mithril";
 import prop      from "mithril/stream";
 
+import { ActivityChart     } from "./components/activity-chart.js";
 import { Credentials       } from "./credentials.js";
 import { DateRangePicker   } from "./components/date-range-picker.js";
 import { EditDialog        } from "./components/edit-dialog.js";
@@ -130,6 +131,8 @@ export const Account = {
 
         m("p",
           m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
+
+        m(ActivityChart, { activityList: filteredActivityList }),
 
         m("p",
           m(FigureHistoryList,
