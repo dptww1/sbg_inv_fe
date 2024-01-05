@@ -1,0 +1,6 @@
+#/bin/bash
+
+OUTPUT_FILE="app.min.css"
+MAP_FILE="app.min.css.map"
+
+(cd public && lessc --compress ../app/styles.less "$OUTPUT_FILE")

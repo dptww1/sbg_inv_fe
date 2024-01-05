@@ -1,3 +1,4 @@
+/* global BACKEND */
 import m from "mithril";
 import prop from "mithril/stream";
 
@@ -14,7 +15,7 @@ const APIS = [
   }
 ];
 
-var curApi = APIS[0];
+var curApi = APIS[BACKEND];
 
 //===========================================================================
 const clearText = _ => {
