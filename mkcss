@@ -1,14 +1,6 @@
 #/bin/bash
 
-if [ "$PRODUCTION" != "" ]
-then
-    OUTPUT_FILE="public/app.min.css"
-    MAP_FILE="public/app.min.css.map"
-    EXTRA_OPTS="--compress"
-else
-    OUTPUT_FILE="public/app.css"
-    MAP_FILE="public/app.css.map"
-    EXTRA_OPTS=""
-fi
+OUTPUT_FILE="app.min.css"
+MAP_FILE="app.min.css.map"
 
-lessc "$EXTRA_OPTS" --source-map="$MAP_FILE" app/styles.less "$OUTPUT_FILE"
+(cd public && lessc --compress ../app/styles.less "$OUTPUT_FILE")

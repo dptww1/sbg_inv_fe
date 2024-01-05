@@ -8,12 +8,6 @@ export default {
   input: "app/sbg.js",
   output: [
     {
-      file: "public/app.js",
-      format: "iife",
-      generatedCode: "es2015",
-      sourcemap: true
-    },
-    {
       file: "public/app.min.js",
       format: "iife",
       generatedCode: "es2015",

@@ -1,6 +1,6 @@
-build-dev:
-	./mkcss
-	rollup -c
+dev-build:
+	PRODUCTION=true ./mkcss # always minimize
+	BACKEND=1 rollup -c
 	date
 	cp -r app/assets/* public
 	pushd public && python3 -m http.server 3333
