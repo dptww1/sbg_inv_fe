@@ -132,7 +132,8 @@ export const Account = {
         m("p",
           m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
 
-        m(ActivityChart, { activityList: filteredActivityList }),
+        m(".chartContainer",
+          m(ActivityChart, { activityList: filteredActivityList })),
 
         m("p",
           m(FigureHistoryList,
