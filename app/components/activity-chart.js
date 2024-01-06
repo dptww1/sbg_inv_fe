@@ -1,5 +1,7 @@
 import m from "mithril";
-import { Chart } from "chart.js/auto";
+import { Chart, BarController, BarElement, CategoryScale, LinearScale } from "chart.js";
+
+Chart.register(BarController, BarElement, CategoryScale, LinearScale);
 
 import * as U from "../utils.js";
 
