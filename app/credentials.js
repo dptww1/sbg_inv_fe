@@ -23,7 +23,7 @@ const Cookie = {
       document.cookie = [
         name + '=' + value,
         " expires=" + d.toUTCString(),
-        " SameSite=Strict",
+        " SameSite=Lax",
         " Secure"
       ].join(";");
     }
