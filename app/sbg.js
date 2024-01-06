@@ -2,7 +2,7 @@ import m from "mithril";
 
 import { About }           from "./about.js";
 import { Account }         from "./account.js";
-import { CharacterEdit }   from "./character.js";
+import { CharacterEdit }   from "./admin-components/character.js";
 import { Credentials }     from "./credentials.js";
 import { FactionEdit }     from "./admin-components/faction-edit.js";
 import { FigureDetails }   from "./figure-details.js";

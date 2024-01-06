@@ -1,14 +1,14 @@
 import m from "mithril";
 
-import { Credentials      } from "./credentials.js";
-import { FigureListEditor } from "./admin-components/figure-list-edit.js";
-import { Header           } from "./header.js";
-import * as K               from "./constants.js";
-import { Nav              } from "./nav.js";
-import { Request          } from "./request.js";
-import { SelectBook       } from "./components/select-book.js";
-import { SelectFaction    } from "./components/select-faction.js";
-import { Typeahead        } from "./components/typeahead.js";
+import { Credentials      } from "../credentials.js";
+import { FigureListEditor } from "./figure-list-edit.js";
+import { Header           } from "../header.js";
+import * as K               from "../constants.js";
+import { Nav              } from "../nav.js";
+import { Request          } from "../request.js";
+import { SelectBook       } from "../components/select-book.js";
+import { SelectFaction    } from "../components/select-faction.js";
+import { Typeahead        } from "../components/typeahead.js";
 
 const character = {
   id: null,
@@ -152,7 +152,7 @@ const domFigures = () => {
   return [
     "Figures",
     m("br"),
-    m(FiguresEditor,
+    m(FigureListEditor,
       {
         onItemSelect: figureSelect
       }
