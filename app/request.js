@@ -30,20 +30,25 @@ const extractFn = xhr => {
   if (xhr.status === 401 || xhr.status == 400) {
     Credentials.clear();
     Request.errors({ errors: "Authentication failed. Please log in." });
+    throw Request.errors().errors;
+
+  } else if (xhr.status == 422) {
+    Request.errors({ errors: "Bad data" });
+    throw Request.errors().errors;
 
   } else if (xhr.status >= 300) {
     failFn(xhr.response);
-
-  } else {
-    return xhr.response || "{}";  // some legal responses return no data (e.g. HTTP 204)
+    throw Request.errors().errors;
   }
+
+  return xhr.response || "{}";  // some legal responses return no data (e.g. HTTP 204)
 };
 
 //===========================================================================
 const failFn = resp => {
   window.setTimeout(clearText, 250);
 
-  if (typeof resp === "object" && typeof resp.errors === "object") {
+  if (resp && typeof resp === "object" && typeof resp.errors === "object") {
     Request.errors(resp.errors);
 
   } else {
@@ -67,7 +72,6 @@ const request = (httpMethod, url, data, successFn) => {
 
   if (Credentials.token()) {
     opts.config = function(xhr) {
-      xhr.onerror = () => failFn(null),
       xhr.setRequestHeader("authorization", "Token token=" + Credentials.token());
     };
   }
