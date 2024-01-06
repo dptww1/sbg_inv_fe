@@ -2,9 +2,9 @@ import m from "mithril";
 
 import { Request } from "./request.js";
 
-var observers = [];
+const observers = [];
 
-//==================================================================================================================================
+//========================================================================
 export const ScenarioUpdater = {
     // fn(id, newAvgRating, userRating, newNumVotes)
     // id and userRating are the same as the parameters to update(), which just passes them through.
