@@ -17,7 +17,7 @@ var showMoreResources = true;
 const newNewsItem = {
   item_date: "",
   item_text: ""
-}
+};
 
 //========================================================================
 const domNews = () => {
@@ -36,12 +36,16 @@ const domNews = () => {
              ? m("tr",
                  m("td",
                    m("input[type=date][name=item_date]",
-                     { onchange: ev => newNewsItem.item_date = ev.target.value },
-                     newNewsItem.item_date)),
+                     {
+                       onchange: ev => newNewsItem.item_date = ev.target.value,
+                       value: newNewsItem.item_date
+                     })),
                  m("td",
                    m("input[type=text][name=item_text][size=80]",
-                     { onchange: ev => newNewsItem.item_text = ev.target.value },
-                     newNewsItem.item_text),
+                     {
+                       onchange: ev => newNewsItem.item_text = ev.target.value,
+                       value: newNewsItem.item_text
+                     }),
                    m("button", { onclick: addNewsItem }, "Save")))
              : null
           );
@@ -66,9 +70,10 @@ const addNewsItem = () => {
   Request.post("/newsitem",
                { news_item: newNewsItem },
                resp => {
-                 updateNews();
                  newNewsItem.item_date = "";
                  newNewsItem.item_text = "";
+                 numNewsItems -= 4; // account for the +5 in updateNews()
+                 updateNews();
                  Request.messages("Added News Item");
                });
 }
