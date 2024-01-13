@@ -16,6 +16,12 @@ let userHistory = [];
 let dateRange = {};
 let historyFilters = [];
 
+// Redraws happen twice when the DateRangePicker controls are used,
+// as the control changes generate an update and then the callback
+// does a request which generates a second update. This variable
+// allows the chart to update only when true.
+let allowChartUpdate = false;
+
 const figureHistoryOptions = [
   {
     label: "Show All",
@@ -83,6 +89,7 @@ const refreshHistory = _vnode => {
     Request.get("/userhistory?from=" + dateRange.fromDate + "&to=" + dateRange.toDate,
                 resp => {
                   userHistory = resp.data;
+                  allowChartUpdate = true;
                 });
   }
 };
@@ -130,10 +137,22 @@ export const Account = {
           domHistoryTypeFilter()),
 
         m("p",
-          m(DateRangePicker, { range: dateRange, callbackFn: refreshHistory })),
+          m(DateRangePicker,
+            {
+              callbackFn: refreshHistory,
+              range: dateRange,
+            })),
 
         m(".chartContainer",
-          m(ActivityChart, { activityList: filteredActivityList })),
+          m(ActivityChart,
+            {
+              activityList: filteredActivityList,
+              onbeforeupdate: () => {
+                let retVal = allowChartUpdate;
+                allowChartUpdate = false;
+                return retVal;
+              }
+            })),
 
         m("p",
           m(FigureHistoryList,

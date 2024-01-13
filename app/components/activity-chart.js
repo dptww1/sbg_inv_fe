@@ -7,7 +7,7 @@ import * as U from "../utils.js";
 
 export const ActivityChart = _vnode => {
 
-  let chartObj = null;
+let chartObj = null;
 
   const chartData = {
     type: "bar",
@@ -54,7 +54,7 @@ export const ActivityChart = _vnode => {
     const fromDate = activityList[0].op_date;
     const toDate = activityList[activityList.length - 1].op_date;
 
-    const daysDiff = U.daysBetween(fromDate, toDate);
+    const daysDiff = U.daysInRange(fromDate, toDate);
 
     if (daysDiff < 1) {
       return;

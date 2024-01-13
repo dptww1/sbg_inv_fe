@@ -40,14 +40,14 @@ export const currentDate = () => {
 };
 
 //========================================================================
-export const daysBetween = (d1, d2) => {
+export const daysInRange = (d1, d2) => {
   if (d1.match(/\d\d\d\d-\d\d-\d\d/) &&
       d2.match(/\d\d\d\d-\d\d-\d\d/)) {
 
     const utc1 = Date.UTC(d1.substring(0, 4), d1.substring(5, 7), d1.substring(8));
     const utc2 = Date.UTC(d2.substring(0, 4), d2.substring(5, 7), d2.substring(8));
 
-    return Math.floor(Math.abs(utc1 - utc2) / (1000 * 60 * 60 * 24));
+    return Math.floor(Math.abs(utc1 - utc2) / (1000 * 60 * 60 * 24)) + 1;
   }
 
   return 0;
