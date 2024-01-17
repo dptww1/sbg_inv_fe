@@ -307,7 +307,7 @@ const submitResourceForm = () => {
                         resource_type: parseInt(resourceType(), 10),
                         title:         title(),
                         book:          book(),
-                        issue:         parseInt(issue(), 10),
+                        issue:         issue(),
                         page:          parseInt(page(), 10),
                         url:           url()
                       }
