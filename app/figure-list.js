@@ -123,7 +123,7 @@ const domFigureListByType = (title, list) => {
   return [
     m("tr.figure-list-section", m("td.section-header", { colspan: 2 }, title)),
     list.map((fig, idx) => Credentials.isLoggedIn()
-             ? m("tr", { className: idx % 2 == 0 ? "striped" : null },
+             ? m("tr.constant-height", { className: idx % 2 == 0 ? "striped" : null },
                  m("td",
                    {
                      class: "name" + (fig.slug ? " hasSilhouette" : ""),
