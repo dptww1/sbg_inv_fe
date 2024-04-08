@@ -284,12 +284,14 @@ export const ScenarioList = {
 
     Request.get("/scenarios",
                 resp => {
-                  resp.data.sort(sorters[curSorter]);
-                  if (curSortReversed) {
-                    resp.data.reverse();
+                  if (resp.data) {
+                    resp.data.sort(sorters[curSorter]);
+                    if (curSortReversed) {
+                      resp.data.reverse();
+                    }
                   }
                   data = resp.data;
-                  m.redraw();
+                  m.redraw(); // TODO: shouldn't be needed
                 });
   },
 
