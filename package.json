@@ -15,7 +15,7 @@
     "chart.js": "^4.4.1",
     "madge": "^6.1.0",
     "mithril": "^2.0.4",
-    "npm": "^10.2.5"
+    "npm": "^10.5.2"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
