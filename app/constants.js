@@ -18,7 +18,7 @@ export const BOOKS = [
   { key: "ma",      shortName: "M&A (2011)",    name: "Moria & Angmar (2011)" },
   { key: "mordor",  shortName: "Mordor (2011)", name: "Mordor (2011)" },
   { key: "omordor", shortName: "Mordor (2007)", name: "Mordor (2007)" },
-  { key: "roa",     shortName: "RoA (2006)",    name: "Ruin of Arnor (2006)" },
+  { key: "roa",     shortName: "Arnor (2006)",  name: "Ruin of Arnor (2006)" },
   { key: "rotk",    shortName: "RotK (2003)",   name: "Return of the King (2003)" },
   { key: "rotk_jb", shortName: "RotK (2007)",   name: "Return of the King (2007)" },
   { key: "saf",     shortName: "S&F (2003)",    name: "Shadow & Flame (2003)" },
@@ -38,7 +38,8 @@ export const BOOKS = [
   { key: "wfr",     shortName: "WiR (2019)",    name: "War in Rohan (2019)" },
   { key: "qrb",     shortName: "Quest (2020)",  name: "Quest of the Ringbearer (2020)" },
   { key: "dotn",    shortName: "DotN (2022)",   name: "Defence of the North (2022)" },
-  { key: "bog",     shortName: "BoO (2022)",    name: "Battle of Osgiliath (2022)" }
+  { key: "bog",     shortName: "BoO (2022)",    name: "Battle of Osgiliath (2022)" },
+  { key: "ang",     shortName: "Angmar (2024)", name: "Rise of Angmar (2024)" }
 ];
 
 BOOKS.forEach((book, i) => book.index = i);
