@@ -1,87 +1,11 @@
 import m from "mithril";
 
-let attrs;
-
-var data = { suggestions: [] };
-var selectedIdx = -1;
-
 //========================================================================
 const decorateName = (s, pos, len) => [
   s.substring(0, pos),
   m("span[class='highlight']", s.substring(pos, pos + len)),
   s.substring(pos + len)
 ];
-
-//========================================================================
-const initData = () => {
-  data = { suggestions: [] };
-  selectedIdx = -1;
-};
-
-//========================================================================
-const selectSuggestion = target => {
-  target.closest("div.typeahead-container").getElementsByTagName("input")[0].value = "";
-  initData();
-
-  // If the user clicks on the highlighted portion of the suggestion, the target is
-  // different than if they click the unhighlighted portion. Don't make the client deal
-  // with that. Instead just pretend it's always the unhighlighted portion which is clicked.
-  if (target.className === "highlight") {
-    target = target.parentElement;
-  }
-
-  attrs.onItemSelect(target);
-};
-
-//========================================================================
-const suggestionAttrs = (s, idx) => {
-  return Object.assign(
-    {
-      className: idx === selectedIdx ? "selected" : "",
-      onclick: ev => selectSuggestion(ev.target)
-    },
-    Object.keys(s).reduce(
-      (acc, val) => {
-        acc["data-" + val] = (s[val] + "").replace(/"/g, '\\"');
-        return acc;
-      },
-      {})
-  );
-};
-
-//========================================================================
-const handleKey = (ev) => {
-  switch (ev.which) {
-  case 13: // enter
-    if (selectedIdx >= 0) {
-      selectSuggestion(ev.target.closest(".typeahead-container").getElementsByClassName("suggestion")[selectedIdx]);
-    }
-    ev.preventDefault();
-    break;
-
-  case 27: // esc: cancel search
-    initData();
-    attrs.onItemSelect(null);
-    ev.preventDefault();
-    break;
-
-  case 38: // up
-    selectedIdx = Math.max(0, selectedIdx - 1);
-    ev.preventDefault();
-    break;
-
-  case 40: // down
-    selectedIdx = Math.min(selectedIdx + 1, data.suggestions.length - 1);
-    ev.preventDefault();
-    break;
-  }
-
-  if (ev.target.value === "") {
-    initData();
-  } else {
-    attrs.findMatches(ev.target.value, data);
-  }
-};
 
 //========================================================================
 // Usage: m(Typeahead, {opts})
@@ -108,25 +32,110 @@ const handleKey = (ev) => {
 //               . start - 0-based starting position of the match of `searchString` within `name`
 //               . len   - length of `searchString`
 //------------------------------------------------------------------------
-export const Typeahead = {
-  oninit: (vnode) => {
-    attrs = vnode.attrs;
-    initData();
-  },
+export const Typeahead = vnode => {
 
-  view: ({ attrs }) => {
-    return m('.typeahead-container',
-             m('input[type=search]',
-               {
-                 oncreate: vnode => vnode.dom.focus(),
-                 placeholder: attrs.placeholder || 'Search...',
-                 onkeyup: handleKey
-               }),
-             data.suggestions.length == 0
-             ? null
-             : m(".suggestions",
-                 m("ul", data.suggestions.map((s, idx) => m("li.suggestion",
-                                                            suggestionAttrs(s, idx),
-                                                            decorateName(s.name, s.start, s.len))))));
-  }
+  const { onItemSelect, findMatches } = vnode.attrs;
+
+  var searchString = "";
+  var data = { suggestions: [] };
+  var selectedIdx = -1;
+
+  //------------------------------------------------------------------------
+  const handleKey = (ev) => {
+    switch (ev.which) {
+    case 13: // enter
+      if (selectedIdx >= 0) {
+        selectSuggestion(ev.target.closest(".typeahead-container").getElementsByClassName("suggestion")[selectedIdx]);
+      }
+      ev.preventDefault();
+      break;
+
+    case 27: // esc: cancel search
+      initData();
+      onItemSelect(null);
+      ev.preventDefault();
+      break;
+
+    case 38: // up
+      selectedIdx = Math.max(0, selectedIdx - 1);
+      ev.preventDefault();
+      break;
+
+    case 40: // down
+      selectedIdx = Math.min(selectedIdx + 1, data.suggestions.length - 1);
+      ev.preventDefault();
+      break;
+    }
+
+    if (ev.target.value === "") {
+      initData();
+    } else {
+      searchString = ev.target.value;
+      findMatches(ev.target.value, data);
+    }
+  };
+
+  //------------------------------------------------------------------------
+  const initData = () => {
+    data = { suggestions: [] };
+    selectedIdx = -1;
+    searchString = "";
+  };
+
+  //------------------------------------------------------------------------
+  const selectSuggestion = target => {
+    target.closest("div.typeahead-container").getElementsByTagName("input")[0].value = "";
+    initData();
+
+    // If the user clicks on the highlighted portion of the suggestion, the target is
+    // different than if they click the unhighlighted portion. Don't make the client deal
+    // with that. Instead just pretend it's always the unhighlighted portion which is clicked.
+    if (target.className === "highlight") {
+      target = target.parentElement;
+    }
+
+    onItemSelect(target);
+  };
+
+  //------------------------------------------------------------------------
+  const suggestionAttrs = (s, idx) => {
+    return Object.assign(
+      {
+        className: idx === selectedIdx ? "selected" : "",
+        onclick: ev => selectSuggestion(ev.target)
+      },
+      Object.keys(s).reduce(
+        (acc, val) => {
+          acc["data-" + val] = (s[val] + "").replace(/"/g, '\\"');
+          return acc;
+        },
+        {})
+    );
+  };
+
+  //------------------------------------------------------------------------
+  return {
+    oninit: (vnode) => {
+      initData();
+    },
+
+    view: ({ attrs }) => {
+      return m('.typeahead-container',
+               m('input[type=search]',
+                 {
+                   oncreate: vnode => vnode.dom.focus(),
+                   placeholder: attrs.placeholder || 'Search...',
+                   onkeyup: handleKey
+                 },
+                 searchString),
+               m(".suggestions",
+                 m("ul",
+                   data.suggestions.length === 0
+                     ? searchString.length === 0 ? null : m("li", "No matches!")
+                     : data.suggestions.map((s, idx) =>
+                         m("li.suggestion",
+                           suggestionAttrs(s, idx),
+                           decorateName(s.name, s.start, s.len))))));
+    }
+  };
 };
