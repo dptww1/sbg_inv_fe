@@ -112,7 +112,7 @@ export const RoleEditor = {
                                 ? m("input[type=number][min=1][max=300]",
                                     {
                                       name: "amount" + roleIdx,
-                                      value: role.amount || 1,
+                                      value: role.amount,
                                       onchange: ev => updateRoleAmount(attrs.roles, roleIdx, ev)
                                     })
                                 : role.amount
@@ -166,7 +166,7 @@ export const RoleEditor = {
         m("span.icon",
           {
             onclick: ev => {
-              attrs.roles.push({ amount: 0, name: "", plural_name: "", figures: [], _expanded: true });
+              attrs.roles.push({ amount: 1, name: "", plural_name: "", figures: [], _expanded: true });
               editIdx = attrs.roles.length - 1;
             }
           },
