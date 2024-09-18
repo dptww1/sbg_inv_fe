@@ -96,7 +96,7 @@ export const RoleEditor = {
                     m("tr",
                       m("td",
                         { onclick: () => role._expanded = !role._expanded },
-                        role._expanded ? "v" : ">",
+                        m("span.icon", role._expanded ? K.ICON_STRINGS["open"] : K.ICON_STRINGS["closed"]),
                         m("input[type=hidden]",
                           {
                             name: "id" + roleIdx,

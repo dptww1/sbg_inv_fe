@@ -183,6 +183,8 @@ export const ICON_STRINGS = {
   edit:   "\ue905",
   remove: "\uea0e",
   up:     "\uea3a",
+  closed: "\u25b6",
+  open:   "\u25bc"
 };
 
 export const IMAGE_STRINGS = {
