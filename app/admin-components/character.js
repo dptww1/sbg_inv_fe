@@ -13,8 +13,8 @@ import { Typeahead        } from "../components/typeahead.js";
 const character = {
   id: null,
   name: null,
-  faction: null,
-  book: null,
+  faction: "angmar",
+  book: "ah",
   page: null,
   figure_ids: [],
   resources: []
@@ -86,11 +86,8 @@ const domEditCharacter = () => {
     m("br"),
     m(SelectFaction,
       {
-        initialValue: character.faction,
-        onchange: ev => {
-          character.faction = ev.target.value;
-          return true;
-        }
+        value: character.faction,
+        callback: value => character.faction = value
       }
      ),
     m("br"),
@@ -104,8 +101,8 @@ const domEditCharacter = () => {
         m("td",
           m(SelectBook,
             {
-              initialValue: character.book,
-              onchange: ev => character.book = ev.target.value
+              value: character.book,
+              callback: value => character.book = value
             }
            )),
         m("td",
@@ -128,7 +125,7 @@ const domEditCharacter = () => {
 
     m("button", { onclick: ev => saveCharacter() }, "Save"),
     " ",
-    m("button", { onclick: ev => initCharacterForm() }, "New Character")
+    m("button", { onclick: ev => initCharacterForm() }, "Clear")
   ];
 };
 
@@ -223,7 +220,7 @@ const domResources = () => {
         m("td", m(SelectBook,
                   {
                     value: stagingResource.book,
-                    onchange: ev => stagingResource.book = ev.target.value
+                    callback: value => stagingResource.book = value
                   }))),
 
       m("tr",
@@ -291,14 +288,16 @@ const findMatches = (searchString, typeahead) => {
 const initCharacterForm = () => {
   character.id = null;
   character.name = null;
-  character.faction = null;
-  character.book = null;
+  character.faction = "angmar";
+  character.book = "ah";
   character.page = null;
   character.figure_ids = [];
 
   figures.length = 0;
 
   figure_lookup_mode = false;
+
+  resetStagingResource();
 };
 
 //========================================================================
@@ -353,6 +352,7 @@ const saveCharacter = () => {
     { character: character },
     () => {
       Request.messages("Saved " + character.name);
+      initCharacterForm();
     });
 };
 

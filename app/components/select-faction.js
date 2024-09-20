@@ -4,28 +4,25 @@ import * as K from "../constants.js";
 import * as U from "../utils.js";
 
 //========================================================================
-export const SelectFaction = ({ attrs: { onchange: callbackFn, initialValue } }) => {
-
-  var selectedValue = initialValue;
-
+// m(SelectFaction, { value: <currentValue>, callback: fn(newValue) })
+//------------------------------------------------------------------------
+export const SelectFaction = () => {
 
   return {
-    view: (/*vnode*/) =>
+    view: vnode =>
       m("select[name=faction]",
         {
-          value: selectedValue,
+          value: vnode.attrs.value,
           onchange: ev => {
-            selectedValue = ev.target.value;
-            callbackFn(ev);
+            vnode.attrs.callback(ev.target.value);
           }
         },
-        Object.keys(K.FACTION_INFO)
-          .sort((a, b) => U.strCmp(K.FACTION_INFO[a].name, K.FACTION_INFO[b].name))
-          .map(key =>
-            m("option",
-              {
-                value: key
-              },
-              K.FACTION_INFO[key].name)))
+        K.SORTED_FACTION_NAMES
+        .map(name =>
+          m("option",
+            {
+              value: K.FACTION_ABBREV_BY_NAME[name]
+            },
+            name)))
   };
 };

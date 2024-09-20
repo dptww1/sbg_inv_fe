@@ -8,6 +8,7 @@ import { Nav             } from "./nav.js";
 import { Pie             } from "./components/pie.js";
 import { Request         } from "./request.js";
 import { ScenarioUpdater } from "./scenario-updater.js";
+import { SelectBook      } from "./components/select-book.js";
 import { StarRating      } from "./components/star-rating.js";
 import * as U              from "./utils.js";
 
@@ -169,15 +170,11 @@ const domResourcesRollup = () => {
 
 //========================================================================
 const domResourceSelectBook = () => {
-  return m("select[name=book]",
-           { onchange: ev => book(ev.target.value) },
-           m("option", { value: "-1" }, "-- Select a Book --"),
-           Object.keys(K.BOOK_NAMES).sort().reduce(
-             (acc, key) => {
-               acc.push(m("option", { value: key, selected: book() == key }, K.BOOK_NAMES[key]));
-               return acc;
-             },
-             []));
+  return m(SelectBook,
+           {
+             value: book(),
+             callback: value => book(value)
+           });
 };
 
 //========================================================================
@@ -191,7 +188,7 @@ const domResourceSelectType = () => {
            m("option[value=3]",  { selected: resourceType() ==  "3" }, "Terrain Building"),
            m("option[value=4]",  { selected: resourceType() ==  "4" }, "Podcast"),
            m("option[value=5]",  { selected: resourceType() ==  "5" }, "Magazine Replay"));
-}
+};
 
 //========================================================================
 const domResourceTextInput = (name, prop) => {

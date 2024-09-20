@@ -4,22 +4,23 @@ import * as K from "../constants.js";
 import * as U from "../utils.js";
 
 //========================================================================
-export const SelectBook = ({ attrs: { onchange: callbackFn, initialValue } }) => {
+// m(SelectBook, { value: <currentValue>, callback: fn(newValue) })
+//------------------------------------------------------------------------
+export const SelectBook = () => {
 
-  var selectedValue = initialValue;
+  const alphaSortedBooks =
+        K.BOOKS.sort((a, b) => U.strCmp(a.name, b.name));
 
   return {
-    view: (/*vnode*/) =>
+    view: vnode =>
       m("select[name=book]",
         {
-          value: selectedValue,
+          value: vnode.attrs.value,
           onchange: ev => {
-            selectedValue = ev.target.value;
-            callbackFn(ev);
+            vnode.attrs.callback(ev.target.value);
           }
         },
-        K.BOOKS
-          .sort((a, b) => U.strCmp(a.name, b.name))
+        alphaSortedBooks
           .map(book =>
             m("option",
               {
