@@ -60,6 +60,8 @@ function SelectFilter(name, optionList, matchFn) {
   });
 
   this.initFromStorage = _ => {
+    self.activeOptions = 0;
+    Object.keys(self.optionMap).forEach(k => self.optionMap[k].active = false);
     (localStorage.getItem("scenario-filter--" + self.internalName) || "")
       .split("|")
       .filter(x => !x.match(/^\s*$/))
