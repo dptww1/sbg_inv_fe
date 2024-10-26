@@ -6,9 +6,6 @@ import { Credentials } from "../credentials.js";
 import * as K from "../constants.js";
 import * as U from "../utils.js";
 
-const ICON_DOWN       = "\u25bc";  // ▼
-const ICON_RIGHT      = "\u25b6";  // ▶
-
 var collapsed = true;
 
 //========================================================================
@@ -210,14 +207,14 @@ export const Filters = {
     return m("div.filters",
              collapsed
                ? [
-                   m(".arrow", { onclick: toggleFilters }, ICON_RIGHT),
+                   m(".arrow", { onclick: toggleFilters }, K.ICON_STRINGS["closed"]),
                    m("span.label", { onclick: toggleFilters }, "Filters: " + (filters.map(f => f.summaryLabel())
                                                                                     .filter(lbl => lbl != null)
                                                                                     .join("; ") || "None")),
                    domEdit
                  ]
                : [
-                   m(".arrow", { onclick: toggleFilters }, ICON_DOWN),
+                   m(".arrow", { onclick: toggleFilters }, K.ICON_STRINGS["open"]),
                    m("span.label", { onclick: toggleFilters }, "Filter"),
                    filters.filter(f => f.active)
                           .map(f => m(f)),
