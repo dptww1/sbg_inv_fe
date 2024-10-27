@@ -69,6 +69,12 @@ export const getLocalStorageBoolean = keyName => {
 };
 
 //========================================================================
+export const isBlank = str => !str || str.match(/^\s*$/);
+
+//========================================================================
+export const isNotBlank = str => !isBlank(str);
+
+//========================================================================
 export const pluralName = figure => figure.plural_name || figure.name;
 
 //========================================================================
