@@ -161,7 +161,12 @@ const domResourcesRollup = () => {
              isEditResourceOnline() ? m("tr", m("td", "Url"),   m("td", domResourceTextInput("url", url)))     : null,
              m("tr",
                m("td", m("button", { onclick: clearResourceForm  }, "Clear")),
-               m("td", m("button", { onclick: submitResourceForm }, "Submit"))
+               m("td", m("button",
+                         {
+                           disabled: !isResourceValid(),
+                           onclick: submitResourceForm
+                         },
+                         "Submit"))
               )));
   }
 
@@ -195,7 +200,7 @@ const domResourceTextInput = (name, prop) => {
   return m("input[type=text]",
            {
              name: name,
-             onchange: ev => prop(ev.target.value),
+             oninput: ev => prop(ev.target.value),
              value: prop() ? prop() : ""
            });
 };
@@ -252,6 +257,29 @@ const isEditResourceOnline = () => {
       || resourceType() == "1"
       || resourceType() == "2"
       || resourceType() == "4";
+};
+
+//========================================================================
+const isResourceValid = () => {
+  if (U.isBlank(title())) {
+    return false;
+  }
+
+  switch(resourceType()) {
+  case "0":
+    return U.isNotBlank(url()) || (U.isNotBlank(book()) && U.isNotBlank(page()));
+
+  case "1":
+  case "2":
+  case "4":
+    return U.isNotBlank(url());
+
+  case "5":
+    return U.isNotBlank(book()) && U.isNotBlank(page());
+
+  default:
+    return false;
+  }
 };
 
 //========================================================================
