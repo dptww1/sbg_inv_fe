@@ -17,6 +17,11 @@ export const alphabetizedOptionsByValue = hash => {
 };
 
 //========================================================================
+export const asLabel = s =>
+  s.replaceAll(/_/g, " ")
+   .replace(/\b\w/g, c => c.toUpperCase());
+
+//========================================================================
 export const asNormalized = s => {
   let s2 = sortOrderMap[s] ||
            s.normalize('NFD')
