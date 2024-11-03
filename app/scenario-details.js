@@ -24,6 +24,7 @@ var title = prop("");
 var book = prop();
 var issue = prop();
 var page = prop();
+var sort_order = prop();
 var url = prop();
 
 //========================================================================
@@ -34,6 +35,7 @@ const clearResourceForm = () => {
   book("");
   issue("");
   page("");
+  sort_order("");
   url("");
 
   m.redraw();
@@ -159,6 +161,10 @@ const domResourcesRollup = () => {
              isEditResourceBook()   ? m("tr", m("td", "Issue"), m("td", domResourceTextInput("issue", issue))) : null,
              isEditResourceBook()   ? m("tr", m("td", "Page"),  m("td", domResourceTextInput("page", page)))   : null,
              isEditResourceOnline() ? m("tr", m("td", "Url"),   m("td", domResourceTextInput("url", url)))     : null,
+             m("tr",
+               m("td", "Sort Order"),
+               m("td", domResourceTextInput("sort_order", sort_order)),
+               m("td", "(if blank, moves to end of list)")),
              m("tr",
                m("td", m("button", { onclick: clearResourceForm  }, "Clear")),
                m("td", m("button",
@@ -299,6 +305,7 @@ const loadResourceIntoForm = (res) => {
   book(res.book);
   issue(res.issue);
   page(res.page);
+  sort_order(res.sort_order);
   url(res.url);
 };
 
@@ -324,22 +331,30 @@ const refresh = function() {
 
 //========================================================================
 const submitResourceForm = () => {
+  const payload = {
+    resource: {
+      id:            resourceId() ? resourceId() : null,
+      resource_type: parseInt(resourceType(), 10),
+      title:         title(),
+      book:          book(),
+      issue:         issue(),
+      page:          parseInt(page(), 10),
+      url:           url()
+    }
+  };
+
+  if (sort_order()) {
+    payload["resource"]["sort_order"] = sort_order();
+  }
+
+  console.log("Payload", payload); /*TODO*/
+
   Request.putOrPost("/scenarios/" + scenario().id + "/resource",
                     resourceId(),
-                    {
-                      resource: {
-                        id:            resourceId() ? resourceId() : null,
-                        resource_type: parseInt(resourceType(), 10),
-                        title:         title(),
-                        book:          book(),
-                        issue:         issue(),
-                        page:          parseInt(page(), 10),
-                        url:           url()
-                      }
-                   },
-                   resp => {
-                     clearResourceForm();
-                     refresh();
+                    payload,
+                    resp => {
+                      clearResourceForm();
+                      refresh();
                    });
 };
 
