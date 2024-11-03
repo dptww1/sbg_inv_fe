@@ -192,13 +192,9 @@ const domResourceSelectBook = () => {
 const domResourceSelectType = () => {
   return m("select[name=type]",
            { onchange: ev => { resourceType(ev.target.value); } },
-           m("option[value=-1]", { selected: resourceType() == "-1" }, "-- Select Resource Type --"),
-           m("option[value=0]",  { selected: resourceType() ==  "0" }, "Source"),
-           m("option[value=1]",  { selected: resourceType() ==  "1" }, "Video Replay"),
-           m("option[value=2]",  { selected: resourceType() ==  "2" }, "Web Replay"),
-           m("option[value=3]",  { selected: resourceType() ==  "3" }, "Terrain Building"),
-           m("option[value=4]",  { selected: resourceType() ==  "4" }, "Podcast"),
-           m("option[value=5]",  { selected: resourceType() ==  "5" }, "Magazine Replay"));
+           m("option[value=-1]", { selected: resourceType() === "-1" }, "-- Select Resource Type --"),
+           Object.entries(K.RESOURCE_TYPE_MAP).map(([k, v]) =>
+             m("option[value=" + v + "]", { selected: resourceType() === v }, asLabel(k))));
 };
 
 //========================================================================
@@ -254,15 +250,16 @@ const formatDate = (age, year, month, day) => {
 
 //========================================================================
 const isEditResourceBook = () => {
-  return resourceType() === "0" || resourceType() === "5";
+  return resourceType() === K.RESOURCE_TYPE_MAP.source
+      || resourceType() === K.RESOURCE_TYPE_MAP.magazine_replay;
 };
 
 //========================================================================
 const isEditResourceOnline = () => {
-  return resourceType() == "0"
-      || resourceType() == "1"
-      || resourceType() == "2"
-      || resourceType() == "4";
+  return resourceType() === K.RESOURCE_TYPE_MAP.source
+      || resourceType() === K.RESOURCE_TYPE_MAP.video_replay
+      || resourceType() === K.RESOURCE_TYPE_MAP.web_replay
+      || resourceType() === K.RESOURCE_TYPE_MAP.podcast;
 };
 
 //========================================================================
@@ -272,15 +269,15 @@ const isResourceValid = () => {
   }
 
   switch(resourceType()) {
-  case "0":
+  case K.RESOURCE_TYPE_MAP.source:
     return U.isNotBlank(url()) || (U.isNotBlank(book()) && U.isNotBlank(page()));
 
-  case "1":
-  case "2":
-  case "4":
+  case K.RESOURCE_TYPE_MAP.video_replay:
+  case K.RESOURCE_TYPE_MAP.web_replay:
+  case K.RESOURCE_TYPE_MAP.podcast:
     return U.isNotBlank(url());
 
-  case "5":
+  case K.RESOURCE_TYPE_MAP.magazine_replay:
     return U.isNotBlank(book()) && U.isNotBlank(page());
 
   default:
@@ -290,17 +287,8 @@ const isResourceValid = () => {
 
 //========================================================================
 const loadResourceIntoForm = (res) => {
-  const RESOURCE_TYPE_MAP = {  // TODO: BELONGS IN constants.js
-    source:           "0",
-    video_replay:     "1",
-    web_replay:       "2",
-    terrain_building: "3",
-    podcast:          "4",
-    magazine_replay:  "5"
-  };
-
   resourceId(res.id);
-  resourceType(RESOURCE_TYPE_MAP[res.resource_type]);
+  resourceType(K.RESOURCE_TYPE_MAP[res.resource_type]);
   title(res.title);
   book(res.book);
   issue(res.issue);
