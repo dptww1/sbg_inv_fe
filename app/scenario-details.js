@@ -194,7 +194,7 @@ const domResourceSelectType = () => {
            { onchange: ev => { resourceType(ev.target.value); } },
            m("option[value=-1]", { selected: resourceType() === "-1" }, "-- Select Resource Type --"),
            Object.entries(K.RESOURCE_TYPE_MAP).map(([k, v]) =>
-             m("option[value=" + v + "]", { selected: resourceType() === v }, asLabel(k))));
+             m("option[value=" + v + "]", { selected: resourceType() === v }, U.asLabel(k))));
 };
 
 //========================================================================
