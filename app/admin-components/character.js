@@ -262,9 +262,8 @@ const domResources = () => {
 };
 
 //========================================================================
-const figureSelect = (target) => {
-  if (target === null) {
-    debugger;
+const figureSelect = target => {
+  if (!target) {
     return;
   }
 
