@@ -1,23 +1,107 @@
 import m from "mithril";
 
-import { Header      } from "../header.js";
-import { Credentials } from "../credentials.js";
-import * as K          from "../constants.js";
-import { Nav         } from "../nav.js";
-import { Request     } from "../request.js";
+import { FigureListEditor } from "./figure-list-edit.js";
+import { Header      }      from "../header.js";
+import { Credentials }      from "../credentials.js";
+import * as K               from "../constants.js";
+import { Nav         }      from "../nav.js";
+import { Request     }      from "../request.js";
 
-let figure = { factions: [], type: "hero" };
+let figure = { factions: [], type: "hero", same_as: null };
+let editMode = false;
+let sameAsName = null; // null, or name of source figure
+
+//========================================================================
+const domFactions = () =>
+      m("tr",
+        m("td.valign-top", "Factions"),
+        m("td",
+          m("div.faction-checkbox-container",
+            K.SORTED_FACTION_NAMES.map(f =>
+              m("div",
+                m("input[type=checkbox]",
+                  {
+                    id: K.FACTION_ABBREV_BY_NAME[f],
+                    value: K.FACTION_ABBREV_BY_NAME[f],
+                    checked: figure.factions.indexOf(K.FACTION_ABBREV_BY_NAME[f]) >= 0,
+                    onchange: updateFactions
+                  }),
+                m("label", { for: K.FACTION_ABBREV_BY_NAME[f] }, f))))));
+
+//========================================================================
+const domSameAs = () =>
+      m("tr",
+        m("td", "Same As"),
+        figure.same_as
+          ? m("td", sameAsName)
+          : m("td", m(FigureListEditor, { onItemSelect: otherFigureSelect }),
+              " If set, assign the new figure to this figure's scenarios and character"));
+
+//========================================================================
+const domTextInputRow = (label, name, val, setter) =>
+      m("tr",
+        m("td", label),
+        m("td", m("input[type=text][size=60]",
+                  {
+                    name: name,
+                    onchange: ev => setter(ev.target.value),
+                    value: val
+                  })));
+
+//========================================================================
+const domTypeDropDown = () =>
+      m("tr",
+        m("td", "Type"),
+        m("td", m("select",
+                  {
+                    onchange: ev => figure.type = ev.target.value,
+                    value: figure.type
+                  },
+                  m("option[value=hero]", "Hero"),
+                  m("option[value=warrior]", "Warrior"),
+                  m("option[value=monster]", "Monster"),
+                  m("option[value=sieger]", "Sieger"))));
+
+//========================================================================
+const domUniqueCheckbox = () =>
+      m("tr",
+        m("td", "Unique?"),
+        m("td", m("input[type=checkbox][name=unique]",
+                  {
+                    onchange: ev => figure.unique = ev.target.checked,
+                    checked: figure.unique
+                  }
+                 )));
+
+//========================================================================
+const otherFigureSelect = target => {
+  if (!target) {
+    return;
+  }
+
+  figure.same_as = target.dataset.id;
+  sameAsName = target.dataset.name;
+}
 
 //========================================================================
 const refresh = () => {
   if (m.route.param("id")) {
     Request.get("/figure/" + m.route.param("id"),
-                resp => figure = resp.data
-               );
+                resp => {
+                  figure = resp.data;
+                  figure.same_as = null;
+                  editMode = true;
+                });
   } else {
-    figure = { factions: [], type: "hero" };
+    resetForm();
   }
 };
+
+//========================================================================
+const resetForm = () => {
+  figure = { factions: [], type: "hero", same_as: "" };
+  editMode = false;
+}
 
 //========================================================================
 const submitFigure = (ev) => {
@@ -31,7 +115,7 @@ const submitFigure = (ev) => {
                     { figure: figure },
                     () => {
                       Request.messages("Saved " + figure.name);
-                      figure = { factions: [], type: "hero" };
+                      resetForm();
                       m.route.set("/figures");
                     });
 };
@@ -62,72 +146,22 @@ export const FigureEdit = {
       m(Nav),
       m("div.main-content",
         m(".inputForm",
-          m(".formTitle", figure.id ? "Edit Figure" : "Create New Figure"),
+          m(".formTitle", editMode ? "Edit Figure" : "Create New Figure"),
           m("table",
-            m("tr",
-              m("td", "Type"),
-              m("td", m("select",
-                        {
-                          onchange: ev => figure.type = ev.target.value,
-                          value: figure.type
-                        },
-                        m("option[value=hero]", "Hero"),
-                        m("option[value=warrior]", "Warrior"),
-                        m("option[value=monster]", "Monster"),
-                        m("option[value=sieger]", "Sieger")))),
 
-            m("tr",
-              m("td", "Unique?"),
-              m("td", m("input[type=checkbox][name=unique]",
-                        {
-                          onchange: ev => figure.unique = ev.target.checked,
-                          checked: figure.unique
-                        }
-                       ))),
+            domTextInputRow("Name", "name", figure.name, newVal => figure.name = newVal),
+            domTextInputRow("Plural Name", "plural_name", figure.plural_name, newVal => figure.plural_name = newVal),
 
-            m("tr",
-              m("td", "Name"),
-              m("td", m("input[type=text][name=name][size=40]",
-                        {
-                          onchange: ev => figure.name = ev.target.value,
-                          value: figure.name
-                        }
-                       ))),
+            !editMode ? domSameAs() : null,
 
-            m("tr",
-              m("td", "Plural Name"),
-              m("td", m("input[type=text][name=plural_name][size=40]",
-                        {
-                          onchange: ev => figure.plural_name = ev.target.value,
-                          value: figure.plural_name
-                        }
-                       ))),
-
-            m("tr",
-              m("td", "Slug"),
-              m("td", m("input[type=text][name=slug][size=40]",
-                        {
-                          onchange: ev => figure.slug = ev.target.value,
-                          value: figure.slug
-                        }
-                       ))),
-
-            m("tr",
-              m("td.valign-top", "Factions"),
-              m("td",
-                K.SORTED_FACTION_NAMES.map(f => {
-                  return [
-                    m("input[type=checkbox]",
-                      {
-                        id: K.FACTION_ABBREV_BY_NAME[f],
-                        value: K.FACTION_ABBREV_BY_NAME[f],
-                        checked: figure.factions.indexOf(K.FACTION_ABBREV_BY_NAME[f]) >= 0,
-                        onchange: updateFactions
-                      }),
-                    m("label", { for: K.FACTION_ABBREV_BY_NAME[f] }, f),
-                    m("br")
-                  ];
-                }))),
+            editMode || !figure.same_as
+              ? [
+                  domTypeDropDown(),
+                  domUniqueCheckbox(),
+                  domTextInputRow("Slug", "slug", figure.slug, newVal => figure.slug = newVal),
+                  domFactions()
+                ]
+              : null,
 
             m("tr",
               m("td"),
