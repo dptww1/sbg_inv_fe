@@ -39,7 +39,8 @@ export const BOOKS = [
   { key: "qrb",     shortName: "Quest (2020)",  name: "Quest of the Ringbearer (2020)" },
   { key: "dotn",    shortName: "DotN (2022)",   name: "Defence of the North (2022)" },
   { key: "bog",     shortName: "BoO (2022)",    name: "Battle of Osgiliath (2022)" },
-  { key: "ang",     shortName: "Angmar (2024)", name: "Rise of Angmar (2024)" }
+  { key: "ang",     shortName: "Angmar (2024)", name: "Rise of Angmar (2024)" },
+  { key: "aaa",     shortName: "AoA&A (2024)",  name: "Armies of Arnor and Angmar (2024)" }
 ];
 
 BOOKS.forEach((book, i) => book.index = i);
@@ -107,7 +108,14 @@ export const FACTION_INFO = {
   wanderers:       { name: "Wanderers in the Wild",     letter: "W", id: 41 },
   white_council:   { name: "White Council",             letter: "w", id: 42 },
   wildmen:         { name: "Wildmen of Drúadan",        letter: "E", id: 43 },
-  beornings:       { name: "Beornings",                 letter: "B", id: 44 }
+  beornings:       { name: "Beornings",                 letter: "B", id: 44 },
+  fornost:         { name: "Battle of Fornost",         letter: "-", id: 45 },
+  arathorn:        { name: "Arathorn's Stand",          letter: "-", id: 46 },
+  witch_king:      { name: "Host of the Witch King",    letter: "-", id: 47 },
+  shadows:         { name: "Shadows of Angmar",         letter: "-", id: 48 },
+  buhrdur:         { name: "Burhdûr's Horde",           letter: "-", id: 49 },
+  wolf_angmar:     { name: "Wolf Pack of Angmar",       letter: "-", id: 50 },
+  carn_dum:        { name: "Army of Carn Dûm",          letter: "-", id: 51 }
 };
 
 export const SORTED_FACTION_NAMES =
