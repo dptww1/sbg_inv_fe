@@ -47,11 +47,14 @@ const domArmyDetails = () => {
     return [
       m("table.striped",
         m("tr.table-header",
-          m("td.section-header", "Faction"),
+          m("td.section-header", "Army List"),
           Credentials.isLoggedIn() ? m("td.numeric.section-header", "Owned") : null,
           Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null),
 
         K.SORTED_FACTION_NAMES.map(name => {
+          if (K.FACTION_INFO[K.FACTION_ABBREV_BY_NAME[name]].obsolete) {
+            return null;
+          }
           let faction = K.FACTION_ABBREV_BY_NAME[name];
           let thisMap = factionOverviewMap[faction];
           return m("tr",
