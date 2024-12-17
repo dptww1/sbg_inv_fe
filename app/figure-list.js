@@ -108,7 +108,8 @@ const domArmyDetails = () => {
              Credentials.isLoggedIn() ? m("td.numeric.section-header", "Owned") : null,
              Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null,
              m("td.section-header[colspan=2]", "Needed"),
-             m("td.section-header", "Resources")),
+             m("td.section-header", "Resources"),
+             Credentials.isAdmin() ? m("td") : null),
            domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
            domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
            domFigureListByType("Warriors", figuresMap.warriors),
@@ -161,6 +162,9 @@ const domFigureListByType = (title, list) => {
                      : null),
                  m("td.resources",
                    domResources(fig)),
+                 Credentials.isAdmin()
+                   ? m("td.icon", { onclick: () => m.route.set(`/figure-edit/${fig.id}`) }, K.ICON_STRINGS.edit)
+                   : null
                 )
 
              : m("tr",
