@@ -1,5 +1,6 @@
 import m from "mithril";
 
+import { ArmyListFilter      } from "./components/army-list-filter.js";
 import { Credentials         } from "./credentials.js";
 import { EditDialog          } from "./components/edit-dialog.js";
 import { EditInventoryDialog } from "./components/edit-inventory-dialog.js";
@@ -45,6 +46,7 @@ const domArmyDetails = () => {
     const totals = factionOverviewMap["Totals"]
                    || { owned: 0, painted: 0 };
     return [
+      m(ArmyListFilter),
       m("table.striped",
         m("tr.table-header",
           m("td.section-header", "Army List"),
@@ -52,11 +54,13 @@ const domArmyDetails = () => {
           Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null),
 
         K.SORTED_FACTION_NAMES.map(name => {
-          if (K.FACTION_INFO[K.FACTION_ABBREV_BY_NAME[name]].obsolete) {
+          let factionAbbrev = K.FACTION_ABBREV_BY_NAME[name];
+
+          if (!ArmyListFilter.shouldShowArmyListName(factionAbbrev)) {
             return null;
           }
-          let faction = K.FACTION_ABBREV_BY_NAME[name];
-          let thisMap = factionOverviewMap[faction];
+
+          let thisMap = factionOverviewMap[factionAbbrev];
           return m("tr",
                    m("td",
                      m("a", { onclick: _ => FigureList.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
@@ -66,25 +70,28 @@ const domArmyDetails = () => {
                   );
         }),
 
-        m("tr",
-          m("td",
-            m("a", { onclick: _ => FigureList.updateArmyDetails(-1) }, "Unaffiliated")),
-            unaffiliatedFigureMap
-              ? [
-                  m("td.numeric", unaffiliatedFigureMap.owned),
-                  m("td.numeric", unaffiliatedFigureMap.painted),
-                  m("td",
-                    Credentials.isLoggedIn()
-                      ? m(Pie, { size: 24, n: unaffiliatedFigureMap.owned, nPainted: unaffiliatedFigureMap.painted, nOwned: unaffiliatedFigureMap.owned })
-                      : null)
-                ]
-              : [
-                  m("td", ""),
-                  m("td", ""),
-                  m("td", "")
-              ]
-         ),
-        Credentials.isLoggedIn()
+        ArmyListFilter.isFilterActive()
+          ? null
+          : m("tr",
+              m("td",
+                m("a", { onclick: _ => FigureList.updateArmyDetails(-1) }, "Unaffiliated")),
+              unaffiliatedFigureMap
+                ? [
+                    m("td.numeric", unaffiliatedFigureMap.owned),
+                    m("td.numeric", unaffiliatedFigureMap.painted),
+                    m("td",
+                      Credentials.isLoggedIn()
+                        ? m(Pie, { size: 24, n: unaffiliatedFigureMap.owned, nPainted: unaffiliatedFigureMap.painted, nOwned: unaffiliatedFigureMap.owned })
+                        : null)
+                  ]
+                : [
+                    m("td", ""),
+                    m("td", ""),
+                    m("td", "")
+                  ]
+             ),
+
+        Credentials.isLoggedIn() && !ArmyListFilter.isFilterActive()
           ? [
               m("tr.totals",
                 m("td", "Totals"),
@@ -93,12 +100,12 @@ const domArmyDetails = () => {
                 m("td", m(Pie, { size: 24, n: totals.owned, nPainted: totals.painted, nOwned: totals.owned })))
             ]
           : null
-       ),
-       Credentials.isLoggedIn()
-         ? m("p.field-note",
-             "(Because figures can belong to multiple factions, Totals are not the sum of the faction numbers. " +
-             "They are the actual number of figures in your collection.)")
-         : null
+      ),
+      Credentials.isLoggedIn() && !ArmyListFilter.isFilterActive()
+        ? m("p.field-note",
+            "Because figures can belong to multiple factions, Totals are not the sum of the faction numbers. " +
+            "They are the actual number of figures in your collection.")
+        : null
      ];
   }
 
