@@ -7,7 +7,7 @@ import * as U from "../utils.js";
 
 export const ActivityChart = _vnode => {
 
-let chartObj = null;
+  let chartObj = null;
 
   const chartData = {
     type: "bar",
