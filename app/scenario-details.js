@@ -42,19 +42,6 @@ const clearResourceForm = () => {
 };
 
 //========================================================================
-const domFactionRollup = (faction, idx) => {
-  return m("div.faction",
-           m("div.section-subheader",
-             idx === 0 ? "Good" : "Evil",
-             Credentials.isAdmin()
-               ? m("button",
-                   { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
-                   "Edit")
-               : null),
-           domRolesRollup(faction.roles));
-};
-
-//========================================================================
 const domFactionsRollup = () => {
   if (!scenario().scenario_factions) {
     return null;
@@ -62,7 +49,16 @@ const domFactionsRollup = () => {
 
   var f = [ m("div.section-header", "Participants") ];
 
-  scenario().scenario_factions.forEach((faction, idx) => f.push(domFactionRollup(faction, idx)));
+  scenario().scenario_factions.forEach((faction, idx) => f.push(
+    m("div.faction",
+      m("div.section-subheader",
+        idx === 0 ? "Good" : "Evil",
+        Credentials.isAdmin()
+          ? m("button",
+              { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
+              "Edit")
+          : null),
+      domRolesRollup(faction.roles))));
 
   return m("div.factions-container", f);
 };
