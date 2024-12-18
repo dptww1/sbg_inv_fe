@@ -106,7 +106,7 @@ export const FACTION_INFO = {
   thorins_co:      { name: "Thorin's Company",           id: 37 },
   thranduil:       { name: "Halls of Thranduil",         id: 38 },
   trolls:          { name: "The Three Trolls",           id: 39 },
-  umbar:           { name: "Corsairs Fleets",            id: 40 },
+  umbar:           { name: "Corsair Fleets",             id: 40 },
   wanderers:       { name: "Wanderers in the Wild",      id: 41, obsolete: true },
   white_council:   { name: "The White Council",          id: 42 },
   wildmen:         { name: "Wildmen of Drúadan",         id: 43, obsolete: true },
