@@ -42,7 +42,8 @@ export const BOOKS = [
   { key: "ang",     shortName: "Angmar (2024)", name: "Rise of Angmar (2024)" },
   { key: "alotr2",  shortName: "ALotR (2024)",  name: "Armies of the Lord of the Rings (2024)" },
   { key: "ah2",     shortName: "AH (2024)",     name: "Armies of the Hobbit (2024)" },
-  { key: "aaa",     shortName: "AoA&A (2024)",  name: "Armies of Arnor and Angmar (2024)" }
+  { key: "aaa",     shortName: "AoA&A (2024)",  name: "Armies of Arnor and Angmar (2024)" },
+  { key: "twotr",   shortName: "tWotR (2024)",  name: "The War of the Rohirrim (2024)" }
 ];
 
 BOOKS.forEach((book, i) => book.index = i);
