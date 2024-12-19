@@ -17,13 +17,13 @@ import * as U                  from "./utils.js";
 var figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
 
 //========================================================================
-const chooseFaction = (fid) => {
+const chooseArmyList = (fid) => {
   FigureList.updateArmyDetails(Object.keys(K.FACTION_INFO).findIndex(f => f == fid ));
   m.route.set("/figures");
 };
 
 //========================================================================
-const domFactions = () => {
+const domArmyLists = () => {
   return m(".figure-factions",
            m(".section-header", "Army Lists"),
            m("table",
@@ -33,12 +33,9 @@ const domFactions = () => {
                    m("td.faction-name",
                      m("a",
                        {
-                         onclick: _ => chooseFaction(f)
+                         onclick: _ => chooseArmyList(f)
                        },
-                       K.FACTION_INFO[f].name),
-                     " ",
-                     domRules(f)
-                    )))
+                       K.FACTION_INFO[f].name))))
                : m("tr", m("td", "None"))));
 };
 
@@ -153,21 +150,17 @@ const domResourcesForType = (resourceList, type, title) => {
 };
 
 //========================================================================
-const domRules = faction => {
+const domRules = () => {
   if (!figure.rules || figure.rules.length === 0) {
     return null;
   }
 
-  const chars = figure.rules.filter(r =>
-    r.faction === faction && r.book && r.page);
-
-  if (chars.length === 0) {
-    return null;
-  }
-
-  return " : "
-    + chars.map(c => K.BOOK_NAMES[c.book] + ", p." + c.page)
-           .join("; ");
+  return [
+    m(".section-header", "Rules"),
+    m("ul.rules",
+      figure.rules
+      .map(ref => m("li", K.BOOK_NAMES[ref.book] + ", p." + ref.page)))
+  ];
 };
 
 //========================================================================
@@ -231,7 +224,7 @@ export const FigureDetails = {
     return [
       m(Header),
       m(Nav, { selected: "Figure Details" }),
-      m("div.main-content", [
+      m("div.main-content.figure-details-main-content", [
         m(Filters, { activeFilters: "Book" }),
         m(".page-title", figure.name),
         Credentials.isAdmin() ? m("button",
@@ -240,7 +233,8 @@ export const FigureDetails = {
                               : null,
         domSilhouette(),
         domInventory(total),
-        domFactions(),
+        domArmyLists(),
+        domRules(),
         domScenarios(total),
         domResources(),
         domHistory(),
