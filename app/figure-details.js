@@ -159,7 +159,11 @@ const domRules = () => {
     m(".section-header", "Rules"),
     m("ul.rules",
       figure.rules
-      .map(ref => m("li", K.BOOK_NAMES[ref.book] + ", p." + ref.page)))
+      .map(ref => m("li",
+                    K.BOOK_NAMES[ref.book]
+                    + ", p." + ref.page
+                    + (ref.name_override ? ` (${ref.name_override})` : "")
+                    + (ref.obsolete ? " (obsolete)" : ""))))
   ];
 };
 

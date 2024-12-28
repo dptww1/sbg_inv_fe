@@ -13,11 +13,9 @@ import { Typeahead        } from "../components/typeahead.js";
 const character = {
   id: null,
   name: null,
-  faction: "angmar",
-  book: "ah",
-  page: null,
   figure_ids: [],
-  resources: []
+  resources: [],
+  rules: []
 };
 
 // Array of {id: x, name: "abc"}
@@ -33,6 +31,17 @@ const stagingResource = {
   url: ""
 };
 
+// The rule currently being edited
+const stagingRule = {
+  name_override: "",
+  book: "",
+  issue: "",
+  page: null,
+  url: "",
+  obsolete: null,
+  sort_order: null
+};
+
 // When true, character name field acts as lookup of existing
 // character; when false, user is adding a new character
 var figure_lookup_mode = false;
@@ -44,9 +53,17 @@ const addResource = () => {
 };
 
 //========================================================================
+const addRule = () => {
+  stagingRule.sort_order = character.rules.length;
+  console.log("ADDRULE", stagingRule); // TODO DELETE
+  character.rules.push(Object.assign({}, stagingRule));
+  resetStagingRule();
+};
+
+//========================================================================
 const characterSelect = target => {
   if (!target.dataset.id) {
-    return null;
+    return;
   }
 
   Request.get("/character/" + target.dataset.id,
@@ -55,11 +72,9 @@ const characterSelect = target => {
 
                 character.id = resp.data.id;
                 character.name = resp.data.name;
-                character.faction = resp.data.faction;
-                character.book = resp.data.book;
-                character.page = resp.data.page;
                 character.figure_ids = resp.data.figures.map(f => f.id);
                 character.resources = resp.data.resources;
+                character.rules = resp.data.rules;
 
                 figures.length = 0;
                 resp.data.figures.forEach(f => {
@@ -82,46 +97,9 @@ const domEditCharacter = () => {
     m("br"),
     m("br"),
 
-    "Faction",
-    m("br"),
-    m(SelectFaction,
-      {
-        value: character.faction,
-        callback: value => character.faction = value
-      }
-     ),
-    m("br"),
-    m("br"),
-
-    m("table",
-      m("tr",
-        m("td", "Book"),
-        m("td", "Page")),
-      m("tr",
-        m("td",
-          m(SelectBook,
-            {
-              value: character.book,
-              callback: value => character.book = value
-            }
-           )),
-        m("td",
-          m("input[name=page][type=number][size=5]",
-            {
-              value: character.page,
-              onchange: ev => character.page = parseInt(ev.target.value, 10)
-            }
-           )))),
-    m("br"),
-    m("br"),
-
     domFigures(),
-    m("br"),
-    m("br"),
-
     domResources(),
-    m("br"),
-    m("br"),
+    domRules(),
 
     m("button", { onclick: ev => saveCharacter() }, "Save"),
     " ",
@@ -169,7 +147,33 @@ const domFigures = () => {
               K.ICON_STRINGS.remove)
            ))
       : null,
+
+    m("br"),
+    m("br"),
   ];
+};
+
+//========================================================================
+const domResource = r => {
+  const fields = [ m("span.icon", m.trust(K.IMAGE_STRINGS[r.type])) ];
+
+  if (r.url) {
+    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
+  }
+
+  if (r.book) {
+    fields.push(" " + K.BOOK_NAMES[r.book]);
+  }
+
+  if (r.issue) {
+    fields.push(" #" + r.issue);
+  }
+
+  if (r.page) {
+    fields.push(" p." + r.page);
+  }
+
+  return fields;
 };
 
 //========================================================================
@@ -182,7 +186,7 @@ const domResources = () => {
         (rsrc, idx) => {
           return m("tr",
                    m("td",
-                     resourceElements(rsrc)),
+                     domResource(rsrc)),
                    m("td",
                      m("span.icon",
                        {
@@ -258,6 +262,119 @@ const domResources = () => {
               onclick: ev => addResource()
             },
             "Add Resource")))),
+
+    m("br"),
+    m("br"),
+  ];
+};
+
+//========================================================================
+const domRule = r => {
+  const fields = [];
+
+  if (r.url) {
+    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
+  }
+
+  if (r.book) {
+    fields.push(" " + K.BOOK_NAMES[r.book]);
+  }
+
+  if (r.issue) {
+    fields.push(" #" + r.issue);
+  }
+
+  if (r.page) {
+    fields.push(" p." + r.page);
+  }
+
+  if (r.name_override) {
+    fields.push(" (" + r.name_override + ")");
+  }
+
+  if (r.obsolete) {
+    fields.push(" (obsolete)");
+  }
+
+  return fields;
+};
+
+//========================================================================
+const domRules = () => {
+  return [
+    m(".section-header", "Rules"),
+
+    m("table",
+      character.rules.map(
+        (rule, idx) => {
+          return m("tr",
+                   m("td", domRule(rule)));
+        })),
+
+    m("b", "Add New Rules Reference"),
+    m("br"),
+
+    m("table",
+      m("tr",
+        m("td", "Name Override"),
+        m("td",
+          m("input[type=text][name=name_override][size=40]",
+            {
+              value: stagingRule.name_override,
+              onchange: ev => stagingRule.name_override = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Book"),
+        m("td", m(SelectBook,
+                  {
+                    value: stagingRule.book,
+                    callback: value => stagingRule.book = value
+                  }))),
+            m("tr",
+        m("td", "Issue"),
+        m("td",
+          m("input[type=text][name=rule_issue][size=15]",
+            {
+              value: stagingRule.issue,
+              onchange: ev => stagingRule.issue = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Page"),
+        m("td",
+          m("input[type=number][name=rule_page][size=5]",
+            {
+              value: stagingRule.page,
+              onchange: ev => stagingRule.page = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "URL"),
+        m("td",
+          m("input[type=text][name=rule_url][size=80]",
+            {
+              value: stagingRule.url,
+              onchange: ev => stagingRule.url = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Obsolete?"),
+        m("td",
+          m("input[type=checkbox][value=true]",
+            {
+              checked: !!stagingRule.obsolete,
+              onchange: ev => stagingRule.obsolete = ev.target.value
+            }))),
+
+      m("tr",
+        m("td"),
+        m("td",
+          m("button",
+            {
+              onclick: ev => addRule()
+            },
+            "Add Rule"))))
   ];
 };
 
@@ -287,16 +404,16 @@ const findMatches = (searchString, typeahead) => {
 const initCharacterForm = () => {
   character.id = null;
   character.name = null;
-  character.faction = "angmar";
-  character.book = "ah";
-  character.page = null;
   character.figure_ids = [];
+  character.resources = [];
+  character.rules = [];
 
   figures.length = 0;
 
   figure_lookup_mode = false;
 
   resetStagingResource();
+  resetStagingRule();
 };
 
 //========================================================================
@@ -316,26 +433,14 @@ const resetStagingResource = () => {
 };
 
 //========================================================================
-const resourceElements = r => {
-  const fields = [ m("span.icon", m.trust(K.IMAGE_STRINGS[r.type])) ];
-
-  if (r.url) {
-    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
-  }
-
-  if (r.book) {
-    fields.push(" " + K.BOOK_NAMES[r.book]);
-  }
-
-  if (r.issue) {
-    fields.push(" #" + r.issue);
-  }
-
-  if (r.page) {
-    fields.push(" p." + r.page);
-  }
-
-  return fields;
+const resetStagingRule = () => {
+  stagingRule.name_override = "";
+  stagingRule.book = "";
+  stagingRule.issue = "";
+  stagingRule.page = null;
+  stagingRule.url = "";
+  stagingRule.obsolete = null;
+  stagingRule.sortOrder = null;
 };
 
 //========================================================================
