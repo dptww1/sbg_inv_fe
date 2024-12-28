@@ -55,7 +55,6 @@ const addResource = () => {
 //========================================================================
 const addRule = () => {
   stagingRule.sort_order = character.rules.length;
-  console.log("ADDRULE", stagingRule); // TODO DELETE
   character.rules.push(Object.assign({}, stagingRule));
   resetStagingRule();
 };
@@ -304,12 +303,18 @@ const domRules = () => {
   return [
     m(".section-header", "Rules"),
 
-    m("table",
-      character.rules.map(
-        (rule, idx) => {
-          return m("tr",
-                   m("td", domRule(rule)));
-        })),
+    m("table.rules",
+      character.rules.map((rule, idx) =>
+        m("tr",
+          m("td", domRule(rule)),
+          m("td",
+            idx > 0
+              ? m("span.icon", { onclick: () => moveRuleUp(idx) }, K.ICON_STRINGS.up)
+              : m("span.icon", " "),
+            idx < character.rules.length - 1
+              ? m("span.icon", { onclick: () => moveRuleDown(idx) }, K.ICON_STRINGS.down)
+            : m("span.icon", " "),
+            m("span.icon", { onclick: () => character.rules.splice(idx, 1) }, K.ICON_STRINGS.remove))))),
 
     m("b", "Add New Rules Reference"),
     m("br"),
@@ -414,6 +419,28 @@ const initCharacterForm = () => {
 
   resetStagingResource();
   resetStagingRule();
+};
+
+//========================================================================
+const moveRuleDown = idx => {
+  const tmp = character.rules[idx + 1];
+  character.rules[idx + 1] = character.rules[idx];
+  character.rules[idx] = tmp;
+
+  for (let i = 0; i < character.rules.length; ++i) {
+    character.rules[i].sort_order = i;
+  }
+};
+
+//========================================================================
+const moveRuleUp = idx => {
+  const tmp = character.rules[idx - 1];
+  character.rules[idx - 1] = character.rules[idx];
+  character.rules[idx] = tmp;
+
+  for (let i = 0; i < character.rules.length; ++i) {
+    character.rules[i].sort_order = i;
+  }
 };
 
 //========================================================================
