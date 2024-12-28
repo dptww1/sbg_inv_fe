@@ -126,11 +126,7 @@ const domFigures = () => {
   return [
     "Figures",
     m("br"),
-    m(FigureListEditor,
-      {
-        onItemSelect: figureSelect
-      }
-     ),
+    m(FigureListEditor, { onItemSelect: figureSelect }),
 
     figures.length !== 0
       ? figures.map((f, idx)  =>
@@ -138,7 +134,7 @@ const domFigures = () => {
             {
               id: "fig" + f.id
             },
-            f.name,
+            m(m.route.Link, { href: "/figures/" + f.id }, f.name),
             m("span.icon",
               {
                 onclick: ev => removeFigure(idx)
