@@ -6,8 +6,6 @@ import { Credentials } from "../credentials.js";
 import * as K from "../constants.js";
 import * as U from "../utils.js";
 
-var collapsed = true;
-
 //========================================================================
 const saveFilterSettings = (filterName, orderedOptions, optionMap) => {
   const saveKey = "scenario-filter--" + filterName;
@@ -185,9 +183,6 @@ const filters = [
 const numFiltersSet = _ => filters.filter(f => f.active).reduce((sum, filter) => sum + filter.numActive(), 0);
 
 //========================================================================
-const toggleFilters = _ => collapsed = !collapsed;
-
-//========================================================================
 const unsetAllFilters = _ => filters.forEach(f => f.clearActiveFilters());
 
 //========================================================================
@@ -207,25 +202,19 @@ export const Filters = {
           : null;
 
     return m("div.filters",
-             collapsed
-               ? [
-                   m(".arrow", { onclick: toggleFilters }, K.ICON_STRINGS["closed"]),
-                   m("span.label", { onclick: toggleFilters }, "Filters: " + (filters.map(f => f.summaryLabel())
-                                                                                    .filter(lbl => lbl != null)
-                                                                                    .join("; ") || "None")),
-                   domEdit
-                 ]
-               : [
-                   m(".arrow", { onclick: toggleFilters }, K.ICON_STRINGS["open"]),
-                   m("span.label", { onclick: toggleFilters }, "Filter"),
-                   filters.filter(f => f.active)
-                          .map(f => m(f)),
-                   numFiltersSet() > 1
-                     ? m("div.filter-group",
-                         m("ul.active-filters",
-                           m("li", { onclick: unsetAllFilters }, "Remove All Filters")))
-                     : null
-                 ]
-            );
+             m("details",
+               m("summary",
+                 m("span.label",
+                   "Filters: " + (filters.map(f => f.summaryLabel())
+                                  .filter(lbl => lbl != null)
+                                  .join("; ") || "None")),
+                 domEdit),
+               filters.filter(f => f.active)
+                      .map(f => m(f)),
+               numFiltersSet() > 1
+                 ? m("div.filter-group",
+                     m("ul.active-filters",
+                       m("li", { onclick: unsetAllFilters }, "Remove All Filters")))
+                 : null));
   }
 };
