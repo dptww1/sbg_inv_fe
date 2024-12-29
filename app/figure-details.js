@@ -156,7 +156,7 @@ const domRules = () => {
   }
 
   return [
-    m(".section-header", "Rules"),
+    m(".section-header", "Profile" + (figure.rules.length > 1 ? "s" : "")),
     m("ul.rules",
       figure.rules
       .map(ref => m("li",
