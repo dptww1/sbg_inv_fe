@@ -98,7 +98,7 @@ const domEditCharacter = () => {
 
     domFigures(),
     domResources(),
-    domRules(),
+    domProfiles(),
 
     m("button", { onclick: ev => saveCharacter() }, "Save"),
     " ",
@@ -145,6 +145,122 @@ const domFigures = () => {
 
     m("br"),
     m("br"),
+  ];
+};
+
+//========================================================================
+const domProfile = r => {
+  const fields = [];
+
+  if (r.url) {
+    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
+  }
+
+  if (r.book) {
+    fields.push(" " + K.BOOK_NAMES[r.book]);
+  }
+
+  if (r.issue) {
+    fields.push(" #" + r.issue);
+  }
+
+  if (r.page) {
+    fields.push(" p." + r.page);
+  }
+
+  if (r.name_override) {
+    fields.push(" (" + r.name_override + ")");
+  }
+
+  if (r.obsolete) {
+    fields.push(" (obsolete)");
+  }
+
+  return fields;
+};
+
+//========================================================================
+const domProfiles = () => {
+  return [
+    m(".section-header", "Profiles"),
+
+    m("table.rules",
+      character.rules.map((rule, idx) =>
+        m("tr",
+          m("td", domProfile(rule)),
+          m("td",
+            idx > 0
+              ? m("span.icon", { onclick: () => moveRuleUp(idx) }, K.ICON_STRINGS.up)
+              : m("span.icon", " "),
+            idx < character.rules.length - 1
+              ? m("span.icon", { onclick: () => moveRuleDown(idx) }, K.ICON_STRINGS.down)
+            : m("span.icon", " "),
+            m("span.icon", { onclick: () => character.rules.splice(idx, 1) }, K.ICON_STRINGS.remove))))),
+
+    m("b", "Add New Profile"),
+    m("br"),
+
+    m("table",
+      m("tr",
+        m("td", "Name Override"),
+        m("td",
+          m("input[type=text][name=name_override][size=40]",
+            {
+              value: stagingRule.name_override,
+              onchange: ev => stagingRule.name_override = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Book"),
+        m("td", m(SelectBook,
+                  {
+                    value: stagingRule.book,
+                    callback: value => stagingRule.book = value
+                  }))),
+            m("tr",
+        m("td", "Issue"),
+        m("td",
+          m("input[type=text][name=rule_issue][size=15]",
+            {
+              value: stagingRule.issue,
+              onchange: ev => stagingRule.issue = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Page"),
+        m("td",
+          m("input[type=number][name=rule_page][size=5]",
+            {
+              value: stagingRule.page,
+              onchange: ev => stagingRule.page = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "URL"),
+        m("td",
+          m("input[type=text][name=rule_url][size=80]",
+            {
+              value: stagingRule.url,
+              onchange: ev => stagingRule.url = ev.target.value
+            }))),
+
+      m("tr",
+        m("td", "Obsolete?"),
+        m("td",
+          m("input[type=checkbox][value=true]",
+            {
+              checked: !!stagingRule.obsolete,
+              onchange: ev => stagingRule.obsolete = ev.target.value
+            }))),
+
+      m("tr",
+        m("td"),
+        m("td",
+          m("button",
+            {
+              onclick: ev => addRule()
+            },
+            "Add Profile"))))
   ];
 };
 
@@ -260,122 +376,6 @@ const domResources = () => {
 
     m("br"),
     m("br"),
-  ];
-};
-
-//========================================================================
-const domRule = r => {
-  const fields = [];
-
-  if (r.url) {
-    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
-  }
-
-  if (r.book) {
-    fields.push(" " + K.BOOK_NAMES[r.book]);
-  }
-
-  if (r.issue) {
-    fields.push(" #" + r.issue);
-  }
-
-  if (r.page) {
-    fields.push(" p." + r.page);
-  }
-
-  if (r.name_override) {
-    fields.push(" (" + r.name_override + ")");
-  }
-
-  if (r.obsolete) {
-    fields.push(" (obsolete)");
-  }
-
-  return fields;
-};
-
-//========================================================================
-const domRules = () => {
-  return [
-    m(".section-header", "Rules"),
-
-    m("table.rules",
-      character.rules.map((rule, idx) =>
-        m("tr",
-          m("td", domRule(rule)),
-          m("td",
-            idx > 0
-              ? m("span.icon", { onclick: () => moveRuleUp(idx) }, K.ICON_STRINGS.up)
-              : m("span.icon", " "),
-            idx < character.rules.length - 1
-              ? m("span.icon", { onclick: () => moveRuleDown(idx) }, K.ICON_STRINGS.down)
-            : m("span.icon", " "),
-            m("span.icon", { onclick: () => character.rules.splice(idx, 1) }, K.ICON_STRINGS.remove))))),
-
-    m("b", "Add New Rules Reference"),
-    m("br"),
-
-    m("table",
-      m("tr",
-        m("td", "Name Override"),
-        m("td",
-          m("input[type=text][name=name_override][size=40]",
-            {
-              value: stagingRule.name_override,
-              onchange: ev => stagingRule.name_override = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "Book"),
-        m("td", m(SelectBook,
-                  {
-                    value: stagingRule.book,
-                    callback: value => stagingRule.book = value
-                  }))),
-            m("tr",
-        m("td", "Issue"),
-        m("td",
-          m("input[type=text][name=rule_issue][size=15]",
-            {
-              value: stagingRule.issue,
-              onchange: ev => stagingRule.issue = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "Page"),
-        m("td",
-          m("input[type=number][name=rule_page][size=5]",
-            {
-              value: stagingRule.page,
-              onchange: ev => stagingRule.page = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "URL"),
-        m("td",
-          m("input[type=text][name=rule_url][size=80]",
-            {
-              value: stagingRule.url,
-              onchange: ev => stagingRule.url = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "Obsolete?"),
-        m("td",
-          m("input[type=checkbox][value=true]",
-            {
-              checked: !!stagingRule.obsolete,
-              onchange: ev => stagingRule.obsolete = ev.target.value
-            }))),
-
-      m("tr",
-        m("td"),
-        m("td",
-          m("button",
-            {
-              onclick: ev => addRule()
-            },
-            "Add Rule"))))
   ];
 };
 
