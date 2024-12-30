@@ -21,6 +21,17 @@ const character = {
 // Array of {id: x, name: "abc"}
 const figures = [];
 
+// The profile currently being edited
+const stagingProfile = {
+  name_override: "",
+  book: "",
+  issue: "",
+  page: null,
+  url: "",
+  obsolete: null,
+  sort_order: null
+};
+
 // The resource currently being edited
 const stagingResource = {
   title: "",
@@ -29,17 +40,6 @@ const stagingResource = {
   page: null,
   type: "",
   url: ""
-};
-
-// The rule currently being edited
-const stagingRule = {
-  name_override: "",
-  book: "",
-  issue: "",
-  page: null,
-  url: "",
-  obsolete: null,
-  sort_order: null
 };
 
 // When true, character name field acts as lookup of existing
@@ -53,10 +53,10 @@ const addResource = () => {
 };
 
 //========================================================================
-const addRule = () => {
-  stagingRule.sort_order = character.rules.length;
-  character.rules.push(Object.assign({}, stagingRule));
-  resetStagingRule();
+const addProfile = () => {
+  stagingProfile.sort_order = character.rules.length;
+  character.rules.push(Object.assign({}, stagingProfile));
+  resetStagingProfile();
 };
 
 //========================================================================
@@ -184,16 +184,16 @@ const domProfiles = () => {
   return [
     m(".section-header", "Profiles"),
 
-    m("table.rules",
-      character.rules.map((rule, idx) =>
+    m("table.profiles",
+      character.rules.map((profile, idx) =>
         m("tr",
-          m("td", domProfile(rule)),
+          m("td", domProfile(profile)),
           m("td",
             idx > 0
-              ? m("span.icon", { onclick: () => moveRuleUp(idx) }, K.ICON_STRINGS.up)
+              ? m("span.icon", { onclick: () => moveProfileUp(idx) }, K.ICON_STRINGS.up)
               : m("span.icon", " "),
             idx < character.rules.length - 1
-              ? m("span.icon", { onclick: () => moveRuleDown(idx) }, K.ICON_STRINGS.down)
+              ? m("span.icon", { onclick: () => moveProfileDown(idx) }, K.ICON_STRINGS.down)
             : m("span.icon", " "),
             m("span.icon", { onclick: () => character.rules.splice(idx, 1) }, K.ICON_STRINGS.remove))))),
 
@@ -206,42 +206,42 @@ const domProfiles = () => {
         m("td",
           m("input[type=text][name=name_override][size=40]",
             {
-              value: stagingRule.name_override,
-              onchange: ev => stagingRule.name_override = ev.target.value
+              value: stagingProfile.name_override,
+              onchange: ev => stagingProfile.name_override = ev.target.value
             }))),
 
       m("tr",
         m("td", "Book"),
         m("td", m(SelectBook,
                   {
-                    value: stagingRule.book,
-                    callback: value => stagingRule.book = value
+                    value: stagingProfile.book,
+                    callback: value => stagingProfile.book = value
                   }))),
             m("tr",
         m("td", "Issue"),
         m("td",
-          m("input[type=text][name=rule_issue][size=15]",
+          m("input[type=text][name=profile_issue][size=15]",
             {
-              value: stagingRule.issue,
-              onchange: ev => stagingRule.issue = ev.target.value
+              value: stagingProfile.issue,
+              onchange: ev => stagingProfile.issue = ev.target.value
             }))),
 
       m("tr",
         m("td", "Page"),
         m("td",
-          m("input[type=number][name=rule_page][size=5]",
+          m("input[type=number][name=profile_page][size=5]",
             {
-              value: stagingRule.page,
-              onchange: ev => stagingRule.page = ev.target.value
+              value: stagingProfile.page,
+              onchange: ev => stagingProfile.page = ev.target.value
             }))),
 
       m("tr",
         m("td", "URL"),
         m("td",
-          m("input[type=text][name=rule_url][size=80]",
+          m("input[type=text][name=profile_url][size=80]",
             {
-              value: stagingRule.url,
-              onchange: ev => stagingRule.url = ev.target.value
+              value: stagingProfile.url,
+              onchange: ev => stagingProfile.url = ev.target.value
             }))),
 
       m("tr",
@@ -249,8 +249,8 @@ const domProfiles = () => {
         m("td",
           m("input[type=checkbox][value=true]",
             {
-              checked: stagingRule.obsolete,
-              onchange: ev => stagingRule.obsolete = ev.target.checked
+              checked: stagingProfile.obsolete,
+              onchange: ev => stagingProfile.obsolete = ev.target.checked
             }))),
 
       m("tr",
@@ -259,7 +259,7 @@ const domProfiles = () => {
           m("button",
             {
               disabled: !isProfileValid(),
-              onclick: ev => addRule()
+              onclick: ev => addProfile()
             },
             "Add Profile"))))
   ];
@@ -415,14 +415,14 @@ const initCharacterForm = () => {
   figure_lookup_mode = false;
 
   resetStagingResource();
-  resetStagingRule();
+  resetStagingProfile();
 };
 
 //========================================================================
-const isProfileValid = () => stagingRule.url || (stagingRule.book && stagingRule.page);
+const isProfileValid = () => stagingProfile.url || (stagingProfile.book && stagingProfile.page);
 
 //========================================================================
-const moveRuleDown = idx => {
+const moveProfileDown = idx => {
   const tmp = character.rules[idx + 1];
   character.rules[idx + 1] = character.rules[idx];
   character.rules[idx] = tmp;
@@ -433,7 +433,7 @@ const moveRuleDown = idx => {
 };
 
 //========================================================================
-const moveRuleUp = idx => {
+const moveProfileUp = idx => {
   const tmp = character.rules[idx - 1];
   character.rules[idx - 1] = character.rules[idx];
   character.rules[idx] = tmp;
@@ -450,6 +450,17 @@ const removeFigure = idx => {
 };
 
 //========================================================================
+const resetStagingProfile = () => {
+  stagingProfile.name_override = "";
+  stagingProfile.book = "";
+  stagingProfile.issue = "";
+  stagingProfile.page = null;
+  stagingProfile.url = "";
+  stagingProfile.obsolete = null;
+  stagingProfile.sortOrder = null;
+};
+
+//========================================================================
 const resetStagingResource = () => {
   stagingResource.title = "";
   stagingResource.book = "";
@@ -457,17 +468,6 @@ const resetStagingResource = () => {
   stagingResource.page = null;
   stagingResource.type = "";
   stagingResource.url = "";
-};
-
-//========================================================================
-const resetStagingRule = () => {
-  stagingRule.name_override = "";
-  stagingRule.book = "";
-  stagingRule.issue = "";
-  stagingRule.page = null;
-  stagingRule.url = "";
-  stagingRule.obsolete = null;
-  stagingRule.sortOrder = null;
 };
 
 //========================================================================
