@@ -153,7 +153,7 @@ const domProfile = r => {
   const fields = [];
 
   if (r.url) {
-    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
+    fields.push([ " ", m("a", { href: r.url }, r.url)]);
   }
 
   if (r.book) {
