@@ -126,7 +126,11 @@ const domFigures = () => {
   return [
     "Figures",
     m("br"),
-    m(FigureListEditor, { onItemSelect: figureSelect }),
+    m(FigureListEditor,
+      {
+        onItemSelect: figureSelect,
+        exclusions: character.figure_ids
+      }),
 
     figures.length !== 0
       ? figures.map((f, idx)  =>
@@ -386,7 +390,7 @@ const figureSelect = target => {
     return;
   }
 
-  figures.push({ id: target.dataset.id, name: target.dataset.name });
+  figures.push({ id: parseInt(target.dataset.id, 10), name: target.dataset.name });
   character.figure_ids = figures.map(f => f.id);
 };
 
