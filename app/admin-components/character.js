@@ -258,6 +258,7 @@ const domProfiles = () => {
         m("td",
           m("button",
             {
+              disabled: !isProfileValid(),
               onclick: ev => addRule()
             },
             "Add Profile"))))
@@ -416,6 +417,9 @@ const initCharacterForm = () => {
   resetStagingResource();
   resetStagingRule();
 };
+
+//========================================================================
+const isProfileValid = () => stagingRule.url || (stagingRule.book && stagingRule.page);
 
 //========================================================================
 const moveRuleDown = idx => {
