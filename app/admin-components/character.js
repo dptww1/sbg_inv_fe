@@ -249,8 +249,8 @@ const domProfiles = () => {
         m("td",
           m("input[type=checkbox][value=true]",
             {
-              checked: !!stagingRule.obsolete,
-              onchange: ev => stagingRule.obsolete = ev.target.value
+              checked: stagingRule.obsolete,
+              onchange: ev => stagingRule.obsolete = ev.target.checked
             }))),
 
       m("tr",
