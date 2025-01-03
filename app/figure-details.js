@@ -157,7 +157,7 @@ const domRules = () => {
 
   return [
     m(".section-header", "Profile" + (figure.rules.length > 1 ? "s" : "")),
-    m("ul.rules",
+    m("ul.profile",
       figure.rules
       .map(ref => m("li",
                     K.BOOK_NAMES[ref.book]
