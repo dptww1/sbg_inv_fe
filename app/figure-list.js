@@ -11,10 +11,11 @@ import { Pie                 } from "./components/pie.js";
 import { Request             } from "./request.js";
 import * as U                  from "./utils.js";
 
-var armyId = "";
-var figuresMap = {};
-var factionOverviewMap = {};
-var unaffiliatedFigureMap = {};
+let armyId = "";
+let armyListSources = [];
+let figuresMap = {};
+let factionOverviewMap = {};
+let unaffiliatedFigureMap = {};
 
 //========================================================================
 const computeTotals = figureList => {
@@ -126,6 +127,19 @@ const domArmyDetails = () => {
 };
 
 //========================================================================
+const domArmyListSources = () => {
+  if (!armyListSources || armyListSources.length === 0) {
+    return null;
+  }
+
+  return [
+    m(".section-header", "Source" + (armyListSources.length > 1 ? "s" : "")),
+    m("ul.sources",
+      armyListSources.map(src => m("li", U.resourceReference(src))))
+  ];
+};
+
+//========================================================================
 const domFigureListByType = (title, list) => {
   if (list.length === 0) {
     return null;
@@ -232,12 +246,27 @@ const domTotals = figuresMap => {
 };
 
 //========================================================================
+// The new "sources" element in the response data messes up the figure
+// summations, so take it out.
+//------------------------------------------------------------------------
+const extractArmyListSources = respData => {
+  if (respData.sources) {
+    armyListSources = respData.sources;
+    delete respData.sources;
+
+  } else {
+    armyListSources = [];
+  }
+};
+
+//========================================================================
 export const FigureList = {
   refreshArmyDetails: () => {
     if (armyId === "") {
       if (Credentials.isLoggedIn()) {
         Request.get("/faction",
                     resp => {
+                      extractArmyListSources(resp.data);
                       factionOverviewMap = resp.data;
                       Request.get("/faction/-1",
                                   uresp => unaffiliatedFigureMap = computeUnaffiliatedTotals(uresp.data));
@@ -254,6 +283,7 @@ export const FigureList = {
     } else {
       Request.get("/faction/" + armyId,
                   resp => {
+                    extractArmyListSources(resp.data);
                     figuresMap = resp.data;
                     Object.keys(figuresMap)
                           .forEach(k => figuresMap[k].sort((a, b) => U.strCmp(a.name, b.name)));
@@ -263,6 +293,7 @@ export const FigureList = {
 
   updateArmyDetails: id => {
     armyId = id;
+    armyListSources = [];
     figuresMap = {
       characters: [],
       heroes: [],
@@ -297,11 +328,13 @@ export const FigureList = {
               m("span.clickable",
                 { onclick: _ => FigureList.updateArmyDetails("") },
                 "Back"),
-              m(".page-title", armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId])
-            ]
+
+              m(".page-title", armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId]),
+              ]
           : null,
-        domArmyDetails()),
-      m(EditDialog)
+        domArmyDetails(),
+        domArmyListSources()),
+    m(EditDialog)
     ];
   }
 };

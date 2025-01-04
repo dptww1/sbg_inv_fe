@@ -1,5 +1,7 @@
 /* global localStorage, Intl */
 
+import m from "mithril";
+
 import * as K from "./constants.js";
 
 const sortOrderMap = {};
@@ -97,6 +99,21 @@ export const resourceLabel = res =>
   res && res.book
     ? K.BOOK_NAMES[res.book] + (res.issue ? " #" + res.issue : "")
     : "";
+
+//========================================================================
+export const resourceReference = res => {
+  if (res) {
+    if (res.book) {
+      return resourceLabel(res) + ", p." + res.page;
+    }
+
+    if (res.url) {
+      return m("a", { href: res.url }, res.url);
+    }
+  }
+
+  return null;
+};
 
 //========================================================================
 // Used by both scenarios and figures, which have different source formats.
