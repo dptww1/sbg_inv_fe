@@ -31,16 +31,18 @@ const saveFilterSettings = (filterName, orderedOptions, optionMap) => {
 // Creates a filter used to narrow down a list of items.
 
 // name - String, used as name of <select> and default "... by [name]"
+// requireLogin - `true` if the filter should only appear for logged-in users
 // optionList - array of "name=value" strings which populate the <options>
 // matchFn - (rec, activeOps) => boolean
 //     function deciding whether this filter will allow an item or not
 //         rec - current item to consider
 //         activeOps - list of "value" strings in `optionList` which are currently active
 //------------------------------------------------------------------------
-function SelectFilter(name, optionList, matchFn) {
+function SelectFilter(name, requireLogin, optionList, matchFn) {
   const self = this;
 
   this.label          = name;
+  this.requireLogin   = requireLogin;
   this.internalName   = name.replaceAll(/[^A-Za-z0-9]/g, "-");
   this.optionMap      = {};   // key: orderedOptions[n]  value: { label: string, active: boolean}
   this.orderedOptions = [];
@@ -120,19 +122,24 @@ function SelectFilter(name, optionList, matchFn) {
                               self.orderedOptions.filter(opt => self.optionMap[opt].active)
                                                  .map(opt => self.optionMap[opt].label)
                                                  .join(", ");
+
+  this.requiresLogin = () => requireLogin;
 };
 
 //========================================================================
 const filters = [
   new SelectFilter("Location",
+                   false,
                    U.alphabetizedOptionsByValue(K.LOCATIONS),
                    (rec, activeOpts) => activeOpts.includes(rec.location)),
 
   new SelectFilter("Book",
+                   false,
                    U.alphabetizedOptionsByValue(K.BOOK_NAMES),
                    (rec, activeOpts) => activeOpts.includes(U.scenarioSource(rec) ? U.scenarioSource(rec).book : null)),
 
   new SelectFilter("Models",
+                   false,
                    ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
                    (rec, activeOpts) => {
                      for (let i = 0; i < activeOpts.length; ++i) {
@@ -148,6 +155,7 @@ const filters = [
                    }),
 
   new SelectFilter("Map Size",
+                   false,
                    ["Tiny (<24\")=24", "Small (36\")=36", "Medium (48\")=48", "Large (>48\")=0"],
                    (rec, activeOpts) => {
                      for (let i = 0; i < activeOpts.length; ++i) {
@@ -162,10 +170,12 @@ const filters = [
                    }),
 
   new SelectFilter("Resources",
+                   false,
                    ["Magazine=magazine_replay", "Podcast=podcast", "Video=video_replay", "Web Page=web_replay"],
                    (rec, activeOpts) => activeOpts.some((elt) => rec.scenario_resources[elt] != null && rec.scenario_resources[elt].length)),
 
   new SelectFilter("Ownership",
+                   true,
                    [
                      "Completely Painted=painted",
                      "Completely Owned=owned",
@@ -205,12 +215,18 @@ export const Filters = {
              m("details",
                m("summary",
                  m("span.label",
-                   "Filters: " + (filters.map(f => f.summaryLabel())
-                                  .filter(lbl => lbl != null)
-                                  .join("; ") || "None")),
+                   "Filters: " +
+                     (filters
+                       .filter(f => Credentials.isLoggedIn() || !f.requiresLogin())
+                       .map(f => f.summaryLabel())
+                       .filter(lbl => lbl != null)
+                       .join("; ")
+                       || "None")),
                  domEdit),
-               filters.filter(f => f.active)
-                      .map(f => m(f)),
+               filters
+                 .filter(f => Credentials.isLoggedIn() || !f.requiresLogin())
+                 .filter(f => f.active)
+                 .map(f => m(f)),
                numFiltersSet() > 1
                  ? m("div.filter-group",
                      m("ul.active-filters",
