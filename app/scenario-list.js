@@ -113,8 +113,6 @@ const domTable = rawData => {
       callback: ScenarioUpdater.update
     };
 
-    const f1 = K.FACTION_INFO[s.scenario_factions[0].faction];
-    const f2 = K.FACTION_INFO[s.scenario_factions[1].faction];
     if (Filters.filter(s)) {
       rows.push(
         m("tr",
