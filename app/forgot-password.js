@@ -11,7 +11,7 @@ const email = prop();
 const reset_password = () => {
   Request.post("/reset-password",
                { user: { email: email() } },
-               resp => {
+               () => {
                  Request.messages({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
                });
 };

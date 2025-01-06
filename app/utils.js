@@ -8,12 +8,12 @@ const sortOrderMap = {};
 
 //========================================================================
 export const alphabetizedOptionsByValue = hash => {
-  var reverseMap = Object.keys(hash).reduce((map, key) => {
+  let reverseMap = Object.keys(hash).reduce((map, key) => {
     map[hash[key]] = key;
     return map;
   }, {});
 
-  var values = Object.keys(reverseMap).sort(strCmp);
+  let values = Object.keys(reverseMap).sort(strCmp);
 
   return values.reduce((list, val) => list.concat([val + "=" + reverseMap[val]]), []);
 };

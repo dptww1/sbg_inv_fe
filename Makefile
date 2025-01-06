@@ -18,8 +18,11 @@ update-fonts:
 	mv app/assets/fonts/icomoon.svg app/assets/fonts/sbg-resources.svg
 	mv ~/Downloads/icomoon.zip ~/Downloads/icomoon.zip.bak
 
-production-build:
+production-build: lint
 	PRODUCTION=true ./mkcss
 	BACKEND=0 rollup -c
 	cp -r app/assets/* public
 	date
+
+lint:
+	npx eslint --c eslint.config.js app

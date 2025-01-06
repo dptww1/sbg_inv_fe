@@ -1,8 +1,5 @@
-import m from "mithril";
-
 import { EditDialog } from "./edit-dialog.js";
 import { Request } from "../request.js";
-import * as U from "../utils.js";
 
 let callbackFn;
 
@@ -54,7 +51,7 @@ const update = rec => {
 
   Request.post("/userfigure",
                { user_figure: rec },
-               resp => {
+               () => {
                  callbackFn();
                });
 

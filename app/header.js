@@ -4,11 +4,10 @@ import m from "mithril";
 
 import { Request } from "./request.js";
 
-var lastUpdateDate = null;
-var nextUpdateDate = null;
+let lastUpdateDate = null;
 
 //======================================================================
-const getLastUpdateDate = _ => {
+const getLastUpdateDate = () => {
   const now = new Date().getTime();
   const nextCheckDate = new Date(parseInt(localStorage.getItem("header--lastUpdateCheck"), 10));
   nextCheckDate.setDate(nextCheckDate.getDate() + 1);

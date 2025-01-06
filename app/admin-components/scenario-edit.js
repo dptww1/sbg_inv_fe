@@ -43,17 +43,17 @@ const FIELDS = {
 //========================================================================
 const domFaction = n => {
   const FACTION_FIELDS = {
-    faction: i => m("select",
+    faction: () => m("select",
                     { name: "faction" + n, value: scenario.scenario_factions[n].faction },
                     K.SORTED_FACTION_NAMES.map(k => m("option", { value: K.FACTION_ABBREV_BY_NAME[k] }, k))),
 
-    suggested_points: i => m("input[type=text]",
+    suggested_points: () => m("input[type=text]",
                              {
                                name: "suggested_points" + n,
                                value: scenario.scenario_factions[n].suggested_points || 0
                              }),
 
-    actual_points: i => m("input[type=text]",
+    actual_points: () => m("input[type=text]",
                           {
                             name: "actual_points" + n,
                             value: scenario.scenario_factions[n].actual_points || 0
@@ -85,7 +85,7 @@ const refresh = () => {
 };
 
 //========================================================================
-const save = ev => {
+const save = () => {
   let data = {};
 
   ["select", "input"].forEach(widgetType => {
@@ -115,7 +115,7 @@ const save = ev => {
 
 //========================================================================
 export const ScenarioEdit = {
-  oninit: (vnode) => {
+  oninit: () => {
     refresh();
   },
 

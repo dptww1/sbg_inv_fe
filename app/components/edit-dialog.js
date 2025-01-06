@@ -1,6 +1,5 @@
 import m from "mithril";
 
-import { Request } from "../request.js";
 import * as U      from "../utils.js";
 
 let callbackFn;
@@ -38,7 +37,7 @@ const initDialog = callback => {
 };
 
 //========================================================================
-const initPromptHistory = op => {
+const initPromptHistory = () => {
   curPrompt = `Edit activity on ${U.pluralName(rec)}`;
 };
 
@@ -77,14 +76,14 @@ const swallowEvents = ev => {
 };
 
 //========================================================================
-const validate = _ => {
+const validate = () => {
   errors = [];
 
   if (!rec.amount) {
     errors.push("Amount is required");
   }
 
-  if (!("" + rec.amount).match("^[1-9]\\d*$")) {
+  if (!(String(rec.amount).match("^[1-9]\\d*$"))) {
     errors.push("Amount must be a positive number!");
   }
 
@@ -168,7 +167,7 @@ export const EditDialog = {
     initDialog(callback);
   },
 
-  view: vnode => {
+  view: () => {
     if (hide) {
       return null;
     }

@@ -38,7 +38,7 @@ const saveFilterSettings = (filterName, orderedOptions, optionMap) => {
 //         activeOps - list of "value" strings in `optionList` which are currently active
 //------------------------------------------------------------------------
 function SelectFilter(name, optionList, matchFn) {
-  var self = this;
+  const self = this;
 
   this.label          = name;
   this.internalName   = name.replaceAll(/[^A-Za-z0-9]/g, "-");
@@ -48,7 +48,7 @@ function SelectFilter(name, optionList, matchFn) {
   this.active         = true;
 
   optionList.forEach(opt => {
-    var [optLabel, optVal] = opt.split(/\s*=\s*/);
+    let [optLabel, optVal] = opt.split(/\s*=\s*/);
     optVal = optVal || optLabel;
     this.orderedOptions.push(optVal);
     this.optionMap[optVal] = {
@@ -57,7 +57,7 @@ function SelectFilter(name, optionList, matchFn) {
     };
   });
 
-  this.initFromStorage = _ => {
+  this.initFromStorage = () => {
     self.activeOptions = 0;
     Object.keys(self.optionMap).forEach(k => self.optionMap[k].active = false);
     (localStorage.getItem("scenario-filter--" + self.internalName) || "")
@@ -69,7 +69,7 @@ function SelectFilter(name, optionList, matchFn) {
       });
   };
 
-  this.view = _ => {
+  this.view = () => {
     return m("div.filter-group", [
       m("select",
         {
@@ -93,7 +93,7 @@ function SelectFilter(name, optionList, matchFn) {
             .map(f => {
                   return m("li",
                            {
-                             onclick: ev => {
+                             onclick: () => {
                                self.optionMap[f].active = false;
                                --self.activeOptions;
                                saveFilterSettings(self.internalName, self.orderedOptions, self.optionMap);
@@ -135,7 +135,7 @@ const filters = [
   new SelectFilter("Models",
                    ["Tiny (<21)=20", "Small (21-40)=40", "Medium (41-60)=60", "Large (61-100)=100", "Huge (>100)=0"],
                    (rec, activeOpts) => {
-                     for (var i = 0; i < activeOpts.length; ++i) {
+                     for (let i = 0; i < activeOpts.length; ++i) {
                        switch (activeOpts[i]) {
                        case  "20": if (                  rec.size <= 20)  return true;  break;
                        case  "40": if (21 <= rec.size && rec.size <= 40)  return true;  break;
@@ -150,7 +150,7 @@ const filters = [
   new SelectFilter("Map Size",
                    ["Tiny (<24\")=24", "Small (36\")=36", "Medium (48\")=48", "Large (>48\")=0"],
                    (rec, activeOpts) => {
-                     for (var i = 0; i < activeOpts.length; ++i) {
+                     for (let i = 0; i < activeOpts.length; ++i) {
                        switch (activeOpts[i]) {
                        case "24": if (rec.map_width <= 24) return true; break;
                        case "36": if (rec.map_width == 36) return true; break;
@@ -180,10 +180,10 @@ const filters = [
 ];
 
 //========================================================================
-const numFiltersSet = _ => filters.filter(f => f.active).reduce((sum, filter) => sum + filter.numActive(), 0);
+const numFiltersSet = ()=> filters.filter(f => f.active).reduce((sum, filter) => sum + filter.numActive(), 0);
 
 //========================================================================
-const unsetAllFilters = _ => filters.forEach(f => f.clearActiveFilters());
+const unsetAllFilters = () => filters.forEach(f => f.clearActiveFilters());
 
 //========================================================================
 export const Filters = {
@@ -194,7 +194,7 @@ export const Filters = {
     return f.active = !activeFilters || activeFilters.includes(f.label);
   }),
 
-  view: (vnode) => {
+  view: () => {
     const domEdit = Credentials.isAdmin()
           ? m("button",
               { onclick: () => m.route.set("/scenario-edit") },

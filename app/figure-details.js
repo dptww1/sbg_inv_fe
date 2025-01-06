@@ -1,5 +1,4 @@
 import m from "mithril";
-import prop from "mithril/stream";
 
 import { Credentials         } from "./credentials.js";
 import { EditDialog          } from "./components/edit-dialog.js";
@@ -14,7 +13,7 @@ import { Pie                 } from "./components/pie.js";
 import { Request             } from "./request.js";
 import * as U                  from "./utils.js";
 
-var figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
+let figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
 
 //========================================================================
 const chooseArmyList = (fid) => {
@@ -33,7 +32,7 @@ const domArmyLists = () => {
                    m("td.faction-name",
                      m("a",
                        {
-                         onclick: _ => chooseArmyList(f)
+                         onclick: () => chooseArmyList(f)
                        },
                        K.FACTION_INFO[f].name))))
                : m("tr", m("td", "None"))));
@@ -51,7 +50,7 @@ const domHistory = () => {
              {
                list: figure.history.map(rec => Object.assign(rec, { name: figure.name, plural_name: figure.plural_name})),
                hideName: true,
-               callbackFn: _ => refresh(figure.id)
+               callbackFn: () => refresh(figure.id)
              }));
 };
 
@@ -140,11 +139,11 @@ const domResourcesForType = (resourceList, type, title) => {
              title),
            m("table.figure-resources",
              activeResources.map(r => {
-               const title = r.title || K.BOOK_NAMES[r.book];
+               const resourceTitle = r.title || K.BOOK_NAMES[r.book];
                return m("tr",
                         m("td",
                           r.url
-                            ? m("a", { href: r.url }, title)
+                            ? m("a", { href: r.url }, resourceTitle)
                             : `${title}${r.issue ? '#' + r.issue : ''}, page ${r.page}`));
              })));
 };
@@ -185,7 +184,7 @@ const domScenarios = total => {
 };
 
 //========================================================================
-const domSilhouette = _ =>
+const domSilhouette = () =>
       figure.slug
         ? m(".silhouette",
             m("img", { src: U.silhouetteUrl(figure.slug) }))
@@ -232,7 +231,7 @@ export const FigureDetails = {
         m(Filters, { activeFilters: "Book" }),
         m(".page-title", figure.name),
         Credentials.isAdmin() ? m("button",
-                                  { onclick: ev => m.route.set("/figure-edit/" + figure.id) },
+                                  { onclick: () => m.route.set("/figure-edit/" + figure.id) },
                                   "Edit Figure")
                               : null,
         domSilhouette(),

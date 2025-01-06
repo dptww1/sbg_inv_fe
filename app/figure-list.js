@@ -64,7 +64,7 @@ const domArmyDetails = () => {
           let thisMap = factionOverviewMap[factionAbbrev];
           return m("tr",
                    m("td",
-                     m("a", { onclick: _ => FigureList.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
+                     m("a", { onclick: () => FigureList.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
                    m("td.numeric", thisMap ? thisMap.owned : ""),
                    m("td.numeric", thisMap ? thisMap.painted : ""),
                    m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
@@ -75,7 +75,7 @@ const domArmyDetails = () => {
           ? null
           : m("tr",
               m("td",
-                m("a", { onclick: _ => FigureList.updateArmyDetails(-1) }, "Unaffiliated")),
+                m("a", { onclick: () => FigureList.updateArmyDetails(-1) }, "Unaffiliated")),
               unaffiliatedFigureMap
                 ? [
                     m("td.numeric", unaffiliatedFigureMap.owned),
@@ -123,7 +123,7 @@ const domArmyDetails = () => {
            domFigureListByType("Warriors", figuresMap.warriors),
            domFigureListByType("Monsters", figuresMap.monsters),
            domFigureListByType("Siege Equipment", figuresMap.siegers),
-           domTotals(figuresMap));
+           domTotals());
 };
 
 //========================================================================
@@ -213,19 +213,14 @@ const domResources = fig => {
 };
 
 //========================================================================
-const domTotals = figuresMap => {
+const domTotals = () => {
   if (armyId === "") {
     return null;
   }
 
-  const key = Object.keys(K.FACTION_INFO)
-                    .find(key => K.FACTION_INFO[key].id === parseInt(armyId, 10));
-
-  const name = key ? K.FACTION_INFO[key].name : "Unaffiliated";
-
   const stats = Object.keys(figuresMap)
-                      .reduce((acc, key) => {
-                                const totalsMap = computeTotals(figuresMap[key]);
+                      .reduce((acc, k) => {
+                                const totalsMap = computeTotals(figuresMap[k]);
                                 acc.needed += totalsMap.needed;
                                 acc.owned += totalsMap.owned;
                                 acc.painted += totalsMap.painted;
@@ -316,17 +311,17 @@ export const FigureList = {
       m("div.main-content figure-list-main-content",
         Credentials.isAdmin()
           ? [
-              m("button", { onclick: _ => m.route.set("/figure-edit") }, "Add Figure"),
+              m("button", { onclick: () => m.route.set("/figure-edit") }, "Add Figure"),
               m("br")
             ]
           : null,
         armyId !== ""
           ? [
               m("span.action",
-                { onclick: _ => FigureList.updateArmyDetails("") },
+                { onclick: () => FigureList.updateArmyDetails("") },
                 K.ICON_STRINGS.log_out),
               m("span.clickable",
-                { onclick: _ => FigureList.updateArmyDetails("") },
+                { onclick: () => FigureList.updateArmyDetails("") },
                 "Back"),
 
               m(".page-title", armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId]),

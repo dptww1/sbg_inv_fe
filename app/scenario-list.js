@@ -1,4 +1,4 @@
-/* global module require localStorage */
+/* global localStorage */
 
 import m from "mithril";
 
@@ -14,7 +14,6 @@ import { StarRating      } from "./components/star-rating.js";
 import * as U              from "./utils.js";
 
 const ICON_DOWN       = "\u25bc";  // ▼
-const ICON_RIGHT      = "\u25b6";  // ▶
 const ICON_ASCENDING  = "\u25b2"; // ▲
 const NBSP            = "\u00a0";
 
@@ -33,7 +32,6 @@ const sorters = {
   source:     (a, b) => sortBySource(a, b)
 };
 
-let collapsedFilters = true;
 let curSorter = "date";
 let curSortReversed = false;
 let pctSortByUnpainted = true;
@@ -48,7 +46,7 @@ const ageAbbrev = ageNumber =>
 
 //========================================================================
 const domResourceIcons = resources => {
-  var r = [];
+  const r = [];
 
   if (resources.magazine_replay != null && resources.magazine_replay.length > 0) {
     r.push(m("span.icon", K.ICON_STRINGS.magazine_replay));
@@ -202,8 +200,8 @@ const sortBySize = (a, b) => {
 
 //========================================================================
 const sortBySource = (a, b) => {
-  var aSrc = U.scenarioSource(a);
-  var bSrc = U.scenarioSource(b);
+  const aSrc = U.scenarioSource(a);
+  const bSrc = U.scenarioSource(b);
 
   if (!aSrc && !bSrc) {
     return 0;
@@ -218,8 +216,8 @@ const sortBySource = (a, b) => {
   }
 
   return U.strCmp(aSrc.title, bSrc.title) ||
-         U.cmp(isNaN(aSrc.issue) ? aSrc.issue : +aSrc.issue,
-               isNaN(bSrc.issue) ? bSrc.issue : +bSrc.issue) ||
+         U.cmp(isNaN(aSrc.issue) ? aSrc.issue : Number(aSrc.issue),
+               isNaN(bSrc.issue) ? bSrc.issue : Number(bSrc.issue)) ||
          U.cmp(aSrc.sort_order, bSrc.sort_order);
 };
 
@@ -310,7 +308,7 @@ ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
 
   const scenarioList = data;
 
-  var idx = scenarioList.findIndex(elt => elt.id === id);
+  const idx = scenarioList.findIndex(elt => elt.id === id);
   if (idx >= 0) {
     scenarioList[idx].rating = newAvgRating;
     scenarioList[idx].user_scenario.rating = userRating;

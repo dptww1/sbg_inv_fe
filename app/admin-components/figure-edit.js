@@ -104,7 +104,7 @@ const resetForm = () => {
 }
 
 //========================================================================
-const submitFigure = (ev) => {
+const submitFigure = () => {
   if (!figure.name) {
     Request.errors("Name is required!");
     return;

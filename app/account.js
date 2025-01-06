@@ -1,5 +1,4 @@
 import m         from "mithril";
-import prop      from "mithril/stream";
 
 import { ActivityChart     } from "./components/activity-chart.js";
 import { Credentials       } from "./credentials.js";
@@ -10,7 +9,6 @@ import { Header            } from "./header.js";
 import * as K                from "./constants.js";
 import { Nav               } from "./nav.js";
 import { Request           } from "./request.js";
-import * as U                from "./utils.js";
 
 let userHistory = [];
 let dateRange = {};
@@ -80,7 +78,7 @@ const domHistoryTypeFilter = () => {
 };
 
 //========================================================================
-const refreshHistory = _vnode => {
+const refreshHistory = () => {
   if (Credentials.isLoggedIn() &&
       dateRange.fromDate &&
       dateRange.fromDate.match(/\d\d\d\d-\d\d-\d\d/) &&
@@ -96,7 +94,7 @@ const refreshHistory = _vnode => {
 
 //========================================================================
 const updateAccount = () => {
-  var paramMap = {};
+  const paramMap = {};
 
   if (Credentials.email()) {
     paramMap["email"] = Credentials.email();
@@ -108,14 +106,14 @@ const updateAccount = () => {
 
   Request.put("/users/" + Credentials.userId(),
               { user: paramMap },
-              resp => {
+              () => {
                 Request.messages("Account updated.");
               });
 };
 
 //========================================================================
 export const Account = {
-  view: _vnode => {
+  view: () => {
     const filteredActivityList = userHistory.filter(
       h => !historyFilters.length || historyFilters.includes(h.op));
 

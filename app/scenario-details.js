@@ -17,15 +17,15 @@ const MONTH_NAMES = [
     "July", "August", "September", "October", "November", "December"
 ];
 
-var scenario = prop();
-var resourceId = prop();
-var resourceType = prop("-1");
-var title = prop("");
-var book = prop();
-var issue = prop();
-var page = prop();
-var sort_order = prop();
-var url = prop();
+const scenario = prop();
+const resourceId = prop();
+const resourceType = prop("-1");
+const title = prop("");
+const book = prop();
+const issue = prop();
+const page = prop();
+const sort_order = prop();
+const url = prop();
 
 //========================================================================
 const clearResourceForm = () => {
@@ -47,7 +47,7 @@ const domFactionsRollup = () => {
     return null;
   }
 
-  var f = [ m("div.section-header", "Participants") ];
+  const f = [ m("div.section-header", "Participants") ];
 
   scenario().scenario_factions.forEach((faction, idx) => f.push(
     m("div.faction",
@@ -92,7 +92,7 @@ const domResourceItem = function(res) {
                     : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : ""));
 
   if (Credentials.isAdmin()) {
-    html.push(m("span.edit", { onclick: (ev) => { loadResourceIntoForm(res); } }, K.ICON_STRINGS.edit));
+    html.push(m("span.edit", { onclick: () => { loadResourceIntoForm(res); } }, K.ICON_STRINGS.edit));
   }
 
   return html;
@@ -109,10 +109,10 @@ const domResourcesRollupAdd = (eltArray, resourceArray, className, titleStr, ico
       ]));
 
     } else {
-      var items = resourceArray.map(res => {
+      const items = resourceArray.map(res => {
         return m("li", { className: "span.scenario-" + className + "-url" }, domResourceItem(res));
       });
-      eltArray.push(m("span.icon", iconCharStr)),
+      eltArray.push(m("span.icon", iconCharStr));
       eltArray.push(m("span.scenario-" + className + "-title", titleStr + "s"));
       eltArray.push(m("ul.resource-list", items));
     }
@@ -136,7 +136,7 @@ const domResourcesRollupAddSource = (eltArray, resources) => {
 
 //========================================================================
 const domResourcesRollup = () => {
-  var r = [];
+  const r = [];
 
   if (scenario().scenario_resources) {
     r.push(m("div.section-header", "Resources"));
@@ -192,18 +192,18 @@ const domResourceSelectType = () => {
 };
 
 //========================================================================
-const domResourceTextInput = (name, prop) => {
+const domResourceTextInput = (name, modelProp) => {
   return m("input[type=text]",
            {
              name: name,
-             oninput: ev => prop(ev.target.value),
-             value: prop() ? prop() : ""
+             oninput: ev => modelProp(ev.target.value),
+             value: modelProp() ? modelProp() : ""
            });
 };
 
 //========================================================================
 const domRolesRollup = (rolesList) => {
-  var roles = [];
+  const roles = [];
 
   if (rolesList != null) {
     rolesList.forEach(function(r) {
@@ -224,14 +224,14 @@ const domRolesRollup = (rolesList) => {
     if (roles.length == 0) {
       roles.push(m("div.role-line", "None (no, really!)"));
     }
-
-    return roles;
   }
+
+  return roles;
 };
 
 //========================================================================
 const formatDate = (age, year, month, day) => {
-  var a = [ ["", "FA", "SA", "TA"][age || 0] ];
+  const a = [ ["", "FA", "SA", "TA"][age || 0] ];
   if (day > 0) {
     a.push(day);
   }
@@ -332,7 +332,7 @@ const submitResourceForm = () => {
   Request.putOrPost("/scenarios/" + scenario().id + "/resource",
                     resourceId(),
                     payload,
-                    resp => {
+                    () => {
                       clearResourceForm();
                       refresh();
                    });
@@ -341,15 +341,15 @@ const submitResourceForm = () => {
 //========================================================================
 const RatingBreakdown = {
   view: function(vnode) {
-    var breakdown = vnode.attrs.breakdown;
-    var numVotes = vnode.attrs.numVotes;
+    const breakdown = vnode.attrs.breakdown;
+    const numVotes = vnode.attrs.numVotes;
     if (!breakdown || breakdown.length === 0) {
       return null;
     }
 
     return m("div.rating-breakdown", [
       [5,4,3,2,1].map(n => {
-        var pct = breakdown[n - 1] ? (breakdown[n - 1] / numVotes) * 100 : 0;
+        const pct = breakdown[n - 1] ? (breakdown[n - 1] / numVotes) * 100 : 0;
         return m("div", { className: "rating-background-" + n }, [
           m("span.label", n + " Star"),
           m("div.rating-bar-background", [
@@ -409,7 +409,7 @@ export const ScenarioDetails = {
   }
 };
 
-ScenarioUpdater.addObserver((id, newAvgRating, userRating, newNumVotes) => {
+ScenarioUpdater.addObserver((/*id, newAvgRating, userRating, newNumVotes*/) => {
   if (scenario() && m.route.get().startsWith("/scenarios/")) {
     refresh();
   }

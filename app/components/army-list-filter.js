@@ -56,7 +56,7 @@ export const ArmyListFilter = () => {
 };
 
 //========================================================================
-ArmyListFilter.isFilterActive = () => !!selectedArmyListFilter;
+ArmyListFilter.isFilterActive = () => Boolean(selectedArmyListFilter);
 
 //========================================================================
 ArmyListFilter.shouldShowArmyListName = factionAbbrev => {

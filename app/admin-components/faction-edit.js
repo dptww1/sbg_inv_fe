@@ -21,14 +21,6 @@ const findCompletions = (s, typeahead) => {
 };
 
 //========================================================================
-const patchRoleNames = roles => {
-  roles.forEach(role => {
-      role.name = role.name || RoleEditor.computePlaceholder(role);
-  });
-  return roles;
-}
-
-//========================================================================
 const refresh = () => {
   scenario = {
     id: m.route.param("sid"),
@@ -42,15 +34,13 @@ const refresh = () => {
     Request.get("/scenarios/" + scenario.id,
                 resp => {
                   scenario = resp.data;
-                  faction = scenario.scenario_factions.find(f => f.id === parseInt(fid));
+                  faction = scenario.scenario_factions.find(f => f.id === parseInt(fid, 10));
                 });
   }
 };
 
 //========================================================================
-const save = (_ev) => {
-  let apiUrl = "/scenario-faction/" + faction.id;
-
+const save = () => {
   const inputs = document.getElementsByTagName("input");
   for (let i = 0; i < inputs.length; ++i) {
     const widget = inputs.item(i);
@@ -79,14 +69,14 @@ const save = (_ev) => {
 
   Request.put("/scenario-faction/" + faction.id,
               { scenario_faction: faction },
-              resp => {
+              () => {
                 m.route.set("/scenarios/" + scenario.id);
               });
 };
 
 //========================================================================
 export const FactionEdit = {
-  oninit: (vnode) => {
+  oninit: () => {
     refresh();
   },
 

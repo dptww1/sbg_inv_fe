@@ -15,10 +15,10 @@ const APIS = [
   }
 ];
 
-var curApi = APIS[BACKEND];
+let curApi = APIS[BACKEND];
 
 //===========================================================================
-const clearText = _ => {
+const clearText = () => {
   Request.messages(null);
   Request.errors(null);
 };

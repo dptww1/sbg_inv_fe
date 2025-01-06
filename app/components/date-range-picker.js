@@ -5,18 +5,47 @@ let selectedRange = "month";
 //========================================================================
 export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
   let customMode = false;
-  let now = new Date();
 
+  //------------------------------------------------------------------------
   const pad = s => s.length > 1 ? s : "0" + s;
 
+  //------------------------------------------------------------------------
   const formatDate = dateObj =>
       dateObj.getFullYear() +
       "-" +
-      pad(dateObj.getMonth() + 1 + "") +
+      pad(String(dateObj.getMonth() + 1)) +
       "-" +
-      pad(dateObj.getDate() + "");
+      pad(String(dateObj.getDate()));
 
+  //------------------------------------------------------------------------
+  const prevMonthFromDate = () => {
+    const now = new Date();
+    let mm = now.getMonth() - 1;
+    let yyyy = now.getFullYear();
+    if (mm < 0) {
+      mm = 11;
+      yyyy -= 1;
+    }
+    return formatDate(new Date(yyyy, mm, 1));
+  };
 
+  //------------------------------------------------------------------------
+  const prevMonthToDate = () => {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    let mm = now.getMonth() - 1;
+    if (mm < 0) {
+      mm = 11;
+    }
+
+    let dd = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][mm];
+    if (m === 1 && (yyyy % 100 === 0 && yyyy % 400 !== 0)) {
+      dd = 29;
+    }
+    return formatDate(new Date(yyyy, mm, dd));
+  };
+
+  //------------------------------------------------------------------------
   const updateDateRange = ev => {
     const now = new Date();
     range.toDate = formatDate(new Date());
@@ -29,20 +58,8 @@ export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
       break;
 
     case "lastmonth":
-      let m = now.getMonth() - 1;
-      let y = now.getFullYear();
-      if (m < 0) {
-        m = 11;
-        y -= 1;
-      }
-      range.fromDate = formatDate(new Date(y, m, 1));
-
-      let d = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m];
-      if (m === 1 && (y % 100 === 0 && y % 400 !== 0)) {
-        d = 29;
-      }
-
-      range.toDate = formatDate(new Date(y, m, d));
+      range.fromDate = prevMonthFromDate();
+      range.toDate = prevMonthToDate();
       callbackFn(range);
       break;
 
@@ -69,14 +86,14 @@ export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
   };
 
   return {
-    oninit: _vnode => {
+    oninit: () => {
       let now = new Date();
       range.fromDate = range.fromDate || formatDate(new Date(now.getFullYear(), now.getMonth(), 1));
       range.toDate = range.toDate || formatDate(now);
       callbackFn(range);
     },
 
-    view: _vnode => {
+    view: () => {
       return [
         m("select.date-range-picker-select",
           { onchange: updateDateRange },
@@ -106,7 +123,7 @@ export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
             : range.toDate),
         customMode
           ? m("button",
-              { onclick: _ => callbackFn(range) },
+              { onclick: () => callbackFn(range) },
               "Go!")
           : null
       ];

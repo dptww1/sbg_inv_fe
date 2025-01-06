@@ -27,7 +27,7 @@ const ratingSpanWidth = (idx, userRating) =>
 export const StarRating = {
   view: function(vnode) {
     const { id, active, votes, callback } = vnode.attrs;
-    var   { rating, userRating = -1 }     = vnode.attrs;
+    let   { rating, userRating = -1 }     = vnode.attrs;
 
     if (!active) {
       userRating = -1; // don't highlight anything
@@ -40,7 +40,7 @@ export const StarRating = {
              { class: `rating ${active ? "active" : ""}` },
              [1, 2, 3, 4, 5].map( n => {
                return m("div.rating-star-container",
-                        active ? { onclick: ev => callback(id, n == userRating ? 0 : n) } : {},
+                        active ? { onclick: () => callback(id, n == userRating ? 0 : n) } : {},
                         m("div", { class: `rating-star ${highlightClassName(n, userRating)}` },
                           STAR_OUTLINE,
                           n <= ratingCeiling ? domStarSolid(n, rating, userRating) : null));

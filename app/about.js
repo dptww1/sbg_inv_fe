@@ -6,13 +6,13 @@ import { Nav         } from "./nav.js";
 import { Request     } from "./request.js";
 import * as U          from "./utils.js";
 
-var news = [];
-var numNewsItems = 5;
-var showMore = true;
+let news = [];
+let numNewsItems = 5;
+let showMore = true;
 
-var resources = [];
-var numResources = 5;
-var showMoreResources = true;
+let resources = [];
+let numResources = 5;
+let showMoreResources = true;
 
 const newNewsItem = {
   item_date: "",
@@ -69,7 +69,7 @@ const domResources = () => {
 const addNewsItem = () => {
   Request.post("/newsitem",
                { news_item: newNewsItem },
-               resp => {
+               () => {
                  newNewsItem.item_date = "";
                  newNewsItem.item_text = "";
                  numNewsItems -= 4; // account for the +5 in updateNews()

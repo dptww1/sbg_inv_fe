@@ -1,5 +1,4 @@
 import m from "mithril";
-import prop from "mithril/stream";
 
 import { Credentials } from "./credentials.js";
 import { Header      } from "./header.js";

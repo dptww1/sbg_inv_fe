@@ -7,7 +7,7 @@ const slice = (circleAttrs, pctStart, pctEnd, fill) => {
     return null;
   }
 
-  var pathParts = [];
+  const pathParts = [];
   pathParts.push("M" + circleAttrs.cx + "," + circleAttrs.cy);
   pathParts.push("L" +
                  (circleAttrs.cx + (Math.sin(pctStart * 2 * Math.PI) * circleAttrs.r)) + "," +

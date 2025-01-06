@@ -1,7 +1,6 @@
 import m from "mithril";
 
 import * as K        from "../constants.js";
-import { Request }   from "../request.js";
 import { Typeahead } from "../components/typeahead.js";
 
 //========================================================================
@@ -79,7 +78,7 @@ const updateRoleName = (roles, roleIdx, ev) => {
 export const RoleEditor = {
   computePlaceholder: computePlaceholder,
 
-  oninit: ({ attrs }) => {
+  oninit: () => {
     editIdx = -1;
   },
 
@@ -144,7 +143,7 @@ export const RoleEditor = {
                               m("td"),
                               m("td"),
                               m("td", figure.name),
-                              m("td", m("span.icon", { onclick: ev => removeFigure(attrs.roles, roleIdx, figureIdx) }, "-"))
+                              m("td", m("span.icon", { onclick: () => removeFigure(attrs.roles, roleIdx, figureIdx) }, "-"))
                             )
                           ).concat(
                             roleIdx === editIdx
@@ -165,7 +164,7 @@ export const RoleEditor = {
 
         m("span.icon",
           {
-            onclick: ev => {
+            onclick: () => {
               attrs.roles.push({ amount: 1, name: "", plural_name: "", figures: [], _expanded: true });
               editIdx = attrs.roles.length - 1;
             }

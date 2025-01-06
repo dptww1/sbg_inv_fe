@@ -36,9 +36,9 @@ export const Typeahead = vnode => {
 
   const { onItemSelect, findMatches } = vnode.attrs;
 
-  var searchString = "";
-  var data = { suggestions: [] };
-  var selectedIdx = -1;
+  let searchString = "";
+  let data = { suggestions: [] };
+  let selectedIdx = -1;
 
   //------------------------------------------------------------------------
   const handleKey = (ev) => {
@@ -106,7 +106,7 @@ export const Typeahead = vnode => {
       },
       Object.keys(s).reduce(
         (acc, val) => {
-          acc["data-" + val] = (s[val] + "").replace(/"/g, '\\"');
+          acc["data-" + val] = String(s[val]).replace(/"/g, '\\"');
           return acc;
         },
         {})
@@ -115,7 +115,7 @@ export const Typeahead = vnode => {
 
   //------------------------------------------------------------------------
   return {
-    oninit: (vnode) => {
+    oninit: () => {
       initData();
     },
 
@@ -123,7 +123,7 @@ export const Typeahead = vnode => {
       return m('.typeahead-container',
                m('input[type=search]',
                  {
-                   oncreate: vnode => vnode.dom.focus(),
+                   oncreate: vn => vn.dom.focus(),
                    placeholder: attrs.placeholder || 'Search...',
                    onkeyup: handleKey
                  },

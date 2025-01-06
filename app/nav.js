@@ -102,7 +102,7 @@ const stringify = obj => {
   }
 
   if (typeof obj === "number") {
-    return "" + obj;
+    return String(obj);
   }
 
   // *sigh*, Javascript...

@@ -6,7 +6,7 @@ import { Request } from "./request.js";
 
 const COLLECTION_KEYS = [ "character", "hero", "warrior", "monster" ];
 
-var stats = {};
+let stats = {};
 
 const toTitleCase = s => s.charAt(0).toUpperCase() + s.substring(1);
 

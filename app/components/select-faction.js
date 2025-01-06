@@ -1,7 +1,6 @@
 import m from "mithril";
 
 import * as K from "../constants.js";
-import * as U from "../utils.js";
 
 //========================================================================
 // m(SelectFaction, { value: <currentValue>, callback: fn(newValue) })

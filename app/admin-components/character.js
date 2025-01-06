@@ -1,13 +1,11 @@
 import m from "mithril";
 
-import { Credentials      } from "../credentials.js";
 import { FigureListEditor } from "./figure-list-edit.js";
 import { Header           } from "../header.js";
 import * as K               from "../constants.js";
 import { Nav              } from "../nav.js";
 import { Request          } from "../request.js";
 import { SelectBook       } from "../components/select-book.js";
-import { SelectFaction    } from "../components/select-faction.js";
 import { Typeahead        } from "../components/typeahead.js";
 
 const character = {
@@ -44,7 +42,7 @@ const stagingResource = {
 
 // When true, character name field acts as lookup of existing
 // character; when false, user is adding a new character
-var figure_lookup_mode = false;
+let figure_lookup_mode = false;
 
 //========================================================================
 const addResource = () => {
@@ -100,9 +98,9 @@ const domEditCharacter = () => {
     domResources(),
     domProfiles(),
 
-    m("button", { onclick: ev => saveCharacter() }, "Save"),
+    m("button", { onclick: () => saveCharacter() }, "Save"),
     " ",
-    m("button", { onclick: ev => initCharacterForm() }, "Clear")
+    m("button", { onclick: () => initCharacterForm() }, "Clear")
   ];
 };
 
@@ -141,7 +139,7 @@ const domFigures = () => {
             m(m.route.Link, { href: "/figures/" + f.id }, f.name),
             m("span.icon",
               {
-                onclick: ev => removeFigure(idx)
+                onclick: () => removeFigure(idx)
               },
               K.ICON_STRINGS.remove)
            ))
@@ -263,7 +261,7 @@ const domProfiles = () => {
           m("button",
             {
               disabled: !isProfileValid(),
-              onclick: ev => addProfile()
+              onclick: () => addProfile()
             },
             "Add Profile"))))
   ];
@@ -375,7 +373,7 @@ const domResources = () => {
         m("td",
           m("button",
             {
-              onclick: ev => addResource()
+              onclick: () => addResource()
             },
             "Add Resource")))),
 
@@ -506,7 +504,7 @@ export const CharacterEdit = {
         m("input[type=checkbox]",
           {
             checked: figure_lookup_mode,
-            onclick: ev => figure_lookup_mode = !figure_lookup_mode
+            onclick: () => figure_lookup_mode = !figure_lookup_mode
           }),
         " Edit Mode",
         m("br"),

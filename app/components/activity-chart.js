@@ -5,7 +5,7 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale);
 
 import * as U from "../utils.js";
 
-export const ActivityChart = _vnode => {
+export const ActivityChart = () => {
 
   let chartObj = null;
 
@@ -126,7 +126,7 @@ export const ActivityChart = _vnode => {
                  oncreate: vnode => {
                    chartObj = new Chart(vnode.dom, chartData);
                  },
-                 onremove: vnode => {
+                 onremove: () => {
                    destroyChart();
                  },
                  onupdate: vnode => {

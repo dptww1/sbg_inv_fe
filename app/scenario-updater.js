@@ -1,5 +1,3 @@
-import m from "mithril";
-
 import { Request } from "./request.js";
 
 const observers = [];

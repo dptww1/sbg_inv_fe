@@ -9,7 +9,7 @@ import * as U         from "../utils.js";
 const removeHistory = (rec, callbackFn) => {
   if (confirm("Are you sure you want to delete this item?")) {
     Request.delete("/userhistory/" + rec.id,
-                   resp => {
+                   () => {
                      Request.messages("Activity record deleted.");
                      callbackFn();
                    });
@@ -22,7 +22,7 @@ const updateHistory = (hist, callbackFn) => {
               {
                 history: hist
               },
-              resp => {
+              () => {
                 Request.messages("Record updated");
                 callbackFn();
               });
@@ -54,12 +54,12 @@ export const FigureHistoryList = {
                         m("td",
                           m("span.action",
                             {
-                              onclick: _ => EditDialog.editHistory(rec, _ => updateHistory(rec, callbackFn))
+                              onclick: () => EditDialog.editHistory(rec, () => updateHistory(rec, callbackFn))
                             },
                             K.ICON_STRINGS.edit),
                           m("span.action",
                             {
-                              onclick: _ => removeHistory(rec, callbackFn)
+                              onclick: () => removeHistory(rec, callbackFn)
                             },
                             K.ICON_STRINGS.remove)),
                         m("td", rec.notes))),
@@ -67,7 +67,7 @@ export const FigureHistoryList = {
                ? m("tr.totals",
                    m("td[colspan=2]", "Totals"),
                    m("td", ""),
-                   m("td", list.reduce((acc, val) => acc += val.amount, 0)),
+                   m("td", list.reduce((acc, val) => { acc += val.amount; return acc; }, 0)),
                    m("td[colspan=2]", ""))
                : null);
   }

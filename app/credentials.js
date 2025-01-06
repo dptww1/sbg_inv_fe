@@ -1,4 +1,3 @@
-import m from "mithril";
 import prop from "mithril/stream";
 
 //===========================================================================
@@ -9,7 +8,7 @@ const Cookie = {
 
     read: (name) => {
         const cookies = document.cookie.split(/\s*;\s*/);
-        for (var i = 0; i < cookies.length; ++i) {
+        for (let i = 0; i < cookies.length; ++i) {
             if (cookies[i].indexOf(name) == 0) {
                 return cookies[i].substring(name.length + 1);
             }
