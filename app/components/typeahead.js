@@ -1,11 +1,14 @@
 import m from "mithril";
 
 //========================================================================
-const decorateName = (s, pos, len) => [
-  s.substring(0, pos),
-  m("span[class='highlight']", s.substring(pos, pos + len)),
-  s.substring(pos + len)
-];
+const decoratedName = s =>
+      s.id
+      ? [
+          s.name.substring(0, s.start),
+          m("span.highlight", s.name.substring(s.start, s.start + s.len)),
+          s.name.substring(s.start + s.len)
+        ]
+      : m("span.searchCategoryLabel", s.name);
 
 //========================================================================
 // Usage: m(Typeahead, {opts})
@@ -58,11 +61,19 @@ export const Typeahead = vnode => {
 
     case 38: // up
       selectedIdx = Math.max(0, selectedIdx - 1);
+      // don't move to a label; this logic assumes no consecutive labels
+      if (!data.suggestions[selectedIdx].id) {
+        selectedIdx = selectedIdx === 0 ? 1 : selectedIdx - 1;
+      }
       ev.preventDefault();
       return;
 
     case 40: // down
       selectedIdx = Math.min(selectedIdx + 1, data.suggestions.length - 1);
+      // don't move to a label; this logic assumes no consecutive labels and no label at the end of suggestions
+      if (!data.suggestions[selectedIdx].id) {
+        selectedIdx = selectedIdx + 1;
+      }
       ev.preventDefault();
       return;
     }
@@ -135,7 +146,7 @@ export const Typeahead = vnode => {
                      : data.suggestions.map((s, idx) =>
                          m("li.suggestion",
                            suggestionAttrs(s, idx),
-                           decorateName(s.name, s.start, s.len))))));
+                           decoratedName(s))))));
     }
   };
 };

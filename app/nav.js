@@ -62,7 +62,7 @@ const domLoggedOutTabs = (loginActive) => {
 };
 
 //========================================================================
-const doSelect = target => {
+const doSearchSelect = target => {
    // cancelled?
   if (target == null) {
     showSearch = false;
@@ -86,12 +86,35 @@ const doSelect = target => {
 const findCompletions = (s, typeahead) => {
   Request.get("/search?q=" + s,
               resp => {
-                typeahead.suggestions = resp.data.map(x => {
+                const figures = [];
+                const scenarios = [];
+
+                resp.data.forEach(x => {
                   const bookStr = U.shortResourceLabel(x);
                   x.name = x.name + (bookStr ? " [" + bookStr + "]" : "");
                   x.len = s.length;
-                  return x;
+
+                  if (x.type === "f") {
+                    figures.push(x);
+                  } else {
+                    scenarios.push(x);
+                  }
                 });
+
+                if (figures.length > 0 && scenarios.length > 0) {
+                  typeahead.suggestions = [ { name: "-- Figures --"} ]
+                    .concat(figures)
+                    .concat([ { name: "-- Scenarios --" } ])
+                    .concat(scenarios);
+
+                } else if (figures.length > 0) {
+                  typeahead.suggestions = figures;
+
+                } else {
+                  // either scenarios.length > 0 or scenarios.length === 0
+                  // but this assignment covers both cases
+                  typeahead.suggestions = scenarios;
+                }
               });
 };
 
@@ -135,7 +158,7 @@ export const Nav = {
         ? m(Typeahead,
             {
               findMatches: findCompletions,
-              onItemSelect: doSelect
+              onItemSelect: doSearchSelect
             })
         : [
             m(".nav-header", { class: scenarioListActive ? "nav-content-selected" : "" },
