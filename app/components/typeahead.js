@@ -48,23 +48,23 @@ export const Typeahead = vnode => {
         selectSuggestion(ev.target.closest(".typeahead-container").getElementsByClassName("suggestion")[selectedIdx]);
       }
       ev.preventDefault();
-      break;
+      return;
 
     case 27: // esc: cancel search
       initData();
       onItemSelect(null);
       ev.preventDefault();
-      break;
+      return;
 
     case 38: // up
       selectedIdx = Math.max(0, selectedIdx - 1);
       ev.preventDefault();
-      break;
+      return;
 
     case 40: // down
       selectedIdx = Math.min(selectedIdx + 1, data.suggestions.length - 1);
       ev.preventDefault();
-      break;
+      return;
     }
 
     if (ev.target.value === "") {
