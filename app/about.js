@@ -1,5 +1,6 @@
 import m from "mithril";
 
+import * as K          from "./constants.js";
 import { Credentials } from "./credentials.js";
 import { Header      } from "./header.js";
 import { Nav         } from "./nav.js";
@@ -15,25 +16,58 @@ let numResources = 5;
 let showMoreResources = true;
 
 const newNewsItem = {
+  id: null,
   item_date: "",
   item_text: ""
 };
 
 //========================================================================
+const deleteItem = item => {
+  if (confirm(`Are you sure you want to delete the ${item.item_date} item?`)) {
+    Request.delete("/newsitem/" + item.id,
+                   () => {
+                     updateNews();
+                   });
+  }
+};
+
+//========================================================================
 const domNews = () => {
   return m("table.news",
-           news.map(item => m("tr",
-                              m("td.nobr", item.item_date),
-                              m("td", item.item_text))),
+           news.map(item =>
+             m("tr",
+               Credentials.isAdmin()
+                 ? m("td",
+                     m("span.action",
+                       {
+                         onclick: () => stageItemForEditing(item)
+                       },
+                       K.ICON_STRINGS.edit),
+                     m("span.action",
+                       {
+                         onclick: () => deleteItem(item)
+                       },
+                       K.ICON_STRINGS.remove))
+                 : null,
+               m("td.nobr", item.item_date),
+               m("td", item.item_text))),
 
            showMore
              ? m("tr",
-                 m("td[colspan=2]",
-                   m("button", { onclick: updateNews }, "Older News")))
+                 m("td[colspan=4]",
+                   m("button",
+                     {
+                       onclick: () => {
+                         numNewsItems += 5;
+                         updateNews();
+                       }
+                     },
+                     "Older News")))
              : null,
 
-           Credentials.admin()
+           Credentials.isAdmin()
              ? m("tr",
+                 m("td"),
                  m("td",
                    m("input[type=date][name=item_date]",
                      {
@@ -46,6 +80,7 @@ const domNews = () => {
                        onchange: ev => newNewsItem.item_text = ev.target.value,
                        value: newNewsItem.item_text
                      }),
+                   " ",
                    m("button", { onclick: addNewsItem }, "Save")))
              : null
           );
@@ -67,20 +102,28 @@ const domResources = () => {
 
 //========================================================================
 const addNewsItem = () => {
-  Request.post("/newsitem",
-               { news_item: newNewsItem },
-               () => {
-                 newNewsItem.item_date = "";
-                 newNewsItem.item_text = "";
-                 numNewsItems -= 4; // account for the +5 in updateNews()
-                 updateNews();
-                 Request.messages("Added News Item");
-               });
+  Request.putOrPost("/newsitem",
+                    newNewsItem.id,
+                    { news_item: newNewsItem },
+                    () => {
+                      const verb = newNewsItem.id ? "Saved" : "Added";
+                      newNewsItem.id = null;
+                      newNewsItem.item_date = "";
+                      newNewsItem.item_text = "";
+                      updateNews();
+                      Request.messages(`${verb} news item`);
+                    });
 }
 
 //========================================================================
+const stageItemForEditing = item => {
+  newNewsItem.id = item.id;
+  newNewsItem.item_date = item.item_date;
+  newNewsItem.item_text = item.item_text;
+};
+
+//========================================================================
 const updateNews = () => {
-  numNewsItems += 5;
   Request.get("/newsitem?n=" + numNewsItems,
               resp => {
                 const oldNumItems = news.length;
@@ -103,7 +146,7 @@ const updateResources = () => {
 //========================================================================
 export const About = {
   oninit: (/*vnode*/) => {
-    numNewsItems = 0;
+    numNewsItems = 5;
     news = [];
     updateNews();
 
