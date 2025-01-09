@@ -144,7 +144,7 @@ const domResourcesForType = (resourceList, type, title) => {
                         m("td",
                           r.url
                             ? m("a", { href: r.url }, resourceTitle)
-                            : `${title}${r.issue ? '#' + r.issue : ''}, page ${r.page}`));
+                            : `${resourceTitle}${r.issue ? '#' + r.issue : ''}, page ${r.page}`));
              })));
 };
 
