@@ -1,10 +1,12 @@
 import m from "mithril";
+import prop from "mithril/stream";
 
 import * as K          from "./constants.js";
 import { Credentials } from "./credentials.js";
 import { Header      } from "./header.js";
 import { Nav         } from "./nav.js";
 import { Request     } from "./request.js";
+import { TextArea    } from "./components/text-area.js";
 import * as U          from "./utils.js";
 
 let news = [];
@@ -144,58 +146,55 @@ const updateResources = () => {
 };
 
 //========================================================================
-export const About = {
-  oninit: (/*vnode*/) => {
-    numNewsItems = 5;
-    news = [];
-    updateNews();
+export const About = () => {
+  let aboutTextProp = prop();
+  let editModeProp = prop(false);
 
-    numResources = 0;
-    resources = [];
-    updateResources();
-  },
+  numNewsItems = 5;
+  news = [];
+  updateNews();
 
-  view() {
-    return [
-      m(Header),
-      m(Nav, { selected: "About" }),
-      m(".main-content",
-        m("div.section-header", "News"),
-        domNews(),
+  numResources = 0;
+  resources = [];
 
-        m("div.section-header", "Recent Battle Reports"),
-        domResources(),
+  const saveAbout = () => {
+    Request.put("/about/-1",
+                { about: { body_text: aboutTextProp() } },
+                () => Request.message("About text saved"));
+  };
 
-        m("div.section-header", "Welcome!"),
-        m("p",
-          "This web site lets you track your inventory of figures for Games Workshop's ",
-          m("i", "Middle Earth Strategy Battle Game"),
-          " and compare it against the requirements of the official published scenarios.",
-          " Want to know the biggest (or smallest) scenarios?  Which scenarios have YouTube video replays?",
-          " How many Warg Riders do you need if you want to play all of the scenarios?  How far along your",
-          " collection is if you want to play ",
-          m("i", "The Last Alliance"),
-          "? You can find the answers here!"),
+  updateResources();
 
-        m("p",
-          "You'll need to sign up for an account to track your inventory.  This will also give you ability to rate ",
-          "scenarios, to help your fellow gamers find an overlooked gem. When you sign up, the site will use a cookie to ",
-          "remember who you are, but nothing other than that will be done with your information. I hate spam, too."),
+  Request.get("/about", resp => aboutTextProp(resp.data.about));
 
-        m("p",
-          "If you note any incorrect information, find bugs, or have ideas for improvement, I'd love to hear from you at ",
-          m("a[target=_new]", { href: "mailto:dave@davetownsend.org" }, "dave@davetownsend.org"),
-          "."),
+  return {
+    view() {
+      return [
+        m(Header),
+        m(Nav, { selected: "About" }),
+        m(".main-content",
+          m("div.section-header", "News"),
+          domNews(),
 
-        m("p",
-          "Financial contributions are not required but are always appreciated.  (In a perfect world I would raise enough ",
-          "money to work on this full-time. But the world ain't perfect.)  You can PayPal me a donation at the above email ",
-          "address. I have no Patreon set up at the moment, but if you'd like to contribute that way, let me know."),
+          m("div.section-header", "Recent Battle Reports"),
+          domResources(),
 
-        m("p", "I hope you find this useful!"),
-
-        m("p", "Dave Townsend / ", m("a", { href: "mailto:dave@davetownsend.org"}, "dave@davetownsend.org"))
-       )
+          m("div.section-header",
+            "Welcome! ",
+            Credentials.isAdmin() && !editModeProp()
+              ? m("span.action",
+                  {
+                    onclick: () => editModeProp(true)
+                  },
+                  K.ICON_STRINGS.edit)
+              : null),
+          m(TextArea,
+            {
+              prop: aboutTextProp,
+              editMode: editModeProp,
+              onSave: saveAbout
+            }))
     ];
   }
+  };
 };
