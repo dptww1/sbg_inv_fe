@@ -657,6 +657,34 @@ span.votes {
   font-weight: bold;
 }
 
+.news-grid-wrapper {
+  column-gap: 1.5em;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+
+  .news-date {
+    grid-column-start: 1;
+  }
+
+  .news-text {
+    grid-column-start: 2;
+  }
+}
+
+.resources-grid-wrapper {
+  column-gap: 1.5em;
+  display: grid;
+  grid-template-columns: auto auto auto minmax(0, 1fr);
+
+  .resources-date {
+    grid-column-start: 1;
+  }
+
+  .resources-text {
+    grid-column-start: 2;
+  }
+}
+
 /* ===== Scenario Details ===== */
 
 .scenario-details {

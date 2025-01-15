@@ -16,12 +16,13 @@ const newsItemEditBuffer = {
 };
 
 //========================================================================
-const domResourceItem = item =>
-      m("tr",
-        m("td.nobr", item.date),
-        m("td", m(m.route.Link, { href: "/scenarios/" + item.scenario_id }, item.scenario_name)),
-        m("td", m("span.icon", U.resourceIcon(item))),
-        m("td", m("a", { href: item.url }, item.title)));
+const domResourceItem = item => [
+  m(".resources-date", item.date),
+  m(".resources-text",
+    m(m.route.Link, { href: "/scenarios/" + item.scenario_id }, item.scenario_name)),
+  m("", m("span.icon", U.resourceIcon(item))),
+  m("", m("a", { href: item.url }, item.title))
+];
 
 //========================================================================
 const resetNewsItemEditBuffer = () => {
@@ -98,55 +99,67 @@ export const About = () => {
   };
 
   //========================================================================
-  const domNewsItem = item =>
-        m("tr",
-          m("td.nobr",
-            Credentials.isAdmin()
-              ? [
-                  m("span.action",
-                    {
-                      onclick: () => stageNewsItemForEditing(item)
-                    },
-                    K.ICON_STRINGS.edit),
-                m("span.action",
-                  {
-                    onclick: () => deleteItem(item)
-                  },
-                  K.ICON_STRINGS.remove)
-                ]
-              : null,
-            item.item_date),
-          m("td", item.item_text));
+  const domNewsItem = item => [
+    m("div.news-date",
+      Credentials.isAdmin()
+        ? [
+            m("span.action",
+              {
+                onclick: () => stageNewsItemForEditing(item)
+              },
+              K.ICON_STRINGS.edit),
+            m("span.action",
+              {
+                onclick: () => deleteItem(item)
+              },
+              K.ICON_STRINGS.remove)
+          ]
+        : null,
+      item.item_date),
+    m("div.news-text", item.item_text)
+  ];
 
   //========================================================================
   const domNews = () => [
     m("div.section-header", "News"),
-    m("table.news",
-      m(ShowMoreList, { items: news, buttonText: "Older News", renderer: domNewsItem, refresher: updateNews }),
-      Credentials.isAdmin()
-        ? m("tr",
-            m("td",
-              m("input[type=date][name=item_date]",
-                {
-                  onchange: ev => newsItemEditBuffer.item_date = ev.target.value,
-                  value: newsItemEditBuffer.item_date
-                })),
-            m("td",
-              m("input[type=text][name=item_text][size=80]",
-                {
-                  onchange: ev => newsItemEditBuffer.item_text = ev.target.value,
-                  value: newsItemEditBuffer.item_text
-                }),
-              " ",
-              m("button", { onclick: addNewsItem }, "Save")))
-        : null)
+    m(ShowMoreList,
+      {
+        wrapperClasses: "news.news-grid-wrapper",
+        items: news,
+        buttonText: "Older News",
+        renderer: domNewsItem,
+        refresher: updateNews
+      }),
+    Credentials.isAdmin()
+      ? m("tr",
+          m("td",
+            m("input[type=date][name=item_date]",
+              {
+                onchange: ev => newsItemEditBuffer.item_date = ev.target.value,
+                value: newsItemEditBuffer.item_date
+              })),
+          m("td",
+            m("input[type=text][name=item_text][size=80]",
+              {
+                onchange: ev => newsItemEditBuffer.item_text = ev.target.value,
+                value: newsItemEditBuffer.item_text
+              }),
+            " ",
+            m("button", { onclick: addNewsItem }, "Save")))
+      : null
     ];
 
   //========================================================================
   const domResources = () => [
     m("div.section-header", "Recent Battle Reports"),
-    m("table.resources",
-      m(ShowMoreList, { items: resources, buttonText: "Older Reports", renderer: domResourceItem, refresher: updateResources }))
+    m(ShowMoreList,
+      {
+        wrapperClasses: "resources.resources-grid-wrapper",
+        items: resources,
+        buttonText: "Older Reports",
+        renderer: domResourceItem,
+        refresher: updateResources
+      })
   ];
 
   //========================================================================

@@ -6,6 +6,13 @@ export const ShowMoreList = ({ attrs }) => {
   let buttonText = attrs.buttonText;
   let refreshFn = attrs.refresher;
 
+  let classes = ".show-more-list";
+  if (attrs.wrapperClasses) {
+    classes += (attrs.wrapperClasses && attrs.wrapperClasses.length > 0)
+      ? (attrs.wrapperClasses.charAt(0) === "." ? "" : ".") + attrs.wrapperClasses
+      : "";
+  }
+
   let numItems = 0;
   let showMore = true;
 
@@ -26,7 +33,8 @@ export const ShowMoreList = ({ attrs }) => {
       }
 
       return [
-        items.map(renderFn),
+        m(classes,
+          items.map(renderFn)),
         showMore
           ? m("button",
               {
