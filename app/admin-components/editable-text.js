@@ -20,7 +20,7 @@ export const EditableText = ({ attrs: createAttrs }) => {
 
   //========================================================================
   const domEditMode = () => [
-    m("textarea[style='width:85vw;height=fit-content']",
+    m("textarea[style='width=85vw;height=fit-content']",
       {
         value: text,
         onkeyup: ev => {
