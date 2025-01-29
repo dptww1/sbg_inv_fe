@@ -1,3 +1,5 @@
+/*global FACTION_INFO */
+
 import m from "mithril";
 
 import { ArmyListFilter      } from "./components/army-list-filter.js";
@@ -42,55 +44,83 @@ const computeUnaffiliatedTotals = figureMap => {
 };
 
 //========================================================================
-const domArmyDetails = () => {
-  if (armyId === "") {
-    const totals = factionOverviewMap["Totals"]
-                   || { owned: 0, painted: 0 };
-    return [
-      m(ArmyListFilter),
-      m("table.striped",
-        m("tr.table-header",
-          m("td.section-header", "Army List"),
-          Credentials.isLoggedIn() ? m("td.numeric.section-header", "Owned") : null,
-          Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null),
+const domArmyDetails = armyListId => [
+  m("span.action",
+    { onclick: () => FigureList.updateArmyDetails("") },
+    K.ICON_STRINGS.back),
+  m("span.clickable",
+    { onclick: () => FigureList.updateArmyDetails("") },
+    "Back"),
 
-        K.SORTED_FACTION_NAMES.map(name => {
-          let factionAbbrev = K.FACTION_ABBREV_BY_NAME[name];
+  m(".page-title", armyListId < 0 ? "Unaffiliated" : FACTION_INFO.byId(armyListId).name),
 
-          if (!ArmyListFilter.shouldShowArmyListName(factionAbbrev)) {
-            return null;
-          }
+  m("table",
+    m("tr.table-header",
+      m("td.section-header"),
+      Credentials.isLoggedIn() ? m("td.numeric.section-header", "Owned") : null,
+      Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null,
+      m("td.section-header[colspan=2]", "Needed"),
+      m("td.section-header", "Resources"),
+      Credentials.isAdmin() ? m("td") : null),
+    domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
+    domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
+    domFigureListByType("Warriors", figuresMap.warriors),
+    domFigureListByType("Monsters", figuresMap.monsters),
+    domFigureListByType("Siege Equipment", figuresMap.siegers),
+    domTotals()),
 
-          let thisMap = factionOverviewMap[factionAbbrev];
-          return m("tr",
-                   m("td",
-                     m("a", { onclick: () => FigureList.updateArmyDetails(K.FACTION_ID_BY_NAME[name]) }, name)),
-                   m("td.numeric", thisMap ? thisMap.owned : ""),
-                   m("td.numeric", thisMap ? thisMap.painted : ""),
-                   m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
-                  );
-        }),
+  domArmyListSources(),
+];
 
-        ArmyListFilter.isFilterActive()
-          ? null
-          : m("tr",
-              m("td",
-                m("a", { onclick: () => FigureList.updateArmyDetails(-1) }, "Unaffiliated")),
-              unaffiliatedFigureMap
-                ? [
-                    m("td.numeric", unaffiliatedFigureMap.owned),
-                    m("td.numeric", unaffiliatedFigureMap.painted),
-                    m("td",
-                      Credentials.isLoggedIn()
-                        ? m(Pie, { size: 24, n: unaffiliatedFigureMap.owned, nPainted: unaffiliatedFigureMap.painted, nOwned: unaffiliatedFigureMap.owned })
-                        : null)
-                  ]
-                : [
-                    m("td", ""),
-                    m("td", ""),
-                    m("td", "")
-                  ]
-             ),
+//========================================================================
+const domArmyLists = () => {
+  const totals = factionOverviewMap["Totals"]
+        || { owned: 0, painted: 0 };
+
+  return [
+    m(ArmyListFilter),
+    m("table.striped",
+      m("tr.table-header",
+        m("td.section-header", "Army List"),
+        Credentials.isLoggedIn() ? m("td.numeric.section-header", "Owned") : null,
+        Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null),
+
+      FACTION_INFO.sortedFactionNames().map(name => {
+        const factionAbbrev = FACTION_INFO.byName(name).abbrev;
+
+        if (!ArmyListFilter.shouldShowArmyListName(factionAbbrev)) {
+          return null;
+        }
+
+        let thisMap = factionOverviewMap[factionAbbrev];
+        return m("tr",
+                 m("td",
+                   m("a", { onclick: () => FigureList.updateArmyDetails(FACTION_INFO.byName(name).id) }, name)),
+                 m("td.numeric", thisMap ? thisMap.owned : ""),
+                 m("td.numeric", thisMap ? thisMap.painted : ""),
+                 m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
+                );
+      }),
+
+      ArmyListFilter.isFilterActive()
+        ? null
+        : m("tr",
+            m("td",
+              m("a", { onclick: () => FigureList.updateArmyDetails(-1) }, "Unaffiliated")),
+            unaffiliatedFigureMap
+              ? [
+                  m("td.numeric", unaffiliatedFigureMap.owned),
+                  m("td.numeric", unaffiliatedFigureMap.painted),
+                  m("td",
+                    Credentials.isLoggedIn()
+                      ? m(Pie, { size: 24, n: unaffiliatedFigureMap.owned, nPainted: unaffiliatedFigureMap.painted, nOwned: unaffiliatedFigureMap.owned })
+                      : null)
+                ]
+              : [
+                  m("td", ""),
+                  m("td", ""),
+                  m("td", "")
+              ]),
 
         Credentials.isLoggedIn() && !ArmyListFilter.isFilterActive()
           ? [
@@ -108,22 +138,6 @@ const domArmyDetails = () => {
             "They are the actual number of figures in your collection.")
         : null
      ];
-  }
-
-  return m("table",
-           m("tr.table-header",
-             m("td.section-header"),
-             Credentials.isLoggedIn() ? m("td.numeric.section-header", "Owned") : null,
-             Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null,
-             m("td.section-header[colspan=2]", "Needed"),
-             m("td.section-header", "Resources"),
-             Credentials.isAdmin() ? m("td") : null),
-           domFigureListByType("Characters", figuresMap.heroes.filter(fig => fig.unique)),
-           domFigureListByType("Heroes", figuresMap.heroes.filter(fig => !fig.unique)),
-           domFigureListByType("Warriors", figuresMap.warriors),
-           domFigureListByType("Monsters", figuresMap.monsters),
-           domFigureListByType("Siege Equipment", figuresMap.siegers),
-           domTotals());
 };
 
 //========================================================================
@@ -214,10 +228,6 @@ const domResources = fig => {
 
 //========================================================================
 const domTotals = () => {
-  if (armyId === "") {
-    return null;
-  }
-
   const stats = Object.keys(figuresMap)
                       .reduce((acc, k) => {
                                 const totalsMap = computeTotals(figuresMap[k]);
@@ -268,11 +278,11 @@ export const FigureList = {
                     });
       } else {
         factionOverviewMap = {
-          factions: K.SORTED_FACTION_NAMES.reduce((acc, name) => {
-                                                    acc[K.FACTION_ABBREV_BY_NAME[name]] = { owned: 0, painted: 0 };
-                                                    return acc;
-                                                  },
-                                                  {})
+          factions: FACTION_INFO.sortedFactionNames().reduce((acc, name) => {
+            acc[FACTION_INFO.byName(name).abbrev] = { owned: 0, painted: 0 };
+            return acc;
+          },
+          {})
         };
       }
     } else {
@@ -315,20 +325,9 @@ export const FigureList = {
               m("br")
             ]
           : null,
-        armyId !== ""
-          ? [
-              m("span.action",
-                { onclick: () => FigureList.updateArmyDetails("") },
-                K.ICON_STRINGS.log_out),
-              m("span.clickable",
-                { onclick: () => FigureList.updateArmyDetails("") },
-                "Back"),
-
-              m(".page-title", armyId < 0 ? "Unaffiliated" : K.FACTION_NAME_BY_ID[armyId]),
-              ]
-          : null,
-        domArmyDetails(),
-        domArmyListSources()),
+        armyId === ""
+        ? domArmyLists()
+        : domArmyDetails(armyId)),
     m(EditDialog)
     ];
   }

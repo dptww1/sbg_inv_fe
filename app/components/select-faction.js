@@ -1,6 +1,6 @@
-import m from "mithril";
+/*global FACTION_INFO */
 
-import * as K from "../constants.js";
+import m from "mithril";
 
 //========================================================================
 // m(SelectFaction, { value: <currentValue>, callback: fn(newValue) })
@@ -16,11 +16,11 @@ export const SelectFaction = () => {
             vnode.attrs.callback(ev.target.value);
           }
         },
-        K.SORTED_FACTION_NAMES
+        FACTION_INFO.sortedFactionNames()
         .map(name =>
           m("option",
             {
-              value: K.FACTION_ABBREV_BY_NAME[name]
+              value: FACTION_INFO.byName(name).abbrev
             },
             name)))
   };

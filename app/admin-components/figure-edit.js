@@ -1,9 +1,10 @@
+/*global FACTION_INFO */
+
 import m from "mithril";
 
 import { FigureListEditor } from "./figure-list-edit.js";
 import { Header      }      from "../header.js";
 import { Credentials }      from "../credentials.js";
-import * as K               from "../constants.js";
 import { Nav         }      from "../nav.js";
 import { Request     }      from "../request.js";
 
@@ -17,16 +18,16 @@ const domFactions = () =>
         m("td.valign-top", "Factions"),
         m("td",
           m("div.faction-checkbox-container",
-            K.SORTED_FACTION_NAMES.map(f =>
+            FACTION_INFO.sortedFactionNames().map(name =>
               m("div",
                 m("input[type=checkbox]",
                   {
-                    id: K.FACTION_ABBREV_BY_NAME[f],
-                    value: K.FACTION_ABBREV_BY_NAME[f],
-                    checked: figure.factions.indexOf(K.FACTION_ABBREV_BY_NAME[f]) >= 0,
+                    id: FACTION_INFO.byName(name).id,
+                    value: FACTION_INFO.byName(name).abbrev,
+                    checked: figure.factions.indexOf(FACTION_INFO.byName(name).abbrev) >= 0,
                     onchange: updateFactions
                   }),
-                m("label", { for: K.FACTION_ABBREV_BY_NAME[f] }, f))))));
+                m("label", { for: FACTION_INFO.byName(name).abbrev }, name))))));
 
 //========================================================================
 const domSameAs = () =>

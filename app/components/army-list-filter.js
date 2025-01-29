@@ -1,8 +1,15 @@
+/*global FACTION_INFO */
+
 import m from "mithril";
 
-import * as K from "../constants.js";
-
 let selectedArmyListFilter = null;
+
+//========================================================================
+const keywordToLabel = kwd =>
+      kwd.substring(0, 1).toUpperCase()
+      + kwd.substring(1)
+           .replaceAll(/([A-Z])/g, " $1")
+           .replaceAll(/(And|Of|The)/g, s => s.toLowerCase());
 
 //========================================================================
 // m(ArmyListFilter)
@@ -15,9 +22,10 @@ export const ArmyListFilter = () => {
 
   if (optionsList.length === 0) {
     const set = new Set();
-    Object.keys(K.FACTION_INFO).forEach(abbr => {
-      if (K.FACTION_INFO[abbr].factions) {
-        K.FACTION_INFO[abbr].factions.forEach(f => set.add(f));
+    FACTION_INFO.sortedFactionNames().forEach(name => {
+      const kws = FACTION_INFO.byName(name).keywords;
+      if (kws) {
+        kws.split(/\s/).forEach(f => set.add(f));
       }
     });
 
@@ -43,13 +51,13 @@ export const ArmyListFilter = () => {
               selected: "allEvil" === selectedArmyListFilter
             },
             "-- All Evil --"),
-        ].concat(optionsList.map(name =>
+        ].concat(optionsList.map(value =>
           m("option",
             {
-              value: name,
-              selected: name === selectedArmyListFilter
+              value: value,
+              selected: value === selectedArmyListFilter
             },
-            name)))),
+            keywordToLabel(value))))),
       m("br")
     ]
   };
@@ -60,7 +68,7 @@ ArmyListFilter.isFilterActive = () => Boolean(selectedArmyListFilter);
 
 //========================================================================
 ArmyListFilter.shouldShowArmyListName = factionAbbrev => {
-  const info = factionAbbrev ? K.FACTION_INFO[factionAbbrev] : null;
+  const info = factionAbbrev ? FACTION_INFO.byAbbrev(factionAbbrev) : null;
 
   // Structural issue or ignored faction?
   if (!info || info.obsolete) {
@@ -73,15 +81,15 @@ ArmyListFilter.shouldShowArmyListName = factionAbbrev => {
   }
 
   // Handle the All types
-  if ((selectedArmyListFilter === "allGood" && info.side === "Good")
-      || (selectedArmyListFilter == "allEvil" && info.side === "Evil")) {
+  if ((selectedArmyListFilter === "allGood" && info.alignment === 0)
+      || (selectedArmyListFilter == "allEvil" && info.alignment === 1)) {
     return true;
   }
 
   // Structural data issue?
-  if (!info.factions) {
+  if (!info.keywords) {
     return false;
   }
 
-  return info.factions.findIndex(f => f === selectedArmyListFilter) >= 0;
+  return info.keywords.indexOf(selectedArmyListFilter) >= 0;
 };

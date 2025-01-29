@@ -1,3 +1,5 @@
+/*global FACTION_INFO */
+
 import m from "mithril";
 
 import { Credentials         } from "./credentials.js";
@@ -16,8 +18,8 @@ import * as U                  from "./utils.js";
 let figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
 
 //========================================================================
-const chooseArmyList = (fid) => {
-  FigureList.updateArmyDetails(Object.keys(K.FACTION_INFO).findIndex(f => f == fid ));
+const chooseArmyList = abbrev => {
+  FigureList.updateArmyDetails(FACTION_INFO.byAbbrev(abbrev).id);
   m.route.set("/figures");
 };
 
@@ -27,14 +29,14 @@ const domArmyLists = () => {
            m(".section-header", "Army Lists"),
            m("table",
              figure.factions.length > 0
-               ? figure.factions.map(f =>
+               ? figure.factions.map(abbrev =>
                  m("tr",
                    m("td.faction-name",
                      m("a",
                        {
-                         onclick: () => chooseArmyList(f)
+                         onclick: () => chooseArmyList(abbrev)
                        },
-                       K.FACTION_INFO[f].name))))
+                       FACTION_INFO.byAbbrev(abbrev).name))))
                : m("tr", m("td", "None"))));
 };
 
