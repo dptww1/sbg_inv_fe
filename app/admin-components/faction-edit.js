@@ -1,7 +1,6 @@
 import m from "mithril";
 
 import { Header      } from "../header.js";
-import * as K          from "../constants.js";
 import { Nav         } from "../nav.js";
 import { Request     } from "../request.js";
 import { RoleEditor  } from "./role-editor.js";
@@ -85,10 +84,6 @@ export const FactionEdit = {
       m(Header),
       m(Nav),
       m("table",
-        m("tr",
-          m("td", "Faction"),
-          m("td", faction && faction.faction ? K.FACTION_INFO[faction.faction].name: "")),
-
         m("tr",
           m("td", "Suggested Points"),
           m("td", m("input[type=text][name=suggested_points]", { value: faction.suggested_points }))),
