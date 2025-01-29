@@ -19,6 +19,7 @@ export default [
       "consistent-return": "error",
       "for-direction": "error",
       "no-cond-assign": "error",
+      "no-console": "error",
       "no-const-assign": "error",
       "no-constant-binary-expression": "error",
       "no-constant-condition": "error",
