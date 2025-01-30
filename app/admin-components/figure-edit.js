@@ -34,8 +34,15 @@ const domSameAs = () =>
       m("tr",
         m("td", "Same As"),
         figure.same_as
-          ? m("td", sameAsName)
-          : m("td", m(FigureListEditor, { onItemSelect: otherFigureSelect }),
+          ? m("td",
+              sameAsName,
+              m("span.action",
+                {
+                  onclick: () => figure.same_as = sameAsName = null
+                },
+                " " + K.ICON_STRINGS.remove))
+          : m("td",
+              m(FigureListEditor, { onItemSelect: otherFigureSelect }),
               " If set, assign the new figure to this figure's scenarios and character"));
 
 //========================================================================
