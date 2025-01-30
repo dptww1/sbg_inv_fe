@@ -39,6 +39,9 @@ const domSameAs = () =>
               " If set, assign the new figure to this figure's scenarios and character"));
 
 //========================================================================
+const domSlug = () => domTextInputRow("Slug", "slug", figure.slug, newVal => figure.slug = newVal);
+
+//========================================================================
 const domTextInputRow = (label, name, val, setter) =>
       m("tr",
         m("td", label),
@@ -159,10 +162,10 @@ export const FigureEdit = {
               ? [
                   domTypeDropDown(),
                   domUniqueCheckbox(),
-                  domTextInputRow("Slug", "slug", figure.slug, newVal => figure.slug = newVal),
+                  domSlug(),
                   domFactions()
                 ]
-              : null,
+              : domSlug(),
 
             m("tr",
               m("td"),
