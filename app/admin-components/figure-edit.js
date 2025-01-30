@@ -2,15 +2,26 @@
 
 import m from "mithril";
 
+import { Credentials }      from "../credentials.js";
 import { FigureListEditor } from "./figure-list-edit.js";
 import { Header      }      from "../header.js";
-import { Credentials }      from "../credentials.js";
+import * as K               from "../constants.js";
 import { Nav         }      from "../nav.js";
 import { Request     }      from "../request.js";
 
-let figure = { factions: [], type: "hero", same_as: null };
+let figure = { factions: [], type: "hero", same_as: null, create_char: false };
 let editMode = false;
 let sameAsName = null; // null, or name of source figure
+
+//========================================================================
+const domCreateCharacter = () =>
+      m("tr",
+        m("td.valign-top", "Create Char?"),
+        m("td", m("input[type=checkbox][name=createChar]",
+                  {
+                    onchange: ev => figure.create_char = ev.target.checked,
+                    checked: figure.create_char
+                  })));
 
 //========================================================================
 const domFactions = () =>
@@ -110,7 +121,7 @@ const refresh = () => {
 
 //========================================================================
 const resetForm = () => {
-  figure = { factions: [], type: "hero", same_as: "" };
+  figure = { factions: [], type: "hero", same_as: "", create_char: false };
   editMode = false;
 }
 
@@ -164,6 +175,8 @@ export const FigureEdit = {
             domTextInputRow("Plural Name", "plural_name", figure.plural_name, newVal => figure.plural_name = newVal),
 
             !editMode ? domSameAs() : null,
+
+            !editMode && !sameAsName ? domCreateCharacter() : null,
 
             editMode || !figure.same_as
               ? [
