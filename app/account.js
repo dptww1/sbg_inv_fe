@@ -14,12 +14,6 @@ let userHistory = [];
 let dateRange = {};
 let historyFilters = [];
 
-// Redraws happen twice when the DateRangePicker controls are used,
-// as the control changes generate an update and then the callback
-// does a request which generates a second update. This variable
-// allows the chart to update only when true.
-let allowChartUpdate = false;
-
 const figureHistoryOptions = [
   {
     label: "Show All",
@@ -84,11 +78,9 @@ const refreshHistory = () => {
       dateRange.fromDate.match(/\d\d\d\d-\d\d-\d\d/) &&
       dateRange.toDate &&
       dateRange.toDate.match(/\d\d\d\d-\d\d-\d\d/)) {
+
     Request.get("/userhistory?from=" + dateRange.fromDate + "&to=" + dateRange.toDate,
-                resp => {
-                  userHistory = resp.data;
-                  allowChartUpdate = true;
-                });
+                resp => userHistory = resp.data);
   }
 };
 
@@ -145,11 +137,6 @@ export const Account = {
           m(ActivityChart,
             {
               activityList: filteredActivityList,
-              onbeforeupdate: () => {
-                let retVal = allowChartUpdate;
-                allowChartUpdate = false;
-                return retVal;
-              }
             })),
 
         m("p",
