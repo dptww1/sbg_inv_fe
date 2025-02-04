@@ -5,21 +5,20 @@ const STAR_OUTLINE = "\u2606"; // ☆
 const STAR_SOLID   = "\u2605"; // ★
 
 //==================================================================================================================================
-const domStarSolid = (n, rating, userRating) => {
-  return m("div",
-           {
-             class: `rating-star-inner ${highlightClassName(n, userRating)}`,
-             style: `width: ${ratingSpanWidth(n, rating)}px`
-           },
-           STAR_SOLID);
-}
+const domStarSolid = (n, rating, userRating) =>
+      m("div",
+        {
+          class: `rating-star-inner ${highlightClassName(n, userRating)}`,
+          style: `width: ${ratingSpanWidth(n, rating)}`
+        },
+        STAR_SOLID);
 
 //==================================================================================================================================
 const highlightClassName = (idx, userRating) => idx == userRating ? "rating-star-highlight" : "";
 
 //==================================================================================================================================
 const ratingSpanWidth = (idx, userRating) =>
-      idx <= userRating ? "100%" : Math.min(1 + ((userRating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH);
+      idx <= userRating ? "100%" : (Math.min(1 + ((userRating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH) + "px");
 
 //==================================================================================================================================
 // m(StarRating, { id: <val>, active: <bool>, votes: <n>, rating: <n>, userRating: <n>, callback: fn(id, newRating) })
