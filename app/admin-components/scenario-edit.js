@@ -1,5 +1,3 @@
-/*global FACTION_INFO */
-
 import m from "mithril";
 
 import { Header }  from "../header.js";
@@ -45,10 +43,6 @@ const FIELDS = {
 //========================================================================
 const domFaction = n => {
   const FACTION_FIELDS = {
-    faction: () => m("select",
-                     { name: "faction" + n, value: scenario.scenario_factions[n].faction },
-                     FACTION_INFO.sortedFactionNames.map(k => m("option", { value: FACTION_INFO.byName(k).abbrev }, k))),
-
     suggested_points: () => m("input[type=text]",
                              {
                                name: "suggested_points" + n,
