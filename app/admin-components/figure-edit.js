@@ -14,6 +14,44 @@ let editMode = false;
 let sameAsName = null; // null, or name of source figure
 
 //========================================================================
+const domAllegiances = () =>
+      m("tr",
+        m("td.valign-top", "Allegiances"),
+        m("td",
+          m("div.faction-checkbox-container",
+            FACTION_INFO.all()
+              .filter(f => f.legacy)
+              .map(f =>
+                m("div",
+                  m("input[type=checkbox]",
+                    {
+                      id: f.id,
+                      value: f.abbrev,
+                      checked: figure.factions.indexOf(f.abbrev) >= 0,
+                      onchange: updateFactions
+                    }),
+                  m("label", f.name))))));
+
+//========================================================================
+const domArmyLists = () =>
+      m("tr",
+        m("td.valign-top", "Army Lists"),
+        m("td",
+          m("div.faction-checkbox-container",
+            FACTION_INFO.all()
+              .filter(f => !f.legacy)
+              .map(f =>
+                m("div",
+                  m("input[type=checkbox]",
+                    {
+                      id: f.id,
+                      value: f.abbrev,
+                      checked: figure.factions.indexOf(f.abbrev) >= 0,
+                      onchange: updateFactions
+                    }),
+                  m("label", f.name))))));
+
+//========================================================================
 const domCreateCharacter = () =>
       m("tr",
         m("td.valign-top", "Create Char?"),
@@ -22,23 +60,6 @@ const domCreateCharacter = () =>
                     onchange: ev => figure.create_char = ev.target.checked,
                     checked: figure.create_char
                   })));
-
-//========================================================================
-const domFactions = () =>
-      m("tr",
-        m("td.valign-top", "Factions"),
-        m("td",
-          m("div.faction-checkbox-container",
-            FACTION_INFO.sortedFactionNames().map(name =>
-              m("div",
-                m("input[type=checkbox]",
-                  {
-                    id: FACTION_INFO.byName(name).id,
-                    value: FACTION_INFO.byName(name).abbrev,
-                    checked: figure.factions.indexOf(FACTION_INFO.byName(name).abbrev) >= 0,
-                    onchange: updateFactions
-                  }),
-                m("label", { for: FACTION_INFO.byName(name).abbrev }, name))))));
 
 //========================================================================
 const domSameAs = () =>
@@ -183,7 +204,8 @@ export const FigureEdit = {
                   domTypeDropDown(),
                   domUniqueCheckbox(),
                   domSlug(),
-                  domFactions()
+                  domArmyLists(),
+                  domAllegiances(),
                 ]
               : domSlug(),
 

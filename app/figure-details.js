@@ -24,12 +24,37 @@ const chooseArmyList = abbrev => {
 };
 
 //========================================================================
-const domArmyLists = () => {
+const domAllegiance = () => {
+  const factions = figure.factions
+        ? figure.factions.filter(abbrev => FACTION_INFO.byAbbrev(abbrev).legacy)
+        : [];
+
   return m(".figure-factions",
-           m(".section-header", "Army Lists"),
+           m(".section-header", "Allegiance" + (factions.length === 1 ? "" : "s")),
            m("table",
-             figure.factions.length > 0
-               ? figure.factions.map(abbrev =>
+             factions.length > 0
+               ? factions.map(abbrev =>
+                 m("tr",
+                   m("td.faction-name",
+                     m("a",
+                       {
+                         onclick: () => chooseArmyList(abbrev)
+                       },
+                       FACTION_INFO.byAbbrev(abbrev).name))))
+               : m("tr", m("td", "None"))));
+};
+
+//========================================================================
+const domArmyLists = () => {
+  const factions = figure.factions
+        ? figure.factions.filter(abbrev => !FACTION_INFO.byAbbrev(abbrev).legacy)
+        : [];
+
+  return m(".figure-factions",
+           m(".section-header", "Army List" + (factions.length === 1 ? "" : "s")),
+           m("table",
+             factions.length > 0
+               ? factions.map(abbrev =>
                  m("tr",
                    m("td.faction-name",
                      m("a",
@@ -172,7 +197,7 @@ const domRules = () => {
 const domScenarios = total => {
   const filteredScenarios = figure.scenarios.filter(f => Filters.filter(f));
   return m(".figure-scenarios", [
-    m(".section-header", "Scenarios"),
+    m(".section-header", "Scenario" + (filteredScenarios.length === 1 ? "" : "s")),
     m("table",
       filteredScenarios == 0
         ? m("tr", m("td", "None"))
@@ -239,6 +264,7 @@ export const FigureDetails = {
         domSilhouette(),
         domInventory(total),
         domArmyLists(),
+        domAllegiance(),
         domRules(),
         domScenarios(total),
         domResources(),

@@ -85,24 +85,23 @@ const domArmyLists = () => {
         Credentials.isLoggedIn() ? m("td.numeric.section-header", "Owned") : null,
         Credentials.isLoggedIn() ? m("td.numeric.section-header[colspan=2]", "Painted") : null),
 
-      FACTION_INFO.sortedFactionNames().map(name => {
-        const factionAbbrev = FACTION_INFO.byName(name).abbrev;
-
-        if (!ArmyListFilter.shouldShowArmyListName(factionAbbrev)) {
+      FACTION_INFO.all().map(f => {
+        if (!ArmyListFilter.shouldShowArmyListName(f.abbrev)) {
           return null;
         }
 
-        let thisMap = factionOverviewMap[factionAbbrev];
+        let thisMap = factionOverviewMap[f.abbrev];
         return m("tr",
                  m("td",
-                   m("a", { onclick: () => FigureList.updateArmyDetails(FACTION_INFO.byName(name).id) }, name)),
+                   m("a", { onclick: () => FigureList.updateArmyDetails(f.id) }, f.name)),
                  m("td.numeric", thisMap ? thisMap.owned : ""),
                  m("td.numeric", thisMap ? thisMap.painted : ""),
                  m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
                 );
       }),
 
-      ArmyListFilter.isFilterActive()
+
+      ArmyListFilter.isFilterActive() || ArmyListFilter.usingAllegianceMode()
         ? null
         : m("tr",
             m("td",
@@ -278,8 +277,8 @@ export const FigureList = {
                     });
       } else {
         factionOverviewMap = {
-          factions: FACTION_INFO.sortedFactionNames().reduce((acc, name) => {
-            acc[FACTION_INFO.byName(name).abbrev] = { owned: 0, painted: 0 };
+          factions: FACTION_INFO.all().reduce((acc, f) => {
+            acc[f.abbrev] = { owned: 0, painted: 0 };
             return acc;
           },
           {})
@@ -326,9 +325,9 @@ export const FigureList = {
             ]
           : null,
         armyId === ""
-        ? domArmyLists()
-        : domArmyDetails(armyId)),
-    m(EditDialog)
+          ? domArmyLists()
+          : domArmyDetails(armyId)),
+        m(EditDialog)
     ];
   }
 };

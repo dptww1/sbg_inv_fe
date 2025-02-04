@@ -1,8 +1,12 @@
-/*global FACTION_INFO */
+/*global FACTION_INFO, localStorage */
 
 import m from "mithril";
 
+const STORAGE_KEY_FACTION_TYPE_PREF = "faction-type-preference";
+const STORAGE_KEY_ARMY_LIST_FILTER_PREF = "army-list-filter-preference";
+
 let selectedArmyListFilter = null;
+let selectedTypeFilter = "armyLists";
 
 //========================================================================
 const keywordToLabel = kwd =>
@@ -18,46 +22,73 @@ const keywordToLabel = kwd =>
 //------------------------------------------------------------------------
 export const ArmyListFilter = () => {
 
+  selectedTypeFilter = localStorage.getItem(STORAGE_KEY_FACTION_TYPE_PREF) || "armyLists";
+  selectedArmyListFilter = localStorage.getItem(STORAGE_KEY_ARMY_LIST_FILTER_PREF);
+
   let optionsList = [];
 
   if (optionsList.length === 0) {
     const set = new Set();
-    FACTION_INFO.sortedFactionNames().forEach(name => {
-      const kws = FACTION_INFO.byName(name).keywords;
-      if (kws) {
-        kws.split(/\s/).forEach(f => set.add(f));
-      }
-    });
+    FACTION_INFO.all()
+      .filter(f => !f.legacy)
+      .forEach(f => {
+        if (f.keywords) {
+          f.keywords.split(/\s/).forEach(kwd => set.add(kwd));
+        }
+      });
 
     optionsList = Array.from(set).sort();
   }
 
+  //========================================================================
+  const armyListFilterChanged = ev => {
+    selectedArmyListFilter = ev.target.value;
+    localStorage.setItem(STORAGE_KEY_ARMY_LIST_FILTER_PREF, selectedArmyListFilter);
+  };
+
+  //========================================================================
+  const typeFilterChanged = ev => {
+    selectedTypeFilter = ev.target.value;
+    selectedArmyListFilter = null;
+    localStorage.setItem(STORAGE_KEY_FACTION_TYPE_PREF, selectedTypeFilter);
+  };
+
+  //========================================================================
   return {
     view: () => [
-      "Filter: ",
-      m("select[name=armyListFilter]",
+      "Filters: ",
+      m("select[name=typeFilter]",
         {
-          onchange: ev => selectedArmyListFilter = ev.target.value
+          onchange: typeFilterChanged
         },
-        [
-          m("option[value=]", "-- Show All --"),
-          m("option[value=allGood]",
+        m("option[value=armyLists]",   { selected: selectedTypeFilter === "armyLists"   }, "Army Lists"),
+        m("option[value=allegiances]", { selected: selectedTypeFilter === "allegiances" }, "Allegiances")),
+      " ",
+      selectedTypeFilter === "armyLists"
+        ? m("select[name=armyListFilter]",
             {
-              selected: "allGood" === selectedArmyListFilter
+              onchange: armyListFilterChanged
             },
-            "-- All Good --"),
-          m("option[value=allEvil]",
-            {
-              selected: "allEvil" === selectedArmyListFilter
-            },
-            "-- All Evil --"),
-        ].concat(optionsList.map(value =>
-          m("option",
-            {
-              value: value,
-              selected: value === selectedArmyListFilter
-            },
-            keywordToLabel(value))))),
+            [
+              m("option[value=]", "-- Show All --"),
+              m("option[value=allGood]",
+                {
+                  selected: "allGood" === selectedArmyListFilter
+                },
+                "-- All Good --"),
+              m("option[value=allEvil]",
+                {
+                  selected: "allEvil" === selectedArmyListFilter
+                },
+                "-- All Evil --"),
+            ].concat(optionsList.map(value =>
+              m("option",
+                {
+                  value: value,
+                  selected: value === selectedArmyListFilter
+                },
+                keywordToLabel(value)))))
+        : null,
       m("br")
     ]
   };
@@ -67,11 +98,21 @@ export const ArmyListFilter = () => {
 ArmyListFilter.isFilterActive = () => Boolean(selectedArmyListFilter);
 
 //========================================================================
+ArmyListFilter.usingAllegianceMode = () => selectedTypeFilter === "allegiances";
+
+//========================================================================
 ArmyListFilter.shouldShowArmyListName = factionAbbrev => {
   const info = factionAbbrev ? FACTION_INFO.byAbbrev(factionAbbrev) : null;
 
-  // Structural issue or ignored faction?
-  if (!info || info.obsolete) {
+  if (!info) {
+    return false;
+  }
+
+  if (selectedTypeFilter === "allegiances") {
+    return info.legacy;
+  }
+
+  if (info.legacy) {
     return false;
   }
 
