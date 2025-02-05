@@ -20,28 +20,13 @@ let factionOverviewMap = {};
 let unaffiliatedFigureMap = {};
 
 //========================================================================
-const computeTotals = figureList => {
-  return figureList.reduce((acc, val) => {
-                             acc.needed += val.needed;
-                             acc.owned += val.owned;
-                             acc.painted += val.painted;
-                             return acc;
-                           },
-                           { needed: 0, owned: 0, painted: 0 });
-};
+const computeTotals = figureList => figureList.reduce(tallySubListStats, newTotalsStruct());
 
 //========================================================================
-const computeUnaffiliatedTotals = figureMap => {
-  return Object.keys(figureMap)
-               .reduce((acc, key) => {
-                         const subTotals = computeTotals(figureMap[key]);
-                         acc.needed += subTotals.needed;
-                         acc.owned += subTotals.owned;
-                         acc.painted += subTotals.painted;
-                         return acc;
-                       },
-                       { needed: 0, owned: 0, painted: 0 });
-};
+const computeUnaffiliatedTotals = figureMap =>
+      Object.keys(figureMap)
+            .reduce((acc, key) => tallyStats(acc, computeTotals(figureMap[key])),
+                    newTotalsStruct());
 
 //========================================================================
 const domArmyDetails = armyListId => [
@@ -228,14 +213,8 @@ const domResources = fig => {
 //========================================================================
 const domTotals = () => {
   const stats = Object.keys(figuresMap)
-                      .reduce((acc, k) => {
-                                const totalsMap = computeTotals(figuresMap[k]);
-                                acc.needed += totalsMap.needed;
-                                acc.owned += totalsMap.owned;
-                                acc.painted += totalsMap.painted;
-                                return acc;
-                              },
-                              { needed: 0, owned: 0, painted: 0 });
+                      .reduce((acc, k) => tallyStats(acc, computeTotals(figuresMap[k])),
+                              newTotalsStruct());
 
   return [
     m("tr.totals",
@@ -244,7 +223,7 @@ const domTotals = () => {
       Credentials.isLoggedIn() ? m("td.numeric", stats.painted) : null,
       Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: stats.owned, nPainted: stats.painted, nOwned: stats.owned })) : null,
       m("td.numeric", stats.needed),
-      Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: stats.needed, nPainted: stats.painted, nOwned: stats.owned })) : null
+      Credentials.isLoggedIn() ? m("td.pie", m(Pie, { size: 24, n: stats.needed, nPainted: stats.neededPainted, nOwned: stats.neededOwned })) : null
      )
   ];
 };
@@ -254,13 +233,52 @@ const domTotals = () => {
 // summations, so take it out.
 //------------------------------------------------------------------------
 const extractArmyListSources = respData => {
-  if (respData.sources) {
+  if (respData && respData.sources) {
     armyListSources = respData.sources;
     delete respData.sources;
 
   } else {
     armyListSources = [];
   }
+};
+
+//========================================================================
+const newTotalsStruct = () => { return { needed: 0, owned: 0, painted: 0, neededOwned: 0, neededPainted: 0 }; };
+
+//========================================================================
+// Tallies one of the sublists of figures (warriors, heroes, monsters, etc).
+// We have to cap the "needed" values because when we show the Needed
+// pie chart, we don't want overages compensating for other underages.
+// Example: Fig A is owned: 3, needed: 2; Fig B is owned: 1, needed: 2.
+// We can't just add the owned and needed columns, which would result in
+// owned: 4, needed 4, since that shows the user has 100% of the needed
+// figures.  The actual result should be owned: 3, needed 4 = 75%.
+//------------------------------------------------------------------------
+const tallySubListStats = (acc, val) => {
+  acc.needed += val.needed;
+  acc.owned += val.owned;
+  acc.painted += val.painted;
+
+  if (val.needed > 0) {
+    acc.neededOwned += Math.min(val.needed, val.owned);
+    acc.neededPainted += Math.min(val.needed, val.painted);
+  }
+
+  return acc;
+};
+
+//========================================================================
+// Tallies the counts from tallySubListStats().  Since sublist needed
+// values have already been capped, we can just do straight addition here.
+//------------------------------------------------------------------------
+const tallyStats = (acc, val) => {
+  acc.needed += val.needed;
+  acc.owned += val.owned;
+  acc.painted += val.painted;
+  acc.neededOwned += val.neededOwned;
+  acc.neededPainted += val.neededPainted;
+
+  return acc;
 };
 
 //========================================================================
