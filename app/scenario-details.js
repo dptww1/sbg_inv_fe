@@ -286,8 +286,8 @@ const loadResourceIntoForm = (res) => {
   title(res.title);
   book(res.book);
   issue(res.issue);
-  page(res.page);
-  sort_order(res.sort_order);
+  page(res.page ? String(res.page) : null); // services return page as a number
+  sort_order(res.sort_order ? String(res.sort_order) : null); // likewise
   url(res.url);
 };
 
