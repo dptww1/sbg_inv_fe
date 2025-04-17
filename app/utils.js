@@ -1,4 +1,4 @@
-/* global localStorage, Intl */
+/* global localStorage, Intl, BOOK_INFO */
 
 import m from "mithril";
 
@@ -97,7 +97,7 @@ export const resourceIcon = res => {
 //========================================================================
 export const resourceLabel = res =>
   res && res.book
-    ? K.BOOK_NAMES[res.book] + (res.issue ? " #" + res.issue : "")
+    ? BOOK_INFO.byKey(res.book).name + (res.issue ? " #" + res.issue : "")
     : "";
 
 //========================================================================
@@ -127,7 +127,7 @@ export const scenarioSource = rec =>
 //========================================================================
 export const shortResourceLabel = res =>
   res && res.book
-    ? K.BOOK_SHORT_NAMES[res.book] + (res.issue ? " #" + res.issue : "")
+    ? BOOK_INFO.byKey(res.book).shortName + (res.issue ? " #" + res.issue : "")
     : "";
 
 //========================================================================

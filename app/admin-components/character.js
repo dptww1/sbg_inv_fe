@@ -1,3 +1,5 @@
+/*global BOOK_INFO */
+
 import m from "mithril";
 
 import { FigureListEditor } from "./figure-list-edit.js";
@@ -159,7 +161,7 @@ const domProfile = r => {
   }
 
   if (r.book) {
-    fields.push(" " + K.BOOK_NAMES[r.book]);
+    fields.push(" " + BOOK_INFO.byKey(r.book).name);
   }
 
   if (r.issue) {
@@ -276,7 +278,7 @@ const domResource = r => {
   }
 
   if (r.book) {
-    fields.push(" " + K.BOOK_NAMES[r.book]);
+    fields.push(" " + BOOK_INFO.byKey(r.book).name);
   }
 
   if (r.issue) {

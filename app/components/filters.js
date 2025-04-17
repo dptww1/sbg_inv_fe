@@ -1,4 +1,4 @@
-/* global localStorage */
+/* global localStorage, BOOK_INFO */
 
 import m from "mithril";
 
@@ -135,7 +135,10 @@ const filters = [
 
   new SelectFilter("Book",
                    false,
-                   U.alphabetizedOptionsByValue(K.BOOK_NAMES),
+                   U.alphabetizedOptionsByValue(BOOK_INFO.all().reduce((acc, book) => {
+                     acc[book.key] = book.name;
+                     return acc;
+                   }, {})),
                    (rec, activeOpts) => activeOpts.includes(U.scenarioSource(rec) ? U.scenarioSource(rec).book : null)),
 
   new SelectFilter("Models",

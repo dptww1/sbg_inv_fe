@@ -1,6 +1,7 @@
+/*global BOOK_INFO */
+
 import m from "mithril";
 
-import * as K from "../constants.js";
 import * as U from "../utils.js";
 
 //========================================================================
@@ -9,7 +10,7 @@ import * as U from "../utils.js";
 export const SelectBook = () => {
 
   const alphaSortedBooks =
-        K.BOOKS.sort((a, b) => U.strCmp(a.name, b.name));
+      BOOK_INFO.all().sort((a, b) => U.strCmp(a.name, b.name));
 
   return {
     view: vnode =>

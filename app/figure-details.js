@@ -1,4 +1,4 @@
-/*global FACTION_INFO */
+/*global BOOK_INFO, FACTION_INFO */
 
 import m from "mithril";
 
@@ -166,7 +166,7 @@ const domResourcesForType = (resourceList, type, title) => {
              title),
            m("table.figure-resources",
              activeResources.map(r => {
-               const resourceTitle = r.title || K.BOOK_NAMES[r.book];
+               const resourceTitle = r.title || BOOK_INFO.byKey(r.book).name
                return m("tr",
                         m("td",
                           r.url
@@ -186,7 +186,7 @@ const domRules = () => {
     m("ul.profile",
       figure.rules
       .map(ref => m("li",
-                    K.BOOK_NAMES[ref.book]
+                    BOOK_INFO.byId(ref.book).name
                     + ", p." + ref.page
                     + (ref.name_override ? ` (${ref.name_override})` : "")
                     + (ref.obsolete ? " (obsolete)" : ""))))
