@@ -1,9 +1,9 @@
 import m from "mithril";
 
-import { Header      } from "../header.js";
-import { Nav         } from "../nav.js";
-import { Request     } from "../request.js";
-import { RoleEditor  } from "./role-editor.js";
+import { Header         } from "../header.js";
+import { Nav            } from "../nav.js";
+import { Request        } from "../request.js";
+import { RoleListEditor } from "./role-list-editor.js";
 
 let scenario = {};
 let faction = { roles: [] };
@@ -52,7 +52,7 @@ const save = () => {
   faction.roles.forEach((r, idx) => {
     r.sort_order = idx + 1;
     r.scenario_faction_id = faction.id;
-    r.name = r.name || RoleEditor.computePlaceholder(r);
+    r.name = r.name || RoleListEditor.computePlaceholder(r);
   });
 
   Request.put("/scenario-faction/" + faction.id,
@@ -86,7 +86,7 @@ export const FactionEdit = {
           m("td", m("input[type=text][name=sort_order]", { value: faction.sort_order })))
       ),
 
-      faction.roles ? m(RoleEditor, { roles: faction.roles }) : null,
+      faction.roles ? m(RoleListEditor, { roles: faction.roles }) : null,
       m("br"),
       m("button", { onclick: save }, "Save")
     ];

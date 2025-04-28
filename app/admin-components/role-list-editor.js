@@ -90,7 +90,7 @@ const updateRoleName = (roles, roleIdx, ev) => {
 };
 
 //========================================================================
-export const RoleEditor = {
+export const RoleListEditor = {
   computePlaceholder: computePlaceholder,
 
   oninit: () => {
