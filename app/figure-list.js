@@ -148,10 +148,14 @@ const domFigureListByType = (title, list) => {
     list.map((fig, idx) => Credentials.isLoggedIn()
              ? m("tr.constant-height", { className: idx % 2 == 0 ? "striped" : null },
                  m("td",
-                   {
-                     class: "name" + (fig.slug ? " hasSilhouette" : ""),
-                     style: `--img: url('${U.silhouetteUrl(fig.slug)}')`
-                   },
+                   fig.slug
+                   ? {
+                       class: "name hasSilhouette",
+                       style: `--img: url('${U.silhouetteUrl(fig.slug)}')`
+                     }
+                   : {
+                       class: "name"
+                     },
                    m(m.route.Link, { href: "/figures/" + fig.id }, fig["name"])
                   ),
                  m("td.numeric",
