@@ -100,9 +100,7 @@ export const FactionEdit = {
       faction.roles ? m(RoleEditor,
                         {
                           roles: faction.roles,
-                          findCompletions: findCompletions,
-                          factionId: m.route.param("fid"),
-                          scenarioId: m.route.param("sid")
+                          findCompletions: findCompletions
                         })
                     : null,
       m("br"),
