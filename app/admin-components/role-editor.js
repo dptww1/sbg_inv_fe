@@ -1,6 +1,7 @@
 import m from "mithril";
 
 import * as K        from "../constants.js";
+import { Request }   from "../request.js";
 import { Typeahead } from "../components/typeahead.js";
 
 //========================================================================
@@ -34,6 +35,20 @@ const computePlaceholder = role => {
   return (parseInt(role.amount, 10) > 1 ? role.figures[0].plural_name : role.figures[0].name)
     .replace(/\s+\(.*$/, "");
 };
+
+//========================================================================
+const findCompletionsWithExclusions = exclusions =>
+  (s, typeaheadData) => {
+    Request.get("/search?type=f&q=" + s,
+                resp => {
+                  typeaheadData.suggestions = resp.data
+                    .filter(elt => !exclusions || !exclusions.find(fig => fig.figure_id == elt.id))
+                    .map(x => {
+                      x.len = s.length;
+                      return x;
+                    });
+                });
+  };
 
 //========================================================================
 const moveUp = (roles, idx) => {
@@ -153,7 +168,7 @@ export const RoleEditor = {
                                   m("td",
                                     m(Typeahead, {
                                       placeholder: "Figure name",
-                                      findMatches: attrs.findCompletions,
+                                      findMatches: findCompletionsWithExclusions(role.figures),
                                       onItemSelect: (target) => appendFigure(role, target)
                                     })))
                             : null

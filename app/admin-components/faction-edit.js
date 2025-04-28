@@ -9,17 +9,6 @@ let scenario = {};
 let faction = { roles: [] };
 
 //========================================================================
-const findCompletions = (s, typeahead) => {
-  Request.get("/search?type=f&q=" + s,
-              resp => {
-                typeahead.suggestions = resp.data.map(x => {
-                  x.len = s.length;
-                  return x;
-                });
-              });
-};
-
-//========================================================================
 const refresh = () => {
   scenario = {
     id: m.route.param("sid"),
@@ -97,12 +86,7 @@ export const FactionEdit = {
           m("td", m("input[type=text][name=sort_order]", { value: faction.sort_order })))
       ),
 
-      faction.roles ? m(RoleEditor,
-                        {
-                          roles: faction.roles,
-                          findCompletions: findCompletions
-                        })
-                    : null,
+      faction.roles ? m(RoleEditor, { roles: faction.roles }) : null,
       m("br"),
       m("button", { onclick: save }, "Save")
     ];
