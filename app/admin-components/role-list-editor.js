@@ -101,7 +101,11 @@ export const RoleListEditor = {
     m(".form-container role-edit-row",
       m("table",
         m("tr",
-          m("td"),
+          m("td.action",
+            {
+              onclick: () => attrs.roles?.forEach(r => r._expanded = false)
+            },
+            attrs.roles?.find(r => r._expanded) ? K.ICON_STRINGS.back : null),
           m("td", "#"),
           m("td", "Name"),
           m("td")),
