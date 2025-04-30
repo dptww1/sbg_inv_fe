@@ -24,8 +24,8 @@ const figures = [];
 // The profile currently being edited
 const stagingProfile = {
   name_override: "",
-  book: "",
-  issue: "",
+  book: null,
+  issue: null,
   page: null,
   url: "",
   obsolete: null,
@@ -35,7 +35,7 @@ const stagingProfile = {
 // The resource currently being edited
 const stagingResource = {
   title: "",
-  book: "",
+  book: null,
   issue: "",
   page: null,
   type: "",
@@ -456,7 +456,7 @@ const removeFigure = idx => {
 //========================================================================
 const resetStagingProfile = () => {
   stagingProfile.name_override = "";
-  stagingProfile.book = "";
+  stagingProfile.book = null;
   stagingProfile.issue = "";
   stagingProfile.page = null;
   stagingProfile.url = "";
@@ -467,7 +467,7 @@ const resetStagingProfile = () => {
 //========================================================================
 const resetStagingResource = () => {
   stagingResource.title = "";
-  stagingResource.book = "";
+  stagingResource.book = null;
   stagingResource.issue = "";
   stagingResource.page = null;
   stagingResource.type = "";
