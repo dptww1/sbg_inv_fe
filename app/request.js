@@ -33,8 +33,7 @@ const extractFn = xhr => {
     throw Request.errors().errors;
 
   } else if (xhr.status == 422) {
-    Request.errors({ errors: "Bad data" });
-    throw Request.errors().errors;
+    failFn(xhr.response);
 
   } else if (xhr.status >= 300) {
     failFn(xhr.response);

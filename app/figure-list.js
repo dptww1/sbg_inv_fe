@@ -81,7 +81,14 @@ const domArmyLists = () => {
                    m("a", { onclick: () => FigureList.updateArmyDetails(f.id) }, f.name)),
                  m("td.numeric", thisMap ? thisMap.owned : ""),
                  m("td.numeric", thisMap ? thisMap.painted : ""),
-                 m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : "")
+                 m("td", thisMap ? m(Pie, { size: 24, n: thisMap.owned, nPainted: thisMap.painted, nOwned: thisMap.owned }) : ""),
+                 Credentials.isAdmin()
+                   ? m("span.action",
+                       {
+                         onclick: () => m.route.set(`/army-list-edit/${f.id}`)
+                       },
+                       K.ICON_STRINGS.edit)
+                   : null
                 );
       }),
 
@@ -343,6 +350,8 @@ export const FigureList = {
         Credentials.isAdmin()
           ? [
               m("button", { onclick: () => m.route.set("/figure-edit") }, "Add Figure"),
+              " ",
+              m("button", { onclick: () => m.route.set("/army-list-edit") }, "Add Army List"),
               m("br")
             ]
           : null,

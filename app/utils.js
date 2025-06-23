@@ -61,6 +61,28 @@ export const daysInRange = (d1, d2) => {
 };
 
 //========================================================================
+// Restore all fields in an object to default values.  The empty string is
+// used as a default but can be overridden on a per-field basis by
+// supplying key/value pairs in the optional `overrides` parameter.
+//
+// Tries to be smart about property fields (which are Mithril streams).
+//------------------------------------------------------------------------
+export const emptyOutObject = (obj, overrides = {}) =>
+  Object.entries(obj).reduce(
+    (acc, [key, val]) => {
+      const emptyVal = overrides[key] || "";
+
+      if (typeof val === "function") {
+        val.apply(null, [ emptyVal ])
+      } else {
+        acc[key] = emptyVal;
+      }
+
+      return acc;
+    },
+    obj);
+
+//========================================================================
 const NUMERIC_FMT = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2
@@ -140,3 +162,12 @@ export const strCmp = (a, b) => {
 
   return a2 > b2 ? 1 : a2 < b2 ? -1 : 0;
 };
+
+//========================================================================
+export const unpropertize = o =>
+  Object.entries(o).reduce(
+    (acc, [key, val]) => {
+      acc[key] = typeof val === "function" ? val.call() : val;
+      return acc;
+    },
+    {});

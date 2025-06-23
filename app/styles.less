@@ -201,7 +201,7 @@ tr.totals {
 }
 
 .field-note {
-    font-size: x-small;
+  font-size: x-small;
 }
 
 .figure-inventory-overlay {
@@ -606,6 +606,42 @@ span.votes {
   font-size: 66%;
 }
 
+/* ===== BookResourceEditor ===== */
+
+.book-resource-editor-form {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: min-content max-content;
+
+  button {
+    height: fit-content;
+  }
+}
+
+/* ===== SortedList ===== */
+
+.sorted-list-container {
+  display: grid;
+  grid-template-columns: max-content min-content min-content min-content;
+
+  .sorted-list-row-content {
+    grid-column-start: 1;
+  }
+
+  .sorted-list-up-arrow {
+    grid-column-start: 2;
+  }
+
+  .sorted-list-down-arrow {
+    grid-column-start: 3;
+  }
+
+  .sorted-list-delete {
+    grid-column-start: 4;
+  }
+
+}
+
 /* ===== Typeahead ===== */
 
 .typeahead-container {
@@ -682,6 +718,46 @@ span.votes {
 
   .resources-text {
     grid-column-start: 2;
+  }
+}
+
+/* ===== Army List Edit ===== */
+
+.army-list-edit-main-content .form-container {
+  display: grid;
+  gap: 4px 2px;
+  grid-template-columns: 100px 1fr;
+  padding: 20px;
+
+  label {
+    text-align: right;
+    padding-right: 10px;
+    color: @text-color;
+  }
+
+  button {
+    grid-column: 2;
+    width: fit-content;
+  }
+
+  input, select {
+    width: fit-content;
+  }
+
+  select {
+    font-size: initial;
+  }
+
+  .abbrev-field-note {
+    color: red;
+  }
+
+  .book-resource-editor-form {
+    margin-top: 1em;
+  }
+
+  .figure-list-edit-row {
+    padding: 0;
   }
 }
 
