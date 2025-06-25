@@ -139,7 +139,7 @@ const domFigures = () => {
               id: "fig" + f.id
             },
             m(m.route.Link, { href: "/figures/" + f.id }, f.name),
-            m("span.icon",
+            m("span.action",
               {
                 onclick: () => removeFigure(idx)
               },
@@ -194,12 +194,12 @@ const domProfiles = () => {
           m("td", domProfile(profile)),
           m("td",
             idx > 0
-              ? m("span.icon", { onclick: () => moveProfileUp(idx) }, K.ICON_STRINGS.up)
+              ? m("span.action", { onclick: () => moveProfileUp(idx) }, K.ICON_STRINGS.up)
               : m("span.icon", " "),
             idx < character.rules.length - 1
-              ? m("span.icon", { onclick: () => moveProfileDown(idx) }, K.ICON_STRINGS.down)
+              ? m("span.action", { onclick: () => moveProfileDown(idx) }, K.ICON_STRINGS.down)
             : m("span.icon", " "),
-            m("span.icon", { onclick: () => character.rules.splice(idx, 1) }, K.ICON_STRINGS.remove))))),
+            m("span.action", { onclick: () => character.rules.splice(idx, 1) }, K.ICON_STRINGS.remove))))),
 
     m("b", "Add New Profile"),
     m("br"),
@@ -304,7 +304,7 @@ const domResources = () => {
                    m("td",
                      domResource(rsrc)),
                    m("td",
-                     m("span.icon",
+                     m("span.action",
                        {
                          onclick: () => character.resources.splice(idx, 1)
                        },
