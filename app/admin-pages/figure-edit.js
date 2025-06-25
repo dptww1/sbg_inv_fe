@@ -3,7 +3,7 @@
 import m from "mithril";
 
 import { Credentials }      from "../credentials.js";
-import { FigureListEditor } from "./figure-list-edit.js";
+import { FigureListEditor } from "../admin-components/figure-list-edit.js";
 import { Header      }      from "../header.js";
 import * as K               from "../constants.js";
 import { Nav         }      from "../nav.js";

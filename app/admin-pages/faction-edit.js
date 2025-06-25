@@ -3,7 +3,7 @@ import m from "mithril";
 import { Header         } from "../header.js";
 import { Nav            } from "../nav.js";
 import { Request        } from "../request.js";
-import { RoleListEditor } from "./role-list-editor.js";
+import { RoleListEditor } from "../admin-components/role-list-editor.js";
 
 let scenario = {};
 let faction = { roles: [] };
