@@ -7,6 +7,7 @@ import { BookResourceEditor } from "../admin-components/book-resource-editor.js"
 import { FigureListEditor   } from "../admin-components/figure-list-edit.js";
 import { FormField          } from "../components/form-field.js";
 import { Header             } from "../header.js";
+import * as K                 from "../constants.js";
 import { Nav                } from "../nav.js";
 import { Request            } from "../request.js";
 import { SortedList         } from "../components/sorted-list.js"
@@ -138,8 +139,14 @@ export const ArmyListEdit = () => {
 
             m("label[for=figures]", "Figures"),
             m(".figures",
-              armyList.figures().map(f =>
-                m("div", f.name)),
+              armyList.figures().map((f, idx) =>
+                m("div",
+                  m("span.figure-name", f.name),
+                  m("span.action",
+                    {
+                      onclick: () => armyList.figures().splice(idx, 1)
+                    },
+                    K.ICON_STRINGS.remove))),
               m(FigureListEditor,
                 {
                   onItemSelect: figureSelect,
