@@ -70,10 +70,22 @@ export const daysInRange = (d1, d2) => {
 export const emptyOutObject = (obj, overrides = {}) =>
   Object.entries(obj).reduce(
     (acc, [key, val]) => {
-      const emptyVal = overrides[key] || "";
+      let emptyVal = "";
+
+      // Can't just use `overrides[key]` here because we might
+      // want to override with null/undefined/etc
+      if (Object.hasOwn(overrides, key)) {
+        emptyVal = overrides[key]
+
+      } else {
+        if (Array.isArray(val)) {
+          emptyVal = [];
+        }
+      }
 
       if (typeof val === "function") {
         val.apply(null, [ emptyVal ])
+
       } else {
         acc[key] = emptyVal;
       }

@@ -9,6 +9,7 @@ import { Nav              } from "../nav.js";
 import { Request          } from "../request.js";
 import { SelectBook       } from "../components/select-book.js";
 import { Typeahead        } from "../components/typeahead.js";
+import * as U               from "../utils.js";
 
 const character = {
   id: null,
@@ -408,11 +409,7 @@ const findMatches = (searchString, typeahead) => {
 
 //========================================================================
 const initCharacterForm = () => {
-  character.id = null;
-  character.name = null;
-  character.figure_ids = [];
-  character.resources = [];
-  character.rules = [];
+  U.emptyOutObject(character, { id: null, name: null });
 
   figures.length = 0;
 
@@ -454,25 +451,10 @@ const removeFigure = idx => {
 };
 
 //========================================================================
-const resetStagingProfile = () => {
-  stagingProfile.name_override = "";
-  stagingProfile.book = null;
-  stagingProfile.issue = "";
-  stagingProfile.page = null;
-  stagingProfile.url = "";
-  stagingProfile.obsolete = null;
-  stagingProfile.sortOrder = null;
-};
+const resetStagingProfile = () => U.emptyOutObject(stagingProfile, { book: null });
 
 //========================================================================
-const resetStagingResource = () => {
-  stagingResource.title = "";
-  stagingResource.book = null;
-  stagingResource.issue = "";
-  stagingResource.page = null;
-  stagingResource.type = "";
-  stagingResource.url = "";
-};
+const resetStagingResource = () => U.emptyOutObject(stagingResource, { book: null });
 
 //========================================================================
 const saveCharacter = () => {
