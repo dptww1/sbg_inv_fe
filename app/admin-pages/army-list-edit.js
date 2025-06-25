@@ -72,9 +72,9 @@ export const ArmyListEdit = () => {
       return acc;
     }, []);
 
-    Request.putOrPost("/faction", armyList.id(), { army_list: rawArmyList }, data => {
+    Request.putOrPost("/faction", armyList.id(), { army_list: rawArmyList }, resp => {
       U.emptyOutObject(armyList);
-      m.route.set(`/faction/${data.id}`);
+      m.route.set(`/faction/${resp.data.id}`);
     });
   };
 
@@ -133,7 +133,7 @@ export const ArmyListEdit = () => {
             m("label[for=sources]", "Sources"),
             m(".sources",
               m(SortedList(armyList.sources, src => U.resourceReference(src))),
-              m(".section-header", "Add New Source"),
+              m("b", "Add New Source"),
               m(BookResourceEditor, { commitFn: rsrc => armyList.sources().push(rsrc) })),
 
             m("label[for=figures]", "Figures"),
