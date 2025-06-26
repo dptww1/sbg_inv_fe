@@ -2,6 +2,7 @@ import m from "mithril";
 
 import { About }           from "./about.js";
 import { Account }         from "./account.js";
+import { ArmyListDetails}  from "./army-list-details.js";
 import { ArmyListEdit }    from "./admin-pages/army-list-edit.js";
 import { CharacterEdit }   from "./admin-pages/character.js";
 import { Credentials }     from "./credentials.js";
@@ -44,6 +45,7 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"                  : About,
   "/army-list-edit/:id"     : AuthenticatingResolver(ArmyListEdit),
   "/army-list-edit"         : AuthenticatingResolver(ArmyListEdit),
+  "/army-list/:id"          : ArmyListDetails,
   "/characters"             : AuthenticatingResolver(CharacterEdit),
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEdit),
   "/figures/:key"           : FigureDetails,

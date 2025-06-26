@@ -24,46 +24,35 @@ const chooseArmyList = abbrev => {
 };
 
 //========================================================================
-const domAllegiance = () => {
-  const factions = figure.factions
-        ? figure.factions.filter(abbrev => FACTION_INFO.byAbbrev(abbrev).legacy)
-        : [];
-
-  return m(".figure-factions",
-           m(".section-header", "Allegiance" + (factions.length === 1 ? "" : "s")),
-           m("table",
-             factions.length > 0
-               ? factions.map(abbrev =>
-                 m("tr",
-                   m("td.faction-name",
-                     m("a",
-                       {
-                         onclick: () => chooseArmyList(abbrev)
-                       },
-                       FACTION_INFO.byAbbrev(abbrev).name))))
-               : m("tr", m("td", "None"))));
-};
+const domAllegiance = () =>
+  domFactionSubList(figure.factions,
+    "Allegiance",
+    abbrev => FACTION_INFO.byAbbrev(abbrev).legacy);
 
 //========================================================================
-const domArmyLists = () => {
-  const factions = figure.factions
-        ? figure.factions.filter(abbrev => !FACTION_INFO.byAbbrev(abbrev).legacy)
-        : [];
+const domArmyLists = () =>
+  domFactionSubList(figure.factions,
+    "Army List",
+    abbrev => !FACTION_INFO.byAbbrev(abbrev).legacy);
+
+//========================================================================
+const domFactionSubList = (factionsList, title, filterFn) => {
+  const active = factionsList ? factionsList.filter(filterFn) : [];
 
   return m(".figure-factions",
-           m(".section-header", "Army List" + (factions.length === 1 ? "" : "s")),
-           m("table",
-             factions.length > 0
-               ? factions.map(abbrev =>
-                 m("tr",
-                   m("td.faction-name",
-                     m("a",
-                       {
-                         onclick: () => chooseArmyList(abbrev)
-                       },
-                       FACTION_INFO.byAbbrev(abbrev).name))))
-               : m("tr", m("td", "None"))));
-};
+    m(".section-header", title + (active.length === 1 ? "" : "s")),
+    m("table",
+      active.length > 0
+        ? active.map(abbrev =>
+          m("tr",
+            m("td.faction-name",
+              m(m.route.Link,
+                {
+                  href: `/army-list/${FACTION_INFO.byAbbrev(abbrev).id}`
+                },
+                FACTION_INFO.byAbbrev(abbrev).name))))
+        : m("tr", m("td", "None"))));
+}
 
 //========================================================================
 const domHistory = () => {

@@ -75,7 +75,7 @@ export const ArmyListEdit = () => {
 
     Request.putOrPost("/faction", armyList.id(), { army_list: rawArmyList }, resp => {
       U.emptyOutObject(armyList);
-      m.route.set(`/faction/${resp.data.id}`);
+      m.route.set(`/army-list/${resp.data.id}`);
     });
   };
 
