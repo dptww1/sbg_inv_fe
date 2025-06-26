@@ -2,10 +2,10 @@
 
 import m from "mithril";
 
+import { ArmyListDetails     } from "./army-list-details.js";
 import { Credentials         } from "./credentials.js";
 import { EditDialog          } from "./components/edit-dialog.js";
 import { EditInventoryDialog } from "./components/edit-inventory-dialog.js";
-import { FigureList          } from "./figure-list.js";
 import { Filters             } from "./components/filters.js";
 import { FigureHistoryList   } from "./components/figure-history-list.js";
 import { Header              } from "./header.js";
@@ -16,12 +16,6 @@ import { Request             } from "./request.js";
 import * as U                  from "./utils.js";
 
 let figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
-
-//========================================================================
-const chooseArmyList = abbrev => {
-  FigureList.updateArmyDetails(FACTION_INFO.byAbbrev(abbrev).id);
-  m.route.set("/figures");
-};
 
 //========================================================================
 const domAllegiance = () =>
@@ -227,7 +221,7 @@ const requestFigureModelData = figureId => {
 //========================================================================
 const refresh = id => {
   requestFigureModelData(id);
-  FigureList.refreshArmyDetails();
+  ArmyListDetails.refreshArmyDetails();
 };
 
 //========================================================================

@@ -95,7 +95,7 @@ const domArmyLists = () => {
 };
 
 //========================================================================
-export const FigureList = {
+export const ArmyListsList = {
   oninit: () => {
     if (Credentials.isLoggedIn()) {
       Request.get("/faction",
