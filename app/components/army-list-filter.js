@@ -108,10 +108,12 @@ ArmyListFilter.shouldShowArmyListName = factionAbbrev => {
     return false;
   }
 
+  // Allegiance mode has no further logic
   if (selectedTypeFilter === "allegiances") {
     return info.legacy;
   }
 
+  // It's not Allegiance mode, so it's Army List mode: don't show allegiances
   if (info.legacy) {
     return false;
   }
@@ -123,7 +125,7 @@ ArmyListFilter.shouldShowArmyListName = factionAbbrev => {
 
   // Handle the All types
   if ((selectedArmyListFilter === "allGood" && info.alignment === 0)
-      || (selectedArmyListFilter == "allEvil" && info.alignment === 1)) {
+      || (selectedArmyListFilter === "allEvil" && info.alignment === 1)) {
     return true;
   }
 
