@@ -9,47 +9,23 @@ import * as K               from "../constants.js";
 import { Nav         }      from "../nav.js";
 import { Request     }      from "../request.js";
 
+let alignmentFilter = null;
 let figure = { factions: [], type: "hero", same_as: null, create_char: false };
 let editMode = false;
 let sameAsName = null; // null, or name of source figure
 
 //========================================================================
-const domAllegiances = () =>
-      m("tr",
-        m("td.valign-top", "Allegiances"),
-        m("td",
-          m("div.faction-checkbox-container",
-            FACTION_INFO.all()
-              .filter(f => f.legacy)
-              .map(f =>
-                m("div",
-                  m("input[type=checkbox]",
-                    {
-                      id: f.id,
-                      value: f.abbrev,
-                      checked: figure.factions.indexOf(f.abbrev) >= 0,
-                      onchange: updateFactions
-                    }),
-                  m("label", f.name))))));
-
-//========================================================================
-const domArmyLists = () =>
-      m("tr",
-        m("td.valign-top", "Army Lists"),
-        m("td",
-          m("div.faction-checkbox-container",
-            FACTION_INFO.all()
-              .filter(f => !f.legacy)
-              .map(f =>
-                m("div",
-                  m("input[type=checkbox]",
-                    {
-                      id: f.id,
-                      value: f.abbrev,
-                      checked: figure.factions.indexOf(f.abbrev) >= 0,
-                      onchange: updateFactions
-                    }),
-                  m("label", f.name))))));
+const domAlignmentFilter = () =>
+  m("tr",
+    m("td", "Filter Army Lists/Allegiances"),
+    m("td",
+      m("select",
+        {
+          onchange: ev => alignmentFilter = ev.target.value === "" ? null : parseInt(ev.target.value, 10)
+        },
+        m("option[value=]",  { selected: alignmentFilter === null  }, " -- All --"),
+        m("option[value=0]", { selected: alignmentFilter === 0 }, "-- Only Good --"),
+        m("option[value=1]", { selected: alignmentFilter === 1 }, "-- Only Evil --"))));
 
 //========================================================================
 const domCreateCharacter = () =>
@@ -60,6 +36,26 @@ const domCreateCharacter = () =>
                     onchange: ev => figure.create_char = ev.target.checked,
                     checked: figure.create_char
                   })));
+
+//========================================================================
+const domFactions = (title, filterFn) =>
+      m("tr",
+        m("td.valign-top", title),
+        m("td",
+          m("div.faction-checkbox-container",
+            FACTION_INFO.all()
+              .filter(filterFn)
+              .filter(f => alignmentFilter === null || f.alignment === alignmentFilter)
+              .map(f =>
+                m("div",
+                  m("input[type=checkbox]",
+                    {
+                      id: f.id,
+                      value: f.abbrev,
+                      checked: figure.factions.indexOf(f.abbrev) >= 0,
+                      onchange: updateFactions
+                    }),
+                  m("label", f.name))))));
 
 //========================================================================
 const domSameAs = () =>
@@ -204,8 +200,9 @@ export const FigureEdit = {
                   domTypeDropDown(),
                   domUniqueCheckbox(),
                   domSlug(),
-                  domArmyLists(),
-                  domAllegiances(),
+                  domAlignmentFilter(),
+                  domFactions("Army Lists", f => !f.legacy),
+                  domFactions("Allegiances", f => f.legacy)
                 ]
               : domSlug(),
 
