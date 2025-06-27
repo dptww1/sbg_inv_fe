@@ -124,14 +124,6 @@ export const ArmyListsList = {
       m(Header),
       m(Nav, { selected: "Figures" }),
       m("div.main-content figure-list-main-content",
-        Credentials.isAdmin()
-          ? [
-              m("button", { onclick: () => m.route.set("/figure-edit") }, "Add Figure"),
-              " ",
-              m("button", { onclick: () => m.route.set("/army-list-edit") }, "Add Army List"),
-              m("br")
-            ]
-          : null,
         domArmyLists()),
         m(EditDialog)
     ];

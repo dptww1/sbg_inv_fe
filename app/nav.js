@@ -186,10 +186,14 @@ export const Nav = {
                 m("span.desktop", "About"))),
 
             Credentials.isAdmin()
-            ? m(".nav-header",
-                m(m.route.Link, { href: "/characters" },
-                  m("span.desktop", "Ch")))
-            : null
+              ? m("nav.nav-header.admin-menu",
+                  m("span", "+",
+                    m("ul",
+                      m("li", m(m.route.Link, { href: "/army-list-edit" }, "Add Army List")),
+                      m("li", m(m.route.Link, { href: "/characters"     }, "Add Character")),
+                      m("li", m(m.route.Link, { href: "/figure-edit"    }, "Add Figure")),
+                      m("li", m(m.route.Link, { href: "/scenario-edit"  }, "Add Scenario")))))
+              : null
         ],
 
         m(".nav-header",

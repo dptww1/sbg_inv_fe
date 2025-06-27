@@ -207,33 +207,25 @@ export const Filters = {
     return f.active = !activeFilters || activeFilters.includes(f.label);
   }),
 
-  view: () => {
-    const domEdit = Credentials.isAdmin()
-          ? m("button",
-              { onclick: () => m.route.set("/scenario-edit") },
-              "Add Scenario")
-          : null;
-
-    return m("div.filters",
-             m("details",
-               m("summary",
-                 m("span.label",
-                   "Filters: " +
-                     (filters
-                       .filter(f => Credentials.isLoggedIn() || !f.requiresLogin())
-                       .map(f => f.summaryLabel())
-                       .filter(lbl => lbl != null)
-                       .join("; ")
-                       || "None")),
-                 domEdit),
-               filters
-                 .filter(f => Credentials.isLoggedIn() || !f.requiresLogin())
-                 .filter(f => f.active)
-                 .map(f => m(f)),
-               numFiltersSet() > 1
-                 ? m("div.filter-group",
-                     m("ul.active-filters",
-                       m("li", { onclick: unsetAllFilters }, "Remove All Filters")))
-                 : null));
-  }
+  view: () =>
+    m("div.filters",
+      m("details",
+        m("summary",
+          m("span.label",
+            "Filters: " +
+              (filters
+                .filter(f => Credentials.isLoggedIn() || !f.requiresLogin())
+                .map(f => f.summaryLabel())
+                .filter(lbl => lbl != null)
+                .join("; ")
+                || "None"))),
+        filters
+          .filter(f => Credentials.isLoggedIn() || !f.requiresLogin())
+          .filter(f => f.active)
+          .map(f => m(f)),
+        numFiltersSet() > 1
+          ? m("div.filter-group",
+            m("ul.active-filters",
+              m("li", { onclick: unsetAllFilters }, "Remove All Filters")))
+          : null))
 };

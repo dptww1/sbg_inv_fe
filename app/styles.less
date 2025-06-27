@@ -470,6 +470,46 @@ tr.totals {
   }
 }
 
+.admin-menu {
+  span {
+    cursor: pointer;
+    position: relative;
+  }
+
+  ul {
+    background: @tab-color;
+    display: none;
+    left: 0;
+    list-style-type: none;
+    margin-top: 0;
+    opacity: 0;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+    position: absolute;
+    top: 0.25em;
+    transition: all 0.5s ease;
+    visibility: hidden;
+    width: 200px;
+
+    li {
+      cursor: pointer;
+      padding-top: 0.25em;
+
+      :hover {
+        background: @tab-color-selected;
+        color: white;
+      }
+    }
+  }
+
+  span:hover > ul,
+  span ul:hover {
+    visibility: visible;
+    opacity: 1;
+    display: block;
+  }
+}
+
 div.filters {
   span.label {
     cursor: pointer;
