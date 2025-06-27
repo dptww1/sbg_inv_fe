@@ -4,7 +4,7 @@ const CELL_WIDTH   = 16;
 const STAR_OUTLINE = "\u2606"; // ☆
 const STAR_SOLID   = "\u2605"; // ★
 
-//==================================================================================================================================
+//========================================================================
 const domStarSolid = (n, rating, userRating) =>
       m("div",
         {
@@ -13,18 +13,25 @@ const domStarSolid = (n, rating, userRating) =>
         },
         STAR_SOLID);
 
-//==================================================================================================================================
+//========================================================================
 const highlightClassName = (idx, userRating) => idx == userRating ? "rating-star-highlight" : "";
 
-//==================================================================================================================================
+//========================================================================
 const ratingSpanWidth = (idx, userRating) =>
       idx <= userRating ? "100%" : (Math.min(1 + ((userRating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH) + "px");
 
 //==================================================================================================================================
-// m(StarRating, { id: <val>, active: <bool>, votes: <n>, rating: <n>, userRating: <n>, callback: fn(id, newRating) })
+// m(StarRating, {
+//     id: <val>,
+//     active: <bool>,
+//     votes: <n>,
+//     rating: <n>,
+//     userRating: <n>,
+//     callback: fn(id, newRating)
+//   })
 //----------------------------------------------------------------------------------------------------------------------------------
 export const StarRating = {
-  view: function(vnode) {
+  view: vnode => {
     const { id, active, votes, callback } = vnode.attrs;
     let   { rating, userRating = -1 }     = vnode.attrs;
 
@@ -37,13 +44,15 @@ export const StarRating = {
 
     return m("div",
              { class: `rating ${active ? "active" : ""}` },
-             [1, 2, 3, 4, 5].map( n => {
-               return m("div.rating-star-container",
-                        active ? { onclick: () => callback(id, n == userRating ? 0 : n) } : {},
-                        m("div", { class: `rating-star ${highlightClassName(n, userRating)}` },
-                          STAR_OUTLINE,
-                          n <= ratingCeiling ? domStarSolid(n, rating, userRating) : null));
-             }),
+             [1, 2, 3, 4, 5].map(n =>
+               m("div.rating-star-container",
+                 active ? { onclick: () => callback(id, n == userRating ? 0 : n) } : {},
+                 m("div",
+                   {
+                     class: `rating-star ${highlightClassName(n, userRating)}`
+                   },
+                   STAR_OUTLINE,
+                   n <= ratingCeiling ? domStarSolid(n, rating, userRating) : null))),
              votes > 0 ? m("span.votes", "(" + votes + ")") : null);
   }
 };
