@@ -168,11 +168,12 @@ const domRules = () => {
     m(".section-header", "Profile" + (figure.rules.length > 1 ? "s" : "")),
     m("ul.profile",
       figure.rules
-      .map(ref => m("li",
-                    BOOK_INFO.byKey(ref.book).name
-                    + ", p." + ref.page
-                    + (ref.name_override ? ` (${ref.name_override})` : "")
-                    + (ref.obsolete ? " (obsolete)" : ""))))
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map(ref => m("li",
+          BOOK_INFO.byKey(ref.book).name
+            + ", p." + ref.page
+            + (ref.name_override ? ` (${ref.name_override})` : "")
+            + (ref.obsolete ? " (obsolete)" : ""))))
   ];
 };
 
