@@ -1,5 +1,7 @@
+@rating-star-empty:       #ccc;
 @rating-star-filled:      #d0b146;
-@rating-star-user-choice: #9d70a5;
+@rating-star-user:        #9d70a5;
+@rating-star-user-empty:  #e1b2e5;
 @light-gray:              #999;
 @table-stripe-color:      #f5ecd6;
 @tab-color:               #cca583;
@@ -592,58 +594,57 @@ div.rating-breakdown {
 /* ===== Star Ratings ===== */
 
 div.rating {
-    display: inline;
-    white-space: nowrap;
-}
-
-div.rating-star-container {
   display: inline;
-  color: @link-color;
-}
-
-div.rating-star-inner {
-  /*margin-left: -16px;*/
-  position: absolute;
-  left: 0;
-  top: -2px;
-  color: @rating-star-filled;
-  overflow: hidden;
-  text-shadow: none;
-  transition: all .4s ease-out;
-}
-
-div.active div.star-rating-inner {
-  cursor: pointer;
-
-  &:hover {
-    color: @rating-star-user-choice;
-  }
-}
-
-div.rating-star {
-  display: inline;
-  position: relative;
-  text-shadow: 0 2px 2px #cecece;
-  transition: all .4s ease-out;
-}
-
-div.active div.rating-star:hover {
-  color: @rating-star-user-choice;
-  cursor: pointer;
-}
-
-div.rating-star-highlight {
-  color: @rating-star-user-choice;
-}
-
-div.rating {
+  font-family: Times;
   margin: 0;
   padding: 0;
+  white-space: nowrap;
 }
 
 span.votes {
   padding-left: 3px;
-  font-size: 66%;
+  font-size: 50%;
+}
+
+span.star.clickable:hover {
+  color: @rating-star-user;
+  cursor: pointer;
+}
+
+span.star-empty {
+  color: @rating-star-empty;
+}
+
+span.star-empty.user-rating {
+  color: @rating-star-user-empty;
+}
+
+span.star-full {
+  color: @rating-star-filled;
+}
+
+span.star-full.user-rating {
+  color: @rating-star-user;
+}
+
+span.star-partial::before {
+  content: '★';
+  background: linear-gradient(90deg, @rating-star-filled var(--pct), @rating-star-empty var(--pct));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+span.star-partial.user-rating::before {
+  background: linear-gradient(90deg, @rating-star-user var(--pct), @rating-star-empty var(--pct));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+span.star-partial.clickable:hover::before {
+  background: @rating-star-user;
+  background-clip: text;
+  cursor: pointer;
+  -webkit-text-fill-color: transparent;
 }
 
 /* ===== BookResourceEditor ===== */
@@ -884,6 +885,10 @@ span.votes {
       margin-top: 0;
     }
   }
+
+  .star-rating {
+    font-size: 18pt;
+  }
 }
 
 /* ===== Scenario List ===== */
@@ -932,6 +937,10 @@ span.votes {
   @media (min-width: 1095px) { .date-age       { display: table-cell; } }
   @media (min-width: 1095px) { .date-year      { display: table-cell; } }
   @media (min-width: 1185px) { .map            { display: table-cell; } }
+
+  .star-rating {
+    font-size: 16pt;
+  }
 }
 
 /* ===== Figure Details ===== */

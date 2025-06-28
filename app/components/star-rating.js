@@ -1,35 +1,45 @@
 import m from "mithril";
 
-const CELL_WIDTH   = 16;
-const STAR_OUTLINE = "\u2606"; // ☆
+// Based on ideas from https://codepen.io/FredGenkin/pen/eaXYGV
+
 const STAR_SOLID   = "\u2605"; // ★
 
 //========================================================================
-const domStarSolid = (n, rating, userRating) =>
-      m("div",
-        {
-          class: `rating-star-inner ${highlightClassName(n, userRating)}`,
-          style: `width: ${ratingSpanWidth(n, rating)}`
-        },
-        STAR_SOLID);
+const domStar = (starType, isUserRating, activeFn, partialVal) => {
+  const attrs = {}
+  const extraClassNames = ["star", `star-${starType}`];
+
+  let starChar = STAR_SOLID;
+
+  if (isUserRating) {
+    extraClassNames.push("user-rating");
+  }
+
+  if (activeFn) {
+    extraClassNames.push("clickable");
+    attrs.onclick = activeFn
+  }
+
+  if (partialVal) {
+    attrs.style = `--pct: calc(${partialVal} * 100%)`
+    starChar = "";
+  }
+
+  attrs.class = extraClassNames.join(" ");
+
+  return m("span", attrs, starChar);
+};
 
 //========================================================================
-const highlightClassName = (idx, userRating) => idx == userRating ? "rating-star-highlight" : "";
-
-//========================================================================
-const ratingSpanWidth = (idx, userRating) =>
-      idx <= userRating ? "100%" : (Math.min(1 + ((userRating - (idx - 1)) * (CELL_WIDTH - 2)), CELL_WIDTH) + "px");
-
-//==================================================================================================================================
 // m(StarRating, {
-//     id: <val>,
-//     active: <bool>,
-//     votes: <n>,
-//     rating: <n>,
-//     userRating: <n>,
+//     id: <val>,        // unique id passed back in `callback`
+//     active: <bool>,   // if true, user can click on a star to invoke `callback`
+//     votes: <n>,       // number of votes cast for `id`
+//     rating: <n>,      // rating average (float, not int)
+//     userRating: <n>,  // user's current rating for item `id`, 0 if none or 1..5
 //     callback: fn(id, newRating)
 //   })
-//----------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------
 export const StarRating = {
   view: vnode => {
     const { id, active, votes, callback } = vnode.attrs;
@@ -40,19 +50,32 @@ export const StarRating = {
     }
     rating = Math.max(Math.min(rating, 5), 0);
 
-    const ratingCeiling = Math.ceil(rating);
+    // All stars up to and including this one are completely solid
+    // lastSolidStar + 1 is either partial or off-scale (i.e. 6)
+    // lastSolidStar + 2 (etc) is empty
+    const lastSolidStar = Math.floor(rating);
 
-    return m("div",
-             { class: `rating ${active ? "active" : ""}` },
-             [1, 2, 3, 4, 5].map(n =>
-               m("div.rating-star-container",
-                 active ? { onclick: () => callback(id, n == userRating ? 0 : n) } : {},
-                 m("div",
-                   {
-                     class: `rating-star ${highlightClassName(n, userRating)}`
-                   },
-                   STAR_OUTLINE,
-                   n <= ratingCeiling ? domStarSolid(n, rating, userRating) : null))),
-             votes > 0 ? m("span.votes", "(" + votes + ")") : null);
+    // The star at lastSolidStar + 1 is probably a partial. We need just the
+    // fractional part of the rating to determine how much of that star
+    // to fill in.  "Probably a partial" because the rating could
+    // be an exact integer, in which case the ratingFrac is 0
+    // and there's no partial information to show.  The computation
+    // of `starType` accounts for this.
+    const ratingFrac = rating - lastSolidStar;
+
+    return m(".star-rating",
+      [1, 2, 3, 4, 5].map(n => {
+        const isUserRating = n === userRating;
+        const activeFn = active ? () => callback(id, isUserRating ? 0 : n) : null;
+        const starType =
+          n <= lastSolidStar
+            ? "full"
+            : !ratingFrac || n > lastSolidStar + 1
+              ? "empty"
+              : "partial";
+
+        return domStar(starType, isUserRating, activeFn, starType === "partial" ? ratingFrac : null);
+      }),
+      votes > 0 ? m("span.votes", `(${votes})`) : null);
   }
 };
