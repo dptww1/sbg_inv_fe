@@ -19,12 +19,17 @@ const Cookie = {
   write: (name, value) => {
     const d = new Date();
     d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
-    document.cookie = [
+    const params = [
       name + '=' + value,
       " expires=" + d.toUTCString(),
       " SameSite=Lax",
-      " Secure"
-    ].join(";");
+    ];
+    // Safari will not set a Secure cookie when using http:,
+    // as currently is happening with local development.
+    if (location.protocol === "https:") {
+      params.push(" Secure");
+    }
+    document.cookie = params.join(";");
   }
 };
 
