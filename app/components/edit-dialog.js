@@ -109,8 +109,8 @@ const validate = () => {
 // The callback parameter (function(rec) => boolean) in the methods below
 // receives the edited .amount, .date, and .notes values in the `rec`
 // parameter when the dialog's [Save] button is clicked.  It can then do
-// additional validation if desired, and should `true` if processing should
-// continue normally, or `false` if invalid data is detected.
+// additional validation if desired, and should return `true` if processing
+// should continue normally, or `false` if invalid data is detected.
 //
 // No methods here actually store any data. That's what the callback
 // methods are for.
