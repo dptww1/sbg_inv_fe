@@ -1,14 +1,17 @@
 import m from "mithril";
 
-import * as K        from "../constants.js";
-import { Request }   from "../request.js";
-import { Typeahead } from "../components/typeahead.js";
+import { FigureListEditor } from "./figure-list-edit.js";
+import * as K               from "../constants.js";
 
 //========================================================================
 let editIdx = -1;
 
 //========================================================================
 const appendFigure = (role, target) => {
+  if (target === null) {
+    return;
+  }
+
   if (!role.figures) {
     role.figures = [];
   }
@@ -16,11 +19,14 @@ const appendFigure = (role, target) => {
   role.figures.push({
     figure_id:   target.dataset.id,
     name:        target.dataset.name,
-    plural_name: target.dataset.plural_name || target.dataset.name,
-    type:        target.dataset.type,
-    unique:      false // TODO
   });
 };
+
+//========================================================================
+const computeExclusions = existingFigs =>
+  existingFigs
+    ? existingFigs.map(fig => parseInt(fig.figure_id, 10))
+    : [];
 
 //========================================================================
 const computePlaceholder = role => {
@@ -35,20 +41,6 @@ const computePlaceholder = role => {
   return (parseInt(role.amount, 10) > 1 ? role.figures[0].plural_name : role.figures[0].name)
     .replace(/\s+\(.*$/, "");
 };
-
-//========================================================================
-const findCompletionsWithExclusions = exclusions =>
-  (s, typeaheadData) => {
-    Request.get("/search?type=f&q=" + s,
-                resp => {
-                  typeaheadData.suggestions = resp.data
-                    .filter(elt => !exclusions || !exclusions.find(fig => fig.figure_id == elt.id))
-                    .map(x => {
-                      x.len = s.length;
-                      return x;
-                    });
-                });
-  };
 
 //========================================================================
 const moveUp = (roles, idx) => {
@@ -169,11 +161,11 @@ export const RoleListEditor = {
                               ? m("tr.figure",
                                   m("td"),
                                   m("td"),
-                                  m("td",
-                                    m(Typeahead, {
-                                      placeholder: "Figure name",
-                                      findMatches: findCompletionsWithExclusions(role.figures),
-                                      onItemSelect: (target) => appendFigure(role, target)
+                                m("td",
+                                  m(FigureListEditor,
+                                    {
+                                      exclusions: computeExclusions(role.figures),
+                                      onItemSelect: target => appendFigure(role, target)
                                     })))
                             : null
                           )
