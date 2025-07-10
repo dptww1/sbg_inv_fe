@@ -170,10 +170,9 @@ const domRules = () => {
       figure.rules
         .sort((a, b) => a.sort_order - b.sort_order)
         .map(ref => m("li",
-          BOOK_INFO.byKey(ref.book).name
-            + ", p." + ref.page
-            + (ref.name_override ? ` (${ref.name_override})` : "")
-            + (ref.obsolete ? " (obsolete)" : ""))))
+          U.resourceReference(ref),
+          ref.name_override ? ` (${ref.name_override})` : "",
+          ref.obsolete ? " (obsolete)" : "")))
   ];
 };
 

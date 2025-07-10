@@ -142,7 +142,7 @@ export const resourceReference = res => {
     }
 
     if (res.url) {
-      return m("a", { href: res.url }, res.url);
+      return m("a", { href: res.url }, res.title || res.url);
     }
   }
 
