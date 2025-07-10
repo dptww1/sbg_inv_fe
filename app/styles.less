@@ -560,38 +560,7 @@ ul.active-filters {
   }
 }
 
-/* ===== Rating Breakdowns ===== */
-
-div.rating-breakdown {
-  div.rating-bar-background {
-    background:    #ccc;
-    border-bottom: 1px solid #ddd;
-    border-left:   1px solid #999;
-    border-right:  1px solid #ddd;
-    border-top:    1px solid #999;
-    display:       inline-block;
-    height:        18px;
-    margin-bottom: 0.1em;
-    margin-left:   0.5em;
-    margin-right:  0.5em;
-    margin-top:    0.1em;
-    width:         100px;
-  }
-
-  div.rating-bar-foreground {
-    background: @rating-star-filled;
-    background: linear-gradient(#f0d176, #c0a136);
-    display: inline-block;
-    height: 18px;
-    width:  100px;
-  }
-
-  span.label, span.value {
-    font-size: 75%;
-  }
-}
-
-/* ===== Star Ratings ===== */
+/* ===== StarRating ===== */
 
 div.rating {
   display: inline;
@@ -762,7 +731,7 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Army List Details ===== */
+/* ===== ArmyListDetails ===== */
 
 .army-list-main-content {
   ul.sources {
@@ -773,7 +742,7 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Army List Edit ===== */
+/* ===== ArmyListEdit ===== */
 
 .army-list-edit-main-content .form-container {
   display: grid;
@@ -817,9 +786,38 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Scenario Details ===== */
+/* ===== ScenarioDetails ===== */
 
 .scenario-details {
+  .rating-breakdown {
+    .rating-bar-background {
+      background:    #ccc;
+      border-bottom: 1px solid #ddd;
+      border-left:   1px solid #999;
+      border-right:  1px solid #ddd;
+      border-top:    1px solid #999;
+      display:       inline-block;
+      height:        18px;
+      margin-bottom: 0.1em;
+      margin-left:   0.5em;
+      margin-right:  0.5em;
+      margin-top:    0.1em;
+      width:         100px;
+    }
+
+    .rating-bar-foreground {
+      background: @rating-star-filled;
+      background: linear-gradient(#f0d176, #c0a136);
+      display: inline-block;
+      height: 18px;
+      width:  100px;
+    }
+
+    span.label, span.value {
+      font-size: 75%;
+    }
+  }
+
   .role-line {
     .role-line-amount {
       display: inline;
@@ -891,7 +889,7 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Scenario List ===== */
+/* ===== ScenarioList ===== */
 
 /* Field Priority:
  * %, Name  <= Required
@@ -943,7 +941,7 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Figure Details ===== */
+/* ===== FigureDetails ===== */
 
 .figure-resource-list + .figure-resource-list {
   padding-top: 0.75em;
@@ -962,7 +960,7 @@ span.star-partial.clickable:hover::before {
   text-align: right;
 }
 
-/* ===== Figure List ===== */
+/* ===== ArmyListsList ===== */
 
 .figure-list-main-content {
   td.icon {
@@ -971,7 +969,7 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Role Editing ===== */
+/* ===== RoleListEditor ===== */
 
 .role-edit-row {
   span.icon {
@@ -982,7 +980,7 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Figure Editing ===== */
+/* ===== FigureEdit ===== */
 
 @media only screen and (min-width: 590px) {
   .faction-checkbox-container {
@@ -990,7 +988,7 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== Character Editing ===== */
+/* ===== CharacterEdit ===== */
 
 .character-details {
   table.rules {
