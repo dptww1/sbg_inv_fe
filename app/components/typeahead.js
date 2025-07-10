@@ -17,7 +17,7 @@ const decoratedName = s =>
 //       Callback when user selects a choice. `target` will be the selected
 //       DOM element, with `data-x` attribute for each field returned by the
 //       `findMatches` callback.  For example, if `findMatches` populates
-//       the suggestions array with `{id: 12, name:"abc"}` and the user
+//       the suggestions array with `{id: 12, name: "abc"}` and the user
 //       selects that choice, then `target.dataset.id === 12` and
 //       `target.dataset.name === "abc"`.
 //       If the user cancels the search, `target` == `null`.
