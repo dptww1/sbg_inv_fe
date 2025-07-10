@@ -133,7 +133,8 @@ export const ArmyListEdit = () => {
 
             m("label[for=sources]", "Sources"),
             m(".sources",
-              m(SortedList(armyList.sources, src => U.resourceReference(src))),
+              m(SortedList(armyList.sources,
+                src => m(".sorted-list-row-content", U.resourceReference(src)))),
               m("b", "Add New Source"),
               m(BookResourceEditor, { commitFn: rsrc => armyList.sources().push(rsrc) })),
 

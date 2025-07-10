@@ -632,24 +632,6 @@ span.star-partial.clickable:hover::before {
 
 .sorted-list-container {
   display: grid;
-  grid-template-columns: max-content min-content min-content min-content;
-
-  .sorted-list-row-content {
-    grid-column-start: 1;
-  }
-
-  .sorted-list-up-arrow {
-    grid-column-start: 2;
-  }
-
-  .sorted-list-down-arrow {
-    grid-column-start: 3;
-  }
-
-  .sorted-list-delete {
-    grid-column-start: 4;
-  }
-
 }
 
 /* ===== Typeahead ===== */
@@ -783,6 +765,17 @@ span.star-partial.clickable:hover::before {
 
   span.figure-name {
     margin-right: 0.5em;
+  }
+
+  .sources {
+    .sorted-list-container {
+      grid-template-columns: max-content min-content min-content min-content min-content;
+
+      .sorted-list-row-content {
+        grid-column-start: 1;
+        padding-right: 0.5em;
+      }
+    }
   }
 }
 
