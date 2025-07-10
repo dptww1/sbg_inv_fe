@@ -10,7 +10,7 @@ import { Header             } from "../header.js";
 import * as K                 from "../constants.js";
 import { Nav                } from "../nav.js";
 import { Request            } from "../request.js";
-import { SortedList         } from "../components/sorted-list.js"
+import { SortedList         } from "../admin-components/sorted-list.js"
 import * as U                 from "../utils.js";
 
 export const ArmyListEdit = () => {
