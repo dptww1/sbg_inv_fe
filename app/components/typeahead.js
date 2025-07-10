@@ -136,9 +136,9 @@ export const Typeahead = vnode => {
                  {
                    oncreate: vn => vn.dom.focus(),
                    placeholder: attrs.placeholder || 'Search...',
-                   onkeyup: handleKey
-                 },
-                 searchString),
+                   onkeyup: handleKey,
+                   value: searchString
+                 }),
                m(".suggestions",
                  m("ul",
                    data.suggestions.length === 0
