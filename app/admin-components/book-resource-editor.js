@@ -5,7 +5,7 @@ import { FormField  } from "../components/form-field.js";
 import { SelectBook } from "../components/select-book.js";
 import * as U         from "../utils.js";
 
-export const BookResourceEditor = () => {
+export const BookResourceEditor = (idxProp, commitFn) => {
   const resource = {
     book:  prop(), // key, not id
     issue: prop(),
@@ -13,7 +13,9 @@ export const BookResourceEditor = () => {
   };
 
   return {
-    view: vnode => {
+    view: () => {
+      console.log("BOOKRESOURCEEDITOR!", idxProp, "RSRC.book()", resource.book());
+
       return m(".book-resource-editor-form",
         m("span", "Book"),
         m(SelectBook, { value: resource.book(), callback: val => resource.book(val) }),
@@ -26,7 +28,7 @@ export const BookResourceEditor = () => {
         m("button",
           {
             onclick: () => {
-              vnode.attrs.commitFn(U.unpropertize(resource));
+              commitFn(U.unpropertize(resource));
               U.emptyOutObject(resource)
             }
           },

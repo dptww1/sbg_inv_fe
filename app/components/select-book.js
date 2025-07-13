@@ -17,9 +17,7 @@ export const SelectBook = () => {
       m("select[name=book]",
         {
           value: vnode.attrs.value,
-          onchange: ev => {
-            vnode.attrs.callback(ev.target.value);
-          }
+          onchange: ev => vnode.attrs.callback(ev.target.value)
         },
         alphaSortedBooks
           .map(book =>
