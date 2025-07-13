@@ -13,7 +13,7 @@ import { Pie                 } from "./components/pie.js";
 import { Request             } from "./request.js";
 import * as U                  from "./utils.js";
 
-export const ArmyListDetails = (() => {
+export const ArmyListDetails = () => {
 
   let armyListId;
   let armyListSources = [];
@@ -180,4 +180,4 @@ export const ArmyListDetails = (() => {
         m(EditDialog))
     ]
   };
-})();
+};
