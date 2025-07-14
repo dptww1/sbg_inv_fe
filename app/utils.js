@@ -70,29 +70,39 @@ export const daysInRange = (d1, d2) => {
 export const emptyOutObject = (obj, overrides = {}) =>
   Object.entries(obj).reduce(
     (acc, [key, val]) => {
-      let emptyVal = "";
-
-      // Can't just use `overrides[key]` here because we might
-      // want to override with null/undefined/etc
-      if (Object.hasOwn(overrides, key)) {
-        emptyVal = overrides[key]
+      if (typeof val === "function") { // assumed to be a Mithril stream
+        const propVal = val.apply(null, [])
+        val.apply(null, [ emptyOutObjectDefaultValueForType(key, propVal, overrides) ])
 
       } else {
-        if (Array.isArray(val)) {
-          emptyVal = [];
-        }
-      }
-
-      if (typeof val === "function") {
-        val.apply(null, [ emptyVal ])
-
-      } else {
-        acc[key] = emptyVal;
+        acc[key] = emptyOutObjectDefaultValueForType(key, val, overrides);
       }
 
       return acc;
     },
     obj);
+
+//========================================================================
+const emptyOutObjectDefaultValueForType = (key, val, overrides) => {
+  // Can't just use `overrides[key]` here because we might
+  // want to override with null/undefined/etc
+  if (key in overrides) {
+    return overrides[key];
+
+  } else if (val === null) {
+    return null;
+
+  } else if (Array.isArray(val)) {
+    return [];
+
+  } else if (typeof val === "object") {
+    return {};
+
+  } else {
+    return "";
+  }
+}
+
 
 //========================================================================
 const NUMERIC_FMT = new Intl.NumberFormat("en-US", {
