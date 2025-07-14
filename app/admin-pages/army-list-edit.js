@@ -9,10 +9,11 @@ import { FormField          } from "../components/form-field.js";
 import { Header             } from "../header.js";
 import * as K                 from "../constants.js";
 import { Nav                } from "../nav.js";
+import { OrderedList        } from "../admin-components/ordered-list.js"
 import { Request            } from "../request.js";
-import { SortedList         } from "../admin-components/sorted-list.js"
 import * as U                 from "../utils.js";
 
+//========================================================================
 export const ArmyListEdit = () => {
   const armyList = {
     id:        prop(null),
@@ -24,6 +25,29 @@ export const ArmyListEdit = () => {
     sources:   prop([]),
     figures:   prop([])
   };
+
+  // If non-null, we're editing this element within `armyList.sources`
+  let srcEditIdx = null;
+
+  //========================================================================
+  const domSource = (src, idx) =>
+    m(".ordered-list-row-content",
+      srcEditIdx === idx
+        ? m(".add-edit-source",
+            m("b", idx === null ? "Add Source" : "Edit Source"),
+            m(BookResourceEditor,
+              {
+                initialData: idx === null ? null : armyList.sources()[idx],
+                commitFn: rsrc => {
+                  if (rsrc != null) {
+                    idx === null
+                      ? armyList.sources().push(rsrc)
+                      : armyList.sources()[idx] = rsrc;
+                  }
+                  srcEditIdx = null;
+                }
+              }))
+        : U.resourceReference(src));
 
   //========================================================================
   const duplicateAbbrevWarning = () => {
@@ -73,9 +97,11 @@ export const ArmyListEdit = () => {
       return acc;
     }, []);
 
-    Request.putOrPost("/faction", armyList.id(), { army_list: rawArmyList }, resp => {
-      U.emptyOutObject(armyList);
-      m.route.set(`/army-list/${resp.data.id}`);
+    Request.putOrPost("/faction", armyList.id(), { army_list: rawArmyList }, () => {
+      Request.messages(`Saved ${armyList.name()} Army List`);
+      if (!armyList.id() && confirm("Creating a new Army List requires a reload.  Reload now?")) {
+        location.reload();
+      }
     });
   };
 
@@ -133,10 +159,14 @@ export const ArmyListEdit = () => {
 
             m("label[for=sources]", "Sources"),
             m(".sources",
-              m(SortedList(armyList.sources,
-                src => m(".sorted-list-row-content", U.resourceReference(src)))),
-              m("b", "Add New Source"),
-              m(BookResourceEditor, { commitFn: rsrc => armyList.sources().push(rsrc) })),
+              m(OrderedList,
+                {
+                  itemsProp: armyList.sources,
+                  renderFn: domSource,
+                  editFn: idx => srcEditIdx = idx,
+                  suppressControls: srcEditIdx !== null
+                }),
+              srcEditIdx === null ? domSource(null, null) : null),
 
             m("label[for=figures]", "Figures"),
             m(".figures",

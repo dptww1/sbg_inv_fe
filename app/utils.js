@@ -120,7 +120,10 @@ export const getLocalStorageBoolean = keyName => {
 };
 
 //========================================================================
-export const isBlank = str => !str || str.match(/^\s*$/);
+export const isBlank = str =>
+  !str
+    || typeof str === "number"
+    || (typeof str === "string" && str.match(/^\s*$/));
 
 //========================================================================
 export const isNotBlank = str => !isBlank(str);

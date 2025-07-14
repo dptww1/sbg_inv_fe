@@ -4,9 +4,16 @@ import m from "mithril";
 
 import * as U from "../utils.js";
 
-//========================================================================
-// m(SelectBook, { value: <currentValue>, callback: fn(newValue) })
-//------------------------------------------------------------------------
+/**
+ * Mithril component showing an alphabetized dropdown list of books.
+ *
+ * Required vnode attributes:
+ *   - callback(bookKey) function called when the selected book changes;
+ *       note that the callback parameter is a book `key` rather than an `id`.
+ *
+ * Optional vnode attributes:
+ *   - value key which should be used as the currently-selected book
+ */
 export const SelectBook = () => {
 
   const alphaSortedBooks =
