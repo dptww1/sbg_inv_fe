@@ -135,10 +135,12 @@ const filters = [
 
   new SelectFilter("Book",
                    false,
-                   U.alphabetizedOptionsByValue(BOOK_INFO.all().reduce((acc, book) => {
-                     acc[book.key] = book.name;
-                     return acc;
-                   }, {})),
+                   U.alphabetizedOptionsByValue(BOOK_INFO.all()
+                     .filter(book => book.hasScenarios)
+                     .reduce((acc, book) => {
+                       acc[book.key] = book.name;
+                       return acc;
+                     }, {})),
                    (rec, activeOpts) => activeOpts.includes(U.scenarioSource(rec) ? U.scenarioSource(rec).book : null)),
 
   new SelectFilter("Models",
