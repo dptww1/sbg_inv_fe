@@ -44,37 +44,37 @@ const computePlaceholder = role => {
 
 //========================================================================
 const moveUp = (roles, idx) => {
-  let tmp = roles[idx - 1];
-  roles[idx - 1] = roles[idx];
-  roles[idx] = tmp;
+  let tmp = roles()[idx - 1];
+  roles()[idx - 1] = roles()[idx];
+  roles()[idx] = tmp;
 
-  roles[idx - 1].sort_order -= 1;
-  roles[idx].sort_order += 1;
+  roles()[idx - 1].sort_order -= 1;
+  roles()[idx].sort_order += 1;
 };
 
 //========================================================================
 const moveDown = (roles, idx) => {
-  let tmp = roles[idx + 1];
-  roles[idx + 1] = roles[idx];
-  roles[idx] = tmp;
+  let tmp = roles()[idx + 1];
+  roles()[idx + 1] = roles()[idx];
+  roles()[idx] = tmp;
 
-  roles[idx + 1].sort_order += 1;
-  roles[idx].sort_order -= 1;
+  roles()[idx + 1].sort_order += 1;
+  roles()[idx].sort_order -= 1;
 };
 
 //========================================================================
 const removeFigure = (roles, roleIdx, figureIdx) => {
-  roles[roleIdx].figures.splice(figureIdx, 1);
+  roles()[roleIdx].figures.splice(figureIdx, 1);
 };
 
 //========================================================================
 const updateRoleAmount = (roles, roleIdx, ev) => {
-  roles[roleIdx].amount = ev.target.value;
+  roles()[roleIdx].amount = ev.target.value;
 };
 
 //========================================================================
 const updateRoleName = (roles, roleIdx, ev) => {
-  roles[roleIdx].name = ev.target.value;
+  roles()[roleIdx].name = ev.target.value;
 
   if (ev.which === 13) { // enter
     editIdx = -1;
@@ -95,14 +95,14 @@ export const RoleListEditor = {
         m("tr",
           m("td.action",
             {
-              onclick: () => attrs.roles?.forEach(r => r._expanded = false)
+              onclick: () => attrs.roles() ? attrs.roles().forEach(r => r._expanded = false) : false
             },
-            attrs.roles?.find(r => r._expanded) ? K.ICON_STRINGS.back : null),
+            attrs.roles() && attrs.roles().find(r => r._expanded) ? K.ICON_STRINGS.back : null),
           m("td", "#"),
           m("td", "Name"),
           m("td")),
 
-        attrs.roles.map((role, roleIdx) => [
+        attrs.roles().map((role, roleIdx) => [
           m("tr",
             m("td",
               { onclick: () => role._expanded = !role._expanded },
@@ -142,10 +142,10 @@ export const RoleListEditor = {
               roleIdx > 0
                 ? m("span.icon", { onclick: () => moveUp(attrs.roles, roleIdx) }, K.ICON_STRINGS.up)
                 : m("span.icon", " "),
-              roleIdx < attrs.roles.length - 1
+              roleIdx < attrs.roles().length - 1
                 ? m("span.icon", { onclick: () => moveDown(attrs.roles, roleIdx) }, K.ICON_STRINGS.down)
                 : m("span.icon", " "),
-              m("span.icon", { onclick: () => attrs.roles.splice(roleIdx, 1) }, K.ICON_STRINGS.remove)
+              m("span.icon", { onclick: () => attrs.roles().splice(roleIdx, 1) }, K.ICON_STRINGS.remove)
             )
           ),
           role._expanded
@@ -176,7 +176,7 @@ export const RoleListEditor = {
         m("span.icon",
           {
             onclick: () => {
-              attrs.roles.push({ amount: 1, name: "", plural_name: "", figures: [], _expanded: true });
+              attrs.roles().push({ amount: 1, name: "", plural_name: "", figures: [], _expanded: true });
               editIdx = attrs.roles.length - 1;
             }
           },
