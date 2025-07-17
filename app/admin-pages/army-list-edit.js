@@ -9,8 +9,8 @@ import { FormField          } from "../components/form-field.js";
 import { Header             } from "../header.js";
 import * as K                 from "../constants.js";
 import { Nav                } from "../nav.js";
-import { OrderedList        } from "../admin-components/ordered-list.js"
 import { Request            } from "../request.js";
+import { SortableList       } from "../admin-components/sortable-list.js"
 import * as U                 from "../utils.js";
 
 //========================================================================
@@ -31,7 +31,7 @@ export const ArmyListEdit = () => {
 
   //========================================================================
   const domSource = (src, idx) =>
-    m(".ordered-list-row-content",
+    m(".sortable-list-row-content",
       srcEditIdx === idx
         ? m(".add-edit-source",
             m("b", idx === null ? "Add Source" : "Edit Source"),
@@ -159,7 +159,7 @@ export const ArmyListEdit = () => {
 
             m("label[for=sources]", "Sources"),
             m(".sources",
-              m(OrderedList,
+              m(SortableList,
                 {
                   itemsProp: armyList.sources,
                   renderFn: domSource,
