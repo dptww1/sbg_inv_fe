@@ -7,7 +7,7 @@ import { ArmyListEdit }    from "./admin-pages/army-list-edit.js";
 import { ArmyListsList }   from "./army-lists-list.js";
 import { CharacterEdit }   from "./admin-pages/character.js";
 import { Credentials }     from "./credentials.js";
-import { FactionEdit }     from "./admin-pages/faction-edit.js";
+import { FactionEditor }   from "./admin-pages/faction-editor.js";
 import { FigureDetails }   from "./figure-details.js";
 import { FigureEdit }      from "./admin-pages/figure-edit.js";
 import { ForgotPassword }  from "./forgot-password.js";
@@ -47,7 +47,7 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/army-list-edit"         : AuthenticatingResolver(ArmyListEdit),
   "/army-list/:id"          : ArmyListDetails,
   "/characters"             : AuthenticatingResolver(CharacterEdit),
-  "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEdit),
+  "/faction-edit/:sid/:fid" : AuthenticatingResolver(FactionEditor),
   "/figures/:key"           : FigureDetails,
   "/figure-edit/:id"        : AuthenticatingResolver(FigureEdit),
   "/figure-edit"            : AuthenticatingResolver(FigureEdit),

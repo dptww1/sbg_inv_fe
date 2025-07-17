@@ -69,7 +69,7 @@ const save = () => {
 };
 
 //========================================================================
-export const FactionEdit = {
+export const FactionEditor = {
   oninit: () => {
     refresh();
   },
