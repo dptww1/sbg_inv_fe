@@ -102,74 +102,74 @@ export const RoleListEditor = {
           m("td", "Name"),
           m("td")),
 
-          attrs.roles.map((role, roleIdx) => [
-                    m("tr",
-                      m("td",
-                        { onclick: () => role._expanded = !role._expanded },
-                        m("span.icon", role._expanded ? K.ICON_STRINGS["open"] : K.ICON_STRINGS["closed"]),
-                        m("input[type=hidden]",
-                          {
-                            name: "id" + roleIdx,
-                            value: role.id ? role.id : ""
-                          }),
-                        m("input[type=hidden]",
-                          {
-                            name: "sort_order" + roleIdx,
-                            value: roleIdx
-                          })
-                        ),
-                      m("td", roleIdx === editIdx
-                                ? m("input[type=number][min=1][max=300]",
-                                    {
-                                      name: "amount" + roleIdx,
-                                      value: role.amount,
-                                      onchange: ev => updateRoleAmount(attrs.roles, roleIdx, ev)
-                                    })
-                                : role.amount
-                      ),
-                      m("td", roleIdx === editIdx
-                                ? m("input[type=text]",
-                                    {
-                                      name: "name" + roleIdx,
-                                      placeholder: computePlaceholder(role),
-                                      value: computePlaceholder(role),
-                                      onkeyup: ev => updateRoleName(attrs.roles, roleIdx, ev)
-                                    })
-                                : computePlaceholder(role)
-                      ),
-                      m("td",
-                        m("span.icon", { onclick: () => editIdx = editIdx === roleIdx ? -1 : roleIdx }, K.ICON_STRINGS.edit),
-                          roleIdx > 0
-                            ? m("span.icon", { onclick: () => moveUp(attrs.roles, roleIdx) }, K.ICON_STRINGS.up)
-                            : m("span.icon", " "),
-                          roleIdx < attrs.roles.length - 1
-                            ? m("span.icon", { onclick: () => moveDown(attrs.roles, roleIdx) }, K.ICON_STRINGS.down)
-                            : m("span.icon", " "),
-                          m("span.icon", { onclick: () => attrs.roles.splice(roleIdx, 1) }, K.ICON_STRINGS.remove)
-                        )
-                      ),
-                      role._expanded
-                        ? role.figures.map((figure, figureIdx) =>
-                            m("tr.figure",
-                              m("td"),
-                              m("td"),
-                              m("td", figure.name),
-                              m("td", m("span.icon", { onclick: () => removeFigure(attrs.roles, roleIdx, figureIdx) }, "-"))
-                            )
-                          ).concat(
-                            roleIdx === editIdx
-                              ? m("tr.figure",
-                                  m("td"),
-                                  m("td"),
-                                m("td",
-                                  m(FigureListEditor,
-                                    {
-                                      exclusions: computeExclusions(role.figures),
-                                      onItemSelect: target => appendFigure(role, target)
-                                    })))
-                            : null
-                          )
-                        : null
+        attrs.roles.map((role, roleIdx) => [
+          m("tr",
+            m("td",
+              { onclick: () => role._expanded = !role._expanded },
+              m("span.icon", role._expanded ? K.ICON_STRINGS["open"] : K.ICON_STRINGS["closed"]),
+              m("input[type=hidden]",
+                {
+                  name: "id" + roleIdx,
+                  value: role.id ? role.id : ""
+                }),
+              m("input[type=hidden]",
+                {
+                  name: "sort_order" + roleIdx,
+                  value: roleIdx
+                })
+            ),
+            m("td", roleIdx === editIdx
+              ? m("input[type=number][min=1][max=300]",
+                {
+                  name: "amount" + roleIdx,
+                  value: role.amount,
+                  onchange: ev => updateRoleAmount(attrs.roles, roleIdx, ev)
+                })
+              : role.amount
+            ),
+            m("td", roleIdx === editIdx
+              ? m("input[type=text]",
+                {
+                  name: "name" + roleIdx,
+                  placeholder: computePlaceholder(role),
+                  value: computePlaceholder(role),
+                  onkeyup: ev => updateRoleName(attrs.roles, roleIdx, ev)
+                })
+              : computePlaceholder(role)
+            ),
+            m("td",
+              m("span.icon", { onclick: () => editIdx = editIdx === roleIdx ? -1 : roleIdx }, K.ICON_STRINGS.edit),
+              roleIdx > 0
+                ? m("span.icon", { onclick: () => moveUp(attrs.roles, roleIdx) }, K.ICON_STRINGS.up)
+                : m("span.icon", " "),
+              roleIdx < attrs.roles.length - 1
+                ? m("span.icon", { onclick: () => moveDown(attrs.roles, roleIdx) }, K.ICON_STRINGS.down)
+                : m("span.icon", " "),
+              m("span.icon", { onclick: () => attrs.roles.splice(roleIdx, 1) }, K.ICON_STRINGS.remove)
+            )
+          ),
+          role._expanded
+            ? role.figures.map((figure, figureIdx) =>
+              m("tr.figure",
+                m("td"),
+                m("td"),
+                m("td", figure.name),
+                m("td", m("span.icon", { onclick: () => removeFigure(attrs.roles, roleIdx, figureIdx) }, "-"))
+              )
+            ).concat(
+              roleIdx === editIdx
+                ? m("tr.figure",
+                  m("td"),
+                  m("td"),
+                  m("td",
+                    m(FigureListEditor,
+                      {
+                        exclusions: computeExclusions(role.figures),
+                        onItemSelect: target => appendFigure(role, target)
+                      })))
+                : null
+            )
+            : null
            ])
         ),
 
