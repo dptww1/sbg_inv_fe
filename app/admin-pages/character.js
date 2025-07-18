@@ -2,7 +2,7 @@
 
 import m from "mithril";
 
-import { FigureListEditor } from "../admin-components/figure-list-edit.js";
+import { FigureListEditor } from "../admin-components/figure-list-editor.js";
 import { Header           } from "../header.js";
 import * as K               from "../constants.js";
 import { Nav              } from "../nav.js";

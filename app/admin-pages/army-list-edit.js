@@ -4,7 +4,7 @@ import m from "mithril";
 import prop from "mithril/stream";
 
 import { BookResourceEditor } from "../admin-components/book-resource-editor.js";
-import { FigureListEditor   } from "../admin-components/figure-list-edit.js";
+import { FigureListEditor   } from "../admin-components/figure-list-editor.js";
 import { FormField          } from "../components/form-field.js";
 import { Header             } from "../header.js";
 import * as K                 from "../constants.js";
