@@ -54,9 +54,9 @@ const domFactionsRollup = () => {
       m("div.section-subheader",
         idx === 0 ? "Good" : "Evil",
         Credentials.isAdmin()
-          ? m("button",
+          ? m("span.action",
               { onclick: () => m.route.set("/faction-edit/" + scenario().id + "/" + faction.id) },
-              "Edit")
+              K.ICON_STRINGS.edit)
           : null),
       domRolesRollup(faction.roles))));
 
@@ -92,7 +92,7 @@ const domResourceItem = function(res) {
                     : res.title + (res.issue ? " #" + res.issue : "") + (res.page ? ", page " + res.page : ""));
 
   if (Credentials.isAdmin()) {
-    html.push(m("span.edit", { onclick: () => { loadResourceIntoForm(res); } }, K.ICON_STRINGS.edit));
+    html.push(m("span.action", { onclick: () => { loadResourceIntoForm(res); } }, K.ICON_STRINGS.edit));
   }
 
   return html;
@@ -392,7 +392,7 @@ export const ScenarioDetails = {
             m("div.page-title",
               it.name,
               Credentials.isAdmin()
-                ? m("button", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, "Edit")
+                ? m("span.action", { onclick: () => m.route.set("/scenario-edit/" + it.id) }, K.ICON_STRINGS.edit)
                 : null),
             m("div.scenario-rating", m(StarRating, starParams)),
             m("div.scenario-date", formatDate(it.date_age, it.date_year, it.date_month, it.date_day)),
