@@ -110,7 +110,7 @@ const save = () => {
 
 
 //========================================================================
-export const ScenarioEdit = {
+export const ScenarioEditor = {
   oninit: () => {
     refresh();
   },
@@ -119,7 +119,7 @@ export const ScenarioEdit = {
     return [
       m(Header),
       m(Nav),
-      m("div.main-content",
+      m(".main-content",
         m("table",
           Object.entries(FIELDS).map(a => m("tr", m("td", a[0]), m("td", a[1]())))),
         domFaction(0),

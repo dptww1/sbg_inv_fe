@@ -14,7 +14,7 @@ import { Login                 } from "./login.js";
 import { Page404               } from "./page-404.js";
 import { Register              } from "./register.js";
 import { ScenarioDetails       } from "./scenario-details.js";
-import { ScenarioEdit          } from "./admin-pages/scenario-edit.js";
+import { ScenarioEditor        } from "./admin-pages/scenario-editor.js";
 import { ScenarioFactionEditor } from "./admin-pages/scenario-faction-editor.js";
 import { ScenarioList          } from "./scenario-list.js";
 import { Stats                 } from "./stats.js";
@@ -54,8 +54,8 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/figures"                : ArmyListsList,
   "/scenarios/:key"         : ScenarioDetails,
   "/scenarios"              : ScenarioList,
-  "/scenario-edit/:id"      : AuthenticatingResolver(ScenarioEdit),
-  "/scenario-edit"          : AuthenticatingResolver(ScenarioEdit),
+  "/scenario-edit/:id"      : AuthenticatingResolver(ScenarioEditor),
+  "/scenario-edit"          : AuthenticatingResolver(ScenarioEditor),
   "/login"                  : Login,
   "/register"               : Register,
   "/forgot-pw"              : ForgotPassword,
