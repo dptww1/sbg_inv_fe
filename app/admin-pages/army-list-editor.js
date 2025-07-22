@@ -14,7 +14,7 @@ import { SortableList       } from "../admin-components/sortable-list.js"
 import * as U                 from "../utils.js";
 
 //========================================================================
-export const ArmyListEdit = () => {
+export const ArmyListEditor = () => {
   const armyList = {
     id:        prop(null),
     name:      prop(""),

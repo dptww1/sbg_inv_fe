@@ -3,7 +3,7 @@ import m from "mithril";
 import { About                 } from "./about.js";
 import { Account               } from "./account.js";
 import { ArmyListDetails       } from "./army-list-details.js";
-import { ArmyListEdit          } from "./admin-pages/army-list-edit.js";
+import { ArmyListEditor        } from "./admin-pages/army-list-editor.js";
 import { ArmyListsList         } from "./army-lists-list.js";
 import { CharacterEdit         } from "./admin-pages/character.js";
 import { Credentials           } from "./credentials.js";
@@ -43,8 +43,8 @@ m.route.set = (path, data, options) => {
 m.route.prefix = "#";
 m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/about"                  : About,
-  "/army-list-edit/:id"     : AuthenticatingResolver(ArmyListEdit),
-  "/army-list-edit"         : AuthenticatingResolver(ArmyListEdit),
+  "/army-list-edit/:id"     : AuthenticatingResolver(ArmyListEditor),
+  "/army-list-edit"         : AuthenticatingResolver(ArmyListEditor),
   "/army-list/:id"          : ArmyListDetails,
   "/characters"             : AuthenticatingResolver(CharacterEdit),
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(ScenarioFactionEditor),
