@@ -1,6 +1,7 @@
 import m    from "mithril";
 import prop from "mithril/stream";
 
+import { FormField      } from "../components/form-field.js";
 import { Header         } from "../header.js";
 import { Nav            } from "../nav.js";
 import { Request        } from "../request.js";
@@ -9,7 +10,9 @@ import * as U             from "../utils.js";
 
 let scenario = {};
 let faction = {
-  roles: prop([])
+  roles: prop([]),
+  suggested_points: prop(0),
+  actual_points: prop(0)
 };
 
 //========================================================================
@@ -27,26 +30,30 @@ const isFormValid = () => {
 
 //========================================================================
 const refresh = () => {
+  // Dummy data must exist before Request is made
   scenario = {
     id: m.route.param("sid"),
-    size: 0,
     scenario_factions: [{}, {}]
   };
   faction = {
-    roles: prop([])
+    roles: prop([]),
+    suggested_points: prop(0),
+    actual_points: prop(0)
   };
 
-  const fid = m.route.param("fid");
+  const fid = parseInt(m.route.param("fid"), 10);
 
   if (scenario.id) {
     Request.get("/scenarios/" + scenario.id,
                 resp => {
                   scenario = resp.data;
-                  faction = scenario.scenario_factions.find(f => f.id === parseInt(fid, 10));
+                  faction = scenario.scenario_factions.find(f => f.id === fid);
                   if (faction.roles) {
                     faction.roles.forEach(o => U.propertize(o));
                   }
                   faction.roles = prop(faction.roles);
+                  faction.suggested_points = prop(faction.suggested_points);
+                  faction.actual_points = prop(faction.actual_points);
                 });
   }
 };
@@ -96,19 +103,11 @@ export const FactionEditor = {
     m(Header),
     m(Nav),
     m(".faction-editor-main-content",
-      m("table",
-        m("tr",
-          m("td", "Suggested Points"),
-          m("td", m("input[type=text][name=suggested_points]", { value: faction.suggested_points }))),
+      m(".page-title", `Edit ${scenario.name}: ${faction.sort_order === 1 ? "Good" : "Evil" }`),
 
-        m("tr",
-          m("td", "Actual Points"),
-          m("td", m("input[type=text][name=actual_points]", { value: faction.actual_points }))),
-
-        m("tr",
-          m("td", "Sort Order"),
-          m("td", m("input[type=text][name=sort_order]", { value: faction.sort_order })))
-      ),
+      m(".faction-editor-main-content-grid",
+        FormField.numeric(faction.suggested_points, "Suggested Points", { size: 5 }),
+        FormField.numeric(faction.actual_points, "Actual Points", { size: 5 })),
 
       faction.roles() ? m(RoleListEditor, { roles: faction.roles }) : null,
       m("br"),

@@ -52,16 +52,18 @@ export const FormField = {
       return m(".form-field-numeric-wrapper", prop());
     }
 
+    const fieldId = configProps["id"] || labelToId(label);
     const attrs = {
       onkeyup: ev => prop(ev.target.value),
       value: prop()
     };
 
-    copyAttributes(attrs, configProps, "max", "min", "name");
+    copyAttributes(attrs, configProps, "max", "min", "name", "size");
 
     return [
+      U.isBlank(label) ? null : m(`label[for=${fieldId}`, label),
       m(".form-field-numeric-wrapper",
-        m("input[type=number]", attrs))
+        m(`input[type=number][id=${fieldId}]`, attrs))
     ]
   },
 
