@@ -170,7 +170,7 @@ const updateFactions = ev => {
 };
 
 //========================================================================
-export const FigureEdit = {
+export const FigureEditor = {
   oninit: (/*vnode*/) => {
     refresh();
   },
