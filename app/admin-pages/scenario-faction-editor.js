@@ -94,7 +94,7 @@ const save = () => {
 };
 
 //========================================================================
-export const FactionEditor = {
+export const ScenarioFactionEditor = {
   oninit: () => {
     refresh();
   },
