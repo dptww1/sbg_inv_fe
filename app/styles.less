@@ -773,6 +773,10 @@ span.star-partial.clickable:hover::before {
     margin-right: 0.5em;
   }
 
+  .form-field-container {
+    display: block;
+  }
+
   .sources {
     .sortable-list-container {
       grid-template-columns: max-content min-content min-content min-content min-content;
@@ -968,16 +972,38 @@ span.star-partial.clickable:hover::before {
   }
 }
 
-/* ===== RoleListEditor =====
+/* ===== RoleListEditor ===== */
 
-.role-edit-row {
-  span.icon {
-    color: black;
-    cursor: pointer;
-    display: inline-block;
-    min-width: 20px;
+.role-list-editor {
+  .sortable-list-container {
+    grid-template-columns: min-content min-content max-content min-content min-content min-content min-content;
+
+    .expand {
+      grid-column-start: 1;
+      display: inline;
+    }
+
+    .form-field-container {
+      display: inline;
+    }
+
+    .form-field-numeric-wrapper, .form-field-text-wrapper {
+      display: inline;
+      padding-right: 1em;
+    }
+
+    .form-field-numeric-wrapper {
+      text-align: right;
+    }
+
+    .role-name-column {
+      .role-name {
+        display: inline;
+        margin-right: 1em;
+      }
+    }
   }
-}*/
+}
 
 /* ===== FigureEdit ===== */
 

@@ -1,6 +1,7 @@
 /* global localStorage, Intl, BOOK_INFO */
 
-import m from "mithril";
+import m    from "mithril";
+import prop from "mithril/stream";
 
 import * as K from "./constants.js";
 
@@ -120,13 +121,28 @@ export const getLocalStorageBoolean = keyName => {
 };
 
 //========================================================================
-export const isBlank = str =>
-  !str
-    || typeof str === "number"
-    || (typeof str === "string" && str.match(/^\s*$/));
+export const isBlank = o =>
+  o === null
+    || o === undefined
+    || (Array.isArray(o) && o.length === 0)
+    || (typeof o === "string" && o.length === 0);
 
 //========================================================================
-export const isNotBlank = str => !isBlank(str);
+export const isNotBlank = o => !isBlank(o);
+
+//========================================================================
+export const propertize = obj => {
+  if (obj) {
+    const keys = Object.keys(obj);
+    keys.forEach(key => {
+      if (typeof key !== "function") {
+        obj[key] = prop(obj[key]);
+      }
+    });
+  }
+
+  return obj;
+}
 
 //========================================================================
 export const pluralName = figure => figure.plural_name || figure.name;
@@ -192,7 +208,15 @@ export const strCmp = (a, b) => {
 export const unpropertize = o =>
   Object.entries(o).reduce(
     (acc, [key, val]) => {
-      acc[key] = typeof val === "function" ? val.call() : val;
+      if (typeof val === "function") {
+        acc[key] = val.call();
+
+      } else if (typeof val === "object" && val !== null) {
+        acc[key] = unpropertize(o[key]);
+
+      } else {
+        acc[key] = val;
+      }
       return acc;
     },
     {});

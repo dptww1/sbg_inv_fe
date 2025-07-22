@@ -1,7 +1,11 @@
-import m from "mithril";
+import m    from "mithril";
+import prop from "mithril/stream";
 
-import { FigureListEditor } from "./figure-list-edit.js";
+import { FigureListEditor } from "./figure-list-editor.js";
+import { FormField        } from "../components/form-field.js";
 import * as K               from "../constants.js";
+import { SortableList     } from "./sortable-list.js";
+import * as U               from "../utils.js";
 
 //========================================================================
 let editIdx = -1;
@@ -13,10 +17,10 @@ const appendFigure = (role, target) => {
   }
 
   if (!role.figures) {
-    role.figures = [];
+    role.figures = prop([]);
   }
 
-  role.figures.push({
+  role.figures().push({
     figure_id:   target.dataset.id,
     name:        target.dataset.name,
   });
@@ -30,56 +34,61 @@ const computeExclusions = existingFigs =>
 
 //========================================================================
 const computePlaceholder = role => {
-  if (role.name && role.name.length > 0) {
-    return role.name;
+  if (U.isNotBlank(role.name())) {
+    return role.name();
   }
 
-  if (!role.figures || role.figures.length == 0) {
+  if (U.isBlank(role.figures())) {
     return "";
   }
 
-  return (parseInt(role.amount, 10) > 1 ? role.figures[0].plural_name : role.figures[0].name)
-    .replace(/\s+\(.*$/, "");
+  return role.figures()[0].name.replace(/\s+\(.*$/, "");
 };
 
 //========================================================================
-const moveUp = (roles, idx) => {
-  let tmp = roles()[idx - 1];
-  roles()[idx - 1] = roles()[idx];
-  roles()[idx] = tmp;
+const domRole = (role, idx) => [
+  FormField.hidden(role.id, "id" + idx),
 
-  roles()[idx - 1].sort_order -= 1;
-  roles()[idx].sort_order += 1;
-};
+  FormField.hidden(() => idx, "sort_order" + idx),
 
-//========================================================================
-const moveDown = (roles, idx) => {
-  let tmp = roles()[idx + 1];
-  roles()[idx + 1] = roles()[idx];
-  roles()[idx] = tmp;
+  m(".expand",
+    {
+      onclick: () => role._expanded = !role._expanded
+    },
+    m("span.action", role._expanded ? K.ICON_STRINGS.open : K.ICON_STRINGS.closed)),
 
-  roles()[idx + 1].sort_order += 1;
-  roles()[idx].sort_order -= 1;
-};
+  FormField.numeric(role.amount, null, {
+    max: 300,
+    min: 1,
+    name: "amount" + idx,
+    readOnly: idx !== editIdx
+  }),
 
-//========================================================================
-const removeFigure = (roles, roleIdx, figureIdx) => {
-  roles()[roleIdx].figures.splice(figureIdx, 1);
-};
+  m(".role-name-column",
+    FormField.text(role.name, null, {
+      hideLabel: true,
+      placeholder: computePlaceholder(role),
+      readOnly: idx !== editIdx
+    }),
+    m("br"),
 
-//========================================================================
-const updateRoleAmount = (roles, roleIdx, ev) => {
-  roles()[roleIdx].amount = ev.target.value;
-};
-
-//========================================================================
-const updateRoleName = (roles, roleIdx, ev) => {
-  roles()[roleIdx].name = ev.target.value;
-
-  if (ev.which === 13) { // enter
-    editIdx = -1;
-  }
-};
+    role._expanded
+      ? [
+          role.figures().map((figure, figureIdx) => [
+            m(".role-name", figure.name),
+            m("span.action", { onclick: () => role.figures().splice(figureIdx, 1) }, K.ICON_STRINGS.remove),
+            m("br")
+          ]),
+          idx === editIdx
+            ? m(FigureListEditor,
+                {
+                  exclusions: computeExclusions(role.figures()),
+                  onItemSelect: target => appendFigure(role, target)
+                })
+            : null
+        ]
+      : null)
+];
 
 //========================================================================
 export const RoleListEditor = {
@@ -89,97 +98,35 @@ export const RoleListEditor = {
     editIdx = -1;
   },
 
-  view: ({ attrs }) =>
-    m(".form-container role-edit-row",
-      m("table",
-        m("tr",
-          m("td.action",
-            {
-              onclick: () => attrs.roles() ? attrs.roles().forEach(r => r._expanded = false) : false
-            },
-            attrs.roles() && attrs.roles().find(r => r._expanded) ? K.ICON_STRINGS.back : null),
-          m("td", "#"),
-          m("td", "Name"),
-          m("td")),
+  view: ({ attrs }) => [
+    (attrs.roles() && attrs.roles().find(r => r._expanded))
+      ? m(".collapse-all.action",
+        {
+          onclick: () => attrs.roles() ? attrs.roles().forEach(r => r._expanded = false) : false
+        },
+        K.ICON_STRINGS.back)
+      : null,
 
-        attrs.roles().map((role, roleIdx) => [
-          m("tr",
-            m("td",
-              { onclick: () => role._expanded = !role._expanded },
-              m("span.icon", role._expanded ? K.ICON_STRINGS["open"] : K.ICON_STRINGS["closed"]),
-              m("input[type=hidden]",
-                {
-                  name: "id" + roleIdx,
-                  value: role.id ? role.id : ""
-                }),
-              m("input[type=hidden]",
-                {
-                  name: "sort_order" + roleIdx,
-                  value: roleIdx
-                })
-            ),
-            m("td", roleIdx === editIdx
-              ? m("input[type=number][min=1][max=300]",
-                {
-                  name: "amount" + roleIdx,
-                  value: role.amount,
-                  onchange: ev => updateRoleAmount(attrs.roles, roleIdx, ev)
-                })
-              : role.amount
-            ),
-            m("td", roleIdx === editIdx
-              ? m("input[type=text]",
-                {
-                  name: "name" + roleIdx,
-                  placeholder: computePlaceholder(role),
-                  value: computePlaceholder(role),
-                  onkeyup: ev => updateRoleName(attrs.roles, roleIdx, ev)
-                })
-              : computePlaceholder(role)
-            ),
-            m("td",
-              m("span.icon", { onclick: () => editIdx = editIdx === roleIdx ? -1 : roleIdx }, K.ICON_STRINGS.edit),
-              roleIdx > 0
-                ? m("span.icon", { onclick: () => moveUp(attrs.roles, roleIdx) }, K.ICON_STRINGS.up)
-                : m("span.icon", " "),
-              roleIdx < attrs.roles().length - 1
-                ? m("span.icon", { onclick: () => moveDown(attrs.roles, roleIdx) }, K.ICON_STRINGS.down)
-                : m("span.icon", " "),
-              m("span.icon", { onclick: () => attrs.roles().splice(roleIdx, 1) }, K.ICON_STRINGS.remove)
-            )
-          ),
-          role._expanded
-            ? role.figures.map((figure, figureIdx) =>
-              m("tr.figure",
-                m("td"),
-                m("td"),
-                m("td", figure.name),
-                m("td", m("span.icon", { onclick: () => removeFigure(attrs.roles, roleIdx, figureIdx) }, "-"))
-              )
-            ).concat(
-              roleIdx === editIdx
-                ? m("tr.figure",
-                  m("td"),
-                  m("td"),
-                  m("td",
-                    m(FigureListEditor,
-                      {
-                        exclusions: computeExclusions(role.figures),
-                        onItemSelect: target => appendFigure(role, target)
-                      })))
-                : null
-            )
-            : null
-           ])
-        ),
+    m(".role-list-editor",
+      m(SortableList,
+        {
+          itemsProp: attrs.roles,
+          renderFn: domRole,
+          editFn: idx => {
+            editIdx = idx;
+            attrs.roles()[idx]._expanded = true;
+          }
+        })),
 
-        m("span.icon",
+        m(".action",
           {
             onclick: () => {
-              attrs.roles().push({ amount: 1, name: "", plural_name: "", figures: [], _expanded: true });
-              editIdx = attrs.roles.length - 1;
+              const newRec = U.propertize({ id: null, amount: 1, name: "", plural_name: "", figures: [] });
+              newRec._expanded = true; // this field shouldn't be propertized
+              attrs.roles().push(newRec);
+              editIdx = attrs.roles().length - 1;
             }
           },
           K.ICON_STRINGS.plus)
-    )
+  ]
 };

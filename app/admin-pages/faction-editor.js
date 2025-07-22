@@ -13,11 +13,27 @@ let faction = {
 };
 
 //========================================================================
+const isFormValid = () => {
+  if (U.isBlank(faction.roles())) {
+    return false;
+  }
+
+  if (!faction.roles().every(role => !U.isBlank(role.figures()))) {
+    return false;
+  }
+
+  return true;
+};
+
+//========================================================================
 const refresh = () => {
   scenario = {
     id: m.route.param("sid"),
     size: 0,
     scenario_factions: [{}, {}]
+  };
+  faction = {
+    roles: prop([])
   };
 
   const fid = m.route.param("fid");
@@ -27,6 +43,9 @@ const refresh = () => {
                 resp => {
                   scenario = resp.data;
                   faction = scenario.scenario_factions.find(f => f.id === parseInt(fid, 10));
+                  if (faction.roles) {
+                    faction.roles.forEach(o => U.propertize(o));
+                  }
                   faction.roles = prop(faction.roles);
                 });
   }
@@ -47,25 +66,24 @@ const save = () => {
     const matchInfo = /^(.*)(\d)$/.exec(widget.name);
 
     if (matchInfo) {
-      faction.roles()[matchInfo[2]][matchInfo[1]] = widget.value;
+      faction.roles()[matchInfo[2]][matchInfo[1]] = prop(widget.value);
 
     } else {
-      faction[widget.name] = widget.value;
+      faction[widget.name] = prop(widget.value);
     }
   }
 
   faction.roles().forEach((r, idx) => {
     r.sort_order = idx + 1;
     r.scenario_faction_id = faction.id;
-    r.name = r.name || RoleListEditor.computePlaceholder(r);
+    r.name = prop(r.name() || RoleListEditor.computePlaceholder(r));
   });
 
   Request.put("/scenario-faction/" + faction.id,
-    { scenario_faction: U.unpropertize(faction) },
-    () => {
-      m.route.set("/scenarios/" + scenario.id);
-    }
-  );
+    {
+      scenario_faction: U.unpropertize(faction)
+    },
+    () => m.route.set("/scenarios/" + scenario.id));
 };
 
 //========================================================================
@@ -74,10 +92,10 @@ export const FactionEditor = {
     refresh();
   },
 
-  view: () => {
-    return [
-      m(Header),
-      m(Nav),
+  view: () => [
+    m(Header),
+    m(Nav),
+    m(".faction-editor-main-content",
       m("table",
         m("tr",
           m("td", "Suggested Points"),
@@ -94,7 +112,11 @@ export const FactionEditor = {
 
       faction.roles() ? m(RoleListEditor, { roles: faction.roles }) : null,
       m("br"),
-      m("button", { onclick: save }, "Save")
-    ];
-  }
+      m("button",
+        {
+          disabled: !isFormValid(),
+          onclick: save
+        },
+        "Save"))
+  ]
 };
