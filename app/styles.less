@@ -905,6 +905,33 @@ span.star-partial.clickable:hover::before {
   }
 }
 
+/* ===== ScenarioEditor ===== */
+
+.scenario-editor-form-container {
+  display: grid;
+  gap: 4px 2px;
+  grid-template-columns: max-content min-content;
+  padding: 20px;
+
+  button {
+    grid-column: 2;
+    width: fit-content;
+  }
+
+  label {
+    padding-right: 1em;
+    text-align: right;
+  }
+
+  input, select {
+    width: fit-content;
+  }
+
+  select {
+    font-size: initial;
+  }
+}
+
 /* ===== ScenarioList ===== */
 
 /* Field Priority:

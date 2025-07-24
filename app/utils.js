@@ -128,6 +128,17 @@ export const isBlank = o =>
     || (typeof o === "string" && o.length === 0);
 
 //========================================================================
+export const isNoneBlank = (...args) => {
+  for (const arg of args) {
+    if (isBlank(arg)) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+//========================================================================
 export const isNotBlank = o => !isBlank(o);
 
 //========================================================================

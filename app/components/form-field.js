@@ -77,7 +77,7 @@ export const FormField = {
           onchange: ev => prop(convertTo(configProps["valueType"], ev.target.value)),
         },
         (configProps["options"] || []).map(o => {
-          const [optLabel, val] = o.split(/\s*=\s*/)
+          const [optLabel, val] = o.includes("=") ? o.split(/\s*=\s*/) : [o, o];
           return m(`option[value=${val}]`,
             {
               selected: String(prop()) === val
