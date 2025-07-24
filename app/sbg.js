@@ -5,7 +5,7 @@ import { Account               } from "./account.js";
 import { ArmyListDetails       } from "./army-list-details.js";
 import { ArmyListEditor        } from "./admin-pages/army-list-editor.js";
 import { ArmyListsList         } from "./army-lists-list.js";
-import { CharacterEdit         } from "./admin-pages/character.js";
+import { CharacterEditor       } from "./admin-pages/character-editor.js";
 import { Credentials           } from "./credentials.js";
 import { FigureDetails         } from "./figure-details.js";
 import { FigureEditor          } from "./admin-pages/figure-editor.js";
@@ -46,7 +46,7 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/army-list-edit/:id"     : AuthenticatingResolver(ArmyListEditor),
   "/army-list-edit"         : AuthenticatingResolver(ArmyListEditor),
   "/army-list/:id"          : ArmyListDetails,
-  "/characters"             : AuthenticatingResolver(CharacterEdit),
+  "/characters"             : AuthenticatingResolver(CharacterEditor),
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(ScenarioFactionEditor),
   "/figures/:key"           : FigureDetails,
   "/figure-edit/:id"        : AuthenticatingResolver(FigureEditor),

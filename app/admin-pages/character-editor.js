@@ -474,7 +474,7 @@ const saveCharacter = () => {
 };
 
 //========================================================================
-export const CharacterEdit = {
+export const CharacterEditor = {
   oninit: (/*vnode*/) => {
     initCharacterForm();
   },
