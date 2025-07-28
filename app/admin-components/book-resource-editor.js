@@ -8,17 +8,19 @@ import * as U         from "../utils.js";
 /**
  * Mithril component for handling creating & editing of Book resources.
  *
- * Required vnode attributes:
- *   - commitFn({ book: <string>, issue: <string>, page: <string> }) called when user submits the form.
- *       The parameter will be `null` if the user cancels.
- *
  * Optional vnode attributes:
- *   - initData value is object with optional `book`, `issue`, and `page` keys, which are the initial
- *       values of those fields in the form.
+ *   - commitFn({ book: <string>, issue: <string>, page: <string> }) called when user submits the form.
+ *       The parameter will be `null` if the user cancels.  Must be provided unless `embedded: true`,
+ *       in which case this parameter is ignored.
+ *   - embedded if `true`, buttons are disabled and the caller's fields are edited directly
+ *   - initialData value is object with optional `book`, `issue`, and `page` keys, which are the initial
+ *       values of those fields in the form.  If `embedded: true`, those fields are assumed to be
+ *       `prop()`s, otherwise they are assumed *not* to be `prop()`s.
  *
  * TODO: handle sort_order, id attributes?
  */
 export const BookResourceEditor = () => {
+  const PARAMS = [ "book", "issue", "prop" ];
   let resource = {
     book:  prop(), // key, not id
     issue: prop(),
@@ -28,18 +30,27 @@ export const BookResourceEditor = () => {
   let editMode = false;
 
   //========================================================================
-  const isFormValid = () => !U.isBlank(resource.book()) && !U.isBlank(resource.page());
-
-  //========================================================================
   return {
     oninit: vnode => {
-      const initData = vnode.attrs.initialData;
-      if (initData) {
-        resource.book(initData.book);
-        resource.issue(initData.issue);
-        resource.page(initData.page);
+      if (vnode.attrs.embedded) {
+        // If resource is embedded, we assume the client code is
+        // already using prop() for the attributes
+        resource = vnode.attrs.initialData;
 
-        editMode = true;
+      } else {
+        const initData = vnode.attrs.initialData;
+        if (initData) {
+          // If not embedded and initial data is provided, assume
+          // that data is *not* props, and slurp it into our local
+          // shadow buffer for editing.
+          PARAMS.forEach(p => resource[p] = prop(initData[p]));
+          editMode = true;
+
+        } else {
+          // Not embedded and no initial data provided; set up
+          //
+          PARAMS.forEach(p => resource[p] = prop());
+        }
       }
     },
 
@@ -51,23 +62,32 @@ export const BookResourceEditor = () => {
 
       FormField.text(resource.page, "Page"),
 
-      m("span", ""),
-      m("span.button-bar",
-        m("button",
-          {
-            disabled: !isFormValid(),
-            onclick: () => {
-              vnode.attrs.commitFn(U.unpropertize(resource));
-              U.emptyOutObject(resource)
-            }
-          },
-          editMode ? "Save" : "Add"),
-        editMode
-          ? m("button",
-              {
-                onclick: () => vnode.attrs.commitFn(null)
-              },
-              "Cancel")
-          : null))
+      vnode.attrs.embedded
+        ? null
+        : [
+            m("span", ""),
+            m("span.button-bar",
+              m("button",
+                {
+                  disabled: !BookResourceEditor.isValid(resource),
+                  onclick: () => {
+                    vnode.attrs.commitFn(U.unpropertize(resource));
+                    U.emptyOutObject(resource)
+                  }
+                },
+                editMode ? "Save" : "Add"),
+              editMode
+                ? m("button",
+                  {
+                    onclick: () => vnode.attrs.commitFn(null)
+                  },
+                  "Cancel")
+                : null)
+        ]
+    )
   }
 };
+
+BookResourceEditor.isValid = resource =>
+  U.isNotBlank(U.getByPath(resource, "book"))
+    && U.isNotBlank(U.getByPath(resource, "page"));
