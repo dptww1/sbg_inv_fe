@@ -315,13 +315,13 @@ const refresh = function() {
 const submitResourceForm = () => {
   const payload = {
     resource: {
-      id:            resourceId() ? resourceId() : null,
+      id:            U.isNotBlank(resourceId()) ? resourceId() : null,
       resource_type: parseInt(resourceType(), 10),
-      title:         title(),
-      book:          book(),
-      issue:         issue(),
-      page:          parseInt(page(), 10),
-      url:           url()
+      title:         U.isNotBlank(title()) ? title() : null,
+      book:          U.isNotBlank(book()) ? book() :null,
+      issue:         U.isNotBlank(issue()) ? issue() : null,
+      page:          U.isNotBlank(page()) ? parseInt(page(), 10) : null,
+      url:           U.isNotBlank(url()) ? url() : null
     }
   };
 
