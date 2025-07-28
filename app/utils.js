@@ -115,6 +115,38 @@ const NUMERIC_FMT = new Intl.NumberFormat("en-US", {
 export const formatNumber = n => NUMERIC_FMT.format(n);
 
 //========================================================================
+export const getByPath = (object, path) => {
+  //console.log("1)", object, "PATH", path);
+  if (!object
+    || !path
+    || (typeof object != "object")) {
+    return null;
+  }
+
+  const thisPath = path.split("/", 1)[0];
+  let thisObject = object[thisPath];
+
+  //console.log("2) THISPATH", thisPath, "THISOBJECT", thisObject);
+
+  // Account for thisObject being a property
+  if (typeof thisObject === "function") {
+    //console.log("2A) PROP, NOW", thisObject.call());
+    thisObject = thisObject.call();
+  }
+
+  // Have we reached the end of the path?
+  const nextPath = path.replace(new RegExp(`^.{${thisPath.length}}/?`), "");
+  //console.log("3) NEXTPATH", nextPath);
+  if (nextPath.length === 0) {
+    //console.log("END) VAL", thisObject);
+    return thisObject;
+  }
+
+  // If not, recurse
+  return getByPath(thisObject, nextPath);
+}
+
+//========================================================================
 export const getLocalStorageBoolean = keyName => {
   const strVal = localStorage.getItem(keyName);
   return strVal === "true";
