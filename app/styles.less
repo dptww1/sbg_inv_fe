@@ -1056,16 +1056,19 @@ span.star-partial.clickable:hover::before {
 /* ===== CharacterEdit ===== */
 
 .character-details {
-  table.rules {
-    span.icon {
-      color: black;
-      cursor: pointer;
-      display: inline-block;
-      min-width: 20px;
-    }
+  display: grid;
+  gap: 4px 1em;
+  grid-template-columns: min-content max-content;
+
+  button {
+    grid-column: 2;
+    height: fit-content;
+    width: fit-content;
   }
 
   .figure-list-figure {
+    grid-column-start: 2;
+
     a {
       margin-right: 0.5em;
     }

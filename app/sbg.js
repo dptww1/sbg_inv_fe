@@ -46,6 +46,7 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/army-list-edit/:id"     : AuthenticatingResolver(ArmyListEditor),
   "/army-list-edit"         : AuthenticatingResolver(ArmyListEditor),
   "/army-list/:id"          : ArmyListDetails,
+  "/characters/:id"         : AuthenticatingResolver(CharacterEditor),
   "/characters"             : AuthenticatingResolver(CharacterEditor),
   "/faction-edit/:sid/:fid" : AuthenticatingResolver(ScenarioFactionEditor),
   "/figures/:key"           : FigureDetails,
