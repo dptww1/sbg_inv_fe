@@ -69,53 +69,53 @@ const doSearchSelect = target => {
     return;
   }
 
-  switch (target.dataset.type) {
-  case "f":
-    showSearch = false;
-    m.route.set("/figures/:id", { id: target.dataset.id });
-    break;
+  const URL_MAPPINGS = {
+    "c": "/characters/:id",
+    "f": "/figures/:id",
+    "s": "/scenarios/id:"
+  };
 
-  case "s":
+  const url = URL_MAPPINGS[target.dataset.type];
+
+  if (url) {
     showSearch = false;
-    m.route.set("/scenarios/:id", { id: target.dataset.id });
-    break;
+    m.route.set(url, { id: target.dataset.id });
   }
 };
 
 //========================================================================
 const findCompletions = (s, typeahead) => {
   Request.get("/search?q=" + s,
-              resp => {
-                const figures = [];
-                const scenarios = [];
+    resp => {
+      const sortedResults = {
+        "c": { items: [], header: "-- Characters --" },
+        "f": { items: [], header: "-- Figures --" },
+        "s": { items: [], header: "-- Scenarios --" }
+      }
 
-                resp.data.forEach(x => {
-                  const bookStr = U.shortResourceLabel(x);
-                  x.name = x.name + (bookStr ? " [" + bookStr + "]" : "");
-                  x.len = s.length;
+      resp.data.forEach(x => {
+        const bookStr = U.shortResourceLabel(x);
+        x.name = x.name + (bookStr ? " [" + bookStr + "]" : "");
+        x.len = s.length;
 
-                  if (x.type === "f") {
-                    figures.push(x);
-                  } else {
-                    scenarios.push(x);
-                  }
-                });
+        if (sortedResults[x.type]) {
+          sortedResults[x.type].items.push(x);
+        }
+      });
 
-                if (figures.length > 0 && scenarios.length > 0) {
-                  typeahead.suggestions = [ { name: "-- Figures --"} ]
-                    .concat(figures)
-                    .concat([ { name: "-- Scenarios --" } ])
-                    .concat(scenarios);
+      const showHeaders = Object.keys(sortedResults)
+        .reduce((acc, ch) => acc + sortedResults[ch].items.length > 0 ? 1 : 0, 0)
 
-                } else if (figures.length > 0) {
-                  typeahead.suggestions = figures;
-
-                } else {
-                  // either scenarios.length > 0 or scenarios.length === 0
-                  // but this assignment covers both cases
-                  typeahead.suggestions = scenarios;
-                }
-              });
+      typeahead.suggestions = [];
+      Object.keys(sortedResults).sort()
+        .filter(ch => sortedResults[ch].items.length > 0)
+        .forEach(ch => {
+          if (showHeaders) {
+            typeahead.suggestions.push( { name: sortedResults[ch].header } );
+          }
+          typeahead.suggestions = typeahead.suggestions.concat(sortedResults[ch].items);
+        });
+    });
 };
 
 //========================================================================
