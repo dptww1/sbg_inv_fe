@@ -8,7 +8,7 @@ import { Header           } from "../header.js";
 import * as K               from "../constants.js";
 import { Nav              } from "../nav.js";
 import { Request          } from "../request.js";
-import { SelectBook       } from "../components/select-book.js";
+import { SortableList     } from "../admin-components/sortable-list.js";
 import * as U               from "../utils.js";
 
 const character = U.propertize({
@@ -86,118 +86,98 @@ const domFigures = () => [
 const domProfile = r => {
   const fields = [];
 
-  if (r.url) {
-    fields.push([ " ", m("a", { href: r.url }, r.url)]);
+  const baseStr = U.resourceReference(r);
+
+  if (U.isNotBlank(baseStr)) {
+    fields.push(U.resourceReference(r));
+
+    if (r.name_override) {
+      fields.push(" (" + r.name_override + ")");
+    }
+
+    if (r.obsolete) {
+      fields.push(" (obsolete)");
+    }
   }
 
-  if (r.book) {
-    fields.push(" " + BOOK_INFO.byKey(r.book).name);
-  }
-
-  if (r.issue) {
-    fields.push(" #" + r.issue);
-  }
-
-  if (r.page) {
-    fields.push(" p." + r.page);
-  }
-
-  if (r.name_override) {
-    fields.push(" (" + r.name_override + ")");
-  }
-
-  if (r.obsolete) {
-    fields.push(" (obsolete)");
-  }
-
-  return fields;
+  return m(".sortable-list-content", fields);
 };
 
 //========================================================================
-const domProfiles = () => {
-  return [
-    m(".section-header", "Profiles"),
+const domProfiles = () => [
+  m("label", "Profiles"),
+  m(".character-profiles-container",
+    m(SortableList,
+      {
+        itemsProp: character.rules,
+        renderFn: domProfile
+      }))
+  /*  m("b", "Add New Profile"),
+  m("br"),
 
-    m("table.profiles",
-      character.rules.map((profile, idx) =>
-        m("tr",
-          m("td", domProfile(profile)),
-          m("td",
-            idx > 0
-              ? m("span.action", { onclick: () => moveProfileUp(idx) }, K.ICON_STRINGS.up)
-              : m("span.icon", " "),
-            idx < character.rules.length - 1
-              ? m("span.action", { onclick: () => moveProfileDown(idx) }, K.ICON_STRINGS.down)
-            : m("span.icon", " "),
-            m("span.action", { onclick: () => character.rules.splice(idx, 1) }, K.ICON_STRINGS.remove))))),
+  m("table",
+    m("tr",
+      m("td", "Name Override"),
+      m("td",
+        m("input[type=text][name=name_override][size=40]",
+          {
+            value: stagingProfile.name_override,
+            onchange: ev => stagingProfile.name_override = ev.target.value
+          }))),
 
-    m("b", "Add New Profile"),
-    m("br"),
+    m("tr",
+      m("td", "Book"),
+      m("td", m(SelectBook,
+        {
+          value: stagingProfile.book,
+          callback: value => stagingProfile.book = value
+        }))),
+    m("tr",
+      m("td", "Issue"),
+      m("td",
+        m("input[type=text][name=profile_issue][size=15]",
+          {
+            value: stagingProfile.issue,
+            onchange: ev => stagingProfile.issue = ev.target.value
+          }))),
 
-    m("table",
-      m("tr",
-        m("td", "Name Override"),
-        m("td",
-          m("input[type=text][name=name_override][size=40]",
-            {
-              value: stagingProfile.name_override,
-              onchange: ev => stagingProfile.name_override = ev.target.value
-            }))),
+    m("tr",
+      m("td", "Page"),
+      m("td",
+        m("input[type=number][name=profile_page][size=5]",
+          {
+            value: stagingProfile.page,
+            onchange: ev => stagingProfile.page = ev.target.value
+          }))),
 
-      m("tr",
-        m("td", "Book"),
-        m("td", m(SelectBook,
-                  {
-                    value: stagingProfile.book,
-                    callback: value => stagingProfile.book = value
-                  }))),
-            m("tr",
-        m("td", "Issue"),
-        m("td",
-          m("input[type=text][name=profile_issue][size=15]",
-            {
-              value: stagingProfile.issue,
-              onchange: ev => stagingProfile.issue = ev.target.value
-            }))),
+    m("tr",
+      m("td", "URL"),
+      m("td",
+        m("input[type=text][name=profile_url][size=80]",
+          {
+            value: stagingProfile.url,
+            onchange: ev => stagingProfile.url = ev.target.value
+          }))),
 
-      m("tr",
-        m("td", "Page"),
-        m("td",
-          m("input[type=number][name=profile_page][size=5]",
-            {
-              value: stagingProfile.page,
-              onchange: ev => stagingProfile.page = ev.target.value
-            }))),
+    m("tr",
+      m("td", "Obsolete?"),
+      m("td",
+        m("input[type=checkbox][value=true]",
+          {
+            checked: stagingProfile.obsolete,
+            onchange: ev => stagingProfile.obsolete = ev.target.checked
+          }))),
 
-      m("tr",
-        m("td", "URL"),
-        m("td",
-          m("input[type=text][name=profile_url][size=80]",
-            {
-              value: stagingProfile.url,
-              onchange: ev => stagingProfile.url = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "Obsolete?"),
-        m("td",
-          m("input[type=checkbox][value=true]",
-            {
-              checked: stagingProfile.obsolete,
-              onchange: ev => stagingProfile.obsolete = ev.target.checked
-            }))),
-
-      m("tr",
-        m("td"),
-        m("td",
-          m("button",
-            {
-              disabled: !isProfileValid(),
-              onclick: () => addProfile()
-            },
-            "Add Profile"))))
-  ];
-};
+    m("tr",
+      m("td"),
+      m("td",
+        m("button",
+          {
+            disabled: !isProfileValid(),
+            onclick: () => addProfile()
+          },
+          "Add Profile"))))*/
+];
 
 //========================================================================
 const domResource = r => {
@@ -223,25 +203,21 @@ const domResource = r => {
 };
 
 //========================================================================
-const domResources = () => {
-  return [
-    m(".section-header", "Resources"),
+const domResources = () => [
+  m("label", "Resources"),
+  m(".character-resources-container",
+    character.resources().map((rsrc, idx) => [
+      m(".resource", domResource(rsrc)),
+      m("div.action",
+         {
+           onclick: () => character.resources().splice(idx, 1)
+         },
+        K.ICON_STRINGS.remove)
+    ]),
+  )
+];
 
-    m("table",
-      character.resources.map(
-        (rsrc, idx) => {
-          return m("tr",
-                   m("td",
-                     domResource(rsrc)),
-                   m("td",
-                     m("span.action",
-                       {
-                         onclick: () => character.resources.splice(idx, 1)
-                       },
-                       K.ICON_STRINGS.remove)));
-        })),
-
-    m("b", "Add New Resource"),
+  /* m("b", "Add New Resource"),
     m("br"),
 
     m("table",
@@ -311,8 +287,7 @@ const domResources = () => {
 
     m("br"),
     m("br"),
-  ];
-};
+    ];*/
 
 //========================================================================
 const figureSelect = target => {
@@ -349,28 +324,6 @@ const loadCharacter = () => {
         resp.data.figures.forEach(f => figures.push({id: f.id, name: f.name }));
       }
     });
-};
-
-//========================================================================
-const moveProfileDown = idx => {
-  const tmp = character.rules[idx + 1];
-  character.rules[idx + 1] = character.rules[idx];
-  character.rules[idx] = tmp;
-
-  for (let i = 0; i < character.rules.length; ++i) {
-    character.rules[i].sort_order = i;
-  }
-};
-
-//========================================================================
-const moveProfileUp = idx => {
-  const tmp = character.rules[idx - 1];
-  character.rules[idx - 1] = character.rules[idx];
-  character.rules[idx] = tmp;
-
-  for (let i = 0; i < character.rules.length; ++i) {
-    character.rules[i].sort_order = i;
-  }
 };
 
 //========================================================================
@@ -427,8 +380,8 @@ export const CharacterEditor = () => {
 
         FormField.text(character.name, "Name"),
         domFigures(),
-        //domResources(),
-        //domProfiles(),
+        domResources(),
+        domProfiles(),
 
         m("button", { onclick: () => saveCharacter() }, "Save"))
     ]

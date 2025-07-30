@@ -1057,13 +1057,47 @@ span.star-partial.clickable:hover::before {
 
 .character-details {
   display: grid;
-  gap: 4px 1em;
+  gap: 1em;
   grid-template-columns: min-content max-content;
 
   button {
     grid-column: 2;
     height: fit-content;
     width: fit-content;
+  }
+
+  .character-resources-container {
+    display: grid;
+    gap: 4px 1em;
+    grid-template-columns: max-content min-content;
+  }
+
+  .character-profiles-container {
+    .sortable-list-container {
+      gap: 4px 1em;
+      grid-template-columns: max-content min-content min-content min-content min-content
+    }
+
+    .sortable-list-content {
+      grid-column: 1;
+    }
+
+    .sortable-list-edit {
+      grid-column: 2;
+    }
+
+    .sortable-list-down-arrow {
+      grid-column: 4;
+    }
+
+    .sortable-list-up-arrow {
+      grid-column: 3;
+    }
+
+    .sortable-list-delete {
+      grid-column: 5;
+    }
+
   }
 
   .figure-list-figure {
