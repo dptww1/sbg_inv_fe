@@ -19,7 +19,7 @@ import * as U         from "../utils.js";
  *
  * TODO: handle sort_order, id attributes?
  */
-export const BookResourceEditor = () => {
+export const BookFormatResourceEditor = () => {
   const PARAMS = [ "book", "issue", "prop" ];
   let resource = {
     book:  prop(), // key, not id
@@ -47,29 +47,29 @@ export const BookResourceEditor = () => {
           editMode = true;
 
         } else {
-          // Not embedded and no initial data provided; set up
-          //
+          // Not embedded and no initial data provided; set up resource
           PARAMS.forEach(p => resource[p] = prop());
         }
       }
     },
 
-    view: vnode => m(".book-resource-editor-form",
-      m("span", "Book"),
-      m(SelectBook, { value: resource.book(), callback: val => resource.book(val) }),
+    view: vnode => {
+      const formFields = [
+        m("label", "Book"),
+        m(SelectBook, { value: resource.book(), callback: val => resource.book(val) }),
 
-      FormField.text(resource.issue, "Issue"),
+        FormField.text(resource.issue, "Issue"),
 
-      FormField.text(resource.page, "Page"),
+        FormField.text(resource.page, "Page"),
 
-      vnode.attrs.embedded
-        ? null
-        : [
+        vnode.attrs.embedded || vnode.attrs.fieldsOnly
+          ? null
+          : [
             m("span", ""),
             m("span.button-bar",
               m("button",
                 {
-                  disabled: !BookResourceEditor.isValid(resource),
+                  disabled: !BookFormatResourceEditor.isValid(resource),
                   onclick: () => {
                     vnode.attrs.commitFn(U.unpropertize(resource));
                     U.emptyOutObject(resource)
@@ -83,11 +83,17 @@ export const BookResourceEditor = () => {
                   },
                   "Cancel")
                 : null)
-        ]
-    )
+          ]
+      ];
+
+      return vnode.attrs.fieldsOnly
+        ? formFields
+        : m(".book-resource-editor-form", formFields);
+    }
   }
 };
 
-BookResourceEditor.isValid = resource =>
+//========================================================================
+BookFormatResourceEditor.isValid = resource =>
   U.isNotBlank(U.getByPath(resource, "book"))
     && U.isNotBlank(U.getByPath(resource, "page"));

@@ -1,12 +1,12 @@
 import m from "mithril";
 
-import { BookResourceEditor } from "../admin-components/book-resource-editor.js";
-import { FormField          } from "../components/form-field.js";
-import { Header             } from "../header.js";
-import * as K                 from "../constants.js";
-import { Nav                } from "../nav.js";
-import { Request            } from "../request.js";
-import * as U                 from "../utils.js";
+import { BookFormatResourceEditor } from "../admin-components/book-format-resource-editor.js";
+import { FormField                } from "../components/form-field.js";
+import { Header                   } from "../header.js";
+import * as K                       from "../constants.js";
+import { Nav                      } from "../nav.js";
+import { Request                  } from "../request.js";
+import * as U                       from "../utils.js";
 
 //========================================================================
 let scenario = {};
@@ -42,7 +42,7 @@ const isFormValid = () => U.isNoneBlank(
   scenario.map_height(),
   scenario.location(),
   getSource())
-  && BookResourceEditor.isValid(getSource());
+  && BookFormatResourceEditor.isValid(getSource());
 
 //========================================================================
 const refresh = () => {
@@ -142,7 +142,7 @@ export const ScenarioEditor = {
               FormField.select(scenario.location, "Location", { options: locationOptions }),
 
               m("label", "Source"),
-              m(BookResourceEditor,
+              m(BookFormatResourceEditor,
                 {
                   initialData: getSource(),
                   embedded: true

@@ -1,15 +1,15 @@
-/*global BOOK_INFO */
-
 import m from "mithril";
 
-import { FigureListEditor } from "../admin-components/figure-list-editor.js";
-import { FormField        } from "../components/form-field.js";
-import { Header           } from "../header.js";
-import * as K               from "../constants.js";
-import { Nav              } from "../nav.js";
-import { Request          } from "../request.js";
-import { SortableList     } from "../admin-components/sortable-list.js";
-import * as U               from "../utils.js";
+import { AddResourceEditor } from "../admin-components/add-resource-editor.js";
+import { FigureListEditor  } from "../admin-components/figure-list-editor.js";
+import { FormField         } from "../components/form-field.js";
+import { Header            } from "../header.js";
+import * as K                from "../constants.js";
+import { Nav               } from "../nav.js";
+import { ProfileEditor     } from "../admin-components/profile-editor.js";
+import { Request           } from "../request.js";
+import { SortableList      } from "../admin-components/sortable-list.js";
+import * as U                from "../utils.js";
 
 const character = U.propertize({
   id: null,
@@ -21,40 +21,6 @@ const character = U.propertize({
 
 // Array of {id: x, name: "abc"}
 const figures = [];
-
-// The profile currently being edited
-const stagingProfile = {
-  name_override: "",
-  book: null,
-  issue: null,
-  page: null,
-  url: "",
-  obsolete: null,
-  sort_order: null
-};
-
-// The resource currently being edited
-const stagingResource = {
-  title: "",
-  book: null,
-  issue: "",
-  page: null,
-  type: "",
-  url: ""
-};
-
-//========================================================================
-const addResource = () => {
-  character.resources.push(Object.assign({}, stagingResource)); // shallow copy
-  resetStagingResource();
-};
-
-//========================================================================
-const addProfile = () => {
-  stagingProfile.sort_order = character.rules.length;
-  character.rules.push(Object.assign({}, stagingProfile));
-  resetStagingProfile();
-};
 
 //========================================================================
 const domFigures = () => [
@@ -111,183 +77,34 @@ const domProfiles = () => [
       {
         itemsProp: character.rules,
         renderFn: domProfile
-      }))
-  /*  m("b", "Add New Profile"),
-  m("br"),
-
-  m("table",
-    m("tr",
-      m("td", "Name Override"),
-      m("td",
-        m("input[type=text][name=name_override][size=40]",
-          {
-            value: stagingProfile.name_override,
-            onchange: ev => stagingProfile.name_override = ev.target.value
-          }))),
-
-    m("tr",
-      m("td", "Book"),
-      m("td", m(SelectBook,
-        {
-          value: stagingProfile.book,
-          callback: value => stagingProfile.book = value
-        }))),
-    m("tr",
-      m("td", "Issue"),
-      m("td",
-        m("input[type=text][name=profile_issue][size=15]",
-          {
-            value: stagingProfile.issue,
-            onchange: ev => stagingProfile.issue = ev.target.value
-          }))),
-
-    m("tr",
-      m("td", "Page"),
-      m("td",
-        m("input[type=number][name=profile_page][size=5]",
-          {
-            value: stagingProfile.page,
-            onchange: ev => stagingProfile.page = ev.target.value
-          }))),
-
-    m("tr",
-      m("td", "URL"),
-      m("td",
-        m("input[type=text][name=profile_url][size=80]",
-          {
-            value: stagingProfile.url,
-            onchange: ev => stagingProfile.url = ev.target.value
-          }))),
-
-    m("tr",
-      m("td", "Obsolete?"),
-      m("td",
-        m("input[type=checkbox][value=true]",
-          {
-            checked: stagingProfile.obsolete,
-            onchange: ev => stagingProfile.obsolete = ev.target.checked
-          }))),
-
-    m("tr",
-      m("td"),
-      m("td",
-        m("button",
-          {
-            disabled: !isProfileValid(),
-            onclick: () => addProfile()
-          },
-          "Add Profile"))))*/
+      })),
+  m(ProfileEditor, {
+    commitFn: profile => character.rules().push(profile)
+  })
 ];
-
-//========================================================================
-const domResource = r => {
-  const fields = [ m("span.icon", m.trust(K.IMAGE_STRINGS[r.type])) ];
-
-  if (r.url) {
-    fields.push([ " ", m("a", { href: r.url }, r.title) ]);
-  }
-
-  if (r.book) {
-    fields.push(" " + BOOK_INFO.byKey(r.book).name);
-  }
-
-  if (r.issue) {
-    fields.push(" #" + r.issue);
-  }
-
-  if (r.page) {
-    fields.push(" p." + r.page);
-  }
-
-  return fields;
-};
 
 //========================================================================
 const domResources = () => [
   m("label", "Resources"),
   m(".character-resources-container",
     character.resources().map((rsrc, idx) => [
-      m(".resource", domResource(rsrc)),
+      m(".resource",
+        m("span.icon", m.trust(K.IMAGE_STRINGS[rsrc.type])),
+        U.resourceReference(rsrc)),
       m("div.action",
          {
            onclick: () => character.resources().splice(idx, 1)
          },
         K.ICON_STRINGS.remove)
-    ]),
-  )
+    ])),
+  m(AddResourceEditor, {
+    commitFn: resource => character.resources().push(resource),
+    options: [
+      "-- Choose --=",
+      "Painting Guide=painting_guide",
+      "Analysis=analysis"
+    ]})
 ];
-
-  /* m("b", "Add New Resource"),
-    m("br"),
-
-    m("table",
-      m("tr",
-        m("td", "Type "),
-        m("td",
-          m("select[name=type]",
-            {
-              value: stagingResource.type,
-              onchange: ev => stagingResource.type = ev.target.value
-            },
-            m("option", { value: "painting_guide", selected: stagingResource.type == "painting_guide" }, "Painting Guide"),
-            m("option", { value: "analysis", selected: stagingResource.type == "analysis" }, "Analysis")))),
-
-      m("tr",
-        m("td", "Title"),
-        m("td",
-          m("input[type=text][name=title][size=40]",
-            {
-              value: stagingResource.title,
-              onchange: ev => stagingResource.title = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "Book"),
-        m("td", m(SelectBook,
-                  {
-                    value: stagingResource.book,
-                    callback: value => stagingResource.book = value
-                  }))),
-
-      m("tr",
-        m("td", "Issue"),
-        m("td",
-          m("input[type=text][name=issue][size=15]",
-            {
-              value: stagingResource.issue,
-              onchange: ev => stagingResource.issue = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "Page"),
-        m("td",
-          m("input[type=number][name=page][size=5]",
-            {
-              value: stagingResource.page,
-              onchange: ev => stagingResource.page = ev.target.value
-            }))),
-
-      m("tr",
-        m("td", "URL"),
-        m("td",
-          m("input[type=text][name=url][size=80]",
-            {
-              value: stagingResource.url,
-              onchange: ev => stagingResource.url = ev.target.value
-            }))),
-
-      m("tr",
-        m("td"),
-        m("td",
-          m("button",
-            {
-              onclick: () => addResource()
-            },
-            "Add Resource")))),
-
-    m("br"),
-    m("br"),
-    ];*/
 
 //========================================================================
 const figureSelect = target => {
@@ -298,9 +115,6 @@ const figureSelect = target => {
   figures.push({ id: parseInt(target.dataset.id, 10), name: target.dataset.name });
   character.figure_ids(figures.map(f => f.id));
 };
-
-//========================================================================
-const isProfileValid = () => stagingProfile.url || (stagingProfile.book && stagingProfile.page);
 
 //========================================================================
 const loadCharacter = () => {
@@ -331,12 +145,6 @@ const removeFigure = idx => {
   figures.splice(idx, 1);
   character.figure_ids(figures.map(f => f.id));
 };
-
-//========================================================================
-const resetStagingProfile = () => U.emptyOutObject(stagingProfile, { book: null });
-
-//========================================================================
-const resetStagingResource = () => U.emptyOutObject(stagingResource, { book: null });
 
 //========================================================================
 const saveCharacter = () => {

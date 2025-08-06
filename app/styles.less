@@ -622,7 +622,7 @@ span.star-partial.clickable:hover::before {
   -webkit-text-fill-color: transparent;
 }
 
-/* ===== BookResourceEditor ===== */
+/* ===== BookFormatResourceEditor ===== */
 
 .book-resource-editor-form {
   display: grid;
@@ -716,6 +716,29 @@ span.star-partial.clickable:hover::before {
 
   .resources-text {
     grid-column-start: 2;
+  }
+}
+
+/* ===== AddResourceEditor ===== */
+
+.add-resource-editor-expanded {
+  display: grid;
+  gap: 4px 2px;
+  grid-template-columns: max-content max-content;
+
+  label {
+    text-align: right;
+    padding-right: 10px;
+    color: @text-color;
+  }
+
+  .add-resource-editor-expanded-title {
+    font-weight: bold;
+    grid-column: 1 / -1;
+  }
+
+  .button-bar {
+    grid-column: 2;
   }
 }
 
@@ -905,6 +928,33 @@ span.star-partial.clickable:hover::before {
   }
 }
 
+/* ===== ProfileEditor ===== */
+
+.profile-editor-expanded {
+  display: grid;
+  gap: 4px 2px;
+  grid-template-columns: max-content max-content;
+
+  input[type=checkbox] {
+    width: fit-content;
+  }
+
+  label {
+    text-align: right;
+    padding-right: 10px;
+    color: @text-color;
+  }
+
+  .profile-editor-expanded-title {
+    font-weight: bold;
+    grid-column: 1 / -1;
+  }
+
+  .button-bar {
+    grid-column: 2;
+  }
+}
+
 /* ===== ScenarioEditor ===== */
 
 .scenario-editor-form-container {
@@ -1066,6 +1116,10 @@ span.star-partial.clickable:hover::before {
     width: fit-content;
   }
 
+  .add-resource-editor-content {
+    grid-column: 2;
+  }
+
   .character-resources-container {
     display: grid;
     gap: 4px 1em;
@@ -1097,7 +1151,6 @@ span.star-partial.clickable:hover::before {
     .sortable-list-delete {
       grid-column: 5;
     }
-
   }
 
   .figure-list-figure {
@@ -1106,5 +1159,9 @@ span.star-partial.clickable:hover::before {
     a {
       margin-right: 0.5em;
     }
+  }
+
+  .profile-editor-content {
+    grid-column: 2;
   }
 }
