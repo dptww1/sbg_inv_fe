@@ -22,6 +22,18 @@ const character = U.propertize({
 // Array of {id: x, name: "abc"}
 const figures = [];
 
+let editProfileIdx = null;
+
+//========================================================================
+const commitProfile = profile => {
+  if (profile !== null) {
+    const insertIdx = editProfileIdx || character.rules().length;
+    const numReplacements = editProfileIdx ? 1 : 0;
+    character.rules().splice(insertIdx, numReplacements, profile);
+  }
+  editProfileIdx = null;
+};
+
 //========================================================================
 const domFigures = () => [
   m("label", "Figures"),
@@ -49,19 +61,27 @@ const domFigures = () => [
 ];
 
 //========================================================================
-const domProfile = r => {
+const domProfile = (rsrc, idx) => {
+  if (idx === editProfileIdx) {
+    return m(ProfileEditor,
+             {
+               commitFn: commitProfile,
+               initialData: rsrc
+             });
+  }
+
   const fields = [];
 
-  const baseStr = U.resourceReference(r);
+  const baseStr = U.resourceReference(rsrc);
 
   if (U.isNotBlank(baseStr)) {
-    fields.push(U.resourceReference(r));
+    fields.push(baseStr);
 
-    if (r.name_override) {
-      fields.push(" (" + r.name_override + ")");
+    if (rsrc.name_override) {
+      fields.push(" (" + rsrc.name_override + ")");
     }
 
-    if (r.obsolete) {
+    if (rsrc.obsolete) {
       fields.push(" (obsolete)");
     }
   }
@@ -75,12 +95,14 @@ const domProfiles = () => [
   m(".character-profiles-container",
     m(SortableList,
       {
+        editFn: idx => editProfileIdx = idx,
         itemsProp: character.rules,
-        renderFn: domProfile
+        renderFn: domProfile,
+        suppressControls: editProfileIdx !== null
       })),
-  m(ProfileEditor, {
-    commitFn: profile => character.rules().push(profile)
-  })
+  editProfileIdx === null
+    ? m(ProfileEditor, { commitFn: commitProfile })
+    : null
 ];
 
 //========================================================================
@@ -153,6 +175,8 @@ const saveCharacter = () => {
     return;
   }
 
+  character.rules().forEach((elt, idx) => elt.sort_order = idx + 1);
+
   Request.putOrPost("/character", character.id(),
     {
       character: U.unpropertize(character)
@@ -170,6 +194,7 @@ export const CharacterEditor = () => {
     oninit: (/*vnode*/) => {
       loadCharacter();
       lastId = m.route.param("id");
+      editProfileIdx = null;
     },
 
     onupdate: (/*vnode*/) => {
@@ -177,6 +202,7 @@ export const CharacterEditor = () => {
       if (newId != lastId) {
         loadCharacter();
         lastId = newId;
+        editProfileIdx = null;
       }
     },
 

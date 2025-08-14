@@ -19,12 +19,14 @@ export const ProfileEditor = () => {
     sort_order: prop()
   };
 
+  let title = null;
+
   //========================================================================
   const domExpanded = vnode => {
 
     return m(".profile-editor-content.profile-editor-expanded",
 
-      m(".profile-editor-expanded-title", "Add New Profile"),
+      m(".profile-editor-expanded-title", title),
 
       FormField.text(profile.name_override, "Name Override"),
 
@@ -32,7 +34,7 @@ export const ProfileEditor = () => {
 
       FormField.checkbox(profile.obsolete, "Obsolete?"),
 
-      FormField.numeric(profile.sort_order, "Sort Order"),
+      //FormField.numeric(profile.sort_order, "Sort Order"),
 
       m(".button-bar",
         m("button",
@@ -40,7 +42,7 @@ export const ProfileEditor = () => {
             disabled: !isValid(),
             onclick: () => {
               vnode.attrs.commitFn(U.unpropertize(profile));
-              initializeProfile();
+              initializeProfile(vnode);
             }
           },
           "Save"),
@@ -48,7 +50,8 @@ export const ProfileEditor = () => {
         m("button",
           {
             onclick: () => {
-              initializeProfile();
+              vnode.attrs.commitFn(null);
+              initializeProfile(vnode);
               expanded = false;
             }
           },
@@ -70,8 +73,23 @@ export const ProfileEditor = () => {
         "Add New Profile"));
 
   //========================================================================
-  const initializeProfile = () => {
+  const initializeProfile = vnode => {
     U.emptyOutObject(profile);
+    title = "Add New Profile";
+
+    const initData = vnode.attrs.initialData;
+    if (initData) {
+      profile.name_override(initData.name_override);
+      profile.book(initData.book);
+      profile.issue(initData.issue);
+      profile.page(initData.page);
+      profile.obsolete(initData.obsolete);
+      profile.sort_order(initData.sort_order);
+
+      title = "Edit Profile";
+
+      expanded = true;
+    }
   };
 
   //========================================================================
@@ -82,7 +100,7 @@ export const ProfileEditor = () => {
 
   //========================================================================
   return {
-    oninit: () => initializeProfile(),
+    oninit: vnode => initializeProfile(vnode),
 
     view: vnode => expanded ? domExpanded(vnode) : domMinimized(vnode)
     }
