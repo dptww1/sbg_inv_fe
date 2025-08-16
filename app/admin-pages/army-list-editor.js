@@ -190,7 +190,7 @@ export const ArmyListEditor = () => {
                 onclick: saveArmyList,
                 disabled: !formIsValid()
               },
-              "Submit")))
+              "Save")))
       ];
     }
   }
