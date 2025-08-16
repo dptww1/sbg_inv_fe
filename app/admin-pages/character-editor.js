@@ -1,6 +1,5 @@
 import m from "mithril";
 
-import { AddResourceEditor } from "../admin-components/add-resource-editor.js";
 import { FigureListEditor  } from "../admin-components/figure-list-editor.js";
 import { FormField         } from "../components/form-field.js";
 import { Header            } from "../header.js";
@@ -8,6 +7,7 @@ import * as K                from "../constants.js";
 import { Nav               } from "../nav.js";
 import { ProfileEditor     } from "../admin-components/profile-editor.js";
 import { Request           } from "../request.js";
+import { ResourceEditor    } from "../admin-components/resource-editor.js";
 import { SortableList      } from "../admin-components/sortable-list.js";
 import * as U                from "../utils.js";
 
@@ -22,7 +22,14 @@ const character = U.propertize({
 // Array of {id: x, name: "abc"}
 const figures = [];
 
+const RESOURCE_EDITOR_OPTIONS = [
+  "-- Choose --=",
+  "Painting Guide=painting_guide",
+  "Analysis=analysis"
+];
+
 let editProfileIdx = null;
+let editResourceIdx = null;
 
 //========================================================================
 const commitProfile = profile => {
@@ -32,6 +39,16 @@ const commitProfile = profile => {
     character.rules().splice(insertIdx, numReplacements, profile);
   }
   editProfileIdx = null;
+};
+
+//========================================================================
+const commitResource = resource => {
+  if (resource !== null) {
+    const insertIdx = editResourceIdx || character.resources().length;
+    const numReplacements = editResourceIdx ? 1 : 0;
+    character.resources().splice(insertIdx, numReplacements, resource);
+  }
+  editResourceIdx = null;
 };
 
 //========================================================================
@@ -100,6 +117,7 @@ const domProfiles = () => [
         renderFn: domProfile,
         suppressControls: editProfileIdx !== null
       })),
+
   editProfileIdx === null
     ? m(ProfileEditor, { commitFn: commitProfile })
     : null
@@ -109,23 +127,38 @@ const domProfiles = () => [
 const domResources = () => [
   m("label", "Resources"),
   m(".character-resources-container",
-    character.resources().map((rsrc, idx) => [
-      m(".resource",
-        m("span.icon", m.trust(K.IMAGE_STRINGS[rsrc.type])),
-        U.resourceReference(rsrc)),
-      m("div.action",
-         {
-           onclick: () => character.resources().splice(idx, 1)
-         },
-        K.ICON_STRINGS.remove)
-    ])),
-  m(AddResourceEditor, {
-    commitFn: resource => character.resources().push(resource),
-    options: [
-      "-- Choose --=",
-      "Painting Guide=painting_guide",
-      "Analysis=analysis"
-    ]})
+    character.resources().map((rsrc, idx) =>
+      editResourceIdx === idx
+        ? m(ResourceEditor,
+            {
+              commitFn: commitResource,
+              initialData: rsrc,
+              options: RESOURCE_EDITOR_OPTIONS
+            })
+        : [
+            m(".resource",
+              m("span.icon", m.trust(K.IMAGE_STRINGS[rsrc.type])),
+              U.resourceReference(rsrc)),
+            m(".button-bar",
+              m("span.action",
+                {
+                  onclick: () => editResourceIdx = idx
+                },
+                K.ICON_STRINGS.edit),
+              m("span.action",
+                {
+                  onclick: () => character.resources().splice(idx, 1)
+                },
+                K.ICON_STRINGS.remove))
+        ])),
+
+    editResourceIdx === null
+      ? m(ResourceEditor,
+          {
+            commitFn: commitResource,
+            options: RESOURCE_EDITOR_OPTIONS
+          })
+      : null
 ];
 
 //========================================================================

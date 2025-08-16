@@ -13,8 +13,10 @@ const FORMAT_OPTIONS = [
   "URL=url"
 ];
 
+let title = "Add New Resource";
+
 //========================================================================
-export const AddResourceEditor = () => {
+export const ResourceEditor = () => {
   let expanded = false;
 
   let prevFormatEditor = null;
@@ -53,7 +55,7 @@ export const AddResourceEditor = () => {
 
     return m(".add-resource-editor-content.add-resource-editor-expanded",
 
-      m(".add-resource-editor-expanded-title", "Add New Resource"),
+      m(".add-resource-editor-expanded-title", title),
 
       FormField.select(resource.type, "Resource Type", { options: vnode.attrs.options }),
 
@@ -69,7 +71,7 @@ export const AddResourceEditor = () => {
               // Synchronize the type fields
               resource.resource_type(resource.type());
               vnode.attrs.commitFn(U.unpropertize(resource));
-              initializeResource();
+              initializeResource(vnode);
             }
           },
           "Save"),
@@ -77,7 +79,8 @@ export const AddResourceEditor = () => {
         m("button",
           {
             onclick: () => {
-              initializeResource();
+              vnode.attrs.commitFn(null);
+              initializeResource(vnode);
               expanded = false;
             }
           },
@@ -96,12 +99,36 @@ export const AddResourceEditor = () => {
         {
           onclick: () => expanded = true
         },
-        "Add New Resource"));
+        title));
 
   //========================================================================
-  const initializeResource = () => {
+  const initializeResource = vnode => {
     U.emptyOutObject(resource);
     resourceFormat("");
+    title = "Add New Resource";
+    expanded = false;
+
+    const initData = vnode.attrs.initialData;
+    if (initData) {
+      resource.type(initData.type);
+      resource.resource_type(initData.type);
+      resource.book(initData.book);
+      resource.issue(initData.issue);
+      resource.page(initData.page);
+      resource.title(initData.title);
+      resource.url(initData.url);
+
+      if (U.isNotBlank(initData.url)) {
+        resourceFormat("url");
+
+      } else {
+        resourceFormat("book");
+      }
+
+      title = "Edit Resource";
+
+      expanded = true;
+    }
   };
 
   //========================================================================
@@ -113,7 +140,7 @@ export const AddResourceEditor = () => {
 
   //========================================================================
   return {
-    oninit: () => initializeResource(),
+    oninit: vnode => initializeResource(vnode),
 
     view: vnode => expanded ? domExpanded(vnode) : domMinimized(vnode)
     }
