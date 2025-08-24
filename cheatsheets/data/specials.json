@@ -1,0 +1,210 @@
+{
+  "Ancient Enemies (%s)": {
+    "type": "active",
+    "effect": "reroll To Wound rolls of 1 vs %s"
+  },
+  "Backstabbers": {
+    "type": "active",
+    "effect": "+1 To Wound vs Trapped models"
+  },
+  "Bane of Kings": {
+    "type": "active",
+    "effect": "reroll failed To Wound rolls in Shooting or Striking"
+  },
+  "%sbane": {
+    "type": "active",
+    "effect": "Strikes vs %s inflict d3 Wounds"
+  },
+  "Blades of the Dead": {
+    "type": "active",
+    "effect": "Strikes attack vs 10 - defender's Courage"
+  },
+  "Bodyguard": {
+    "type": "passive",
+    "effect": "auto-pass Courage Tests if bodyguarded Hero is alive and on board"
+  },
+  "Burly": {
+    "type": "passive",
+    "effect": "no -1 using 2h weapon; full moves when carrying Heavy Object"
+  },
+  "Cave Dweller": {
+    "type": "active",
+    "effect": "+1 on Jump/Leap/Climb tests; no penalty fighting in the dark"
+  },
+  "Dominant %s": {
+    "type": "passive",
+    "effect": "counts as %s models near objective or escaping the board"
+  },
+  "Expert Rider": {
+    "type": "active",
+    "effect": "reroll Jump/Swim/Thrown Rider test; pick up Light Object w/o dismount; use shield bonus while mounted"
+  },
+  "Expert Shot": {
+    "type": "active",
+    "effect": "make 2 Shooting attacks in Shoot Phase"
+  },
+  "Fearful": {
+    "type": "passive",
+    "effect": "must take Courage Test to Charge; no move if failed"
+  },
+  "Fearless": {
+    "type": "passive",
+    "effect": "auto-pass Courage Tests"
+  },
+  "Fell Sight": {
+    "type": "passive",
+    "effect": "can Charge w/o Line of Sight and/or Stalk Unseen models"
+  },
+  "Fly": {
+    "type": "active",
+    "effect": "ignore models/terrain/Control Zones; can't end on Woods unless lands, moving4\""
+  },
+  "Foresight of the Eldar": {
+    "type": "passive",
+    "effect": "before game, roll d6 for points Elrond can expend to increase Priority Roll"
+  },
+  "General Hunter": {
+    "type": "active",
+    "effect": "if this model slays enemy General, regain one spent Might point"
+  },
+  "Glory Seekers": {
+    "type": "active",
+    "effect": "+1 on Strikes vs enemy Hero"
+  },
+  "Hadhafang": {
+    "type": "active",
+    "effect": "Elven 1.5h weapon, +1 to Wound vs Spirit"
+  },
+  "Harbinger of Evil (%s)": {
+    "type": "passive",
+    "effect": "enemies w/in %s are -1 on Courage Tests (doesn't stack)"
+  },
+  "Hatred (%s)": {
+    "type": "active",
+    "effect": "+1 to Wound against %s"
+  },
+  "Horse Lord": {
+    "type": "passive",
+    "effect": "Wounds vs Mount are saved on d6=6; rider can use Fate points on behalf of Mount"
+  },
+  "Invisible": {
+    "type": "passive",
+    "effect": "unaffected by Magical/Special Powers & Shooting; ignore models when moving; Charging enemies take Intelligence test @ -1 per 1\" distance; if alone in Combat, enemy is 1/2 Fight & no Support"
+  },
+  "Large Target": {
+    "type": "passive",
+    "effect": "when Shooting target, ingnore non-Monster/Siege Engine/War Beasts for In The Way"
+  },
+  "Leader (%s)": {
+    "type": "passive",
+    "effect": "Warband can include %s"
+  },
+  "Lord of the West": {
+    "type": "active",
+    "effect": "may reroll one d6 for both Duel Rolls and Strikes"
+  },
+  "Master of Battle (%s)": {
+    "type": "active",
+    "effect": "duplicate enemy Heroic Action w/in 6\" on %s w/o spending Might"
+  },
+  "Mighty Blow": {
+    "type": "active",
+    "effect": "successful Strikes inflict 2 Wounds"
+  },
+  "Mighty Hero": {
+    "type": "passive",
+    "effect": "1 free Might point per turn"
+  },
+  "Monstrous Charge": {
+    "type": "active",
+    "effect": "when Charging, +1 Attack & enemies w/<S Knocked Prone (cavary Knocked Flying) before Strikes"
+  },
+  "Morgul Blade": {
+    "type": "active",
+    "effect": "use 1x/game before Strikes against one enemy; if any Wound unsaved, enemy is KIA"
+  },
+  "Mountain Dweller": {
+    "type": "active",
+    "effect": "move normally through rocky terrain, reroll Jump/Leap/Climb Tests"
+  },
+  "Noldorin Daggers": {
+    "type": "active",
+    "effect": "can be thrown; reroll Wound rolls of 1 for both Strikes and Shooting Attacks"
+  },
+  "Poisoned Attacks": {
+    "type": "active",
+    "effect": "reroll 1s on Shooting & Strikes"
+  },
+  "Resistant to Magic": {
+    "type": "passive",
+    "effect": "gain extra die on all Resist Tests"
+  },
+  "Set Ablaze": {
+    "type": "passive",
+    "effect": "unless immune to fire, affected model suffers S5 hit in End Phase until Lying Down & Crawling 1\", or entering water"
+  },
+  "Sharpshooter": {
+    "type": "active",
+    "effect": "may choose rider or mount when Shooting at Cavalry"
+  },
+  "Shieldwall": {
+    "type": "active",
+    "effect": "if non-cav, non-prone, has shield, and in base contact with two other Shieldwall models, +1 Defense before Backing Away"
+  },
+  "Spectral Walk": {
+    "type": "passive",
+    "effect": "move normally through Difficult Terrain; auto-6 for Climb/Jump/Leap/Swim Tests"
+  },
+  "Stalk Unseen": {
+    "type": "passive",
+    "effect": "partially concealed Infantry can't be seen if more than 6\" away"
+  },
+  "Survival Instinct": {
+    "type": "active",
+    "effect": "must take Courage Test for each unsaved Wound; if failed, remove as a casualty"
+  },
+  "Swift Movement": {
+    "type": "active",
+    "effect": "never slowed by non-water Difficult Terrain, ignores obstacles w/o Climb/Jump"
+  },
+  "Sworn Protector (%s)": {
+    "type": "passive",
+    "effect": "auto-pass Courage Tests if %s is alive and on board"
+  },
+  "Terror (%s)": {
+    "type": "active",
+    "effect": "%s models trying to Charge this model must pass Courage Tests; if failed, no Move"
+  },
+  "Terror": {
+    "type": "active",
+    "effect": "models trying to Charge this model must pass Courage Tests; if failed, no Move"
+  },
+  "Throw Stones": {
+    "type": "active",
+    "effect": "if no move, model can throw stone in the Shooting Phase"
+  },
+  "Timid": {
+    "type": "passive",
+    "effect": "Mount must take Courage Test to Charge (w/o Special/Magic benefit); if failed, no Move; if success, no Cavalry Charge bonus"
+  },
+  "Unyielding Combat Stance": {
+    "type": "active",
+    "effect": "negate Knocked Prone, on 4+; if mounted, or Knocked Flying, dismounted and auto 6 on Thrown Rider chart"
+  },
+  "Venom": {
+    "type": "active",
+    "effect": "reroll failed Wound rolls; after Combat, enemy wounded by this model but not slain receives an extra Wound"
+  },
+  "Vilya": {
+    "type": "passive",
+    "effect": "reroll failed Fate rolls"
+  },
+  "Will of Evil": {
+    "type": "passive",
+    "effect": "lose 1 Will if in Combat with non-invisible enemy; KIA when 0 Will; can't spend last Will on Magic; ignores Invisible special rule"
+  },
+  "Woodland Creature": {
+    "type": "active",
+    "effect": "move through woods/forest difficult terrain as if it were open ground"
+  }
+}

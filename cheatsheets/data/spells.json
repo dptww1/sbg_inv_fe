@@ -1,0 +1,142 @@
+{
+  "Aura of Command": {
+    "duration": "exhaustion",
+    "effect": "caster and friendly models w/in 6\" auto pass Courage Tests"
+  },
+  "Aura of Dismay": {
+    "duration": "exhaustion",
+    "effect": "enemies w/in 6\" of caster are -1 on Courage Tests"
+  },
+  "Banishment": {
+    "duration": "instant",
+    "effect": "enemy Spirit model takes 1 Wound (caster chooses rider or mount)"
+  },
+  "Black Dart": {
+    "duration": "instant",
+    "effect": "enemy model suffers S6 hit (caster chooses rider or mount)"
+  },
+  "Bladewrath": {
+    "duration": "temporary",
+    "effect": "friendly model Strikes at S6 in next Fight Phase"
+  },
+  "Blessing of the Valar": {
+    "duration": "instant",
+    "effect": "friendly model regains one expended Fate point"
+  },
+  "Blinding Light": {
+    "duration": "temporary",
+    "effect": "6\" ring around caster is always daylight, Shooting w/in only hits on 6"
+  },
+  "Call Winds": {
+    "duration": "instant",
+    "effect": "one enemy pushed d3+3\" directly away from caster unless blocked; then knocked prone "
+  },
+  "Chill Soul": {
+    "duration": "instant",
+    "effect": "enemy suffers 1 Wound (caster chooses rider or mount)"
+  },
+  "Collapse Rocks": {
+    "duration": "instant",
+    "effect": "target near rock takes S7 hit and is knocked Prone (riders are Knocked Flying)"
+  },
+  "Compel": {
+    "duration": "instant",
+    "effect": "caster moves enemy 1/2 move (and no further movement) and/or put on Ring"
+  },
+  "Curse": {
+    "duration": "instant",
+    "effect": "enemy loses 1 Fate point"
+  },
+  "Drain Courage": {
+    "duration": "instant",
+    "effect": "enemy Courage worsens by 1; stacks"
+  },
+  "Enchant Blades": {
+    "duration": "temporary",
+    "effect": "friendly model may reroll failed Strikes in next Fight Phase"
+  },
+  "Enrage Beast": {
+    "duration": "temporary",
+    "effect": "friendly Beast model increases F, S, A by 2 & is Fearless until End Phase, when takes 1 Wound"
+  },
+  "Flameburst": {
+    "duration": "instant",
+    "effect": "enemy suffers S6 hit, unless immune to fire"
+  },
+  "Fog of Disarray": {
+    "duration": "exhaustion",
+    "effect": "enemies w/in 6\" of caster are -1 Intelligence"
+  },
+  "Foil Magic": {
+    "duration": "instant",
+    "effect": "Exhausts one enemy Magical Power"
+  },
+  "Fortify Spirit": {
+    "duration": "exhaustion",
+    "effect": "friendly model gets extra die on Resist Tests"
+  },
+  "Fury": {
+    "duration": "exhaustion",
+    "effect": "friendly models w/in 6\" of caster with power keywords auto-pass Courage Tests"
+  },
+  "Instill Fear": {
+    "duration": "temporary",
+    "effect": "enemies w/in 6\" of caster are Fearful"
+  },
+  "Nature's Wrath": {
+    "duration": "instant",
+    "effect": "all enemies w/in range are Knocked Prone; cavalry are Knocked Flying"
+  },
+  "Panic Steed": {
+    "duration": "instant",
+    "effect": "enemy Cavalry rider is Knocked Flying, mount is removed as casualty"
+  },
+  "Paralyse": {
+    "duration": "exhaustion",
+    "effect": "enemy is prone, can't do anything; recover in End Phase if d6=6 (Might-able) from model or friends in base contact"
+  },
+  "Protection of the Valar": {
+    "duration": "temporary",
+    "effect": "friendly model immune to magical and special powers targeting it; -1 to enemy Shooting hit rolls"
+  },
+  "Renew": {
+    "duration": "instant",
+    "effect": "friendly model regains 1 Wound previously lost"
+  },
+  "Sorcerous Blast": {
+    "duration": "instant",
+    "effect": "enemy suffers S5 hit, Knocked Prone (Knocked Flying if Cavalry); if in Combat, other participants Knocked Prone also"
+  },
+  "Strengthen Will": {
+    "duration": "instant",
+    "effect": "target regains 1 spent Will point"
+  },
+  "Terrifying Aura": {
+    "duration": "exhaustion",
+    "effect": "caster has Terror"
+  },
+  "Transfix": {
+    "duration": "temporary",
+    "effect": "enemy cannot Activate, Heroic anything, use Active abilities, Shoot, Strike"
+  },
+  "Tremor": {
+    "duration": "instant",
+    "effect": "every model (except Fly) in straight line w/in d3+3\" from caster gets S4 hit, Knocked Prone (Knocked Flying for Cavalry)"
+  },
+  "Wither": {
+    "duration": "instant",
+    "effect": "enemy is -1S for rest of game; stacks; if S=0, dies (caster chooses rider or mount)"
+  },
+  "Wrath of Bruinen": {
+    "duration": "instant",
+    "effect": "all enemy models take S2 hit (S8 if in water), Knocked Prone (Knocked Flying if Cavalry)"
+  },
+  "Writhing Vines": {
+    "duration": "temporary",
+    "effect": "Vine marker placed w/in 3\" of caster, removed at End Phase; Difficult Terrain w/in 3\" of marker"
+  },
+  "Your Staff is Broken": {
+    "duration": "instant",
+    "effect": "target's Staff of Power is destroyed"
+  }
+}

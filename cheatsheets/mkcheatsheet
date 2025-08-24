@@ -1,0 +1,346 @@
+#!ruby
+
+# TODO Remove XXX
+# TODO make Scenario class
+#
+require 'caracal'
+require 'json'
+
+ACTIONS  = JSON.load_file!('./data/actions.json')
+PROFILES = JSON.load_file!('./data/profiles.json')
+SPECIALS = JSON.load_file!('./data/specials.json')
+SPELLS   = JSON.load_file!('./data/spells.json')
+
+COLOR_TABLE_BORDER = 'bfc0bf'
+COLOR_TABLE_STRIPE = 'efefef'
+COLOR_HEADER_BK    = 'c0bfc0'
+COLOR_NAME_COL     = 'e2e4e3'
+
+ACTIONS_HEADER = %w[Action Who Effect]
+ACTIONS_COLUMNS_CONFIG = [
+  { align: :left, background: COLOR_NAME_COL, bold: true }
+]
+
+SPELLS_HEADER = %w[Spell Who Effect]
+SPELLS_COLUMNS_CONFIG = [
+  { align: :left, background: COLOR_NAME_COL, bold: true }
+]
+
+STATS_HEADER = %w[Name Move F S D A C I Notes]
+
+STATS_COLUMNS_CONFIG = [
+  { align: :left, background: COLOR_NAME_COL, bold: true },
+  { align: :center, width: 705 },
+  { align: :center, width: 634 },
+  { align: :center, width: 245 },
+  { align: :center, width: 504 },
+  { align: :center, width: 245 },
+  { align: :center, width: 245 },
+  { align: :center, width: 245 }
+]
+
+STATS_TRACKER_COLUMNS_CONFIG = [
+  { align: :left, background: COLOR_NAME_COL, bold: true },
+  { align: :center },
+  { align: :center },
+  { align: :center },
+  { align: :center }
+]
+
+#========================================================================
+def actions_table(doc, scenario)
+  all_names = scenario["good"] + scenario["evil"]
+  actions_hash = all_names.reduce({}) do |result, role|
+    name = role["name"]
+    if PROFILES[name]["actions"]
+      PROFILES[name]["actions"].each do |a|
+        result[a] = [] unless result[a]
+        result[a].push(name)
+        result[a].sort!
+      end
+    end
+
+    result
+  end
+
+  unless actions_hash.empty?
+    action_data = actions_hash.keys.sort.map { |name| [ name ] }
+
+    actions_hash.each do |k,v|
+      entry = action_data.find { |array| array[0] == k }
+      entry.push(actions_hash[k].join("\n"))
+      entry.push(ACTIONS[k]["effect"])
+    end
+
+    doc.p
+    doc.p 'Heroic Actions', style: 'Section Heading'
+    static_stats_table(doc,
+                       [ ACTIONS_HEADER ] + action_data,
+                       dynamic_col_w(action_data, dynamic_col_w(action_data, ACTIONS_COLUMNS_CONFIG), 1))
+  end
+end
+
+#========================================================================
+def boxes(n)
+  return '' unless n
+  'O' * n.to_i
+end
+
+#========================================================================
+def cell_size(str)
+  x = str.split(/\n/).max_by { |s| s.size }
+  x.size
+end
+
+#========================================================================
+def create_dynamic_stats(scenario)
+  all_roles = scenario["good"] + scenario["evil"]
+  all_roles.reduce([]) do |result, role|
+    name = role["name"]
+    stats = PROFILES[name]["statline"]
+    if stats[6] == 1 && stats[9] == '-' && stats[10] == '-' && stats[11] == '-'
+      result
+    else
+      num_copies = role["amt"] || 1
+      (1..num_copies).each do |n|
+        nth = num_copies > 1 ? " ##{n}" : ""
+        result << [ "#{name}#{nth}", boxes(stats[6]), boxes(stats[9]), boxes(stats[10]), boxes(stats[11]) ]
+      end
+      result
+    end
+  end
+end
+
+#========================================================================
+def create_static_stats(profile_list=[])
+  [STATS_HEADER] + profile_list.map do |p|
+    name = p["name"]
+    abort "#{name} has no profile!" unless PROFILES[name]
+    stats = PROFILES[name]["statline"]
+    specials = PROFILES[name]["specials"]
+
+    array = [name] +
+            [stats[0]] +
+            ["#{stats[1]}/#{stats[2]}"] +
+            stats[3..5] +
+            stats[7..8]
+    array + (specials ? [ specials.join(", ") ] : [ "" ])
+  end
+end
+
+#========================================================================
+def dynamic_col_w(data_array, config_template, col=0)
+  copy = config_template.clone
+
+  longest = data_array.max_by { |row| cell_size(row[col]) }
+
+  copy[col] = {} unless copy[col]
+  copy[col]["width"] = (cell_size(longest[col]) * 20 * 72 * 0.09).to_i
+
+  copy
+end
+
+#========================================================================
+def dynamic_stats_table(doc, table_data)
+  static_stats_table(doc,
+              table_data.unshift(%w(Name Wounds Might Will Fate)),
+              dynamic_col_w(table_data, STATS_TRACKER_COLUMNS_CONFIG))
+end
+
+#========================================================================
+def effect_for_special(special)
+  # Most common case is a straightforward lookup
+  if SPECIALS[special] && SPECIALS[special]["effect"]
+    return SPECIALS[special]["effect"]
+  end
+
+  # When that fails, this might be a templatized special
+  template_key = SPECIALS.keys.find { |k| Regexp.new(Regexp.escape(k).sub("%s", "(.*)")).match(special) }
+
+  abort "no effect found for special [#{special}]!" unless template_key && $1
+
+  SPECIALS[template_key]["effect"].sub("%s", $1)
+end
+
+#========================================================================
+def specials_for(doc, side)
+  specials = XXX[side]
+               .map { |role| role["name"] }
+               .map { |name| PROFILES[name] }
+               .filter { |p| p["specials"] && p["specials"].size > 0 }
+               .flat_map { |p| p["specials"] }
+               .uniq
+               .sort
+
+  effect = nil
+
+  specials.each do |s|
+    effect = effect_for_special(s)
+
+    doc.p do
+      text s, bold: true
+      text ': '
+      text effect
+    end
+  end
+end
+
+#========================================================================
+def spells_table(doc, title)
+  side = title.downcase
+  spell_hash = XXX[side].reduce({}) do |result, role|
+    name = role["name"]
+    p = PROFILES[name]
+    if p["magic"] && p["magic"].size > 0
+      p["magic"].each do |spell|
+        spell_name = spell["spell"]
+        result[spell_name] = [] unless result[spell_name]
+        result[spell_name].push(spell.clone.merge!( { "name" => name }))
+      end
+    end
+    result
+  end
+
+  unless spell_hash.empty?
+    spell_data = spell_hash.keys.sort.map { |name| [ name ] }
+
+    spell_hash.each do |k,v|
+      if v.size == 1
+        range = v[0]["range"]
+        spell_entry = spell_data.find { |array| array[0] == k }
+        spell_entry.push("#{v[0]["name"]} #{range}#{range.is_a?(Integer) ? '"' : ''} #{v[0]["dr"]}+")
+        spell_entry.push(SPELLS[k]["effect"])
+      else
+        puts "OOPS #{k.inspect} => #{v.inspect}" # TODO
+      end
+    end
+
+    doc.p
+    doc.p "#{title} Spells", style: 'Section Heading'
+    static_stats_table(doc,
+                       [ SPELLS_HEADER ] + spell_data,
+                       dynamic_col_w(spell_data, dynamic_col_w(spell_data, SPELLS_COLUMNS_CONFIG), 1))
+  end
+end
+
+#========================================================================
+def static_stats_table(doc, data_array, config=[])
+  doc.table data_array do
+    align :center
+    border_color COLOR_TABLE_BORDER
+    border_size 4
+    width 10800
+
+    data_array.each_index do |i|
+      next if i < 2 || (i & 1 == 1)
+      cell_style rows[i], background: COLOR_TABLE_STRIPE
+    end
+
+    cell_style rows[0], background: COLOR_HEADER_BK, style: 'Table Header', align: :center
+
+    config.each_index do |i|
+      cell_style cols[i], config[i]
+    end
+
+    cell_style rows[0][0], background: COLOR_HEADER_BK # cols[0] overwrote this, so reset it
+  end
+end
+
+#========================================================================
+# MAIN PROGRAM
+#------------------------------------------------------------------------
+
+abort 'usage: mkcheatsheet </path/to/scenario.json>' unless ARGV.length == 1
+in_file = ARGV[0]
+out_file = ARGV[0].sub(/json/, 'docx')
+title = ARGV[0].sub(%r{^.*/}, "").sub(/.json/, '')
+
+XXX = JSON.load_file!(in_file) # TODO: no XXX
+
+docx = Caracal::Document.new(out_file)
+
+docx.page_margins do
+  bottom 720
+  left 720
+  right 720
+  top 720
+end
+
+docx.style do
+  id 'Title'
+  name 'title'
+  font 'Helvetica'
+  size 60
+  align :center
+  bold true
+end
+
+docx.style do
+  id 'Normal'
+  name 'normal'
+  font 'Helvetica'
+  size 20
+  line 240
+end
+
+docx.style do
+  id 'Section Heading'
+  name 'section_heading'
+  font 'Helvetica'
+  size 20
+  align :center
+  bold true
+end
+
+docx.style do
+  id 'Table Header'
+  name 'table_header'
+  font 'Helvetica'
+  size 20
+  bold true
+end
+
+docx.p title, style: 'Title'
+
+good_stats = create_static_stats(XXX["good"])
+evil_stats = create_static_stats(XXX["evil"])
+
+docx.p
+docx.p 'Good Character Stats', style: 'Section Heading'
+static_stats_table(docx, good_stats, dynamic_col_w(good_stats, STATS_COLUMNS_CONFIG))
+specials_for(docx, "good")
+
+docx.p
+docx.p 'Evil Character Stats', style: 'Section Heading'
+static_stats_table(docx, evil_stats, dynamic_col_w(evil_stats, STATS_COLUMNS_CONFIG))
+specials_for(docx, "evil")
+
+docx.p
+docx.p 'Expended Stats', style: 'Section Heading'
+dynamic_stats_table(docx, create_dynamic_stats(XXX)) # TODO
+
+actions_table(docx, XXX) # TODO
+spells_table(docx, "Good")
+spells_table(docx, "Evil")
+
+docx.p
+docx.p 'Objectives', style: 'Section Heading'
+%w(good evil).each do |side|
+  docx.p do
+    text side.capitalize, bold: true
+    text ': '
+    text XXX["objectives"][side]
+  end
+end
+
+docx.p
+docx.p 'Scenario Special Rules', style: 'Section Heading'
+XXX["specialRules"].each do |k,v|
+  docx.p do
+    text k, bold: true
+    text ': '
+    text v
+  end
+end
+
+docx.save
