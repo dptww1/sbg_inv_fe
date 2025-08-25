@@ -17,9 +17,9 @@
     "evil": "slay all Captains of Arnor w/in 12 turns"
   },
   "specialRules": {
-      "Legions of the Witch-king": "Slain Evil Warriors return on 4+ from the east edge or the center of the north or south edges",
-      "Rising Power": "The Witch-king has 2 Attacks",
-      "Hold the Line": "Good models must stay w/in 12\" of the center of the board",
-      "Unknown Attackers": "Arnor models do not have Hatred (Angmar)"
+    "Legions of the Witch-king": "Slain Evil Warriors return on 4+ from the east edge or the center of the north or south edges",
+    "Rising Power": "The Witch-king has 2 Attacks",
+    "Hold the Line": "Good models must stay w/in 12\" of the center of the board",
+    "Unknown Attackers": "Arnor models do not have Hatred (Angmar)"
   }
 }
