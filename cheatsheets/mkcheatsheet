@@ -1,8 +1,10 @@
 #!ruby
 
-# TODO Remove XXX
-# TODO make Scenario class
-#
+# TODO only Scenario class should reference PROFILES
+# TODO only Scenario class should reference SPECIALS
+# TODO only Scenario class should reference SPELLS
+# TODO only Scenario class should reference ACTIONS
+
 require 'caracal'
 require 'json'
 
@@ -48,8 +50,50 @@ STATS_TRACKER_COLUMNS_CONFIG = [
 ]
 
 #========================================================================
+class Scenario
+  attr_accessor :docx_output_filename, :title
+
+  @input_json
+  @actions
+  @profiles
+  @specials
+  @spells
+
+  #------------------------------------------------------------------------
+  def initialize(filename)
+    @docx_output_filename = filename.sub('.json', '.docx')
+    @title = filename.sub(%r{^.*/}, "").sub(/.json/, '')
+
+    @input_json = JSON.load_file!(filename)
+
+    @actions  = JSON.load_file!('./data/actions.json')
+    @profiles = JSON.load_file!('./data/profiles.json')
+    @specials = JSON.load_file!('./data/specials.json')
+    @spells   = JSON.load_file!('./data/spells.json')
+  end
+
+  #------------------------------------------------------------------------
+  # side - "good" or "evil"
+  #------------------------------------------------------------------------#
+  def objectives(side)
+    @input_json["objectives"][side]
+  end
+
+  #------------------------------------------------------------------------
+  # side - "good" or "evil"
+  #------------------------------------------------------------------------#
+  def order_of_battle(side)
+    @input_json[side]
+  end
+
+  def special_rules
+    @input_json["specialRules"]
+  end
+end
+
+#========================================================================
 def actions_table(doc, scenario)
-  all_names = scenario["good"] + scenario["evil"]
+  all_names = scenario.order_of_battle("good") + scenario.order_of_battle("evil")
   actions_hash = all_names.reduce({}) do |result, role|
     name = role["name"]
     if PROFILES[name]["actions"]
@@ -94,7 +138,7 @@ end
 
 #========================================================================
 def create_dynamic_stats(scenario)
-  all_roles = scenario["good"] + scenario["evil"]
+  all_roles = scenario.order_of_battle("good") + scenario.order_of_battle("evil")
   all_roles.reduce([]) do |result, role|
     name = role["name"]
     stats = PROFILES[name]["statline"]
@@ -163,8 +207,8 @@ def effect_for_special(special)
 end
 
 #========================================================================
-def specials_for(doc, side)
-  specials = XXX[side]
+def specials_for(doc, scenario, side)
+  specials = scenario.order_of_battle(side)
                .map { |role| role["name"] }
                .map { |name| PROFILES[name] }
                .filter { |p| p["specials"] && p["specials"].size > 0 }
@@ -186,9 +230,9 @@ def specials_for(doc, side)
 end
 
 #========================================================================
-def spells_table(doc, title)
+def spells_table(doc, scenario, title)
   side = title.downcase
-  spell_hash = XXX[side].reduce({}) do |result, role|
+  spell_hash = scenario.order_of_battle(side).reduce({}) do |result, role|
     name = role["name"]
     p = PROFILES[name]
     if p["magic"] && p["magic"].size > 0
@@ -251,13 +295,10 @@ end
 #------------------------------------------------------------------------
 
 abort 'usage: mkcheatsheet </path/to/scenario.json>' unless ARGV.length == 1
-in_file = ARGV[0]
-out_file = ARGV[0].sub(/json/, 'docx')
-title = ARGV[0].sub(%r{^.*/}, "").sub(/.json/, '')
 
-XXX = JSON.load_file!(in_file) # TODO: no XXX
+scenario = Scenario.new(ARGV[0])
 
-docx = Caracal::Document.new(out_file)
+docx = Caracal::Document.new(scenario.docx_output_filename)
 
 docx.page_margins do
   bottom 720
@@ -300,28 +341,28 @@ docx.style do
   bold true
 end
 
-docx.p title, style: 'Title'
+docx.p scenario.title, style: 'Title'
 
-good_stats = create_static_stats(XXX["good"])
-evil_stats = create_static_stats(XXX["evil"])
+good_stats = create_static_stats(scenario.order_of_battle("good"))
+evil_stats = create_static_stats(scenario.order_of_battle("evil"))
 
 docx.p
 docx.p 'Good Character Stats', style: 'Section Heading'
 static_stats_table(docx, good_stats, dynamic_col_w(good_stats, STATS_COLUMNS_CONFIG))
-specials_for(docx, "good")
+specials_for(docx, scenario, "good")
 
 docx.p
 docx.p 'Evil Character Stats', style: 'Section Heading'
 static_stats_table(docx, evil_stats, dynamic_col_w(evil_stats, STATS_COLUMNS_CONFIG))
-specials_for(docx, "evil")
+specials_for(docx, scenario, "evil")
 
 docx.p
 docx.p 'Expended Stats', style: 'Section Heading'
-dynamic_stats_table(docx, create_dynamic_stats(XXX)) # TODO
+dynamic_stats_table(docx, create_dynamic_stats(scenario))
 
-actions_table(docx, XXX) # TODO
-spells_table(docx, "Good")
-spells_table(docx, "Evil")
+actions_table(docx, scenario)
+spells_table(docx, scenario, "Good")
+spells_table(docx, scenario, "Evil")
 
 docx.p
 docx.p 'Objectives', style: 'Section Heading'
@@ -329,13 +370,13 @@ docx.p 'Objectives', style: 'Section Heading'
   docx.p do
     text side.capitalize, bold: true
     text ': '
-    text XXX["objectives"][side]
+    text scenario.objectives(side)
   end
 end
 
 docx.p
 docx.p 'Scenario Special Rules', style: 'Section Heading'
-XXX["specialRules"].each do |k,v|
+scenario.special_rules().each do |k,v|
   docx.p do
     text k, bold: true
     text ': '
