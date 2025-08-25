@@ -73,7 +73,7 @@
     "specials": ["Hatred (Angmar)"]
   },
   "Warrior of Carn Dûm": {
-    "statline": ["6\"", 3, "4+", 4, 5, 1, 1, 7, 7, "=", "-", "-"],
+    "statline": ["6\"", 3, "4+", 4, 5, 1, 1, 7, 7, "-", "-", "-"],
     "specials": ["Glory Seekers"]
   }
 }
