@@ -19,5 +19,22 @@
     "The King of Arnor": "Argeleb rerolls failed Wound rolls & has Arnor keyword",
     "The Hill-men": "Carn Dûm models gain Hatred (Arnor)",
     "Unknown Attackers": "Arnor models do not have Hatred (Angmar)"
+  },
+  "overrides": {
+    "Captain of Arnor": {
+      "specials": []
+    },
+    "Warrior of Arnor": {
+      "specials": []
+    },
+    "Ranger of Arnor": {
+      "specials": []
+    },
+    "Captain of Carn Dûm": {
+      "specials": [ "Glory Seekers", "Hatred (Arnor)" ]
+    },
+    "Warrior of Carn Dûm": {
+      "specials": [ "Glory Seekers", "Hatred (Arnor)" ]
+    }
   }
 }

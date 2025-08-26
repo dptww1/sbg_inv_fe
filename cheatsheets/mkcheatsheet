@@ -1,17 +1,7 @@
 #!ruby
 
-# TODO only Scenario class should reference PROFILES
-# TODO only Scenario class should reference SPECIALS
-# TODO only Scenario class should reference SPELLS
-# TODO only Scenario class should reference ACTIONS
-
 require 'caracal'
 require 'json'
-
-ACTIONS  = JSON.load_file!('./data/actions.json')
-PROFILES = JSON.load_file!('./data/profiles.json')
-SPECIALS = JSON.load_file!('./data/specials.json')
-SPELLS   = JSON.load_file!('./data/spells.json')
 
 COLOR_TABLE_BORDER = 'bfc0bf'
 COLOR_TABLE_STRIPE = 'efefef'
@@ -73,35 +63,90 @@ class Scenario
   end
 
   #------------------------------------------------------------------------
-  # side - "good" or "evil"
-  #------------------------------------------------------------------------#
-  def objectives(side)
-    @input_json["objectives"][side]
+  def actions_for(name)
+    attribute_override(name, 'actions') || @profiles[name]['actions'] || []
   end
 
   #------------------------------------------------------------------------
-  # side - "good" or "evil"
+  def attribute_override(name, attribute)
+    if @input_json['overrides'] &&
+       @input_json['overrides'][name] &&
+       @input_json['overrides'][name][attribute]
+      return @input_json['overrides'][name][attribute]
+    end
+
+    return nil
+  end
+
+  #------------------------------------------------------------------------
+  def effect_for_action(action_name)
+    @actions[action_name]['effect']
+  end
+
+  #------------------------------------------------------------------------
+  def effect_for_special(special_name)
+    # Most common case is a straightforward lookup
+    if @specials[special_name] && @specials[special_name]['effect']
+      return @specials[special_name]['effect']
+    end
+
+    # When that fails, this might be a templatized special
+    template_key = @specials.keys.find { |k| Regexp.new(Regexp.escape(k).sub('%s', '(.*)')).match(special_name) }
+
+    abort "no effect found for special [#{special_name}]!" unless template_key && $1
+
+    @specials[template_key]['effect'].sub('%s', $1)
+  end
+
+  #------------------------------------------------------------------------
+  def effect_for_spell(spell_name)
+    @spells[spell_name]['effect']
+  end
+
+  #------------------------------------------------------------------------
+  def magic_for(name)
+    attribute_override(name, 'magic') || @profiles[name]['magic'] || []
+  end
+
+  #------------------------------------------------------------------------
+  # side - 'good' or 'evil'
+  #------------------------------------------------------------------------#
+  def objectives(side)
+    @input_json['objectives'][side]
+  end
+
+  #------------------------------------------------------------------------
+  # side - 'good' or 'evil'
   #------------------------------------------------------------------------#
   def order_of_battle(side)
     @input_json[side]
   end
 
+  #------------------------------------------------------------------------
   def special_rules
-    @input_json["specialRules"]
+    @input_json['specialRules']
+  end
+
+  #------------------------------------------------------------------------
+  def specials_for(name)
+    attribute_override(name, 'specials') || @profiles[name]['specials'] || []
+  end
+
+  #------------------------------------------------------------------------
+  def statline_for(name)
+    attribute_override(name, 'statline') || @profiles[name]['statline']
   end
 end
 
 #========================================================================
 def actions_table(doc, scenario)
-  all_names = scenario.order_of_battle("good") + scenario.order_of_battle("evil")
+  all_names = scenario.order_of_battle('good') + scenario.order_of_battle('evil')
   actions_hash = all_names.reduce({}) do |result, role|
-    name = role["name"]
-    if PROFILES[name]["actions"]
-      PROFILES[name]["actions"].each do |a|
-        result[a] = [] unless result[a]
-        result[a].push(name)
-        result[a].sort!
-      end
+    name = role['name']
+    scenario.actions_for(name).each do |a|
+      result[a] = [] unless result[a]
+      result[a].push(name)
+      result[a].sort!
     end
 
     result
@@ -113,7 +158,7 @@ def actions_table(doc, scenario)
     actions_hash.each do |k,v|
       entry = action_data.find { |array| array[0] == k }
       entry.push(actions_hash[k].join("\n"))
-      entry.push(ACTIONS[k]["effect"])
+      entry.push(scenario.effect_for_action(k))
     end
 
     doc.p
@@ -138,16 +183,16 @@ end
 
 #========================================================================
 def create_dynamic_stats(scenario)
-  all_roles = scenario.order_of_battle("good") + scenario.order_of_battle("evil")
+  all_roles = scenario.order_of_battle('good') + scenario.order_of_battle('evil')
   all_roles.reduce([]) do |result, role|
-    name = role["name"]
-    stats = PROFILES[name]["statline"]
+    name = role['name']
+    stats = scenario.statline_for(name)
     if stats[6] == 1 && stats[9] == '-' && stats[10] == '-' && stats[11] == '-'
       result
     else
-      num_copies = role["amt"] || 1
+      num_copies = role['amt'] || 1
       (1..num_copies).each do |n|
-        nth = num_copies > 1 ? " ##{n}" : ""
+        nth = num_copies > 1 ? " ##{n}" : ''
         result << [ "#{name}#{nth}", boxes(stats[6]), boxes(stats[9]), boxes(stats[10]), boxes(stats[11]) ]
       end
       result
@@ -156,19 +201,19 @@ def create_dynamic_stats(scenario)
 end
 
 #========================================================================
-def create_static_stats(profile_list=[])
+def create_static_stats(scenario, side)
+  profile_list = scenario.order_of_battle(side)
   [STATS_HEADER] + profile_list.map do |p|
-    name = p["name"]
-    abort "#{name} has no profile!" unless PROFILES[name]
-    stats = PROFILES[name]["statline"]
-    specials = PROFILES[name]["specials"]
+    name = p['name']
+    stats = scenario.statline_for(name)
+    specials = scenario.specials_for(name)
 
     array = [name] +
             [stats[0]] +
             ["#{stats[1]}/#{stats[2]}"] +
             stats[3..5] +
             stats[7..8]
-    array + (specials ? [ specials.join(", ") ] : [ "" ])
+    array + (specials ? [ specials.join(', ') ] : [ '' ])
   end
 end
 
@@ -179,7 +224,7 @@ def dynamic_col_w(data_array, config_template, col=0)
   longest = data_array.max_by { |row| cell_size(row[col]) }
 
   copy[col] = {} unless copy[col]
-  copy[col]["width"] = (cell_size(longest[col]) * 20 * 72 * 0.09).to_i
+  copy[col]['width'] = (cell_size(longest[col]) * 20 * 72 * 0.09).to_i
 
   copy
 end
@@ -192,34 +237,17 @@ def dynamic_stats_table(doc, table_data)
 end
 
 #========================================================================
-def effect_for_special(special)
-  # Most common case is a straightforward lookup
-  if SPECIALS[special] && SPECIALS[special]["effect"]
-    return SPECIALS[special]["effect"]
-  end
-
-  # When that fails, this might be a templatized special
-  template_key = SPECIALS.keys.find { |k| Regexp.new(Regexp.escape(k).sub("%s", "(.*)")).match(special) }
-
-  abort "no effect found for special [#{special}]!" unless template_key && $1
-
-  SPECIALS[template_key]["effect"].sub("%s", $1)
-end
-
-#========================================================================
 def specials_for(doc, scenario, side)
   specials = scenario.order_of_battle(side)
-               .map { |role| role["name"] }
-               .map { |name| PROFILES[name] }
-               .filter { |p| p["specials"] && p["specials"].size > 0 }
-               .flat_map { |p| p["specials"] }
+               .map { |role| role['name'] }
+               .flat_map { |name| scenario.specials_for(name) }
                .uniq
                .sort
 
   effect = nil
 
   specials.each do |s|
-    effect = effect_for_special(s)
+    effect = scenario.effect_for_special(s)
 
     doc.p do
       text s, bold: true
@@ -233,14 +261,11 @@ end
 def spells_table(doc, scenario, title)
   side = title.downcase
   spell_hash = scenario.order_of_battle(side).reduce({}) do |result, role|
-    name = role["name"]
-    p = PROFILES[name]
-    if p["magic"] && p["magic"].size > 0
-      p["magic"].each do |spell|
-        spell_name = spell["spell"]
-        result[spell_name] = [] unless result[spell_name]
-        result[spell_name].push(spell.clone.merge!( { "name" => name }))
-      end
+    magic_list = scenario.magic_for(role['name'])
+    magic_list.each do |spell|
+      spell_name = spell['spell']
+      result[spell_name] = [] unless result[spell_name]
+      result[spell_name].push(spell.clone.merge!({ 'name' => role['name'] }))
     end
     result
   end
@@ -250,10 +275,10 @@ def spells_table(doc, scenario, title)
 
     spell_hash.each do |k,v|
       if v.size == 1
-        range = v[0]["range"]
+        range = v[0]['range']
         spell_entry = spell_data.find { |array| array[0] == k }
-        spell_entry.push("#{v[0]["name"]} #{range}#{range.is_a?(Integer) ? '"' : ''} #{v[0]["dr"]}+")
-        spell_entry.push(SPELLS[k]["effect"])
+        spell_entry.push("#{v[0]['name']} #{range}#{range.is_a?(Integer) ? '"' : ''} #{v[0]['dr']}+")
+        spell_entry.push(scenario.effect_for_spell(k))
       else
         puts "OOPS #{k.inspect} => #{v.inspect}" # TODO
       end
@@ -343,26 +368,26 @@ end
 
 docx.p scenario.title, style: 'Title'
 
-good_stats = create_static_stats(scenario.order_of_battle("good"))
-evil_stats = create_static_stats(scenario.order_of_battle("evil"))
+good_stats = create_static_stats(scenario, 'good')
+evil_stats = create_static_stats(scenario, 'evil')
 
 docx.p
 docx.p 'Good Character Stats', style: 'Section Heading'
 static_stats_table(docx, good_stats, dynamic_col_w(good_stats, STATS_COLUMNS_CONFIG))
-specials_for(docx, scenario, "good")
+specials_for(docx, scenario, 'good')
 
 docx.p
 docx.p 'Evil Character Stats', style: 'Section Heading'
 static_stats_table(docx, evil_stats, dynamic_col_w(evil_stats, STATS_COLUMNS_CONFIG))
-specials_for(docx, scenario, "evil")
+specials_for(docx, scenario, 'evil')
 
 docx.p
 docx.p 'Expended Stats', style: 'Section Heading'
 dynamic_stats_table(docx, create_dynamic_stats(scenario))
 
 actions_table(docx, scenario)
-spells_table(docx, scenario, "Good")
-spells_table(docx, scenario, "Evil")
+spells_table(docx, scenario, 'Good')
+spells_table(docx, scenario, 'Evil')
 
 docx.p
 docx.p 'Objectives', style: 'Section Heading'

@@ -19,5 +19,12 @@
   "specialRules": {
     "To War!": "Evil Heroes can Heroic March for free every turn.",
     "Protection of Imladris": "Elrond can't cast Wrath of Bruinen"
+  },
+  "overrides": {
+    "Elrond": {
+      "magic": [
+        { "range": 12, "dr": 3, "spell": "Renew" }
+      ]
+    }
   }
 }
