@@ -51,6 +51,11 @@
     "statline": ["6\"", 4, "3+", 3, 4, 1, 1, 7, 7, "-", "-", "-"],
     "specials": ["Hatred (Angmar)"]
   },
+  "Ranger of the North": {
+    "statline": ["6\"", 4, "3+", 4, "4/5", 1, 1, 6, 6, 1, 1, 1 ],
+    "specials": ["Woodland Creature"],
+    "actions": ["Accuracy"]
+  },
   "The Witch-king of Angmar": {
     "statline": ["6\"", 6, "4+", 4, 8, 3, 1, 4, 4, 3, 18, 3],
     "specials": ["Morgul Blade"],

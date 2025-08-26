@@ -1,0 +1,32 @@
+{
+  "good": [
+    { "amt":  6, "name": "Ranger of the North" },
+    { "amt": 12, "name": "Ranger of Arnor" }
+  ],
+  "evil": [
+    { "amt":  2, "name": "Captain of Carn Dûm" },
+    { "amt": 24, "name": "Warrior of Carn Dûm" }
+  ],
+  "objectives": {
+    "good": "move 5+ models off any board edge",
+    "evil": "prevent Good victory"
+  },
+  "specialRules": {
+    "Hope is Lost": "Evil models cause Terror",
+    "Escape Through the Trees": "Good models gain Woodland Creature"
+  },
+  "overrides": {
+    "Dúnedain": {
+      "specials": ["Woodland Creature"]
+    },
+    "Ranger of Arnor": {
+      "specials": ["Woodland Creature"]
+    },
+    "Captain of Carn Dûm": {
+      "specials": [ "Glory Seekers", "Terror" ]
+    },
+    "Warrior of Carn Dûm": {
+      "specials": [ "Glory Seekers", "Terror" ]
+    }
+  }
+}
