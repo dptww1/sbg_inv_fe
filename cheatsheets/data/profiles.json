@@ -19,6 +19,18 @@
     "specials": ["Glory Seekers"],
     "actions": ["March"]
   },
+  "Círdan": {
+    "statline": ["6\"", 5, "3+", 4, 4, 1, 2, 4, 3, 1, 4, 1],
+    "specials": ["Resistant to Magic", "Terror", "The Shipwright's Power", "Woodland Creature"],
+    "action": ["Channelling", "Resolve"],
+    "magic": [
+      { "range": "self", "dr": 3, "spell": "Fog of Disarray" },
+      { "range": 6,      "dr": 4, "spell": "Blessing of the Valar" },
+      { "range": 12,     "dr": 4, "spell": "Call Winds" },
+      { "range": 6,      "dr": 4, "spell": "Enchant Blades" },
+      { "range": "self", "dr": 5, "spell": "Aura of Dismay" }
+    ]
+  },
   "Elrond": {
     "statline": ["6\"", 7, "3+", 4, 7, 3, 3, 3, 3, 3, 3, 3],
     "specials": ["Foresight of the Eldar", "Lord of the West", "Terror", "Woodland Creature", "Vilya"],
@@ -33,9 +45,10 @@
     "specials": ["Noldorin Daggers", "Terror", "Woodland Creature"],
     "actions": ["Strike"]
   },
-  "High Elf Warrior": {
-    "statline": ["6\"", 5, "3+", 3, "5/6", 1, 1, 5, 5, "-", "-", "-"],
-    "specials": ["Woodland Creature"]
+  "Glorfindel": {
+    "statline": ["6\"", 8, "3+", 4, 7, 3, 3, 3, 3, 3, 3, 3],
+    "specials": ["Armour of Gondolin", "Expert Rider", "Hero of the Elves", "Horse Lord", "Lord of the West", "Resistant to Magic", "Terror", "Woodland Creature"],
+    "actions": ["Challenge", "Resolve", "Strength", "Strike"]
   },
   "Horse": {
     "statline": ["10\"", 9, "-", 9, 9, 9, 9, 9, 9, "-", "-", "-"]
@@ -55,6 +68,15 @@
     "statline": ["6\"", 4, "3+", 4, "4/5", 1, 1, 6, 6, 1, 1, 1 ],
     "specials": ["Woodland Creature"],
     "actions": ["Accuracy"]
+  },
+  "Rivendell Captain": {
+    "statline": ["6\"", 6, "3+", 4, "6/7", 2, 2, 4, 4, 2, 1, 1],
+    "specials": ["Expert Rider", "Woodland Creature"],
+    "actions": ["March"]
+  },
+  "Rivendell Warrior": {
+    "statline": ["6\"", 5, "3+", 3, "5/6", 1, 1, 5, 5, "-", "-", "-"],
+    "specials": ["Woodland Creature"]
   },
   "The Witch-king of Angmar": {
     "statline": ["6\"", 6, "4+", 4, 8, 3, 1, 4, 4, 3, 18, 3],

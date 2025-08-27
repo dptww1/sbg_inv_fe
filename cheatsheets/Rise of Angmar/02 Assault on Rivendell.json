@@ -2,7 +2,7 @@
   "good": [
     { "amt":  1, "name": "Elrond" },
     { "amt":  1, "name": "Erestor" },
-    { "amt": 25, "name": "High Elf Warrior" }
+    { "amt": 25, "name": "Rivendell Warrior" }
   ],
   "evil": [
     { "amt":  2, "name": "Angmar Orc Captain" },
