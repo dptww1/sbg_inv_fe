@@ -52,7 +52,7 @@ class Scenario
   #------------------------------------------------------------------------
   def initialize(filename)
     @docx_output_filename = filename.sub('.json', '.docx')
-    @title = filename.sub(%r{^.*/}, "").sub(/.json/, '')
+    @title = filename.sub(%r{^.*/}, "").sub(/.json/, '').sub(/^\d+\s*/, "")
 
     @input_json = JSON.load_file!(filename)
 
