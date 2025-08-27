@@ -1,0 +1,33 @@
+{
+  "good": [
+    { "amt": 1,  "name": "King of Men" },
+    { "amt": 2,  "name": "Captain of Arnor" },
+    { "amt": 24, "name": "Warrior of Arnor" },
+    { "amt": 12, "name": "Ranger of Arnor" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "The Witch-king of Angmar" },
+    { "amt":  1, "name": "Angmar Orc Captain" },
+    { "amt":  1, "name": "Captain of Carn Dûm" },
+    { "amt": 25, "name": "Angmar Orc Warrior" },
+    { "amt": 12, "name": "Warrior of Carn Dûm" },
+    { "amt": 12, "name": "Angmar Warg Rider" }
+  ],
+  "objectives": {
+    "good": "take the Palantir off the board within 12 turns",
+    "evil": "slay Argeleb and keep the Palantir out of the possession of Good"
+  },
+  "specialRules": {
+    "The Tower of Amon Sûl": "Models cannot enter or be deployed in Amon Sûl",
+    "The Palantir": "Palantir is Light Object in possession of a secretly-chosen Good model; if dropped, Evil leanrs its location",
+    "Defence of the King": "Argeleb is Resistant to Magic, has the Arnor keyword, and can re-roll failed Fate rolls"
+  },
+  "overrides": {
+    "The Witch-king of Angmar": {
+      "statline": ["6\"", 6, "4+", 4, 8, 2, 1, 4, 4, 3, 15, 3]
+    },
+    "King of Men": {
+      "specials": ["Resistant to Magic"]
+    }
+  }
+}
