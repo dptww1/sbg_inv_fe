@@ -83,5 +83,8 @@
   "Warrior of Carn Dûm": {
     "statline": ["6\"", 3, "4+", 4, 5, 1, 1, 7, 7, "-", "-", "-"],
     "specials": ["Glory Seekers"]
+  },
+  "Wild Warg": {
+    "statline": ["10\"", 3, "6+", 4, 4, 1, 1, 8, 8, "-", "-", "-"]
   }
 }
