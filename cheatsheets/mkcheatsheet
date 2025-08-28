@@ -134,6 +134,7 @@ class Scenario
 
   #------------------------------------------------------------------------
   def statline_for(name)
+    abort "no profile for #{name}!" unless @profiles[name]
     attribute_override(name, 'statline') || @profiles[name]['statline']
   end
 end

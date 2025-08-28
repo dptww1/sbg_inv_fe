@@ -78,6 +78,10 @@
     "statline": ["6\"", 5, "3+", 3, "5/6", 1, 1, 5, 5, "-", "-", "-"],
     "specials": ["Woodland Creature"]
   },
+  "Spectre": {
+    "statline": ["6\"", 2, "6+", 3, 6, 1, 1, 4, 7, "-", "-", "-"],
+    "specials": ["A Fell Light is in Them", "Blades of the Dead", "Spectral Walk", "Terror"]
+  },
   "The Witch-king of Angmar": {
     "statline": ["6\"", 6, "4+", 4, 8, 3, 1, 4, 4, 3, 18, 3],
     "specials": ["Morgul Blade"],

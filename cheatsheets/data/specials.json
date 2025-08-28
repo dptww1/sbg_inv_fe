@@ -1,4 +1,8 @@
 {
+  "A Fell Light is in Them": {
+    "type": "active",
+    "effect": "At end of move, choose enemy w/in 12\" to take Intelligence Test; if failed, pull enemy directly to this model up to full move (unless obstructed, and not out of Combat) and no further movement for that model."
+  },
   "Ancient Enemies (%s)": {
     "type": "active",
     "effect": "reroll To Wound rolls of 1 vs %s"
