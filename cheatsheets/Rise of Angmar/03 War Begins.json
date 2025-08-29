@@ -1,15 +1,39 @@
 {
   "good": [
-    { "amt":  1, "name": "King of Men" },
-    { "amt":  1, "name": "Captain of Arnor" },
-    { "amt": 17, "name": "Warrior of Arnor" },
-    { "amt":  8, "name": "Ranger of Arnor" }
+    {
+      "amt": 1,
+      "name": "King of Men"
+    },
+    {
+      "amt": 1,
+      "name": "Captain of Arnor"
+    },
+    {
+      "amt": 17,
+      "name": "Warrior of Arnor"
+    },
+    {
+      "amt": 8,
+      "name": "Ranger of Arnor"
+    }
   ],
   "evil": [
-    { "amt":  1, "name": "Angmar Orc Captain" },
-    { "amt":  2, "name": "Captain of Carn Dûm" },
-    { "amt": 13, "name": "Angmar Orc Warrior" },
-    { "amt": 24, "name": "Warrior of Carn Dûm" }
+    {
+      "amt": 1,
+      "name": "Angmar Orc Captain"
+    },
+    {
+      "amt": 2,
+      "name": "Captain of Carn Dûm"
+    },
+    {
+      "amt": 13,
+      "name": "Angmar Orc Warrior"
+    },
+    {
+      "amt": 24,
+      "name": "Warrior of Carn Dûm"
+    }
   ],
   "objectives": {
     "good": "reduce Evil to <=25% (10 models)",
@@ -31,10 +55,25 @@
       "specials": []
     },
     "Captain of Carn Dûm": {
-      "specials": [ "Glory Seekers", "Hatred (Arnor)" ]
+      "specials": [
+        "Glory Seekers",
+        "Hatred (Arnor)"
+      ]
     },
     "Warrior of Carn Dûm": {
-      "specials": [ "Glory Seekers", "Hatred (Arnor)" ]
+      "specials": [
+        "Glory Seekers",
+        "Hatred (Arnor)"
+      ]
+    }
+  },
+  "formatting": {
+    "tables": {
+      "Heroic Actions": {
+        "both": [
+          { "column": 0, "width": 0.58 }
+        ]
+      }
     }
   }
 }

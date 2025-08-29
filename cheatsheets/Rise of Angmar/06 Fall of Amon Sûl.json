@@ -19,7 +19,7 @@
   },
   "specialRules": {
     "The Tower of Amon Sûl": "Models cannot enter or be deployed in Amon Sûl",
-    "The Palantir": "Palantir is Light Object in possession of a secretly-chosen Good model; if dropped, Evil leanrs its location",
+    "The Palantir": "Palantir is Light Object in possession of a secretly-chosen Good model; if dropped, Evil learns its location",
     "Defence of the King": "Argeleb is Resistant to Magic, has the Arnor keyword, and can re-roll failed Fate rolls"
   },
   "overrides": {
@@ -29,5 +29,8 @@
     "King of Men": {
       "specials": ["Resistant to Magic"]
     }
+  },
+  "formatting": {
+    "pageBreakBefore": ["Heroic Actions"]
   }
 }

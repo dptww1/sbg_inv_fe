@@ -35,5 +35,8 @@
     "The Witch-king of Angmar": {
       "statline": ["6\"", 6, "4+", 4, 8, 2, 1, 4, 4, 3, 15, 3]
     }
+  },
+  "formatting": {
+    "pageBreakBefore": ["Heroic Actions"]
   }
 }

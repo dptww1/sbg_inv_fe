@@ -28,5 +28,14 @@
     "Warrior of Carn Dûm": {
       "specials": [ "Glory Seekers", "Terror" ]
     }
+  },
+  "formatting": {
+    "tables": {
+      "Heroic Actions": {
+        "both": [
+          { "column": 0, "width": 0.76 }
+        ]
+      }
+    }
   }
 }

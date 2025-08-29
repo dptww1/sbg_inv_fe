@@ -32,5 +32,8 @@
     "Warrior of Carn Dûm": {
       "specials": ["Glory Seekers", "Hatred (Elf)"]
     }
+  },
+  "formatting": {
+    "pageBreakBefore": ["Heroic Actions"]
   }
 }

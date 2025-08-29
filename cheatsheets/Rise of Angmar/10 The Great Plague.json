@@ -22,5 +22,26 @@
     "Ranger of the North": {
       "specials": ["Mountain Dweller", "Woodland Creature"]
     }
+  },
+  "formatting": {
+    "tables": {
+      "stats": {
+        "evil": [
+          { "column": 0, "width": 1.5 },
+          { "column": 1, "width": 0.49 },
+          { "column": 2, "width": 0.42 },
+          { "column": 3, "width": 0.21 },
+          { "column": 4, "width": 0.32 },
+          { "column": 5, "width": 0.15 },
+          { "column": 6, "width": 0.15 },
+          { "column": 7, "width": 0.15 }
+        ]
+      },
+      "Heroic Actions": {
+        "both": [
+          { "column": 0, "width": 0.746 }
+        ]
+      }
+    }
   }
 }

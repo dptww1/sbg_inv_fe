@@ -20,5 +20,14 @@
       "statline": ["6\"", 6, "4+", 4, 6, 3, 2, 4, 5, 2, 2, 2],
       "specials": ["Hatred (Angmar)"]
     }
+  },
+  "formatting": {
+    "tables": {
+      "Heroic Actions": {
+        "both": [
+          { "column": 0, "width": 0.56 }
+        ]
+      }
+    }
   }
 }

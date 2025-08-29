@@ -26,5 +26,15 @@
         { "range": 12, "dr": 3, "spell": "Renew" }
       ]
     }
+  },
+  "formatting": {
+    "pageBreakBefore": ["Heroic Actions"],
+    "tables": {
+      "spells": {
+        "good": [
+          { "column": 0, "width": 0.6 }
+        ]
+      }
+    }
   }
 }

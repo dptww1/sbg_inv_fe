@@ -68,6 +68,17 @@ class Scenario
   end
 
   #------------------------------------------------------------------------
+  def apply_table_formatting(config, table_name, side='both')
+    config = config.clone
+
+    column_sizes_for(table_name, side).each do |col_spec|
+      config[col_spec['column']]['width'] = 20.0 * 72.0 * col_spec['width']
+    end
+
+    config
+  end
+
+  #------------------------------------------------------------------------
   def attribute_override(name, attribute)
     if @input_json['overrides'] &&
        @input_json['overrides'][name] &&
@@ -76,6 +87,14 @@ class Scenario
     end
 
     return nil
+  end
+
+  #------------------------------------------------------------------------
+  def column_sizes_for(table, side)
+    (@input_json["formatting"] &&
+     @input_json["formatting"]["tables"] &&
+     @input_json["formatting"]["tables"][table] &&
+     @input_json["formatting"]["tables"][table][side]) || []
   end
 
   #------------------------------------------------------------------------
@@ -123,6 +142,13 @@ class Scenario
   end
 
   #------------------------------------------------------------------------
+  def page_break_before(section_name)
+    @input_json["formatting"] &&
+      @input_json["formatting"]["pageBreakBefore"] &&
+      @input_json["formatting"]["pageBreakBefore"].include?(section_name)
+  end
+
+  #------------------------------------------------------------------------
   def special_rules
     @input_json['specialRules']
   end
@@ -154,6 +180,7 @@ def actions_table(doc, scenario)
   end
 
   unless actions_hash.empty?
+    doc.page if scenario.page_break_before("Heroic Actions")
     action_data = actions_hash.keys.sort.map { |name| [ name ] }
 
     actions_hash.each do |k,v|
@@ -162,11 +189,14 @@ def actions_table(doc, scenario)
       entry.push(scenario.effect_for_action(k))
     end
 
+    config = ACTIONS_COLUMNS_CONFIG
+    config = dynamic_col_w(action_data, config)
+    config = dynamic_col_w(action_data, config, 1)
+    config = scenario.apply_table_formatting(config, 'Heroic Actions')
+
     doc.p
     doc.p 'Heroic Actions', style: 'Section Heading'
-    static_stats_table(doc,
-                       [ ACTIONS_HEADER ] + action_data,
-                       dynamic_col_w(action_data, dynamic_col_w(action_data, ACTIONS_COLUMNS_CONFIG), 1))
+    static_stats_table(doc, [ ACTIONS_HEADER ] + action_data, config)
   end
 end
 
@@ -285,11 +315,14 @@ def spells_table(doc, scenario, title)
       end
     end
 
+    config = SPELLS_COLUMNS_CONFIG
+    config = dynamic_col_w(spell_data, config)
+    config = dynamic_col_w(spell_data, config, 1)
+    config = scenario.apply_table_formatting(config, 'spells', side)
+
     doc.p
     doc.p "#{title} Spells", style: 'Section Heading'
-    static_stats_table(doc,
-                       [ SPELLS_HEADER ] + spell_data,
-                       dynamic_col_w(spell_data, dynamic_col_w(spell_data, SPELLS_COLUMNS_CONFIG), 1))
+    static_stats_table(doc, [ SPELLS_HEADER ] + spell_data, config)
   end
 end
 
@@ -336,7 +369,7 @@ end
 docx.style do
   id 'Title'
   name 'title'
-  font 'Helvetica'
+  font 'Helvetica Neue'
   size 60
   align :center
   bold true
@@ -345,7 +378,7 @@ end
 docx.style do
   id 'Normal'
   name 'normal'
-  font 'Helvetica'
+  font 'Helvetica Neue'
   size 20
   line 240
 end
@@ -353,7 +386,7 @@ end
 docx.style do
   id 'Section Heading'
   name 'section_heading'
-  font 'Helvetica'
+  font 'Helvetica Neue'
   size 20
   align :center
   bold true
@@ -362,7 +395,7 @@ end
 docx.style do
   id 'Table Header'
   name 'table_header'
-  font 'Helvetica'
+  font 'Helvetica Neue'
   size 20
   bold true
 end
@@ -379,7 +412,10 @@ specials_for(docx, scenario, 'good')
 
 docx.p
 docx.p 'Evil Character Stats', style: 'Section Heading'
-static_stats_table(docx, evil_stats, dynamic_col_w(evil_stats, STATS_COLUMNS_CONFIG))
+config = STATS_COLUMNS_CONFIG
+config = dynamic_col_w(evil_stats, config)
+config = scenario.apply_table_formatting(config, "stats", "evil")
+static_stats_table(docx, evil_stats, config)
 specials_for(docx, scenario, 'evil')
 
 docx.p

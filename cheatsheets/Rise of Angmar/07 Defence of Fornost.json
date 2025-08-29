@@ -17,5 +17,14 @@
   "specialRules": {
     "Ruthless Attackers": "Evil models on ladders do not treat battlements as In The Way",
     "The King is Dead": "Evil models on the wall cause Terror"
+  },
+  "formatting": {
+    "tables": {
+      "Heroic Actions": {
+        "both": [
+          { "column": 0, "width": 0.56 }
+        ]
+      }
+    }
   }
 }
