@@ -213,7 +213,7 @@
   },
   "Tom is Master": {
     "type": "passive",
-    "effect": "all terrain is Open Ground, always rolls 6 on Climb/Leap/Jump/Swim Tests, can't be targeted or effected by anything, can't be Charged, may Charge and auto-wins Combat but no Strikes from anyone"
+    "effect": "all terrain is Open Ground, always rolls 6 on Climb/Leap/Jump/Swim Tests, can't be targeted or affected by anything, can't be Charged, may Charge and auto-wins Combat but no Strikes from anyone"
   },
   "Unyielding Combat Stance": {
     "type": "active",
