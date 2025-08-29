@@ -180,7 +180,6 @@ def actions_table(doc, scenario)
   end
 
   unless actions_hash.empty?
-    doc.page if scenario.page_break_before("Heroic Actions")
     action_data = actions_hash.keys.sort.map { |name| [ name ] }
 
     actions_hash.each do |k,v|
@@ -192,9 +191,13 @@ def actions_table(doc, scenario)
     config = ACTIONS_COLUMNS_CONFIG
     config = dynamic_col_w(action_data, config)
     config = dynamic_col_w(action_data, config, 1)
-    config = scenario.apply_table_formatting(config, 'Heroic Actions')
+    config = scenario.apply_table_formatting(config, 'actions')
 
-    doc.p
+    if scenario.page_break_before("actions")
+      doc.page
+    else
+      doc.p
+    end
     doc.p 'Heroic Actions', style: 'Section Heading'
     static_stats_table(doc, [ ACTIONS_HEADER ] + action_data, config)
   end

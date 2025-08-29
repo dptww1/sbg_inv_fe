@@ -28,7 +28,7 @@
     }
   },
   "formatting": {
-    "pageBreakBefore": ["Heroic Actions"],
+    "pageBreakBefore": ["actions"],
     "tables": {
       "spells": {
         "good": [

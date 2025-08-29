@@ -23,7 +23,7 @@
   },
   "formatting": {
     "tables": {
-      "Heroic Actions": {
+      "actions": {
         "both": [
           { "column": 0, "width": 0.56 }
         ]

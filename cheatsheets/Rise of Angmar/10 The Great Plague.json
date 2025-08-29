@@ -37,7 +37,7 @@
           { "column": 7, "width": 0.15 }
         ]
       },
-      "Heroic Actions": {
+      "actions": {
         "both": [
           { "column": 0, "width": 0.746 }
         ]

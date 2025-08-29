@@ -37,6 +37,6 @@
     }
   },
   "formatting": {
-    "pageBreakBefore": ["Heroic Actions"]
+    "pageBreakBefore": ["actions"]
   }
 }
