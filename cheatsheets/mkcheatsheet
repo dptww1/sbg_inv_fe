@@ -419,6 +419,7 @@ static_stats_table(docx, evil_stats, config)
 specials_for(docx, scenario, 'evil')
 
 docx.p
+docx.page if scenario.page_break_before('Expended Stats')
 docx.p 'Expended Stats', style: 'Section Heading'
 dynamic_stats_table(docx, create_dynamic_stats(scenario))
 

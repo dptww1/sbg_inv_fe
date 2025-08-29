@@ -9,6 +9,13 @@
   "Angmar Warg Rider": {
     "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
   },
+  "Barrow-wight": {
+    "statline": ["6\"", 3, "5+", 3, 7, 1, 2, 4, 6, "-", 5, "-"],
+    "specials": ["Blades of the Dead", "Spectral Walk", "Terror"],
+    "magic": [
+      { "range": 6, "dr": 3, "spell": "Paralyse" }
+    ]
+  },
   "Captain of Arnor": {
     "statline": ["6\"", 5, "4+", 4, 7, 2, 2, 7, 6, 2, 1, 1],
     "specials": ["Hatred (Angmar)"],
@@ -95,6 +102,10 @@
       { "range": "self", "dr": 5, "spell": "Instill Fear" },
       { "range": 12, "dr": 5, "spell": "Your Staff is Broken" }
     ]
+  },
+  "Tom Bombadil": {
+    "statline": ["6\"", "-", "-", "-", "-", "-", "-", "-", "-", "-", 12, "-"],
+    "specials": ["Sing a Jolly Song", "Tom has his house to mind", "Tom is Master"]
   },
   "Warg": {
     "statline": ["10\"", 3, "6+", 3, 4, 0, 1, 3, 3, "-", "-", "-"]

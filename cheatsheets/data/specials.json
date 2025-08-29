@@ -163,6 +163,10 @@
     "type": "active",
     "effect": "if non-cav, non-prone, has shield, and in base contact with two other Shieldwall models, +1 Defense before Backing Away"
   },
+  "Sing a Jolly Song": {
+    "type": "active",
+    "effect": "spend a Will point to sing as many times as desired during Activation: 1) friendly model regains Wound (max one per model per turn; 2) friends w/in 6\" of Tom add 3\" to Move value, and Difficult Terrain treated as Open Ground; 3) friendly model recovers from effects of enemy magic and can't be targeted by magic or special rules; 4) friendly models w/in 6\" auto-pass Courage tests until end of turn; 5) enemy Spirit suffers a Wound (once per turn)"
+  },
   "Spectral Walk": {
     "type": "passive",
     "effect": "move normally through Difficult Terrain; auto-6 for Climb/Jump/Leap/Swim Tests"
@@ -202,6 +206,14 @@
   "Timid": {
     "type": "passive",
     "effect": "Mount must take Courage Test to Charge (w/o Special/Magic benefit); if failed, no Move; if success, no Cavalry Charge bonus"
+  },
+  "Tom has his house to mind": {
+    "type": "passive",
+    "effect": "lose a Will point at end of turn if engaged in Combat; remove as casualty if ever at 0 Will"
+  },
+  "Tom is Master": {
+    "type": "passive",
+    "effect": "all terrain is Open Ground, always rolls 6 on Climb/Leap/Jump/Swim Tests, can't be targeted or effected by anything, can't be Charged, may Charge and auto-wins Combat but no Strikes from anyone"
   },
   "Unyielding Combat Stance": {
     "type": "active",
