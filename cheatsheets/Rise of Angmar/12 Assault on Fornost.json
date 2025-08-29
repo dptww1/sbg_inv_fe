@@ -1,0 +1,30 @@
+{
+  "good": [
+    { "amt":  1, "name": "Arvedui" },
+    { "amt":  1, "name": "Argadir" },
+    { "amt":  1, "name": "Malbeth" },
+    { "amt": 24, "name": "Warrior of Arnor" },
+    { "amt": 12, "name": "Ranger of Arnor" },
+    { "amt":  6, "name": "Knight of Arnor" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "Aldrac" },
+    { "amt":  1, "name": "Fráecht" },
+    { "amt":  1, "name": "Nazthák" },
+    { "amt":  1, "name": "Captain of Carn Dûm" },
+    { "amt": 36, "name": "Warrior of Carn Dûm" },
+    { "amt": 13, "name": "Angmar Orc Warrior" }
+  ],
+  "objectives": {
+    "good": "reduce Evil to <=13 models",
+    "evil": "reduce Good to <=11 models"
+  },
+  "specialRules": {
+    "The King of Arnor": "Arvedui may declare a free Heroic Combat each turn; if slain, Good can't win",
+    "Carn Dûm War Chant": "once/game after Priority & if Aldrac is alive, Carn Dûm models have Terror",
+    "Fateful Visions": "Arvedui saves Wounds on 3+ if w/in 6\" of Malbeth"
+  },
+  "formatting": {
+    "pageBreakBefore": ["expendedStats"]
+  }
+}

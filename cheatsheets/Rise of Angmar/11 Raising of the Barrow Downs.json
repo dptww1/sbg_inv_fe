@@ -17,7 +17,7 @@
     "Ho! Tom Bombadil!": "starting Turn 3, Tom Bombadil arrives from any board edge on a roll of 5+"
   },
   "formatting": {
-    "pageBreakBefore": ["Expended Stats"],
+    "pageBreakBefore": ["expendedStats"],
     "tables": {
       "actions": {
         "both": [

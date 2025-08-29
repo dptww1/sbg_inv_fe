@@ -14,7 +14,7 @@
   "Challenge": {
     "effect": "target enemy Hero of >= Heroic Tier; +1 Attack & +1 To Wound vs that Hero; if enemy slain, regain one spent Might point. If accepted, targets gets same benefits and each must Charge the other; if declined, target can't Heroic Challenge caller"
   },
-  "Defense": {
+  "Defence": {
     "effect": "caller only Wounded on 6 (or 6/6); doesn't affect Mount"
   },
   "Strength": {

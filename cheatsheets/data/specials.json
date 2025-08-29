@@ -19,6 +19,10 @@
     "type": "active",
     "effect": "reroll failed To Wound rolls in Shooting or Striking"
   },
+  "Battle Frenzy": {
+    "type": "active",
+    "effect": "may declare free Heroic Combat on the turn after slaying an enemy model"
+  },
   "%sbane": {
     "type": "active",
     "effect": "Strikes vs %s inflict d3 Wounds"
@@ -69,11 +73,15 @@
   },
   "Foresight of the Eldar": {
     "type": "passive",
-    "effect": "before game, roll d6 for points Elrond can expend to increase Priority Roll"
+    "effect": "before game, roll d6 for points to expend to increase Priority Roll"
   },
   "General Hunter": {
     "type": "active",
     "effect": "if this model slays enemy General, regain one spent Might point"
+  },
+  "Gift of Foresight": {
+    "type": "active",
+    "effect": "Arnor models w/in 6\" and line of sight save Wounds on 5+"
   },
   "Glory Seekers": {
     "type": "active",
@@ -98,6 +106,10 @@
   "Horse Lord": {
     "type": "passive",
     "effect": "Wounds vs Mount are saved on d6=6; rider can use Fate points on behalf of Mount"
+  },
+  "Incantations of Power": {
+    "type": "active",
+    "effect": "spend a Will point after Priority to affect Carn Dûm models w/in 6\" for the turn: 1) reroll To Wound rolls of 1; 2) save Wounds on 5+; or 3) treat Difficult Terrain as Open Terrain (except water)"
   },
   "Invisible": {
     "type": "passive",
@@ -151,6 +163,10 @@
     "type": "passive",
     "effect": "gain extra die on all Resist Tests"
   },
+  "Scavenge": {
+    "type": "active",
+    "effect": "whenever slays non-Monster enemy in Combat, may take one item of wargear (before it can be handed off), except armour, mount, living creature, One Ring, or claws/teeth"
+  },
   "Set Ablaze": {
     "type": "passive",
     "effect": "unless immune to fire, affected model suffers S5 hit in End Phase until Lying Down & Crawling 1\", or entering water"
@@ -195,6 +211,10 @@
     "type": "active",
     "effect": "models trying to Charge this model must pass Courage Tests; if failed, no Move"
   },
+  "The King in the North": {
+    "type": "active",
+    "effect": "Standfast range is 12\""
+  },
   "The Shipwright's Power": {
     "type": "passive",
     "effect": "gain 1 free Will Point at start of each turn; lost if unused at turn's end"
@@ -226,6 +246,10 @@
   "Vilya": {
     "type": "passive",
     "effect": "reroll failed Fate rolls"
+  },
+  "Warlord of Carn Dûm": {
+    "type": "passive",
+    "effect": "Carn Dûm models w/in 6\" must reroll failed Courage Tests"
   },
   "Will of Evil": {
     "type": "passive",
