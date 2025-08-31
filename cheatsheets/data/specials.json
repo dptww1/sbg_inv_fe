@@ -23,6 +23,10 @@
     "type": "active",
     "effect": "reroll failed To Wound rolls in Shooting or Striking"
   },
+  "Banner of Arwen Evenstar": {
+    "type": "passive",
+    "effect": "banner w/6\" range & no -1 to Duel roll; friendly models w/in 6\" auto-pass Courage Tests"
+  },
   "Battle Frenzy": {
     "type": "active",
     "effect": "may declare free Heroic Combat on the turn after slaying an enemy model"
@@ -50,6 +54,10 @@
   "Cave Dweller": {
     "type": "active",
     "effect": "+1 on Jump/Leap/Climb tests; no penalty fighting in the dark"
+  },
+  "Chieftain of the Dúnedain": {
+    "type": "active",
+    "effect": "friendly Dúnedain Hero models can benefit from this model's Standfast"
   },
   "Conduit of Angmar": {
     "type": "passive",
