@@ -233,7 +233,7 @@
   },
   "Shieldwall": {
     "type": "active",
-    "effect": "if non-cav, non-prone, has shield, and in base contact with two other Shieldwall models, +1 Defense before Backing Away"
+    "effect": "if non-Cavalry, non-prone, has shield, and in base contact with two other Shieldwall models, +1 Defense before Backing Away"
   },
   "Sing a Jolly Song": {
     "type": "active",

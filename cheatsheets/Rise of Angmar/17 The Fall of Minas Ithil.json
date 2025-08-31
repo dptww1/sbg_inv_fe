@@ -1,0 +1,29 @@
+{
+  "good": [
+    { "amt":  3, "name": "Captain of Minas Tirith" },
+    { "amt": 24, "name": "Warrior of Minas Tirith" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "The Witch-king of Angmar" },
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt": 36, "name": "Angmar Orc Warrior" },
+    { "amt":  3, "name": "Spectre" },
+    { "amt":  1, "name": "Horse" }
+  ],
+  "objectives": {
+    "good": "slay the Witch-king",
+    "evil": "control all 3 Objective markers"
+  },
+  "specialRules": {
+    "Controlling Objectives": "Evil controls an Objective by outnumbering Good w/in 3\" by 2+:1, or 1+:0",
+    "Legions of the Witch-king": "At end of Evil Move Phase, slain Warriors return on 4+"
+  },
+  "overrides": {
+    "The Witch-king of Angmar": {
+      "statline": ["6\"", 6, "4+", 4, 8, 3, 1, 4, 4, 3, 15, 3]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["actions"]
+  }
+}
