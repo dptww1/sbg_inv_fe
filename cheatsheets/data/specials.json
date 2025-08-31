@@ -155,6 +155,10 @@
     "type": "passive",
     "effect": "when Shooting target, ingnore non-Monster/Siege Engine/War Beasts for In The Way"
   },
+  "Lead by Example": {
+    "type": "active",
+    "effect": "treat as banner for Orcs & Trolls after slaying enemy Hero or Monster; range is 6\" if 3+ Hero/Monsters slain"
+  },
   "Leader (%s)": {
     "type": "passive",
     "effect": "Warband can include %s"
