@@ -72,7 +72,7 @@ const doSearchSelect = target => {
   const URL_MAPPINGS = {
     "c": "/characters/:id",
     "f": "/figures/:id",
-    "s": "/scenarios/id:"
+    "s": "/scenarios/:id"
   };
 
   const url = URL_MAPPINGS[target.dataset.type];
