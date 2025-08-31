@@ -53,7 +53,7 @@
       { "range": 6, "dr": 3, "spell": "Paralyse" }
     ]
   },
-  "Burhdûr": {
+  "Buhrdûr": {
     "statline": ["6\"", 7, "4+", 7, 7, 3, 3, 6, 5, 3, 3, 1],
     "specials": ["Dominant (4)", "General Hunter", "Terror", "Throw Stones (12\" S8)", "Lead by Example", "Brutish Cunning"]
   },
