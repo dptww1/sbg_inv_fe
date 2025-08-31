@@ -127,6 +127,10 @@
     "type": "passive",
     "effect": "Wounds vs Mount are saved on d6=6; rider can use Fate points on behalf of Mount"
   },
+  "Immortal Hunger": {
+    "type": "active",
+    "effect": "regains a Wound when slays enemy in Combat (not Brutal Power Attack)"
+  },
   "Incantations of Power": {
     "type": "active",
     "effect": "spend a Will point after Priority to affect Carn Dûm models w/in 6\" for the turn: 1) reroll To Wound rolls of 1; 2) save Wounds on 5+; or 3) treat Difficult Terrain as Open Terrain (except water)"
@@ -218,6 +222,10 @@
   "Stalk Unseen": {
     "type": "passive",
     "effect": "partially concealed Infantry can't be seen if more than 6\" away"
+  },
+  "Strength of Body, Strength of Will": {
+    "type": "passive",
+    "effect": "Attacks = remaining Wounds; each Wound suffered worsens Courage by one"
   },
   "Survival Instinct": {
     "type": "active",

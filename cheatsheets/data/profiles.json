@@ -91,6 +91,11 @@
     "specials": ["Armour of Gondolin", "Expert Rider", "Hero of the Elves", "Horse Lord", "Lord of the West", "Resistant to Magic", "Terror", "Woodland Creature"],
     "actions": ["Challenge", "Resolve", "Strength", "Strike"]
   },
+  "Gûlavhar": {
+    "statline": ["12\"", 7, "5+", 8, 5, "*", 4, 6, 4, 3, 3, 0],
+    "specials": ["Dominant (5)", "Fly", "Harbinger of Evil (12\")", "Large Target", "Monstrous Charge", "Resistant to Magic", "Terror", "Strength of Body, Strength of Will", "Immortal Hunger"],
+    "actions": ["Defence", "Strength"]
+  },
   "Hill Troll": {
     "statline": ["6\"", 6, "4+", 6, 6, 3, 3, 7, 7, "-", "-", "-"],
     "specials": ["Dominant (3)", "Terror", "Throw Stones (range 12\", S8)", "Brutish Cunning"]
