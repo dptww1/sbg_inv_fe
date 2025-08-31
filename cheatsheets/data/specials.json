@@ -35,6 +35,10 @@
     "type": "passive",
     "effect": "auto-pass Courage Tests if bodyguarded Hero is alive and on board"
   },
+  "Brutish Cunning": {
+    "type": "active",
+    "effect": "reroll one die of Duel Roll if fighting non-Monster Infantry"
+  },
   "Burly": {
     "type": "passive",
     "effect": "no -1 using 2h weapon; full moves when carrying Heavy Object"
@@ -42,6 +46,10 @@
   "Cave Dweller": {
     "type": "active",
     "effect": "+1 on Jump/Leap/Climb tests; no penalty fighting in the dark"
+  },
+  "Conduit of Angmar": {
+    "type": "passive",
+    "effect": "Ringwraiths w/in 6\" may use this model for Magic range & Line of Sight, and +1 to Casting Roll at cost of 1 Wound to this model"
   },
   "Dominant %s": {
     "type": "passive",
@@ -67,6 +75,10 @@
     "type": "passive",
     "effect": "can Charge w/o Line of Sight and/or Stalk Unseen models"
   },
+  "Feral Charge": {
+    "type": "active",
+    "effect": "when Charging an Infantry model, gain Knock to the Ground unless subsequently Charged by Cavalry"
+  },
   "Fly": {
     "type": "active",
     "effect": "ignore models/terrain/Control Zones; can't end on Woods unless lands, moving4\""
@@ -78,6 +90,10 @@
   "General Hunter": {
     "type": "active",
     "effect": "if this model slays enemy General, regain one spent Might point"
+  },
+  "Ghostly Resolve": {
+    "type": "passive",
+    "effect": "Angmar models w/in 12\" are +1 on Courage Tests"
   },
   "Gift of Foresight": {
     "type": "active",
@@ -98,6 +114,10 @@
   "Hatred (%s)": {
     "type": "active",
     "effect": "+1 to Wound against %s"
+  },
+  "Herald of Doom": {
+    "type": "passive",
+    "effect": "after deployment at game start, choose one enemy Hero; while within 6\", -1 to Fate Rolls & Courage Tests"
   },
   "Hero of the Elves": {
     "type": "active",
@@ -159,6 +179,14 @@
     "type": "active",
     "effect": "reroll 1s on Shooting & Strikes"
   },
+  "Power of Angmar": {
+    "type": "active",
+    "effect": "natural 6 on Casting Roll prevents target from using Will points to resist"
+  },
+  "Remnants of Arnor": {
+    "type": "passive",
+    "effect": "Rangers of the North treat Aranarth as a banner"
+  },
   "Resistant to Magic": {
     "type": "passive",
     "effect": "gain extra die on all Resist Tests"
@@ -199,6 +227,10 @@
     "type": "active",
     "effect": "never slowed by non-water Difficult Terrain, ignores obstacles w/o Climb/Jump"
   },
+  "Swirling Mists": {
+    "type": "active",
+    "effect": "spend a Will Point in Shooting Phase (before Heroic Actions) to make enemy models -1 To Hit vs friendly models w/in 6\", or -2 To Hit if the enemy model is w/in 12\""
+  },
   "Sworn Protector (%s)": {
     "type": "passive",
     "effect": "auto-pass Courage Tests if %s is alive and on board"
@@ -219,9 +251,9 @@
     "type": "passive",
     "effect": "gain 1 free Will Point at start of each turn; lost if unused at turn's end"
   },
-  "Throw Stones": {
+  "Throw Stones (%s)": {
     "type": "active",
-    "effect": "if no move, model can throw stone in the Shooting Phase"
+    "effect": "if no move, model can throw stone %s in the Shooting Phase"
   },
   "Timid": {
     "type": "passive",

@@ -295,29 +295,27 @@ end
 #========================================================================
 def spells_table(doc, scenario, title)
   side = title.downcase
-  spell_hash = scenario.order_of_battle(side).reduce({}) do |result, role|
-    magic_list = scenario.magic_for(role['name'])
-    magic_list.each do |spell|
+  spell_data = scenario.order_of_battle(side).reduce([]) do |result, role|
+    role_magic = scenario.magic_for(role['name'])
+    role_magic.each do |spell|
+      range = spell['range']
+      user_info = "#{role['name']} #{range}#{range.is_a?(Integer) ? '"' : ''} #{spell['dr']}+"
+
       spell_name = spell['spell']
-      result[spell_name] = [] unless result[spell_name]
-      result[spell_name].push(spell.clone.merge!({ 'name' => role['name'] }))
+
+      spell_rec = result.find { |existing_spell| existing_spell[0] == spell_name }
+
+      if spell_rec
+        spell_rec[1] += "\n" + user_info
+      else
+        result.push([spell_name, user_info, scenario.effect_for_spell(spell_name)])
+      end
     end
     result
   end
 
-  unless spell_hash.empty?
-    spell_data = spell_hash.keys.sort.map { |name| [ name ] }
-
-    spell_hash.each do |k,v|
-      if v.size == 1
-        range = v[0]['range']
-        spell_entry = spell_data.find { |array| array[0] == k }
-        spell_entry.push("#{v[0]['name']} #{range}#{range.is_a?(Integer) ? '"' : ''} #{v[0]['dr']}+")
-        spell_entry.push(scenario.effect_for_spell(k))
-      else
-        puts "OOPS #{k.inspect} => #{v.inspect}" # TODO
-      end
-    end
+  unless spell_data.empty?
+    spell_data.sort! { |a,b| a[0] <=> b[0] }
 
     config = SPELLS_COLUMNS_CONFIG
     config = dynamic_col_w(spell_data, config)

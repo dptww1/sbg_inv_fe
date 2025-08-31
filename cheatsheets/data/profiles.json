@@ -8,11 +8,25 @@
     "statline": ["6\"", 4, "5+", 4, 6, 2, 2, 7, 7, 2, 1, 1],
     "actions": ["March"]
   },
+  "Angmar Orc Shaman": {
+    "statline": ["6\"", 3, "5+", 3, 5, 1, 2, 7, 7, 1, 3, 1],
+    "actions": ["Channelling"],
+    "magic": [
+      { "range": "self", "dr": 3, "spell": "Instill Fear" },
+      { "range": 12,     "dr": 4, "spell": "Drain Courage" },
+      { "range": 12,     "dr": 4, "spell": "Wither" }
+    ]
+  },
   "Angmar Orc Warrior": {
     "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
   },
   "Angmar Warg Rider": {
     "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
+  },
+  "Aranarth": {
+    "statline": ["6\"", 5, "3+", 4, 5, 2, 2, 5, 5, 3, 2, 2],
+    "specials": ["Expert Shot", "Hatred (Angmar)", "Remnants of Arnor", "Sharpshooter"],
+    "actions": ["Accuracy", "Strike"]
   },
   "Argadir": {
     "statline": ["6\"", 5, "4+", 4, 7, 2, 2, 6, 6, 2, 2, 1],
@@ -77,6 +91,10 @@
     "specials": ["Armour of Gondolin", "Expert Rider", "Hero of the Elves", "Horse Lord", "Lord of the West", "Resistant to Magic", "Terror", "Woodland Creature"],
     "actions": ["Challenge", "Resolve", "Strength", "Strike"]
   },
+  "Hill Troll": {
+    "statline": ["6\"", 6, "4+", 6, 6, 3, 3, 7, 7, "-", "-", "-"],
+    "specials": ["Dominant (3)", "Terror", "Throw Stones (range 12\", S8)", "Brutish Cunning"]
+  },
   "Horse": {
     "statline": ["10\"", 9, "-", 9, 9, 9, 9, 9, 9, "-", "-", "-"]
   },
@@ -115,9 +133,24 @@
     "statline": ["6\"", 5, "3+", 3, "5/6", 1, 1, 5, 5, "-", "-", "-"],
     "specials": ["Woodland Creature"]
   },
+  "Shade": {
+    "statline": ["6\"", 1, "6+", 1, 8, 2, 3, 5, 8, 0, 4, 1],
+    "specials": ["Blades of the Dead", "Dominant (3)", "Spectral Walk", "Terror", "Conduit of Angmar", "Swirling Mists", "Ghostly Resolve"]
+  },
   "Spectre": {
     "statline": ["6\"", 2, "6+", 3, 6, 1, 1, 4, 7, "-", "-", "-"],
     "specials": ["A Fell Light is in Them", "Blades of the Dead", "Spectral Walk", "Terror"]
+  },
+  "The Shadow of Rhudaur": {
+    "statline": ["6\"", 5, "4+", 3, 7, 2, 2, 4, 5, 2, 5, 2],
+    "actions": ["Challenge"],
+    "specials": ["Blades of the Dead", "Spectral Walk", "Terror", "Herald of Doom", "Power of Angmar"],
+    "magic": [
+      { "range": 6,      "dr": 3, "spell": "Drain Courage" },
+      { "range": "self", "dr": 3, "spell": "Fog of Disarray" },
+      { "range": 6,      "dr": 4, "spell": "Curse" },
+      { "range": 6,      "dr": 5, "spell": "Wither" }
+    ]
   },
   "The Witch-king of Angmar": {
     "statline": ["6\"", 6, "4+", 4, 8, 3, 1, 4, 4, 3, 18, 3],
@@ -150,6 +183,10 @@
   "Warrior of Carn Dûm": {
     "statline": ["6\"", 3, "4+", 4, 5, 1, 1, 7, 7, "-", "-", "-"],
     "specials": ["Glory Seekers"]
+  },
+  "Werewolf": {
+    "statline": ["10\"", 5, "6+", 5, 5, 2, 2, 5, 8, "-", "-", "-"],
+    "specials": ["Feral Charge", "Fell Sight", "Terror"]
   },
   "Wild Warg": {
     "statline": ["10\"", 3, "6+", 4, 4, 1, 1, 8, 8, "-", "-", "-"]
