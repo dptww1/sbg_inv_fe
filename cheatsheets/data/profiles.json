@@ -55,6 +55,11 @@
     "specials": ["Glory Seekers"],
     "actions": ["March"]
   },
+  "Captain of Minas Tirith": {
+    "statline": ["6\"", 5, "4+", 4, 7, 2, 2, 6, 6, 2, 1, 1],
+    "specials": ["Shieldwall"],
+    "actions": ["March"]
+  },
   "Círdan": {
     "statline": ["6\"", 5, "3+", 4, 4, 1, 2, 4, 3, 1, 4, 1],
     "specials": ["Resistant to Magic", "Terror", "The Shipwright's Power", "Woodland Creature"],
@@ -66,6 +71,11 @@
       { "range": 6,      "dr": 4, "spell": "Enchant Blades" },
       { "range": "self", "dr": 5, "spell": "Aura of Dismay" }
     ]
+  },
+  "Eärnur": {
+    "statline": ["6\"", 6, "4+", 4, 7, 3, 3, 4, 6, 3, 3, 1],
+    "specials": ["A Fool's Challenge", "Master Duellist"],
+    "actions": ["Challenge", "Resolve", "Strike"]
   },
   "Elrond": {
     "statline": ["6\"", 7, "3+", 4, 7, 3, 3, 3, 3, 3, 3, 3],
@@ -114,6 +124,10 @@
     "statline": ["6\"", 4, "4+", 3, 6, 1, 1, 8, 7, "-", "-", "-"],
     "specials": ["Hatred (Angmar)"]
   },
+  "Knight of Minas Tirith": {
+    "statline": ["6\"", 4, "4+", 3, "5/6", 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Shieldwall"]
+  },
   "Malbeth": {
     "statline": ["6\"", 3, "4+", 3, 4, 1, 2, 6, 4, 1, 2, 1],
     "specials": ["Foresight of the Eldar", "Gift of Foresight"],
@@ -150,6 +164,19 @@
     "statline": ["6\"", 2, "6+", 3, 6, 1, 1, 4, 7, "-", "-", "-"],
     "specials": ["A Fell Light is in Them", "Blades of the Dead", "Spectral Walk", "Terror"]
   },
+  "The Dwimmerlaik": {
+    "statline": ["6\"", 5, "4+", 4, 8, 1, 1, 4, 5, 0, 16, 2],
+    "actions": ["Channelling"],
+    "specials": ["Harbinger of Evil (12\")", "Terror", "Will of Evil", "Sap Fortitude"],
+    "magic": [
+      { "range": 12, "dr": 3, "spell": "Compel" },
+      { "range": 12, "dr": 3, "spell": "Transfix" },
+      { "range": 12, "dr": 4, "spell": "Curse" },
+      { "range": 12, "dr": 4, "spell": "Drain Courage" },
+      { "range":  6, "dr": 5, "spell": "Black Dart" },
+      { "range": "self", "dr": 6, "spell": "Instill Fear" }
+    ]
+  },
   "The Shadow of Rhudaur": {
     "statline": ["6\"", 5, "4+", 3, 7, 2, 2, 4, 5, 2, 5, 2],
     "actions": ["Challenge"],
@@ -159,6 +186,19 @@
       { "range": "self", "dr": 3, "spell": "Fog of Disarray" },
       { "range": 6,      "dr": 4, "spell": "Curse" },
       { "range": 6,      "dr": 5, "spell": "Wither" }
+    ]
+  },
+  "The Tainted": {
+    "statline": ["6\"", 5, "4+", 4, 8, 1, 1, 4, 4, 2, 14, 2],
+    "actions": ["Channelling"],
+    "specials": ["Harbinger of Evil (12\")", "Terror", "Will of Evil", "Miasmatic Presence", "Seeping Decay"],
+    "magic": [
+      { "range": 12, "dr": 3, "spell": "Compel" },
+      { "range": 12, "dr": 3, "spell": "Transfix" },
+      { "range": 12, "dr": 4, "spell": "Drain Courage" },
+      { "range":  6, "dr": 5, "spell": "Black Dart" },
+      { "range": 12, "dr": 5, "spell": "Wither" },
+      { "range": "self", "dr": 6, "spell": "Instill Fear" }
     ]
   },
   "The Witch-king of Angmar": {
@@ -182,6 +222,11 @@
   "Warg": {
     "statline": ["10\"", 3, "6+", 3, 4, 0, 1, 3, 3, "-", "-", "-"]
   },
+  "Warg Chieftain": {
+    "statline": ["10\"", 5, "5+", 6, 5, 3, 3, 6, 7, 2, 2, 1],
+    "specials": ["Terror", "Packlord"],
+    "actions": ["March", "Strength"]
+  },
   "Warg Rider": {
     "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
   },
@@ -192,6 +237,10 @@
   "Warrior of Carn Dûm": {
     "statline": ["6\"", 3, "4+", 4, 5, 1, 1, 7, 7, "-", "-", "-"],
     "specials": ["Glory Seekers"]
+  },
+  "Warrior of Minas Tirith": {
+    "statline": ["6\"", 4, "4+", 3, "5/6", 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Shieldwall"]
   },
   "Werewolf": {
     "statline": ["10\"", 5, "6+", 5, 5, 2, 2, 5, 8, "-", "-", "-"],

@@ -322,7 +322,11 @@ def spells_table(doc, scenario, title)
     config = dynamic_col_w(spell_data, config, 1)
     config = scenario.apply_table_formatting(config, 'spells', side)
 
-    doc.p
+    if scenario.page_break_before("#{side}Spells")
+      doc.page
+    else
+      doc.p
+    end
     doc.p "#{title} Spells", style: 'Section Heading'
     static_stats_table(doc, [ SPELLS_HEADER ] + spell_data, config)
   end
@@ -412,6 +416,7 @@ docx.p 'Good Character Stats', style: 'Section Heading'
 static_stats_table(docx, good_stats, dynamic_col_w(good_stats, STATS_COLUMNS_CONFIG))
 specials_for(docx, scenario, 'good')
 
+docx.page if scenario.page_break_before('evilStats')
 docx.p
 docx.p 'Evil Character Stats', style: 'Section Heading'
 config = STATS_COLUMNS_CONFIG

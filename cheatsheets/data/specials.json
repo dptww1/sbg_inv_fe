@@ -3,6 +3,10 @@
     "type": "active",
     "effect": "At end of move, choose enemy w/in 12\" to take Intelligence Test; if failed, pull enemy directly to this model up to full move (unless obstructed, and not out of Combat) and no further movement for that model."
   },
+  "A Fool's Challenge": {
+    "type": "active",
+    "effect": "may never decline Heroic Challenge; must Charge enemy Hero if possible"
+  },
   "Ancient Enemies (%s)": {
     "type": "active",
     "effect": "reroll To Wound rolls of 1 vs %s"
@@ -51,7 +55,7 @@
     "type": "passive",
     "effect": "Ringwraiths w/in 6\" may use this model for Magic range & Line of Sight, and +1 to Casting Roll at cost of 1 Wound to this model"
   },
-  "Dominant %s": {
+  "Dominant (%s)": {
     "type": "passive",
     "effect": "counts as %s models near objective or escaping the board"
   },
@@ -155,6 +159,14 @@
     "type": "active",
     "effect": "duplicate enemy Heroic Action w/in 6\" on %s w/o spending Might"
   },
+  "Master Duellist": {
+    "type": "active",
+    "effect": "Fight Value always matches any single enemy (before Heroic Strikes); Fight Value never modified by enemy special rules or magic"
+  },
+  "Miasmatic Presence": {
+    "type": "passive",
+    "effect": "At start of Move Phase, before Heroic Action declaration, spend Will point to prevent friendly and enemy Warrior models from benefit from Stand Fast or Heroic Actions"
+  },
   "Mighty Blow": {
     "type": "active",
     "effect": "successful Strikes inflict 2 Wounds"
@@ -179,6 +191,10 @@
     "type": "active",
     "effect": "can be thrown; reroll Wound rolls of 1 for both Strikes and Shooting Attacks"
   },
+  "Packlord": {
+    "type": "active",
+    "effect": "only Wargs benefit from Stand Fast & Heroic Actions of this model"
+  },
   "Poisoned Attacks": {
     "type": "active",
     "effect": "reroll 1s on Shooting & Strikes"
@@ -195,9 +211,17 @@
     "type": "passive",
     "effect": "gain extra die on all Resist Tests"
   },
+  "Sap Fortitude": {
+    "type": "passive",
+    "effect": "at start of Move, before Heroic Action declaration, spend 1 Will to make enemy Heroes w/in 6\" take Intelligence Test to do Heroic ACtion; if failed, Action is cancelled (Will point is still expended)"
+  },
   "Scavenge": {
     "type": "active",
     "effect": "whenever slays non-Monster enemy in Combat, may take one item of wargear (before it can be handed off), except armour, mount, living creature, One Ring, or claws/teeth"
+  },
+  "Seeping Decay": {
+    "type": "passive",
+    "effect": "At start of Fight Phase, before Heroic Action declaration, roll d6 for each non-Spirit model in base contact (incl. friendly); on 6, that model takes a Wound"
   },
   "Set Ablaze": {
     "type": "passive",
