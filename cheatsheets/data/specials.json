@@ -11,6 +11,10 @@
     "type": "active",
     "effect": "reroll To Wound rolls of 1 vs %s"
   },
+  "Andúril, Flame of the West": {
+    "type": "active",
+    "effect": "1.5 hand weapon never needing <4+ To Wound; if used two-handed, 3+ minimum"
+  },
   "Armour of Gondolin": {
     "type": "active",
     "effect": "wearer prevents Brutal Power Attacks"
@@ -223,6 +227,10 @@
     "type": "passive",
     "effect": "gain extra die on all Resist Tests"
   },
+  "Ring of Barahir": {
+    "type": "passive",
+    "effect": "after Resist Test, roll another die; on 6, ignore effect of magic"
+  },
   "Sap Fortitude": {
     "type": "passive",
     "effect": "at start of Move, before Heroic Action declaration, spend 1 Will to make enemy Heroes w/in 6\" take Intelligence Test to do Heroic ACtion; if failed, Action is cancelled (Will point is still expended)"
@@ -262,6 +270,10 @@
   "Strength of Body, Strength of Will": {
     "type": "passive",
     "effect": "Attacks = remaining Wounds; each Wound suffered worsens Courage by one"
+  },
+  "Strength of Brotherhood": {
+    "type": "active",
+    "effect": "while w/in 2\" of other, Dominant (2) and reroll 1s when Striking"
   },
   "Survival Instinct": {
     "type": "active",
@@ -310,6 +322,14 @@
   "Tom is Master": {
     "type": "passive",
     "effect": "all terrain is Open Ground, always rolls 6 on Climb/Leap/Jump/Swim Tests, can't be targeted or affected by anything, can't be Charged, may Charge and auto-wins Combat but no Strikes from anyone"
+  },
+  "Twin Elven Blades": {
+    "type": "active",
+    "effect": "on foot, choose a Combat method before dice are rolled: 1) 3A, 2) 1.5 handed, 3) Shielding"
+  },
+  "Unbreakable Bond": {
+    "type": "active",
+    "effect": "if brother is slain, +1 Strength and must Charge, prioritizing slayer and declaring free Heroic Challenge again him/her/it"
   },
   "Unyielding Combat Stance": {
     "type": "active",

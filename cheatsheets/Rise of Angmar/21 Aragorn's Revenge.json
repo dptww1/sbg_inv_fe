@@ -1,0 +1,38 @@
+{
+  "good": [
+    { "amt":  1, "name": "Aragorn" },
+    { "amt":  1, "name": "Halbarad" },
+    { "amt":  1, "name": "Elladan" },
+    { "amt":  1, "name": "Elrohir" },
+    { "amt": 18, "name": "Ranger of the North" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "Buhrdûr" },
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt":  1, "name": "Wild Warg Chieftain" },
+    { "amt": 24, "name": "Angmar Orc Warrior" },
+    { "amt":  2, "name": "Hill Troll" },
+    { "amt":  6, "name": "Wild Warg" }
+  ],
+  "objectives": {
+    "good": "slay Buhrdûr",
+    "evil": "slay Aragorn"
+  },
+  "specialRules": {
+    "Tracking the Troll": "when a Good model first enters numbered terrain, Evil models hidden there are deployed not in base contact with Good; those Evil models can't Shoot or Move that turn",
+    "They're Awake!": "On tied Priority Roll, randomly select a numbered terrain piece and deploy Evil models hidden within per Tracking the Troll",
+    "You Do Not Stand Alone": "starting Turn 3, on 4+ Halbarad & 6 Rangers of the North arrive from any table edge; starting turn after that arrival, on 4+ Elladan, Elrohir, & 6 Rangers of the North arrive from any table edge",
+    "The Young Warrior": "Aragorn doesn't have Mighty Hero"
+  },
+  "overrides": {
+    "Aragorn": {
+      "specials": ["Horse Lord", "Resistant to Magic", "Ring of Barahir"]
+    },
+    "Halbarad": {
+      "specials": ["Woodland Creature"]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["expendedStats", "actions"]
+  }
+}

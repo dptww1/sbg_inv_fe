@@ -23,6 +23,11 @@
   "Angmar Warg Rider": {
     "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
   },
+  "Aragorn": {
+    "statline": ["6\"", 7, "3+", 4, "5/6", 3, 3, 4, 3, 3, 3, 3],
+    "specials": ["Horse Lord", "Might Hero", "Resistant to Magic", "Ring of Barahir", "Andûril, Flame of the West"],
+    "actions": ["Accuracy", "Challenge", "Defence", "March", "Resolve", "Strength", "Strike"]
+  },
   "Aranarth": {
     "statline": ["6\"", 5, "3+", 4, 5, 2, 2, 5, 5, 3, 2, 2],
     "specials": ["Expert Shot", "Hatred (Angmar)", "Remnants of Arnor", "Sharpshooter"],
@@ -88,6 +93,16 @@
     "statline": ["6\"", 6, "4+", 4, 7, 3, 3, 4, 6, 3, 3, 1],
     "specials": ["A Fool's Challenge", "Master Duellist"],
     "actions": ["Challenge", "Resolve", "Strike"]
+  },
+  "Elladan": {
+    "statline": ["6\"", 6, "3+", 4, 6, 2, 2, 4, 4, 2, 2, 2],
+    "specials": ["Woodland Creature", "Unbreakable Bond", "Twin Elven Blades", "Strength of Brotherhood"],
+    "actions": ["Strength", "Strike"]
+  },
+  "Elrohir": {
+    "statline": ["6\"", 6, "3+", 4, 6, 2, 2, 4, 4, 2, 2, 2],
+    "specials": ["Woodland Creature", "Unbreakable Bond", "Twin Elven Blades", "Strength of Brotherhood"],
+    "actions": ["Defence", "Strike"]
   },
   "Elrond": {
     "statline": ["6\"", 7, "3+", 4, 7, 3, 3, 3, 3, 3, 3, 3],
