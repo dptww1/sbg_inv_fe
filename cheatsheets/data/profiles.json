@@ -96,6 +96,10 @@
     "specials": ["Dominant (5)", "Fly", "Harbinger of Evil (12\")", "Large Target", "Monstrous Charge", "Resistant to Magic", "Terror", "Strength of Body, Strength of Will", "Immortal Hunger"],
     "actions": ["Defence", "Strength"]
   },
+  "Hobbit Archer": {
+    "statline": ["4\"", 2, "3+", 2, 3, 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Resistant to Magic", "Throw Stones (8\" S1)"]
+  },
   "Hill Troll": {
     "statline": ["6\"", 6, "4+", 6, 6, 3, 3, 7, 7, "-", "-", "-"],
     "specials": ["Dominant (3)", "Terror", "Throw Stones (range 12\", S8)", "Brutish Cunning"]

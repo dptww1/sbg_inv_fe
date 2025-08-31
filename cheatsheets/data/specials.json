@@ -261,7 +261,7 @@
   },
   "Throw Stones (%s)": {
     "type": "active",
-    "effect": "if no move, model can throw stone %s in the Shooting Phase"
+    "effect": "if no move, model can throw stone in the Shooting Phase"
   },
   "Timid": {
     "type": "passive",

@@ -1,0 +1,32 @@
+{
+  "good": [
+    { "amt":  3, "name": "Ranger of the North" },
+    { "amt": 12, "name": "Hobbit Archer" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "Angmar Orc Captain" },
+    { "amt": 12, "name": "Angmar Orc Warrior" }
+  ],
+  "objectives": {
+    "good": "move >=6 hobbits off the north edge",
+    "evil": "prevent Good victory"
+  },
+  "specialRules": {
+    "The Orc Pack": "Evil models begin the game as sentries",
+    "Sure-footed": "Good models gain Woodland Creature"
+  },
+  "overrides": {
+    "Hobbit Archer": {
+      "specials": ["Resistant to Magic", "Throw Stones (8\" S1)", "Woodland Creature"]
+    }
+  },
+  "formatting": {
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.75 }
+        ]
+      }
+    }
+  }
+}
