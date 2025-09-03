@@ -122,6 +122,17 @@ const domResourcesRollupAdd = (eltArray, resourceArray, className, titleStr, ico
 };
 
 //========================================================================
+const domResourcesRollupAddCheatsheet = (eltArray, resources) => {
+  if (resources.cheatsheet) {
+    resources.cheatsheet.forEach(rsrc =>
+      eltArray.push(m("div.scenario-cheatsheet", [
+        m("span.icon", K.ICON_STRINGS.cheatsheet),
+        m("a", { href: "https://www.example.com" }, "Cheatsheet")
+      ])));
+  }
+};
+
+//========================================================================
 const domResourcesRollupAddSource = (eltArray, resources) => {
   if (resources.source) {
     resources.source.forEach(function(resource) {
@@ -141,6 +152,7 @@ const domResourcesRollup = () => {
   if (scenario().scenario_resources) {
     r.push(m("div.section-header", "Resources"));
     domResourcesRollupAddSource(r, scenario().scenario_resources);
+    domResourcesRollupAddCheatsheet(r, scenario().scenario_resources);
     domResourcesRollupAdd(r, scenario().scenario_resources.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
     domResourcesRollupAdd(r, scenario().scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
     domResourcesRollupAdd(r, scenario().scenario_resources.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
@@ -253,7 +265,8 @@ const isEditResourceOnline = () => {
   return resourceType() === K.RESOURCE_TYPE_MAP.source
       || resourceType() === K.RESOURCE_TYPE_MAP.video_replay
       || resourceType() === K.RESOURCE_TYPE_MAP.web_replay
-      || resourceType() === K.RESOURCE_TYPE_MAP.podcast;
+      || resourceType() === K.RESOURCE_TYPE_MAP.podcast
+      || resourceType() == K.RESOURCE_TYPE_MAP.cheatsheet;
 };
 
 //========================================================================
@@ -269,6 +282,7 @@ const isResourceValid = () => {
   case K.RESOURCE_TYPE_MAP.video_replay:
   case K.RESOURCE_TYPE_MAP.web_replay:
   case K.RESOURCE_TYPE_MAP.podcast:
+  case K.RESOURCE_TYPE_MAP.cheatsheet:
     return U.isNotBlank(url());
 
   case K.RESOURCE_TYPE_MAP.magazine_replay:

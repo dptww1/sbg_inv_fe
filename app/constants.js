@@ -24,10 +24,11 @@ export const ICON_STRINGS = {
   stats:        "\ue99c",
 
   // Scenario Resource Icons
+  cheatsheet:      "\ue922",
   magazine_replay: "\ue91f",
   podcast:         "\uea27",
   video_replay:    "\ue912",
-  web_replay:      "\ue922",
+  web_replay:      "\ue9c9",
 
   // Admin Icons
   down:   "\uea3e",
@@ -83,5 +84,6 @@ export const RESOURCE_TYPE_MAP = {
   web_replay:       "2",
   terrain_building: "3",
   podcast:          "4",
-  magazine_replay:  "5"
+  magazine_replay:  "5",
+  cheatsheet:       "6"
 };

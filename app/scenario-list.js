@@ -48,6 +48,10 @@ const ageAbbrev = ageNumber =>
 const domResourceIcons = resources => {
   const r = [];
 
+  if (resources.cheatsheet != null && resources.cheatsheet.length > 0) {
+    r.push(m("span.icon", K.ICON_STRINGS.cheatsheet));
+  }
+
   if (resources.magazine_replay != null && resources.magazine_replay.length > 0) {
     r.push(m("span.icon", K.ICON_STRINGS.magazine_replay));
   }
