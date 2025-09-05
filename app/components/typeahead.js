@@ -1,6 +1,17 @@
 import m from "mithril";
 
 //========================================================================
+// Courtesy https://www.geeksforgeeks.org/javascript/debouncing-in-javascript/
+//------------------------------------------------------------------------
+const debounce = (func, delay) => {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => { func.apply(null, args); }, delay);
+  };
+};
+
+//========================================================================
 const decoratedName = s =>
       s.id
       ? [
@@ -42,6 +53,7 @@ export const Typeahead = vnode => {
   let searchString = "";
   let data = { suggestions: [] };
   let selectedIdx = -1;
+  let debounceSearchFn;
 
   //------------------------------------------------------------------------
   const handleKey = (ev) => {
@@ -82,7 +94,7 @@ export const Typeahead = vnode => {
       initData();
     } else {
       searchString = ev.target.value;
-      findMatches(ev.target.value, data);
+      debounceSearchFn(ev.target.value, data);
     }
   };
 
@@ -128,6 +140,7 @@ export const Typeahead = vnode => {
   return {
     oninit: () => {
       initData();
+      debounceSearchFn = debounce(findMatches, 200);
     },
 
     view: ({ attrs }) => {
