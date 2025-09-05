@@ -56,10 +56,10 @@ class Scenario
 
     @input_json = JSON.load_file!(filename)
 
-    @actions  = JSON.load_file!('./data/actions.json')
-    @profiles = JSON.load_file!('./data/profiles.json')
-    @specials = JSON.load_file!('./data/specials.json')
-    @spells   = JSON.load_file!('./data/spells.json')
+    @actions  = JSON.load_file!("#{__dir__}/data/actions.json")
+    @profiles = JSON.load_file!("#{__dir__}/data/profiles.json")
+    @specials = JSON.load_file!("#{__dir__}/data/specials.json")
+    @spells   = JSON.load_file!("#{__dir__}/data/spells.json")
   end
 
   #------------------------------------------------------------------------
