@@ -127,7 +127,7 @@ const domResourcesRollupAddCheatsheet = (eltArray, resources) => {
     resources.cheatsheet.forEach(rsrc =>
       eltArray.push(m("div.scenario-cheatsheet", [
         m("span.icon", K.ICON_STRINGS.cheatsheet),
-        m("a", { href: "https://www.example.com" }, "Cheatsheet")
+        m("a", { href: "https://www.example.com" }, rsrc.title || "Cheatsheet")
       ])));
   }
 };
