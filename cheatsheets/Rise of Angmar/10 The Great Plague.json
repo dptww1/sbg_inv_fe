@@ -1,0 +1,47 @@
+{
+  "good": [
+    { "amt":  6, "name": "Ranger of the North" },
+    { "amt": 12, "name": "Ranger of Arnor" }
+  ],
+  "evil": [
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt": 24, "name": "Angmar Orc Warrior" },
+    { "amt":  3, "name": "Spectre" }
+  ],
+  "objectives": {
+    "good": "3+ Good models escape through the north board edge",
+    "evil": "prevent Good victory"
+  },
+  "specialRules": {
+    "The Great Plague": "Each Move Phase (except turn 1), make dr for each non-Spirit model on the board; on a 1 (not Might-able, the model takes a Wound (which is Fate-able)."
+  },
+  "overrides": {
+    "Ranger of Arnor": {
+      "specials": ["Mountain Dweller", "Woodland Creature"]
+    },
+    "Ranger of the North": {
+      "specials": ["Mountain Dweller", "Woodland Creature"]
+    }
+  },
+  "formatting": {
+    "tables": {
+      "stats": {
+        "evil": [
+          { "column": 0, "width": 1.5 },
+          { "column": 1, "width": 0.49 },
+          { "column": 2, "width": 0.42 },
+          { "column": 3, "width": 0.21 },
+          { "column": 4, "width": 0.32 },
+          { "column": 5, "width": 0.15 },
+          { "column": 6, "width": 0.15 },
+          { "column": 7, "width": 0.15 }
+        ]
+      },
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.746 }
+        ]
+      }
+    }
+  }
+}

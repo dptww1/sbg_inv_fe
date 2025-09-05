@@ -1,0 +1,34 @@
+{
+  "good": [
+    { "amt":  6, "name": "Ranger of the North" },
+    { "amt": 12, "name": "Ranger of Arnor" }
+  ],
+  "evil": [
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt": 25, "name": "Angmar Orc Warrior" },
+    { "amt":  6, "name": "Wild Warg" }
+  ],
+  "objectives": {
+    "good": "reduce Evil to <=8 models",
+    "evil": "kill all the Rangers of the North"
+  },
+  "specialRules": {
+    "Stand Your Ground!": "Good models must stay w/in 6\" of the center of the board",
+    "Twilight": "Shooting more than 12\" away suffers a -1 penalty to Shoot value",
+    "A Desperate Fight": "Rangers of the North have two attacks"
+  },
+  "overrides": {
+    "Ranger of the North": {
+      "statline": ["6\"", 4, "3+", 4, "4/5", 2, 1, 6, 6, 1, 1, 1 ]
+    }
+  },
+  "formatting": {
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.76 }
+        ]
+      }
+    }
+  }
+}

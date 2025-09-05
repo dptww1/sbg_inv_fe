@@ -1,0 +1,29 @@
+{
+  "good": [
+    { "amt":  1, "name": "Tom Bombadil" },
+    { "amt": 12, "name": "Ranger of the North" }
+  ],
+  "evil": [
+    { "amt":  4, "name": "Barrow-wight" },
+    { "amt": 12, "name": "Spectre" }
+  ],
+  "objectives": {
+    "good": "slay all Evil models",
+    "evil": "slay all Good models"
+  },
+  "specialRules": {
+    "Fog on the Barrow Downs": "Man models can only see 6\"",
+    "The Barrow": "w/in 3\" of a barrow, Barrow-wights get a free Will point each turn",
+    "Ho! Tom Bombadil!": "starting Turn 3, Tom Bombadil arrives from any board edge on a roll of 5+"
+  },
+  "formatting": {
+    "pageBreakBefore": ["expendedStats"],
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.76 }
+        ]
+      }
+    }
+  }
+}

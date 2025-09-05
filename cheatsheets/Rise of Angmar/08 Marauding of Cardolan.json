@@ -1,0 +1,33 @@
+{
+  "good": [
+    { "amt":  1, "name": "King of Men" },
+    { "amt": 16, "name": "Warrior of Arnor" }
+  ],
+  "evil": [
+    { "amt":  2, "name": "Captain of Carn Dûm" },
+    { "amt": 24, "name": "Warrior of Carn Dûm" }
+  ],
+  "objectives": {
+    "good": "Prince of Cardolan escapes off any board edge",
+    "evil": "Slay the Prince of Cardolan"
+  },
+  "specialRules": {
+    "A Skilled Fighter": "the Prince of Cardolan has 3 attacks & Hatred (Angmar)",
+    "Defend the Prince": "Prince acts as banner for other Good models w/in 3\" (6\" if Prince is Wounded)"
+  },
+  "overrides": {
+    "King of Men": {
+      "statline": ["6\"", 6, "4+", 4, 6, 3, 2, 4, 5, 2, 2, 2],
+      "specials": ["Hatred (Angmar)"]
+    }
+  },
+  "formatting": {
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.56 }
+        ]
+      }
+    }
+  }
+}

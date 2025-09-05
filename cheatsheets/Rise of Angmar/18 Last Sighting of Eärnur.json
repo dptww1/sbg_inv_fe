@@ -1,0 +1,36 @@
+{
+  "good": [
+    { "amt":  1, "name": "Eärnur" },
+    { "amt":  1, "name": "Captain of Minas Tirith" },
+    { "amt": 12, "name": "Knight of Minas Tirith" },
+    { "amt":  1, "name": "Armoured Horse" },
+    { "amt": 13, "name": "Horse" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "The Witch-king of Angmar" },
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt": 24, "name": "Angmar Orc Warrior" },
+    { "amt":  6, "name": "Spectre" }
+  ],
+  "objectives": {
+    "good": "Eärnur slays the Witch-king",
+    "evil": "The Witch-king slays Eärnur"
+  },
+  "specialRules": {
+    "Lord of the Nazgûl": "The Witch-king has Fight Value 6 & 3 Attacks",
+    "Leave Him to Me": "Evil can't target Eärnur with Shooting, special rules, or Magic",
+    "A Clash of Kings": "Only the Witch-king and Eärnur can inflict the last unsaved Wound on the other",
+    "Death or Glory": "Eärnur is Fearless and the Witch-king doesn't lose Will in Combat"
+  },
+  "overrides": {
+    "The Witch-king of Angmar": {
+      "statline": ["6\"", 6, "4+", 4, 8, 3, 3, 4, 4, 3, 16, 3]
+    },
+    "Eärnur": {
+      "specials": ["A Fool's Challenge", "Master Duellist", "Fearless"]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["actions"]
+  }
+}

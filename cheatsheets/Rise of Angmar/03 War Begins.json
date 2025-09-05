@@ -1,0 +1,79 @@
+{
+  "good": [
+    {
+      "amt": 1,
+      "name": "King of Men"
+    },
+    {
+      "amt": 1,
+      "name": "Captain of Arnor"
+    },
+    {
+      "amt": 17,
+      "name": "Warrior of Arnor"
+    },
+    {
+      "amt": 8,
+      "name": "Ranger of Arnor"
+    }
+  ],
+  "evil": [
+    {
+      "amt": 1,
+      "name": "Angmar Orc Captain"
+    },
+    {
+      "amt": 2,
+      "name": "Captain of Carn Dûm"
+    },
+    {
+      "amt": 13,
+      "name": "Angmar Orc Warrior"
+    },
+    {
+      "amt": 24,
+      "name": "Warrior of Carn Dûm"
+    }
+  ],
+  "objectives": {
+    "good": "reduce Evil to <=25% (10 models)",
+    "evil": "slay Argeleb"
+  },
+  "specialRules": {
+    "The King of Arnor": "Argeleb rerolls failed Wound rolls & has Arnor keyword",
+    "The Hill-men": "Carn Dûm models gain Hatred (Arnor)",
+    "Unknown Attackers": "Arnor models do not have Hatred (Angmar)"
+  },
+  "overrides": {
+    "Captain of Arnor": {
+      "specials": []
+    },
+    "Warrior of Arnor": {
+      "specials": []
+    },
+    "Ranger of Arnor": {
+      "specials": []
+    },
+    "Captain of Carn Dûm": {
+      "specials": [
+        "Glory Seekers",
+        "Hatred (Arnor)"
+      ]
+    },
+    "Warrior of Carn Dûm": {
+      "specials": [
+        "Glory Seekers",
+        "Hatred (Arnor)"
+      ]
+    }
+  },
+  "formatting": {
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.58 }
+        ]
+      }
+    }
+  }
+}

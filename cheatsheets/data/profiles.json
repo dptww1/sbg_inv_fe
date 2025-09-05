@@ -1,0 +1,288 @@
+{
+  "Aldrac": {
+    "statline": ["6\"", 6, "4+", 5, 6, 3, 3, 5, 6, 3, 3, 1],
+    "specials": ["Battle Frenzy", "Mighty Blow", "Warlord of Carn Dûm"],
+    "actions": ["Challenge", "Strength", "Strike"]
+  },
+  "Angmar Orc Captain": {
+    "statline": ["6\"", 4, "5+", 4, 6, 2, 2, 7, 7, 2, 1, 1],
+    "actions": ["March"]
+  },
+  "Angmar Orc Shaman": {
+    "statline": ["6\"", 3, "5+", 3, 5, 1, 2, 7, 7, 1, 3, 1],
+    "actions": ["Channelling"],
+    "magic": [
+      { "range": "self", "dr": 3, "spell": "Instill Fear" },
+      { "range": 12,     "dr": 4, "spell": "Drain Courage" },
+      { "range": 12,     "dr": 4, "spell": "Wither" }
+    ]
+  },
+  "Angmar Orc Warrior": {
+    "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
+  },
+  "Angmar Warg Rider": {
+    "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
+  },
+  "Aragorn": {
+    "statline": ["6\"", 7, "3+", 4, "5/6", 3, 3, 4, 3, 3, 3, 3],
+    "specials": ["Horse Lord", "Might Hero", "Resistant to Magic", "Ring of Barahir", "Andûril, Flame of the West"],
+    "actions": ["Accuracy", "Challenge", "Defence", "March", "Resolve", "Strength", "Strike"]
+  },
+  "Aranarth": {
+    "statline": ["6\"", 5, "3+", 4, 5, 2, 2, 5, 5, 3, 2, 2],
+    "specials": ["Expert Shot", "Hatred (Angmar)", "Remnants of Arnor", "Sharpshooter"],
+    "actions": ["Accuracy", "Strike"]
+  },
+  "Arathorn": {
+    "statline": ["6\"", 5, "3+", 4, 5, 3, 2, 5, 5, 3, 2, 1],
+    "specials": ["Chieftain of the Dúnedain", "Woodland Creature"],
+    "actions": ["Accuracy", "Strike"]
+  },
+  "Argadir": {
+    "statline": ["6\"", 5, "4+", 4, 7, 2, 2, 6, 6, 2, 2, 1],
+    "specials": ["Expert Rider", "Hatred (Angmar)", "Master of Battle (5+)"],
+    "actions": ["Defence", "March"]
+  },
+  "Armoured Horse": {
+    "statline": ["10\"", 2, "6+", 3, 5, 0, 1, 7, 7, "-", "-", "-"]
+  },
+  "Arvedui": {
+    "statline": ["6\"", 5, "4+", 4, 6, 3, 2, 5, 5, 3, 2, 1],
+    "specials": ["Hatred (Angmar)", "The King in the North"],
+    "actions": ["Defence", "Strength", "Strike"]
+  },
+  "Barrow-wight": {
+    "statline": ["6\"", 3, "5+", 3, 7, 1, 2, 4, 6, "-", 5, "-"],
+    "specials": ["Blades of the Dead", "Spectral Walk", "Terror"],
+    "magic": [
+      { "range": 6, "dr": 3, "spell": "Paralyse" }
+    ]
+  },
+  "Buhrdûr": {
+    "statline": ["6\"", 7, "4+", 7, 7, 3, 3, 6, 5, 3, 3, 1],
+    "specials": ["Dominant (4)", "General Hunter", "Terror", "Throw Stones (12\" S8)", "Lead by Example", "Brutish Cunning"]
+  },
+  "Captain of Arnor": {
+    "statline": ["6\"", 5, "4+", 4, 7, 2, 2, 7, 6, 2, 1, 1],
+    "specials": ["Hatred (Angmar)"],
+    "actions": ["March"]
+  },
+  "Captain of Carn Dûm": {
+    "statline": ["6\"", 4, "4+", 4, 6, 2, 2, 6, 6, 2, 1, 1],
+    "specials": ["Glory Seekers"],
+    "actions": ["March"]
+  },
+  "Captain of Minas Tirith": {
+    "statline": ["6\"", 5, "4+", 4, 7, 2, 2, 6, 6, 2, 1, 1],
+    "specials": ["Shieldwall"],
+    "actions": ["March"]
+  },
+  "Círdan": {
+    "statline": ["6\"", 5, "3+", 4, 4, 1, 2, 4, 3, 1, 4, 1],
+    "specials": ["Resistant to Magic", "Terror", "The Shipwright's Power", "Woodland Creature"],
+    "action": ["Channelling", "Resolve"],
+    "magic": [
+      { "range": "self", "dr": 3, "spell": "Fog of Disarray" },
+      { "range": 6,      "dr": 4, "spell": "Blessing of the Valar" },
+      { "range": 12,     "dr": 4, "spell": "Call Winds" },
+      { "range": 6,      "dr": 4, "spell": "Enchant Blades" },
+      { "range": "self", "dr": 5, "spell": "Aura of Dismay" }
+    ]
+  },
+  "Eärnur": {
+    "statline": ["6\"", 6, "4+", 4, 7, 3, 3, 4, 6, 3, 3, 1],
+    "specials": ["A Fool's Challenge", "Master Duellist"],
+    "actions": ["Challenge", "Resolve", "Strike"]
+  },
+  "Elladan": {
+    "statline": ["6\"", 6, "3+", 4, 6, 2, 2, 4, 4, 2, 2, 2],
+    "specials": ["Woodland Creature", "Unbreakable Bond", "Twin Elven Blades", "Strength of Brotherhood"],
+    "actions": ["Strength", "Strike"]
+  },
+  "Elrohir": {
+    "statline": ["6\"", 6, "3+", 4, 6, 2, 2, 4, 4, 2, 2, 2],
+    "specials": ["Woodland Creature", "Unbreakable Bond", "Twin Elven Blades", "Strength of Brotherhood"],
+    "actions": ["Defence", "Strike"]
+  },
+  "Elrond": {
+    "statline": ["6\"", 7, "3+", 4, 7, 3, 3, 3, 3, 3, 3, 3],
+    "specials": ["Foresight of the Eldar", "Lord of the West", "Terror", "Woodland Creature", "Vilya"],
+    "actions": ["Channelling", "Defense", "Resolve", "Strike"],
+    "magic": [
+      { "range": 12, "dr": 3, "spell": "Renew" },
+      { "range":  3, "dr": 4, "spell": "Wrath of Bruinen" }
+    ]
+  },
+  "Erestor": {
+    "statline": ["6\"", 6, "3+", 4, 7, 2, 2, 4, 5, 2, 2, 2],
+    "specials": ["Noldorin Daggers", "Terror", "Woodland Creature"],
+    "actions": ["Strike"]
+  },
+  "Fráecht": {
+    "statline": ["6\"", 4, "4+", 4, 5, 1, 2, 6, 5, 1, 4, 1],
+    "specials": ["Incantations of Power"],
+    "actions": ["Resolve"]
+  },
+  "Glorfindel": {
+    "statline": ["6\"", 8, "3+", 4, 7, 3, 3, 3, 3, 3, 3, 3],
+    "specials": ["Armour of Gondolin", "Expert Rider", "Hero of the Elves", "Horse Lord", "Lord of the West", "Resistant to Magic", "Terror", "Woodland Creature"],
+    "actions": ["Challenge", "Resolve", "Strength", "Strike"]
+  },
+  "Gûlavhar": {
+    "statline": ["12\"", 7, "5+", 8, 5, "*", 4, 6, 4, 3, 3, 0],
+    "specials": ["Dominant (5)", "Fly", "Harbinger of Evil (12\")", "Large Target", "Monstrous Charge", "Resistant to Magic", "Terror", "Strength of Body, Strength of Will", "Immortal Hunger"],
+    "actions": ["Defence", "Strength"]
+  },
+  "Halbarad": {
+    "statline": ["6\"", 5, "3+", 4, 5, 2, 2, 4, 4, 3, 2, 1],
+    "specials": ["Banner of Arwen Evenstar", "Woodland Creature"],
+    "actions": ["Accuracy", "Strike"]
+  },
+  "Hobbit Archer": {
+    "statline": ["4\"", 2, "3+", 2, 3, 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Resistant to Magic", "Throw Stones (8\" S1)"]
+  },
+  "Hill Troll": {
+    "statline": ["6\"", 6, "4+", 6, 6, 3, 3, 7, 7, "-", "-", "-"],
+    "specials": ["Dominant (3)", "Terror", "Throw Stones (12\" S8)", "Brutish Cunning"]
+  },
+  "Horse": {
+    "statline": ["10\"", 2, "6+", 3, 4, 0, 1, 7, 7, "-", "-", "-"]
+  },
+  "King of Men": {
+    "statline": ["6\"", 6, "4+", 4, "5/6", 2, 2, 4, 5, 2, 2, 2]
+  },
+  "Knight of Arnor": {
+    "statline": ["6\"", 4, "4+", 3, 6, 1, 1, 8, 7, "-", "-", "-"],
+    "specials": ["Hatred (Angmar)"]
+  },
+  "Knight of Minas Tirith": {
+    "statline": ["6\"", 4, "4+", 3, "5/6", 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Shieldwall"]
+  },
+  "Malbeth": {
+    "statline": ["6\"", 3, "4+", 3, 4, 1, 2, 6, 4, 1, 2, 1],
+    "specials": ["Foresight of the Eldar", "Gift of Foresight"],
+    "actions": ["Resolve"]
+  },
+  "Nazthák": {
+    "statline": ["6\"", 4, "5+", 4, 5, 2, 2, 7, 6, 2, 1, 2],
+    "specials": ["Scavenge"],
+    "actions": ["Defence"]
+  },
+  "Pony": {
+    "statline": ["8\"", 1, "6+", 3, 3, "-", 1, 8, 7, "-", "-", "-"],
+    "specials": ["Timid"]
+  },
+  "Ranger of Arnor": {
+    "statline": ["6\"", 4, "3+", 3, 4, 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Hatred (Angmar)"]
+  },
+  "Ranger of the North": {
+    "statline": ["6\"", 4, "3+", 4, "4/5", 1, 1, 6, 6, 1, 1, 1 ],
+    "specials": ["Woodland Creature"],
+    "actions": ["Accuracy"]
+  },
+  "Rivendell Captain": {
+    "statline": ["6\"", 6, "3+", 4, "6/7", 2, 2, 4, 4, 2, 1, 1],
+    "specials": ["Expert Rider", "Woodland Creature"],
+    "actions": ["March"]
+  },
+  "Rivendell Warrior": {
+    "statline": ["6\"", 5, "3+", 3, "5/6", 1, 1, 5, 5, "-", "-", "-"],
+    "specials": ["Woodland Creature"]
+  },
+  "Shade": {
+    "statline": ["6\"", 1, "6+", 1, 8, 2, 3, 5, 8, 0, 4, 1],
+    "specials": ["Blades of the Dead", "Dominant (3)", "Spectral Walk", "Terror", "Conduit of Angmar", "Swirling Mists", "Ghostly Resolve"]
+  },
+  "Spectre": {
+    "statline": ["6\"", 2, "6+", 3, 6, 1, 1, 4, 7, "-", "-", "-"],
+    "specials": ["A Fell Light is in Them", "Blades of the Dead", "Spectral Walk", "Terror"]
+  },
+  "The Dwimmerlaik": {
+    "statline": ["6\"", 5, "4+", 4, 8, 1, 1, 4, 5, 0, 16, 2],
+    "actions": ["Channelling"],
+    "specials": ["Harbinger of Evil (12\")", "Terror", "Will of Evil", "Sap Fortitude"],
+    "magic": [
+      { "range": 12, "dr": 3, "spell": "Compel" },
+      { "range": 12, "dr": 3, "spell": "Transfix" },
+      { "range": 12, "dr": 4, "spell": "Curse" },
+      { "range": 12, "dr": 4, "spell": "Drain Courage" },
+      { "range":  6, "dr": 5, "spell": "Black Dart" },
+      { "range": "self", "dr": 6, "spell": "Instill Fear" }
+    ]
+  },
+  "The Shadow of Rhudaur": {
+    "statline": ["6\"", 5, "4+", 3, 7, 2, 2, 4, 5, 2, 5, 2],
+    "actions": ["Challenge"],
+    "specials": ["Blades of the Dead", "Spectral Walk", "Terror", "Herald of Doom", "Power of Angmar"],
+    "magic": [
+      { "range": 6,      "dr": 3, "spell": "Drain Courage" },
+      { "range": "self", "dr": 3, "spell": "Fog of Disarray" },
+      { "range": 6,      "dr": 4, "spell": "Curse" },
+      { "range": 6,      "dr": 5, "spell": "Wither" }
+    ]
+  },
+  "The Tainted": {
+    "statline": ["6\"", 5, "4+", 4, 8, 1, 1, 4, 4, 2, 14, 2],
+    "actions": ["Channelling"],
+    "specials": ["Harbinger of Evil (12\")", "Terror", "Will of Evil", "Miasmatic Presence", "Seeping Decay"],
+    "magic": [
+      { "range": 12, "dr": 3, "spell": "Compel" },
+      { "range": 12, "dr": 3, "spell": "Transfix" },
+      { "range": 12, "dr": 4, "spell": "Drain Courage" },
+      { "range":  6, "dr": 5, "spell": "Black Dart" },
+      { "range": 12, "dr": 5, "spell": "Wither" },
+      { "range": "self", "dr": 6, "spell": "Instill Fear" }
+    ]
+  },
+  "The Witch-king of Angmar": {
+    "statline": ["6\"", 6, "4+", 4, 8, 3, 1, 4, 4, 3, 18, 3],
+    "specials": ["Morgul Blade"],
+    "actions": ["Challenge", "Channelling", "Resolve", "Strength", "Strike"],
+    "magic": [
+      { "range": 12, "dr": 3, "spell": "Compel" },
+      { "range": 12, "dr": 3, "spell": "Transfix" },
+      { "range": 12, "dr": 4, "spell": "Drain Courage" },
+      { "range": 12, "dr": 4, "spell": "Enchant Blades" },
+      { "range":  6, "dr": 5, "spell": "Black Dart" },
+      { "range": "self", "dr": 5, "spell": "Instill Fear" },
+      { "range": 12, "dr": 5, "spell": "Your Staff is Broken" }
+    ]
+  },
+  "Tom Bombadil": {
+    "statline": ["6\"", "-", "-", "-", "-", "-", "-", "-", "-", "-", 12, "-"],
+    "specials": ["Sing a Jolly Song", "Tom has his house to mind", "Tom is Master"]
+  },
+  "Warg": {
+    "statline": ["10\"", 3, "6+", 4, 4, 1, 1, 8, 8, "-", "-", "-"]
+  },
+  "Warg Rider": {
+    "statline": ["6\"", 3, "5+", 3, "4/5", 1, 1, 8, 8, "-", "-", "-"]
+  },
+  "Warrior of Arnor": {
+    "statline": ["6\"", 4, "4+", 3, 6, 1, 1, 8, 7, "-", "-", "-"],
+    "specials": ["Hatred (Angmar)"]
+  },
+  "Warrior of Carn Dûm": {
+    "statline": ["6\"", 3, "4+", 4, 5, 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Glory Seekers"]
+  },
+  "Warrior of Minas Tirith": {
+    "statline": ["6\"", 4, "4+", 3, "5/6", 1, 1, 7, 7, "-", "-", "-"],
+    "specials": ["Shieldwall"]
+  },
+  "Werewolf": {
+    "statline": ["10\"", 5, "6+", 5, 5, 2, 2, 5, 8, "-", "-", "-"],
+    "specials": ["Feral Charge", "Fell Sight", "Terror"]
+  },
+  "Wild Warg": {
+    "statline": ["10\"", 3, "6+", 4, 4, 1, 1, 8, 7, "-", "-", "-"]
+  },
+  "Wild Warg Chieftain": {
+    "statline": ["10\"", 5, "5+", 6, 5, 3, 3, 6, 7, 2, 2, 1],
+    "specials": ["Terror", "Packlord"],
+    "actions": ["March", "Strength"]
+  }
+}

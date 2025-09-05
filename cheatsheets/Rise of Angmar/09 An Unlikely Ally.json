@@ -1,0 +1,39 @@
+{
+  "good": [
+    { "amt":  1, "name": "Glorfindel" },
+    { "amt":  1, "name": "Círdan" },
+    { "amt":  1, "name": "Rivendell Captain" },
+    { "amt": 25, "name": "Rivendell Warrior" }
+  ],
+  "evil": [
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt":  2, "name": "Captain of Carn Dûm" },
+    { "amt": 25, "name": "Angmar Orc Warrior" },
+    { "amt": 24, "name": "Warrior of Carn Dûm" }
+  ],
+  "objectives": {
+    "good": "reduce Evil to <=13 models",
+    "evil": "reduce Good to <=7 models"
+  },
+  "specialRules": {
+    "Seething Hatred": "Evil models have Hatred (Elf)",
+    "Test Their Resolve": "Replace slain Evil Hero with 25mm marker. In End Phase, Evil models w/in 3\" of marker must pass Courage Test or be removed as a casualty (Heroes can use Stand Fast). Remove marker at end of End Phase."
+  },
+  "overrides": {
+    "Angmar Orc Captain": {
+      "specials": ["Hatred (Elf)"]
+    },
+    "Angmar Orc Warrior": {
+      "specials": ["Hatred (Elf)"]
+    },
+    "Captain of Carn Dûm": {
+      "specials": ["Glory Seekers", "Hatred (Elf)"]
+    },
+    "Warrior of Carn Dûm": {
+      "specials": ["Glory Seekers", "Hatred (Elf)"]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["actions"]
+  }
+}

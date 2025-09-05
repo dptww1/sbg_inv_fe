@@ -1,0 +1,33 @@
+{
+  "good": [
+    { "amt":  1, "name": "Arathorn" },
+    { "amt":  1, "name": "Halbarad" },
+    { "amt": 18, "name": "Ranger of the North" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "Buhrdûr" },
+    { "amt":  1, "name": "Angmar Orc Captain" },
+    { "amt":  1, "name": "Wild Warg Chieftain" },
+    { "amt": 12, "name": "Angmar Orc Warrior" },
+    { "amt":  2, "name": "Hill Troll" },
+    { "amt":  6, "name": "Wild Warg" }
+  ],
+  "objectives": {
+    "good": "slay Buhrdûr",
+    "evil": "slay Arathorn"
+  },
+  "specialRules": {
+    "Ambush!": "Good models can't Shoot on Turn 1",
+    "Desperate Fight": "Arathorn can reroll one of his Duel Roll dice",
+    "Death to the Dúnedain": "Once per game, Evil models are +1 to Wound until End Phase"
+  },
+  "formatting": {
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.75 }
+        ]
+      }
+    }
+  }
+}

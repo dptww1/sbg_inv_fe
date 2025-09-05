@@ -1,0 +1,26 @@
+{
+  "Channelling": {
+    "effect": "auto 6 on next Casting Test this turn"
+  },
+  "March": {
+    "effect": "may not Charge, but +3\" Move value; +5\" if Cavalry or Flying"
+  },
+  "Resolve": {
+    "effect": "friends w/in 6\" get extra die on Resist Tests; caller auto-passes Courage Tests for broken army & can provide Stand Fast even if engaged"
+  },
+  "Accuracy": {
+    "effect": "caller gains Sharpshooter until End Phase & reroll failed In The Way Tests"
+  },
+  "Challenge": {
+    "effect": "target enemy Hero of >= Heroic Tier; +1 Attack & +1 To Wound vs that Hero; if enemy slain, regain one spent Might point. If accepted, targets gets same benefits and each must Charge the other; if declined, target can't Heroic Challenge caller"
+  },
+  "Defence": {
+    "effect": "caller only Wounded on 6 (or 6/6); doesn't affect Mount"
+  },
+  "Strength": {
+    "effect": "caller doubles Strength (max 10) until End Phase"
+  },
+  "Strike": {
+    "effect": "add d3 to Fight Value (max 10) for Fight Phase; roll at start of caller's first combat"
+  }
+}

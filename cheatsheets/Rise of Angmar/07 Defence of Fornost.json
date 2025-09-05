@@ -1,0 +1,30 @@
+{
+  "good": [
+    { "amt":  2, "name": "Captain of Arnor" },
+    { "amt": 16, "name": "Warrior of Arnor" },
+    { "amt":  8, "name": "Ranger of Arnor" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "Angmar Orc Captain" },
+    { "amt":  2, "name": "Captain of Carn Dûm" },
+    { "amt": 13, "name": "Angmar Orc Warrior" },
+    { "amt": 24, "name": "Warrior of Carn Dûm" }
+  ],
+  "objectives": {
+    "good": "reduce Evil to <=10 models",
+    "evil": "have >=10 models on the walls at the end of a turn"
+  },
+  "specialRules": {
+    "Ruthless Attackers": "Evil models on ladders do not treat battlements as In The Way",
+    "The King is Dead": "Evil models on the wall cause Terror"
+  },
+  "formatting": {
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.56 }
+        ]
+      }
+    }
+  }
+}

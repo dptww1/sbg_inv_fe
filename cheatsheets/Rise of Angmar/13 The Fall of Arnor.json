@@ -1,0 +1,40 @@
+{
+  "good": [
+    { "amt":  1, "name": "Arvedui" },
+    { "amt":  1, "name": "Malbeth" },
+    { "amt":  1, "name": "Argadir" },
+    { "amt":  1, "name": "Aranarth" },
+    { "amt":  1, "name": "Captain of Arnor" },
+    { "amt": 24, "name": "Warrior of Arnor" },
+    { "amt": 12, "name": "Ranger of Arnor" },
+    { "amt":  6, "name": "Knight of Arnor" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "Nazthák" },
+    { "amt":  1, "name": "The Shadow of Rhudaur" },
+    { "amt":  1, "name": "Shade" },
+    { "amt":  1, "name": "Angmar Orc Captain" },
+    { "amt":  1, "name": "Angmar Orc Shaman" },
+    { "amt":  1, "name": "Barrow-wight" },
+    { "amt":  3, "name": "Spectre" },
+    { "amt": 24, "name": "Angmar Orc Warrior" },
+    { "amt":  4, "name": "Werewolf" },
+    { "amt":  2, "name": "Hill Troll" }
+  ],
+  "objectives": {
+    "good": "wipe out Evil, or Draw by getting Arvedui off any board edge",
+    "evil": "slay Arvedui, Malbeth, and Aranarth"
+  },
+  "specialRules": {
+    "Malbeth the Seer": "Arvedui can save vs Wounds on 4+ if w/in 6\" of Malbeth",
+    "Arvedui's Last Stand": "Arvedui has Fearless"
+  },
+  "overrides": {
+    "Arvedui": {
+      "specials": ["Fearless", "Hatred (Angmar)", "The King in the North"]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["actions"]
+  }
+}

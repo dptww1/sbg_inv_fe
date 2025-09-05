@@ -1,0 +1,46 @@
+{
+  "good": [
+    { "amt":  1, "name": "Eärnur" },
+    { "amt":  1, "name": "Captain of Minas Tirith" },
+    { "amt": 25, "name": "Warrior of Minas Tirith" },
+    { "amt":  6, "name": "Knight of Minas Tirith" },
+    { "amt":  1, "name": "Glorfindel" },
+    { "amt":  1, "name": "Círdan" },
+    { "amt": 25, "name": "Rivendell Warrior" },
+    { "amt":  1, "name": "Aranarth" },
+    { "amt":  6, "name": "Ranger of the North" },
+    { "amt": 12, "name": "Ranger of Arnor" },
+    { "amt":  8, "name": "Hobbit Archer" }
+  ],
+  "evil": [
+    { "amt":  1, "name": "The Witch-king of Angmar" },
+    { "amt":  1, "name": "The Tainted" },
+    { "amt":  1, "name": "The Dwimmerlaik" },
+    { "amt":  1, "name": "The Shadow of Rhudaur" },
+    { "amt":  1, "name": "Nazthák" },
+    { "amt":  1, "name": "Shade" },
+    { "amt":  1, "name": "Barrow-wight" },
+    { "amt":  1, "name": "Wild Warg Chieftain" },
+    { "amt": 50, "name": "Angmar Orc Warrior" },
+    { "amt": 12, "name": "Wild Warg" },
+    { "amt":  6, "name": "Spectre" },
+    { "amt":  2, "name": "Werewolf" },
+    { "amt":  2, "name": "Hill Troll" }
+  ],
+  "objectives": {
+    "good": "wipe out Evil, but only Draw if none of Eärnur, Glorfindel, Círdan, and Aranarth are on board",
+    "evil": "wipe out Good, but only Draw if Witch-king is not on board"
+  },
+  "specialRules": {
+    "The Toll of Battle": "both sides can break (as per Matched Play)",
+    "The Lord of the Nazgûl": "The Witch-king has 3 Attacks and +1 Courage to all Evil models while on board"
+  },
+  "overrides": {
+    "The Witch-king of Angmar": {
+      "statline": ["6\"", 6, "4+", 4, 8, 3, 1, 4, 4, 3, 20, 3]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["evilStats", "actions", "evilSpells"]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "good": [
+    { "amt":  1, "name": "Arathorn" },
+    { "amt":  1, "name": "Halbarad" },
+    { "amt": 18, "name": "Ranger of the North" }
+  ],
+  "evil": [
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt": 24, "name": "Angmar Orc Warrior" },
+    { "amt":  1, "name": "Hill Troll" }
+  ],
+  "objectives": {
+    "good": "prevent Evil victory",
+    "evil": "move >=8 Evil models off the eastern edge"
+  },
+  "specialRules": {
+    "Ambush!": "After deployment before the 1st Turn, Good models may make a free Shooting attack (but cannot use Might)",
+    "The Troll": "if the Hill Troll escapes the board, Good's best result is a Draw "
+  },
+  "overrides": {
+    "Halbarad": {
+      "specials": ["Woodland Creature"]
+    }
+  },
+  "formatting": {
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 0, "width": 0.75 }
+        ]
+      }
+    }
+  }
+}

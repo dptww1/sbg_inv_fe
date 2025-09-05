@@ -1,0 +1,40 @@
+{
+  "good": [
+    { "amt":  1, "name": "Elrond" },
+    { "amt":  1, "name": "Erestor" },
+    { "amt": 25, "name": "Rivendell Warrior" }
+  ],
+  "evil": [
+    { "amt":  2, "name": "Angmar Orc Captain" },
+    { "amt":  1, "name": "Captain of Carn Dûm" },
+    { "amt": 25, "name": "Angmar Orc Warrior" },
+    { "amt": 12, "name": "Warrior of Carn Dûm" },
+    { "amt":  6, "name": "Warg Rider" },
+    { "amt":  0, "name": "Warg" }
+  ],
+  "objectives": {
+    "good": "prevent Evil Victory",
+    "evil": "In 12 turns, kill Elrond and/or all but 6 Good models"
+  },
+  "specialRules": {
+    "To War!": "Evil Heroes can Heroic March for free every turn.",
+    "Protection of Imladris": "Elrond can't cast Wrath of Bruinen"
+  },
+  "overrides": {
+    "Elrond": {
+      "magic": [
+        { "range": 12, "dr": 3, "spell": "Renew" }
+      ]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["actions"],
+    "tables": {
+      "spells": {
+        "good": [
+          { "column": 0, "width": 0.6 }
+        ]
+      }
+    }
+  }
+}

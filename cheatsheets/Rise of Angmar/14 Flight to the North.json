@@ -1,0 +1,24 @@
+{
+  "good": [
+    { "amt":  1, "name": "Arvedui" },
+    { "amt":  1, "name": "Captain of Arnor" },
+    { "amt": 12, "name": "Warrior of Arnor" },
+    { "amt": 12, "name": "Ranger of Arnor" }
+  ],
+  "evil": [
+    { "amt": 1, "name": "Gûlavhar" },
+    { "amt": 1, "name": "Barrow-wight" },
+    { "amt": 6, "name": "Angmar Orc Warrior" },
+    { "amt": 4, "name": "Werewolf" }
+  ],
+  "objectives": {
+    "good": "Arvedui moves off the north board edge",
+    "evil": "reclaim the Palantir and move it off any board edge"
+  },
+  "specialRules": {
+    "The Terror of Arnor": "at end of Evil Move Phase, roll d6+Turn; if >=10, Gûlavhar enters from south edge",
+    "The Palantir": "Light Object initially carried by Arvedui, can't be voluntarily dropped/passed; dropped if possessor dies. Draw if non-Arvedui Good model carries off north edge"
+  },
+  "overrides": {
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "good": [
+    { "amt":  1, "name": "Aragorn" },
+    { "amt":  1, "name": "Halbarad" },
+    { "amt": 12, "name": "Ranger of the North" }
+  ],
+  "evil": [
+    { "amt": 1, "name": "Gûlavhar" },
+    { "amt": 6, "name": "Spectre" }
+  ],
+  "objectives": {
+    "good": "slay Gûlavhar",
+    "evil": "slay Aragorn"
+  },
+  "specialRules": {
+    "The Sound of Battle": "starting Turn 2, each player enters d3 models from any board edge(s); Aragorn enters last",
+    "The Young Warrior": "Aragorn doesn't have Mighty Hero",
+    "Chieftain of the Dúnedain": "Aragorn is Fearless"
+  },
+  "overrides": {
+    "Aragorn": {
+      "specials": ["Horse Lord", "Resistant to Magic", "Ring of Barahir", "Fearless"]
+    }
+  },
+  "formatting": {
+    "pageBreakBefore": ["expendedStats"],
+    "tables": {
+      "actions": {
+        "both": [
+          { "column": 1, "width": 1.35 }
+        ]
+      }
+    }
+  }
+}
