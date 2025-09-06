@@ -11,7 +11,8 @@
     { "amt":  1, "name": "Captain of Carn Dûm" },
     { "amt": 25, "name": "Angmar Orc Warrior" },
     { "amt": 12, "name": "Warrior of Carn Dûm" },
-    { "amt": 12, "name": "Angmar Warg Rider" }
+    { "amt": 12, "name": "Angmar Warg Rider" },
+    { "amt":  0, "name": "Warg" }
   ],
   "objectives": {
     "good": "take the Palantir off the board within 12 turns",

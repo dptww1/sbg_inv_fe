@@ -5,7 +5,8 @@
     { "amt":  1, "name": "Malbeth" },
     { "amt": 24, "name": "Warrior of Arnor" },
     { "amt": 12, "name": "Ranger of Arnor" },
-    { "amt":  6, "name": "Knight of Arnor" }
+    { "amt":  6, "name": "Knight of Arnor" },
+    { "amt":  0, "name": "Horse" }
   ],
   "evil": [
     { "amt":  1, "name": "Aldrac" },

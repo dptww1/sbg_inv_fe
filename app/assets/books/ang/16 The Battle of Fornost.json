@@ -10,7 +10,8 @@
     { "amt":  1, "name": "Aranarth" },
     { "amt":  6, "name": "Ranger of the North" },
     { "amt": 12, "name": "Ranger of Arnor" },
-    { "amt":  8, "name": "Hobbit Archer" }
+    { "amt":  8, "name": "Hobbit Archer" },
+    { "amt":  0, "name": "Armoured Horse" }
   ],
   "evil": [
     { "amt":  1, "name": "The Witch-king of Angmar" },
