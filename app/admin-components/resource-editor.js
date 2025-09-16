@@ -15,7 +15,17 @@ const FORMAT_OPTIONS = [
 
 let title = "Add New Resource";
 
-//========================================================================
+/**
+ * Mithril component to create or edit a resource.  Since the caller provides
+ * the options, it can handle scenario & character resources.
+ *
+ * Required vnode attributes:
+ *   - commitFn(rsrc) callback when user finishes with the resource
+ *   - options array of 'option name" or "option name=value" strings
+ *
+ * Optional vnode attributes:
+ *   - initialData raw (not stream) initial values for the fields in the editor
+ */
 export const ResourceEditor = () => {
   let expanded = false;
 
@@ -110,8 +120,8 @@ export const ResourceEditor = () => {
 
     const initData = vnode.attrs.initialData;
     if (initData) {
-      resource.type(initData.type);
-      resource.resource_type(initData.type);
+      resource.type(initData.type || initData.resource_type);
+      resource.resource_type(initData.type || initData.resource_type);
       resource.book(initData.book);
       resource.issue(initData.issue);
       resource.page(initData.page);
@@ -135,6 +145,7 @@ export const ResourceEditor = () => {
   const isValid = formatEditor =>
     U.isNoneBlank(
       resource.type(),
+      resource.title(), // sorting code assumes this is not null
       resourceFormat())
       && formatEditor.isValid(resource);
 

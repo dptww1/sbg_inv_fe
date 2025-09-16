@@ -6,10 +6,13 @@ import { Header                   } from "../header.js";
 import * as K                       from "../constants.js";
 import { Nav                      } from "../nav.js";
 import { Request                  } from "../request.js";
+import { ResourceEditor           } from "../admin-components/resource-editor.js";
 import * as U                       from "../utils.js";
 
 //========================================================================
 let scenario = {};
+let resourceType = null; // resource being edited
+let resourceIdx = 0;     // resource being edited
 
 const ageOptions = [ "3", "2", "1" ];
 
@@ -24,6 +27,82 @@ const locationOptions = Object.keys(K.LOCATIONS)
 const monthOptions = [ "--unknown--=0" ].concat(
   [...Array(12).keys()].map(k => (k + 1).toString())
 );
+
+const NON_SOURCE_RESOURCES = [
+  "video_replay",
+  "web_replay",
+  "terrain_building",
+  "podcast",
+  "magazine_replay",
+  "cheatsheet"
+];
+
+const RESOURCE_OPTIONS = [
+  "-- Choose --=",
+  "Video Replay=video_replay",
+  "Web Replay=web_replay",
+  "Terrain Building=terrain_building",
+  "Podcast=podcast",
+  "Magazine Replay=magazine_replay",
+  "Cheatsheet=cheatsheet"
+];
+
+//========================================================================
+const clearResource = () => {
+  resourceType = null;
+  resourceIdx = 0;
+};
+
+//========================================================================
+const domResources = () => [
+  m("label", "Resources"),
+  m(".resources-container",
+    NON_SOURCE_RESOURCES.map(type =>
+      scenario.scenario_resources()[type].length > 0
+        ? [
+            m(".section-subheader", U.asLabel(type)),
+            m("ul",
+              scenario.scenario_resources()[type].map((r, idx) =>
+
+                (type === resourceType && idx === resourceIdx)
+                  ? m(ResourceEditor,
+                      {
+                        commitFn: saveResource,
+                        initialData: r,
+                        options: RESOURCE_OPTIONS
+                      })
+                  : [
+                      m("li", r.title,
+                        m("span.action",
+                          {
+                            onclick: () => loadResource(r, idx)
+                          },
+                          K.ICON_STRINGS.edit))
+                    ]))
+          ]
+        : null)),
+
+    resourceType === null
+      ? [
+          m("", m.trust("&nbsp;")),
+          m(ResourceEditor,
+            {
+              commitFn: saveResource,
+              options: RESOURCE_OPTIONS
+            })
+        ]
+      : null
+];
+
+//========================================================================
+const domSource = () => [
+  m("label", "Source"),
+  m(BookFormatResourceEditor,
+    {
+      initialData: getSource(),
+      embedded: true
+  }),
+];
 
 //========================================================================
 const getSource = () => {
@@ -43,6 +122,17 @@ const isFormValid = () => U.isNoneBlank(
   scenario.location(),
   getSource())
   && BookFormatResourceEditor.isValid(getSource());
+
+//========================================================================
+const loadResource = (r, idx) => {
+  if (r === null) {
+    clearResource();
+
+  } else {
+    resourceType = r.resource_type;
+    resourceIdx = idx;
+  }
+};
 
 //========================================================================
 const refresh = () => {
@@ -81,7 +171,8 @@ const refresh = () => {
         "web_replay": [],
         "terrain_building": [],
         "podcast": [],
-        "magazine_replay": []
+        "magazine_replay": [],
+        "cheatsheet": []
       },
       scenario_factions: [  // required by BE
         {
@@ -98,6 +189,8 @@ const refresh = () => {
     });
 
     U.propertize(getSource());
+
+    clearResource();
   }
 };
 
@@ -105,6 +198,11 @@ const refresh = () => {
 const save = () => {
   const rawScenario = U.unpropertize(scenario);
   U.unpropertize(rawScenario.scenario_resources.source[0]);
+
+  let sort_order = 1;
+  NON_SOURCE_RESOURCES.forEach(type => {
+    rawScenario.scenario_resources[type].forEach(rsrc => rsrc.sort_order = sort_order++);
+  });
 
   Request.putOrPost("/scenarios",
     scenario.id(),
@@ -114,6 +212,20 @@ const save = () => {
     resp => m.route.set("/scenarios/" + resp.data.id));
 };
 
+//========================================================================
+const saveResource = rsrc => {
+  if (rsrc !== null) {
+
+    if (resourceType === null) {
+      scenario.scenario_resources()[rsrc.type].push(rsrc);
+
+    } else {
+      scenario.scenario_resources()[resourceType].splice(resourceIdx, 1, rsrc);
+    }
+  }
+
+  clearResource();
+};
 
 //========================================================================
 export const ScenarioEditor = {
@@ -141,12 +253,8 @@ export const ScenarioEditor = {
               FormField.numeric(scenario.map_height, "Map Height (inches)"),
               FormField.select(scenario.location, "Location", { options: locationOptions }),
 
-              m("label", "Source"),
-              m(BookFormatResourceEditor,
-                {
-                  initialData: getSource(),
-                  embedded: true
-                }),
+              domSource(),
+              domResources(),
 
               m("button[type=button]",
                 {

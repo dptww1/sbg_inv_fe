@@ -8,7 +8,6 @@ import { Nav             } from "./nav.js";
 import { Pie             } from "./components/pie.js";
 import { Request         } from "./request.js";
 import { ScenarioUpdater } from "./scenario-updater.js";
-import { SelectBook      } from "./components/select-book.js";
 import { StarRating      } from "./components/star-rating.js";
 import * as U              from "./utils.js";
 
@@ -26,20 +25,6 @@ const issue = prop();
 const page = prop();
 const sort_order = prop();
 const url = prop();
-
-//========================================================================
-const clearResourceForm = () => {
-  resourceId(null);
-  resourceType("-1");
-  title("");
-  book("");
-  issue("");
-  page("");
-  sort_order("");
-  url("");
-
-  m.redraw();
-};
 
 //========================================================================
 const domFactionsRollup = () => {
@@ -152,68 +137,18 @@ const domResourcesRollupAddSource = (eltArray, resources) => {
 const domResourcesRollup = () => {
   const r = [];
 
-  if (scenario().scenario_resources) {
+  const rsrcList = scenario().scenario_resources;
+  if (rsrcList) {
     r.push(m("div.section-header", "Resources"));
-    domResourcesRollupAddSource(r, scenario().scenario_resources);
-    domResourcesRollupAddCheatsheet(r, scenario().scenario_resources);
-    domResourcesRollupAdd(r, scenario().scenario_resources.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
-    domResourcesRollupAdd(r, scenario().scenario_resources.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
-    domResourcesRollupAdd(r, scenario().scenario_resources.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
-    domResourcesRollupAdd(r, scenario().scenario_resources.magazine_replay, "magazine-replay", "Magazine Replay", K.ICON_STRINGS.magazine_replay);
-  }
-
-  if (Credentials.isAdmin()) {
-    r.push(m("table.form",
-             m("tr", m("td", ""),      m("td", domResourceSelectType())),
-             m("tr", m("td", "Title"), m("td", domResourceTextInput("title", title))),
-             isEditResourceBook()   ? m("tr", m("td", "Book"),  m("td", domResourceSelectBook()))              : null,
-             isEditResourceBook()   ? m("tr", m("td", "Issue"), m("td", domResourceTextInput("issue", issue))) : null,
-             isEditResourceBook()   ? m("tr", m("td", "Page"),  m("td", domResourceTextInput("page", page)))   : null,
-             isEditResourceOnline() ? m("tr", m("td", "Url"),   m("td", domResourceTextInput("url", url)))     : null,
-             m("tr",
-               m("td", "Sort Order"),
-               m("td", domResourceTextInput("sort_order", sort_order)),
-               m("td", "(if blank, moves to end of list)")),
-             m("tr",
-               m("td", m("button", { onclick: clearResourceForm  }, "Clear")),
-               m("td", m("button",
-                         {
-                           disabled: !isResourceValid(),
-                           onclick: submitResourceForm
-                         },
-                         "Submit"))
-              )));
+    domResourcesRollupAddSource(r, rsrcList);
+    domResourcesRollupAddCheatsheet(r, rsrcList);
+    domResourcesRollupAdd(r, rsrcList.video_replay, "video-replay", "Video Replay", K.ICON_STRINGS.video_replay);
+    domResourcesRollupAdd(r, rsrcList.web_replay, "web-replay", "Web Replay", K.ICON_STRINGS.web_replay);
+    domResourcesRollupAdd(r, rsrcList.podcast, "podcast", "Podcast", K.ICON_STRINGS.podcast);
+    domResourcesRollupAdd(r, rsrcList.magazine_replay, "magazine-replay", "Magazine Replay", K.ICON_STRINGS.magazine_replay);
   }
 
   return r;
-};
-
-//========================================================================
-const domResourceSelectBook = () => {
-  return m(SelectBook,
-           {
-             value: book(),
-             callback: value => book(value)
-           });
-};
-
-//========================================================================
-const domResourceSelectType = () => {
-  return m("select[name=type]",
-           { onchange: ev => { resourceType(ev.target.value); } },
-           m("option[value=-1]", { selected: resourceType() === "-1" }, "-- Select Resource Type --"),
-           Object.entries(K.RESOURCE_TYPE_MAP).map(([k, v]) =>
-             m("option[value=" + v + "]", { selected: resourceType() === v }, U.asLabel(k))));
-};
-
-//========================================================================
-const domResourceTextInput = (name, modelProp) => {
-  return m("input[type=text]",
-           {
-             name: name,
-             oninput: ev => modelProp(ev.target.value),
-             value: modelProp() ? modelProp() : ""
-           });
 };
 
 //========================================================================
@@ -258,45 +193,6 @@ const formatDate = (age, year, month, day) => {
 };
 
 //========================================================================
-const isEditResourceBook = () => {
-  return resourceType() === K.RESOURCE_TYPE_MAP.source
-      || resourceType() === K.RESOURCE_TYPE_MAP.magazine_replay;
-};
-
-//========================================================================
-const isEditResourceOnline = () => {
-  return resourceType() === K.RESOURCE_TYPE_MAP.source
-      || resourceType() === K.RESOURCE_TYPE_MAP.video_replay
-      || resourceType() === K.RESOURCE_TYPE_MAP.web_replay
-      || resourceType() === K.RESOURCE_TYPE_MAP.podcast
-      || resourceType() == K.RESOURCE_TYPE_MAP.cheatsheet;
-};
-
-//========================================================================
-const isResourceValid = () => {
-  if (U.isBlank(title())) {
-    return false;
-  }
-
-  switch(resourceType()) {
-  case K.RESOURCE_TYPE_MAP.source:
-    return U.isNotBlank(url()) || (U.isNotBlank(book()) && U.isNotBlank(page()));
-
-  case K.RESOURCE_TYPE_MAP.video_replay:
-  case K.RESOURCE_TYPE_MAP.web_replay:
-  case K.RESOURCE_TYPE_MAP.podcast:
-  case K.RESOURCE_TYPE_MAP.cheatsheet:
-    return U.isNotBlank(url());
-
-  case K.RESOURCE_TYPE_MAP.magazine_replay:
-    return U.isNotBlank(book()) && U.isNotBlank(page());
-
-  default:
-    return false;
-  }
-};
-
-//========================================================================
 const loadResourceIntoForm = (res) => {
   resourceId(res.id);
   resourceType(K.RESOURCE_TYPE_MAP[res.resource_type]);
@@ -326,33 +222,6 @@ const refresh = function() {
               resp => {
                 scenario(resp.data);
               });
-};
-
-//========================================================================
-const submitResourceForm = () => {
-  const payload = {
-    resource: {
-      id:            U.isNotBlank(resourceId()) ? resourceId() : null,
-      resource_type: parseInt(resourceType(), 10),
-      title:         U.isNotBlank(title()) ? title() : null,
-      book:          U.isNotBlank(book()) ? book() :null,
-      issue:         U.isNotBlank(issue()) ? issue() : null,
-      page:          U.isNotBlank(page()) ? parseInt(page(), 10) : null,
-      url:           U.isNotBlank(url()) ? url() : null
-    }
-  };
-
-  if (sort_order()) {
-    payload["resource"]["sort_order"] = sort_order();
-  }
-
-  Request.putOrPost("/scenarios/" + scenario().id + "/resource",
-                    resourceId(),
-                    payload,
-                    () => {
-                      clearResourceForm();
-                      refresh();
-                   });
 };
 
 //========================================================================
