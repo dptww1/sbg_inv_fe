@@ -54,7 +54,7 @@ export const FormField = {
 
     const fieldId = configProps["id"] || labelToId(label);
     const attrs = {
-      onkeyup: ev => prop(ev.target.value),
+      onchange: ev => prop(ev.target.value),
       value: prop()
     };
 
