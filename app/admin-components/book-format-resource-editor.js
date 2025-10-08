@@ -1,3 +1,5 @@
+/*global BOOK_INFO */
+
 import m from "mithril";
 import prop from "mithril/stream";
 
@@ -22,6 +24,7 @@ import * as U         from "../utils.js";
 export const BookFormatResourceEditor = () => {
   const PARAMS = [ "book", "issue", "prop" ];
   let resource = {
+    title: prop(), // auto-filled since other FE code assumes this is non-null
     book:  prop(), // key, not id
     issue: prop(),
     page:  prop()
@@ -36,6 +39,9 @@ export const BookFormatResourceEditor = () => {
         // If resource is embedded, we assume the client code is
         // already using prop() for the attributes
         resource = vnode.attrs.initialData;
+        if (!resource.title) {
+          resource.title = prop();
+        }
 
       } else {
         const initData = vnode.attrs.initialData;
@@ -56,7 +62,14 @@ export const BookFormatResourceEditor = () => {
     view: vnode => {
       const formFields = [
         m("label", "Book"),
-        m(SelectBook, { value: resource.book(), callback: val => resource.book(val) }),
+        m(SelectBook,
+          {
+            value: resource.book(),
+            callback: val => {
+              resource.title(BOOK_INFO.byKey(val).name);
+              resource.book(val)
+            }
+          }),
 
         FormField.text(resource.issue, "Issue"),
 
