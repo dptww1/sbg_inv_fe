@@ -90,7 +90,8 @@ export const FormField = {
   //========================================================================
   text: (prop, label, configProps = {}) => {
     if (configProps.readOnly) {
-      return m(".form-field-text-wrapper", prop());
+      const content = prop() || configProps.placeholder || '';
+      return m(".form-field-text-wrapper", content);
     }
 
     const fieldId = configProps["id"] || labelToId(label);

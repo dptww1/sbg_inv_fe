@@ -23,6 +23,7 @@ const appendFigure = (role, target) => {
   role.figures().push({
     figure_id:   target.dataset.id,
     name:        target.dataset.name,
+    plural_name: target.dataset.plural_name === "null" ? null : target.dataset.plural_name
   });
 };
 
@@ -42,7 +43,9 @@ const computePlaceholder = role => {
     return "";
   }
 
-  return role.figures()[0].name.replace(/\s+\(.*$/, "");
+  const firstFigure = role.figures()[0];
+  const placeholder = role.amount() > 1 ? U.pluralName(firstFigure) : firstFigure.name;
+  return placeholder.replace(/\s+\(.*$/, "");
 };
 
 //========================================================================
