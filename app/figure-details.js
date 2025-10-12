@@ -201,6 +201,14 @@ const domSilhouette = () =>
         : null;
 
 //========================================================================
+const domTotals = () => [
+  m(".section-header", "In All Collections"),
+  m("table",
+    m("tr", m("td", "Owned"), m("td", figure.total_owned)),
+    m("tr", m("td", "Painted"), m("td", figure.total_painted)))
+];
+
+//========================================================================
 const initializeFigure = () => {
   figure = {
     factions: [],
@@ -251,6 +259,7 @@ export const FigureDetails = {
         domRules(),
         domScenarios(total),
         domResources(),
+        domTotals(),
         domHistory(),
         m(EditDialog)
       ]),
