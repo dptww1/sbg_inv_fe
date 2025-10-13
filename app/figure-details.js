@@ -15,7 +15,7 @@ import { Pie                 } from "./components/pie.js";
 import { Request             } from "./request.js";
 import * as U                  from "./utils.js";
 
-let figure = { factions: [], scenarios: [], history: [], rules: [], resources: [] };
+let figure = { factions: [], scenarios: [], history: [], rules: [], resources: [], total_owned: 0, total_painted: 0 };
 
 //========================================================================
 const domAllegiance = () =>
@@ -204,8 +204,8 @@ const domSilhouette = () =>
 const domTotals = () => [
   m(".section-header", "In All Collections"),
   m("table",
-    m("tr", m("td", "Owned"), m("td", figure.total_owned)),
-    m("tr", m("td", "Painted"), m("td", figure.total_painted)))
+    m("tr", m("td", "Owned"), m("td", figure.total_owned.toLocaleString())),
+    m("tr", m("td", "Painted"), m("td", figure.total_painted.toLocaleString())))
 ];
 
 //========================================================================
@@ -214,7 +214,9 @@ const initializeFigure = () => {
     factions: [],
     scenarios: [],
     rules: [],
-    resources: []
+    resources: [],
+    total_owned: 0,
+    total_painted: 0
   };
 };
 
