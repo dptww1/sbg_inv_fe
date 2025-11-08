@@ -197,11 +197,17 @@ const refresh = () => {
 //========================================================================
 const save = () => {
   const rawScenario = U.unpropertize(scenario);
-  U.unpropertize(rawScenario.scenario_resources.source[0]);
+  const rsrcMap = rawScenario.scenario_resources;
+  U.unpropertize(rsrcMap.source[0]);
 
-  let sort_order = 1;
+  // Clean up the sort order, but don't overwrite existing sort_order fields
+  let sort_order = NON_SOURCE_RESOURCES.reduce((acc, type) =>
+    rsrcMap[type].reduce((acc2, rsrc) => rsrc.sort_order ? Math.max(rsrc.sort_order, acc2) : acc2, acc),
+    0);
+  sort_order += 1;
+
   NON_SOURCE_RESOURCES.forEach(type => {
-    rawScenario.scenario_resources[type].forEach(rsrc => rsrc.sort_order = sort_order++);
+    rsrcMap[type].forEach(rsrc => rsrc.sort_order = rsrc.sort_order ? rsrc.sort_order : sort_order++);
   });
 
   Request.putOrPost("/scenarios",
