@@ -3,6 +3,7 @@ import m from "mithril";
 import { Header  } from "./header.js";
 import { Nav     } from "./nav.js";
 import { Request } from "./request.js";
+import * as U      from "./utils.js";
 
 const COLLECTION_KEYS = [ "character", "hero", "warrior", "monster" ];
 
@@ -24,6 +25,26 @@ const domFigureStats = (jsonRoot, label) =>
         )),
      )
    );
+
+//========================================================================
+const domRecentlyPainted = figureList =>
+  m("div.stacked-column",
+    m("div.section-header", "Recently Painted Models"),
+    m("table.striped",
+      figureList.map(fig =>
+        m("tr",
+          m("td", fig.date),
+          m("td",
+            fig.slug
+              ? {
+                  class: "name hasSilhouette",
+                  style: `--img: url('${U.silhouetteUrl(fig.slug)}')`
+                }
+              : {
+                  class: "name"
+                },
+            m(m.route.Link, { href: "/figures/" + fig.id }, fig.name)),
+          m("td.numeric", fig.amt.toLocaleString())))));
 
 //========================================================================
 export const Stats = {
@@ -58,6 +79,12 @@ export const Stats = {
 
           stats.models && stats.models.mostPainted
             ? domFigureStats(stats.models.mostPainted, "Most Painted Models")
+            : null,
+
+          m("div", m.trust("&nbsp;")),
+
+          stats.models && stats.models.recentlyPainted
+            ? domRecentlyPainted(stats.models.recentlyPainted)
             : null
          )
        )
