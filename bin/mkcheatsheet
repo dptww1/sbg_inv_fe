@@ -286,7 +286,10 @@ evil_stats = create_static_stats(scenario, 'evil')
 
 docx.p
 docx.p 'Good Character Stats', style: 'Section Heading'
-static_stats_table(docx, good_stats, dynamic_col_w(good_stats, STATS_COLUMNS_CONFIG))
+config = STATS_COLUMNS_CONFIG
+config = dynamic_col_w(good_stats, config)
+config = scenario.apply_table_formatting(config, "stats", "good")
+static_stats_table(docx, good_stats, config)
 specials_for(docx, scenario, 'good')
 
 docx.page if scenario.page_break_before('evilStats')
