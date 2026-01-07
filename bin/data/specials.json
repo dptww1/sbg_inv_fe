@@ -63,6 +63,10 @@
     "type": "active",
     "effect": "friendly Dúnedain Hero models can benefit from this model's Standfast"
   },
+  "Claim the Throne": {
+    "type": "passive",
+    "effect": "If enemy General is removed w/in 6\", friendly Dunlending warriors w/in 6\" treat Freca as a banner"
+  },
   "Conduit of Angmar": {
     "type": "passive",
     "effect": "Ringwraiths w/in 6\" may use this model for Magic range & Line of Sight, and +1 to Casting Roll at cost of 1 Wound to this model"
@@ -70,6 +74,10 @@
   "Dominant (%s)": {
     "type": "passive",
     "effect": "counts as %s models near objective or escaping the board"
+  },
+  "Dunlending Heritage": {
+    "type": "passive",
+    "effect": "friendly Dunlending Warriors w/in 6\" are +1 Fight"
   },
   "Expert Rider": {
     "type": "active",
@@ -139,6 +147,10 @@
     "type": "active",
     "effect": "+1 To Wound vs Monsters"
   },
+  "Horn of the Hammerhand": {
+    "type": "active",
+    "effect": "blow once per game in Move Phase; enemies w/in 24\" are -1 Courage"
+  },
   "Horse Lord": {
     "type": "passive",
     "effect": "Wounds vs Mount are saved on d6=6; rider can use Fate points on behalf of Mount"
@@ -150,6 +162,10 @@
   "Incantations of Power": {
     "type": "active",
     "effect": "spend a Will point after Priority to affect Carn Dûm models w/in 6\" for the turn: 1) reroll To Wound rolls of 1; 2) save Wounds on 5+; or 3) treat Difficult Terrain as Open Terrain (except water)"
+  },
+  "Into the Fray": {
+    "type": "active",
+    "effect": "May declare free Heroic Combat each turn; must Charge for rest of battle after slaying an enemy"
   },
   "Invisible": {
     "type": "passive",
@@ -298,6 +314,10 @@
   "Terror": {
     "type": "active",
     "effect": "models trying to Charge this model must pass Courage Tests; if failed, no Move"
+  },
+  "The Hammerhand": {
+    "type": "active",
+    "effect": "never considered Unarmed"
   },
   "The King in the North": {
     "type": "active",

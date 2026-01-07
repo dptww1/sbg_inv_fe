@@ -123,6 +123,11 @@
     "specials": ["Incantations of Power"],
     "actions": ["Resolve"]
   },
+  "Freca": {
+    "statline": ["6\"", 5, "4+", 4, 6, 2, 2, 6, 6, 3, 2, 1],
+    "specials": ["Hatred (Rohan)", "Dunlending Heritage", "Claim the Throne"],
+    "actions": ["Challenge", "Strength"]
+  },
   "Glorfindel": {
     "statline": ["6\"", 8, "3+", 4, 7, 3, 3, 3, 3, 3, 3, 3],
     "specials": ["Armour of Gondolin", "Expert Rider", "Hero of the Elves", "Horse Lord", "Lord of the West", "Resistant to Magic", "Terror", "Woodland Creature"],
@@ -137,6 +142,11 @@
     "statline": ["6\"", 5, "3+", 4, 5, 2, 2, 4, 4, 3, 2, 1],
     "specials": ["Banner of Arwen Evenstar", "Woodland Creature"],
     "actions": ["Accuracy", "Strike"]
+  },
+  "Helm Hammerhand": {
+    "statline": ["6\"", 6, "4+", 5, 7, 3, 3, 4, 5, 3, 3, 3],
+    "specials": ["Burly", "Expert Rider", "Horn of the Hammerhand", "Horse Lord", "Leader (Rohan Royal Guard)"],
+    "actions": ["Challenge", "Strength", "Strike"]
   },
   "Hobbit Archer": {
     "statline": ["4\"", 2, "3+", 2, 3, 1, 1, 7, 7, "-", "-", "-"],

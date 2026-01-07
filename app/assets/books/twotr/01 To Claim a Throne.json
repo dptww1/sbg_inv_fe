@@ -1,0 +1,45 @@
+{
+  "good": [
+    {
+      "amt": 1,
+      "name": "Helm Hammerhand"
+    }
+  ],
+  "evil": [
+    {
+      "amt": 1,
+      "name": "Freca"
+    }
+  ],
+  "objectives": {
+    "good": "Slay Freca",
+    "evil": "Slay Helm, or knock him unconscious"
+  },
+  "specialRules": {
+    "A Question of Honour": "Neither model is wearing armour or using weapons; neither counts as Unarmed",
+    "The First Punch": "Evil starts with Priority; Freca automatically wins the first tied Duel roll",
+    "Dunlending Fury": "Freca increases his Attacks to 3 when he Charges",
+    "Knockout Blow": "If Freca rolls a natural 6 to Wound and the wound is successful, Helm is knocked out"
+  },
+  "overrides": {
+    "Freca": {
+      "specials": ["Hatred (Rohan)"],
+      "statline": ["6\"", 5, "4+", 4, 4, 2, 2, 6, 6, 3, 2, 1]
+    },
+    "Helm Hammerhand": {
+      "specials": []
+    }
+  },
+  "formatting": {
+    "tables": {
+      "stats": {
+        "good": [
+          { "column": 0, "width": 1.42 }
+        ],
+        "evil": [
+          { "column": 0, "width": 0.53 }
+        ]
+      }
+    }
+  }
+}
