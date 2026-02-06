@@ -222,6 +222,7 @@ const sortBySource = (a, b) => {
   return U.strCmp(aSrc.title, bSrc.title) ||
          U.cmp(isNaN(aSrc.issue) ? aSrc.issue : Number(aSrc.issue),
                isNaN(bSrc.issue) ? bSrc.issue : Number(bSrc.issue)) ||
+         U.cmp(aSrc.page, bSrc.page) ||
          U.cmp(aSrc.sort_order, bSrc.sort_order);
 };
 
