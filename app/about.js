@@ -116,7 +116,7 @@ export const About = () => {
           ]
         : null,
       item.item_date),
-    m("div.news-text", item.item_text)
+    m("div.news-text", m.trust(item.item_text))
   ];
 
   //========================================================================
