@@ -25,7 +25,7 @@ const domAllegiance = () =>
 
 //========================================================================
 const domArmyLists = () =>
-  domFactionSubList(figure.factions,
+  domFactionSubList(figure.factions.sort((a,b) => U.cmp(FACTION_INFO.byAbbrev(a).name, FACTION_INFO.byAbbrev(b).name)),
     "Army List",
     abbrev => !FACTION_INFO.byAbbrev(abbrev).legacy);
 
