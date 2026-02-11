@@ -20,8 +20,9 @@ const domResourceItem = item => [
   m(".resources-date", item.date),
   m(".resources-text",
     m(m.route.Link, { href: "/scenarios/" + item.scenario_id }, item.scenario_name)),
-  m("", m("span.icon", U.resourceIcon(item))),
-  m("", m("a", { href: item.url }, item.title))
+  m(".type-link-container",
+    m("span.icon", U.resourceIcon(item)),
+    m("span", m("a", { href: item.url }, item.title)))
 ];
 
 //========================================================================

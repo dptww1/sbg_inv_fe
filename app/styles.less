@@ -703,6 +703,17 @@ span.star-partial.clickable:hover::before {
   .news-text {
     grid-column-start: 2;
   }
+
+  @media (max-width: 560px) {
+    .news-date {
+      font-weight: bold;
+    }
+
+    .news-text {
+      grid-column-start: 1;
+      padding-bottom: 0.75em;
+    }
+  }
 }
 
 .resources-grid-wrapper {
@@ -716,6 +727,17 @@ span.star-partial.clickable:hover::before {
 
   .resources-text {
     grid-column-start: 2;
+  }
+
+  @media (max-width: 560px) {
+    .resources-date {
+      font-weight: bold;
+    }
+
+    .type-link-container {
+      grid-column-start: 2;
+      padding-bottom: 0.75em;
+    }
   }
 }
 
