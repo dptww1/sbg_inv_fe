@@ -33,8 +33,11 @@ export const ActivityChart = () => {
     data: {}
   };
 
+  // Need to add a timestampe to `new Date()` to treat the date as a local time
+  // instead of UTC.  See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format
+  // Without this, Aug 1 gets treated as Jul 31 in my US/East timezone.
   const rollupDateByDay   = dateStr => dateStr.substring(5);
-  const rollupDateByMonth = dateStr => new Date(dateStr).toLocaleString("default", { month: "short" });
+  const rollupDateByMonth = dateStr => new Date(dateStr + "T00:00").toLocaleString("default", { month: "short" });
   const rollupDateByYear  = dateStr => dateStr.substring(0, 4);
 
   //========================================================================
