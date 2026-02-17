@@ -5,6 +5,7 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale);
 
 import * as U from "../utils.js";
 
+//========================================================================
 export const ActivityChart = () => {
 
   let chartObj = null;
@@ -39,6 +40,21 @@ export const ActivityChart = () => {
   const rollupDateByDay   = dateStr => dateStr.substring(5);
   const rollupDateByMonth = dateStr => new Date(dateStr + "T00:00").toLocaleString("default", { month: "short" });
   const rollupDateByYear  = dateStr => dateStr.substring(0, 4);
+
+  //========================================================================
+  const createOrUpdateChart = (domNode, activityList) => {
+    if (activityList.length < 1) {
+      destroyChart();
+      return;
+    }
+
+    if (chartObj === null) {
+      chartObj = new Chart(domNode, chartData);
+
+    } else {
+      chartObj.update("default");
+    }
+  };
 
   //========================================================================
   const destroyChart = () => {
@@ -116,26 +132,25 @@ export const ActivityChart = () => {
   //========================================================================
   return {
     view: ({ attrs: { activityList } }) => {
-      destroyChart();
-
       if (activityList.length < 1) {
         return null;
       }
 
       updateChartData(activityList);
 
-      return m("canvas#activityStats",
-               {
-                 oncreate: vnode => {
-                   chartObj = new Chart(vnode.dom, chartData);
-                 },
-                 onremove: () => {
-                   destroyChart();
-                 },
-                 onupdate: vnode => {
-                   chartObj = new Chart(vnode.dom, chartData);
-                 }
-               });
+      return m("canvas#activityStats");
+    },
+
+    oncreate: vnode => {
+      createOrUpdateChart(vnode.dom, vnode.attrs.activityList);
+    },
+
+    onremove: () => {
+      destroyChart();
+    },
+
+    onupdate: vnode => {
+      createOrUpdateChart(vnode.dom, vnode.attrs.activityList);
     }
   };
 };
