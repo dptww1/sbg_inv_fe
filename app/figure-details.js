@@ -2,7 +2,6 @@
 
 import m from "mithril";
 
-import { ArmyListDetails     } from "./army-list-details.js";
 import { Credentials         } from "./credentials.js";
 import { EditDialog          } from "./components/edit-dialog.js";
 import { EditInventoryDialog } from "./components/edit-inventory-dialog.js";
@@ -60,7 +59,7 @@ const domHistory = () => {
              {
                list: figure.history.map(rec => Object.assign(rec, { name: figure.name, plural_name: figure.plural_name})),
                hideName: true,
-               callbackFn: () => refresh(figure.id)
+               callbackFn: () => requestFigureModelData(figure.id)
              }));
 };
 
@@ -82,14 +81,14 @@ const domInventory = total => {
                m("td",
                  m("span.action",
                    {
-                     onclick: () => EditInventoryDialog.show(figure, "buy_unpainted", () => refresh(figure.id))
+                     onclick: () => EditInventoryDialog.show(figure, "buy_unpainted", () => requestFigureModelData(figure.id))
                    },
                    K.ICON_STRINGS.plus)),
                figure.owned > 0
                  ? m("td",
                      m("span.action",
                        {
-                         onclick: () => EditInventoryDialog.show(figure, "sell_unpainted", () => refresh(figure.id)),
+                         onclick: () => EditInventoryDialog.show(figure, "sell_unpainted", () => requestFigureModelData(figure.id)),
                        },
                        K.ICON_STRINGS.minus))
                  : null,
@@ -97,7 +96,7 @@ const domInventory = total => {
                  ? m("td",
                      m("span.action",
                        {
-                         onclick: () => EditInventoryDialog.show(figure, "paint", () => refresh(figure.id))
+                         onclick: () => EditInventoryDialog.show(figure, "paint", () => requestFigureModelData(figure.id))
                        },
                        K.ICON_STRINGS.paint_figure))
                  : null),
@@ -108,14 +107,14 @@ const domInventory = total => {
                m("td",
                  m("span.action",
                    {
-                     onclick: () => EditInventoryDialog.show(figure, "buy_painted", () => refresh(figure.id))
+                     onclick: () => EditInventoryDialog.show(figure, "buy_painted", () => requestFigureModelData(figure.id))
                    },
                    K.ICON_STRINGS.plus)),
                figure.painted > 0
                  ? m("td",
                      m("span.action",
                        {
-                         onclick: () => EditInventoryDialog.show(figure, "sell_painted", () => refresh(figure.id))
+                         onclick: () => EditInventoryDialog.show(figure, "sell_painted", () => requestFigureModelData(figure.id))
                        },
                        K.ICON_STRINGS.minus))
                  : null)));
@@ -226,12 +225,6 @@ const requestFigureModelData = figureId => {
               resp => {
                 figure = resp.data;
               });
-};
-
-//========================================================================
-const refresh = id => {
-  requestFigureModelData(id);
-  ArmyListDetails.refreshArmyDetails();
 };
 
 //========================================================================
