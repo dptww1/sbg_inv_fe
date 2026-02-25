@@ -34,6 +34,9 @@ export const Header = {
     return m(".page-header",
       m(".title", "Middle Earth SBG Inventory", Request.curApi().name === "local" ? "(LOCAL)" : ""),
       m(".last-update",
+        "Support the Site on ",
+        m("a", { href: "https://www.patreon.com/SBGInventory" }, "Patreon"),
+        " | ",
         updateDate
           ? m(m.route.Link, { href: "/about" }, "Last Update: " + updateDate)
         : "...Checking News..."));
