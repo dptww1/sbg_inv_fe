@@ -16,7 +16,16 @@ const newsItemEditBuffer = {
 };
 
 //========================================================================
-const domResourceItem = item => [
+const domCharacterResourceItem = item => [
+  m(".resources-date", item.date),
+  m(".resources-text", item.character_name),
+  m(".type-link-container",
+    m("span.icon", m.trust(item.type === "analysis" ? K.IMAGE_STRINGS.analysis : K.IMAGE_STRINGS.painting_guide)),
+    U.resourceReference(item))
+];
+
+//========================================================================
+const domScenarioResourceItem = item => [
   m(".resources-date", item.date),
   m(".resources-text",
     m(m.route.Link, { href: "/scenarios/" + item.scenario_id }, item.scenario_name)),
@@ -42,9 +51,10 @@ const stageNewsItemForEditing = item => {
 //========================================================================
 export const About = () => {
   let aboutModel = {};
-  let news = [];
-  let resources = [];
+  let characterResources = [];
   let dirty = false;
+  let news = [];
+  let scenarioResources = [];
 
   //========================================================================
   const addNewsItem = () => {
@@ -151,15 +161,28 @@ export const About = () => {
     ];
 
   //========================================================================
-  const domResources = () => [
-    m("div.section-header", "Recent Battle Reports"),
+  const domCharacterResources = () => [
+    m(".section-header", "Recent Character Resources"),
     m(ShowMoreList,
       {
         wrapperClasses: "resources.resources-grid-wrapper",
-        items: resources,
+        items: characterResources,
+        buttonText: "Older Resources",
+        renderer: domCharacterResourceItem,
+        refresher: updateCharacterResources
+      })
+  ];
+
+  //========================================================================
+  const domScenarioResources = () => [
+    m(".section-header", "Recent Battle Reports"),
+    m(ShowMoreList,
+      {
+        wrapperClasses: "resources.resources-grid-wrapper",
+        items: scenarioResources,
         buttonText: "Older Reports",
-        renderer: domResourceItem,
-        refresher: updateResources
+        renderer: domScenarioResourceItem,
+        refresher: updateScenarioResources
       })
   ];
 
@@ -174,15 +197,19 @@ export const About = () => {
   };
 
   //========================================================================
+  const updateCharacterResources = numResources => Request.get("/character/-1/resource?n=" + numResources, resp => characterResources = resp.data);
+
+  //========================================================================
   const updateNews = numItems => Request.get("/newsitem?n=" + numItems, resp => news = resp.data);
 
   //========================================================================
-  const updateResources = numResources => Request.get("/scenarios/-1/resource?n=" + numResources, resp => resources = resp.data);
+  const updateScenarioResources = numResources => Request.get("/scenarios/-1/resource?n=" + numResources, resp => scenarioResources = resp.data);
 
   //========================================================================
   // Populate initial data
   updateNews(5);
-  updateResources(5);
+  updateScenarioResources(5);
+  updateCharacterResources(5);
   Request.get("/about", resp => aboutModel = resp.data);
 
   //========================================================================
@@ -195,7 +222,9 @@ export const About = () => {
 
           domNews(),
 
-          domResources(),
+          domScenarioResources(),
+
+          domCharacterResources(),
 
           m("div.section-header", "Welcome! "),
           aboutModel.body_text
