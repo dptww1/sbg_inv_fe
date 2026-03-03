@@ -20,15 +20,14 @@ export const EditableText = ({ attrs: createAttrs }) => {
 
   //========================================================================
   const domEditMode = () => [
-    m("textarea[style='width=85vw;height=fit-content']",
+    m("textarea",
       {
         value: text,
+        oncreate: vnode => setHeight(vnode.dom),
         onkeyup: ev => {
           text = ev.target.value;
-          ev.target.style.height = "1px";
-          ev.target.style.height = ev.target.scrollHeight + "px";
-        },
-        overflow: "hidden"
+          setHeight(ev.target);
+        }
       }),
     m("br"),
     m("button",
@@ -55,16 +54,20 @@ export const EditableText = ({ attrs: createAttrs }) => {
         text
         ? [
             Credentials.isAdmin()
-              ? m("span.action.editable-text", { onclick: () => editMode = true }, K.ICON_STRINGS.edit)
+              ? m("span.action", { onclick: () => editMode = true }, K.ICON_STRINGS.edit)
               : null,
             m.trust(text)
           ]
         : null;
 
   //========================================================================
+  const setHeight = elt => {
+    elt.style.height = "1px";
+    elt.style.height = elt.scrollHeight + "px";
+  }
+
+  //========================================================================
   return {
-    view() {
-      return editMode ? domEditMode() : domTextMode();
-    }
+    view: () => m(".editable-text-container", editMode ? domEditMode() : domTextMode())
   };
 };
