@@ -87,7 +87,17 @@ export const FormField = {
     ]
   },
 
-  //========================================================================
+  /**========================================================================
+   * Renders a text input with the given optional `label`.
+   *
+   * prop: Mithril stream with the current value of the text input, updated as the user interacts with the widget
+   * configProps: optional object with any/all of the following fields
+   *   - fieldNote:
+   *   - id: used as id for the text widget
+   *   - placeholder: used as widget placeholder or content if `readOnly` is `true` and `prop()` is empty
+   *   - readOnly: if `true`, no widget is rendered, only the `prop` value (or `placeholder` if none)
+   *   - size: width in characters of the widget (60 default)
+   *------------------------------------------------------------------------*/
   text: (prop, label, configProps = {}) => {
     if (configProps.readOnly) {
       const content = prop() || configProps.placeholder || '';
@@ -97,10 +107,11 @@ export const FormField = {
     const fieldId = configProps["id"] || labelToId(label);
     const attrs = {
       onkeyup: ev => prop(ev.target.value),
+      size: 60,
       value: prop()
     };
 
-    copyAttributes(attrs, configProps, "placeholder");
+    copyAttributes(attrs, configProps, "placeholder", "size");
 
     return [
       U.isBlank(label) ? null : m(`label[for=${fieldId}]`, label),
