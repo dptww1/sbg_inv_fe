@@ -1,116 +1,80 @@
 /*global FACTION_INFO */
 
-import m from "mithril";
+import m    from "mithril";
+import prop from "mithril/stream";
 
-import { Credentials }      from "../credentials.js";
+import { Credentials      } from "../credentials.js";
 import { FigureListEditor } from "../admin-components/figure-list-editor.js";
-import { Header      }      from "../header.js";
+import { FormField        } from "../components/form-field.js";
+import { Header           } from "../header.js";
 import * as K               from "../constants.js";
-import { Nav         }      from "../nav.js";
-import { Request     }      from "../request.js";
+import { Nav              } from "../nav.js";
+import { Request          } from "../request.js";
+import * as U               from "../utils.js";
 
-let alignmentFilter = null;
-let figure = { factions: [], type: "hero", same_as: null, create_char: false };
+const ALIGNMENT_FILTER_OPTIONS = [
+  "-- All --=",
+  "-- Only Good --=0",
+  "-- Only Evil --=1"
+];
+const FIGURE_TYPE_OPTIONS = [
+  "Hero=hero",
+  "Warrior=warrior",
+  "Monster=monster",
+  "Sieger=sieger"
+];
+
+let alignmentFilter = prop();
+let figure;
 let editMode = false;
 let sameAsName = null; // null, or name of source figure
 
 //========================================================================
-const domAlignmentFilter = () =>
-  m("tr",
-    m("td", "Filter Army Lists/Allegiances"),
-    m("td",
-      m("select",
-        {
-          onchange: ev => alignmentFilter = ev.target.value === "" ? null : parseInt(ev.target.value, 10)
-        },
-        m("option[value=]",  { selected: alignmentFilter === null  }, " -- All --"),
-        m("option[value=0]", { selected: alignmentFilter === 0 }, "-- Only Good --"),
-        m("option[value=1]", { selected: alignmentFilter === 1 }, "-- Only Evil --"))));
+const cancelSameAs = () => {
+  figure.same_as(null);
+  sameAsName = null;
+}
 
 //========================================================================
-const domCreateCharacter = () =>
-      m("tr",
-        m("td.valign-top", "Create Char?"),
-        m("td", m("input[type=checkbox][name=createChar]",
-                  {
-                    onchange: ev => figure.create_char = ev.target.checked,
-                    checked: figure.create_char
-                  })));
+const domFactions = (title, filterFn) => [
+  title,
+  m("div.faction-checkbox-container",
+    FACTION_INFO.all()
+      .filter(filterFn)
+      .filter(f => U.isBlank(alignmentFilter()) || `${f.alignment}` === alignmentFilter())
+      .map(f =>
+        m("div",
+          m("input[type=checkbox]",
+            {
+              id: f.id,
+              value: f.abbrev,
+              checked: figure.factions().indexOf(f.abbrev) >= 0,
+              onchange: updateFactions
+            }),
+          m("label", f.name))))
+  ]
+
 
 //========================================================================
-const domFactions = (title, filterFn) =>
-      m("tr",
-        m("td.valign-top", title),
-        m("td",
-          m("div.faction-checkbox-container",
-            FACTION_INFO.all()
-              .filter(filterFn)
-              .filter(f => alignmentFilter === null || f.alignment === alignmentFilter)
-              .map(f =>
-                m("div",
-                  m("input[type=checkbox]",
-                    {
-                      id: f.id,
-                      value: f.abbrev,
-                      checked: figure.factions.indexOf(f.abbrev) >= 0,
-                      onchange: updateFactions
-                    }),
-                  m("label", f.name))))));
+const domSameAs = () => {
+  return [
+    "Same As",
+    figure.same_as()
+      ? m("",
+          sameAsName,
+          m("span.action",
+            {
+              onclick: cancelSameAs //() => figure.same_as = sameAsName = null
+            },
+            " " + K.ICON_STRINGS.remove))
+      : [
+          m(FigureListEditor, { onItemSelect: otherFigureSelect })
+        ]
+  ];
+};
 
 //========================================================================
-const domSameAs = () =>
-      m("tr",
-        m("td", "Same As"),
-        figure.same_as
-          ? m("td",
-              sameAsName,
-              m("span.action",
-                {
-                  onclick: () => figure.same_as = sameAsName = null
-                },
-                " " + K.ICON_STRINGS.remove))
-          : m("td",
-              m(FigureListEditor, { onItemSelect: otherFigureSelect }),
-              " If set, assign the new figure to this figure's scenarios and character"));
-
-//========================================================================
-const domSlug = () => domTextInputRow("Slug", "slug", figure.slug, newVal => figure.slug = newVal);
-
-//========================================================================
-const domTextInputRow = (label, name, val, setter) =>
-      m("tr",
-        m("td", label),
-        m("td", m("input[type=text][size=60]",
-                  {
-                    name: name,
-                    onchange: ev => setter(ev.target.value),
-                    value: val
-                  })));
-
-//========================================================================
-const domTypeDropDown = () =>
-      m("tr",
-        m("td", "Type"),
-        m("td", m("select",
-                  {
-                    onchange: ev => figure.type = ev.target.value,
-                    value: figure.type
-                  },
-                  m("option[value=hero]", "Hero"),
-                  m("option[value=warrior]", "Warrior"),
-                  m("option[value=monster]", "Monster"),
-                  m("option[value=sieger]", "Sieger"))));
-
-//========================================================================
-const domUniqueCheckbox = () =>
-      m("tr",
-        m("td", "Unique?"),
-        m("td", m("input[type=checkbox][name=unique]",
-                  {
-                    onchange: ev => figure.unique = ev.target.checked,
-                    checked: figure.unique
-                  }
-                 )));
+const domSlug = () => FormField.text(figure.slug, "Slug");
 
 //========================================================================
 const otherFigureSelect = target => {
@@ -118,7 +82,7 @@ const otherFigureSelect = target => {
     return;
   }
 
-  figure.same_as = target.dataset.id;
+  figure.same_as(target.dataset.id);
   sameAsName = target.dataset.name;
 }
 
@@ -130,6 +94,7 @@ const refresh = () => {
                   figure = resp.data;
                   figure.same_as = null;
                   editMode = true;
+                  figure = U.propertize(figure);
                 });
   } else {
     resetForm();
@@ -138,22 +103,32 @@ const refresh = () => {
 
 //========================================================================
 const resetForm = () => {
-  figure = { factions: [], type: "hero", same_as: "", create_char: false };
+  figure = U.propertize({
+    id: null,
+    name: "",
+    plural_name: "",
+    factions: [],
+    type: "hero",
+    unique: false,
+    slug: "",
+    same_as: null,
+    create_char: false
+  });
   editMode = false;
 }
 
 //========================================================================
 const submitFigure = () => {
-  if (!figure.name) {
+  if (U.isBlank(figure.name())) {
     Request.errors("Name is required!");
     return;
   }
 
   Request.putOrPost("/figure",
-                    figure.id,
-                    { figure: figure },
+                    figure.id(),
+                    { figure: U.unpropertize(figure) },
                     () => {
-                      Request.messages("Saved " + figure.name);
+                      Request.messages("Saved " + figure.name());
                       resetForm();
                       m.route.set("/figures");
                     });
@@ -162,16 +137,17 @@ const submitFigure = () => {
 //========================================================================
 const updateFactions = ev => {
   if (ev.target.checked) {
-    figure.factions.push(ev.target.value);
+    figure.factions().push(ev.target.value);
 
   } else {
-    figure.factions = figure.factions.filter(x => x != ev.target.value);
+    figure.factions(figure.factions().filter(x => x != ev.target.value));
   }
 };
 
 //========================================================================
 export const FigureEditor = {
   oninit: (/*vnode*/) => {
+    resetForm();
     refresh();
   },
 
@@ -184,32 +160,26 @@ export const FigureEditor = {
       m(Header),
       m(Nav),
       m("div.main-content",
-        m(".inputForm",
-          m(".formTitle", editMode ? "Edit Figure" : "Create New Figure"),
-          m("table",
+        m(".page-title", editMode ? "Edit Figure" : "Create New Figure"),
+        m(".figure-details-form-container",
+          FormField.text(figure.name, "Name"),
+          FormField.text(figure.plural_name, "Plural Name"),
 
-            domTextInputRow("Name", "name", figure.name, newVal => figure.name = newVal),
-            domTextInputRow("Plural Name", "plural_name", figure.plural_name, newVal => figure.plural_name = newVal),
+          !editMode ? domSameAs() : null,
+          !editMode && !sameAsName ? FormField.checkbox(figure.create_char, "Create Character?") : null,
 
-            !editMode ? domSameAs() : null,
+          editMode || !figure.same_as()
+            ? [
+                FormField.select(figure.type, "Type", { options: FIGURE_TYPE_OPTIONS }),
+                FormField.checkbox(figure.unique, "Unique?"),
+                domSlug(),
+                FormField.select(alignmentFilter, "Filter Army Lists/Allegiances", { options: ALIGNMENT_FILTER_OPTIONS }),
+                domFactions("Army Lists", f => !f.legacy),
+                domFactions("Allegiances", f => f.legacy)
+              ]
+            : domSlug(),
 
-            !editMode && !sameAsName ? domCreateCharacter() : null,
-
-            editMode || !figure.same_as
-              ? [
-                  domTypeDropDown(),
-                  domUniqueCheckbox(),
-                  domSlug(),
-                  domAlignmentFilter(),
-                  domFactions("Army Lists", f => !f.legacy),
-                  domFactions("Allegiances", f => f.legacy)
-                ]
-              : domSlug(),
-
-            m("tr",
-              m("td"),
-              m("td", m("button", { onclick: submitFigure }, "Submit")))
-           )))
+          m("button", { onclick: submitFigure }, "Submit")))
     ];
   }
 };

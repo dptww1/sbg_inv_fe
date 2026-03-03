@@ -1141,12 +1141,33 @@ span.star-partial.clickable:hover::before {
   }
 }
 
+.figure-details-form-container {
+  display: grid;
+  gap: 4px 2px;
+  grid-template-columns: max-content 80vw;
+  padding: 20px;
+
+  .typeahead-container:before {
+    content: "If set, assign the new figure to this figure's scenarios and character\A";
+    white-space: pre;
+  }
+
+  button {
+    grid-column: 2;
+    width: fit-content;
+  }
+
+  input, select {
+    width: fit-content;
+  }
+}
+
 /* ===== CharacterEdit ===== */
 
 .character-details {
   display: grid;
   gap: 1em;
-  grid-template-columns: min-content max-content;
+  grid-template-columns: min-content 80vw;
 
   button {
     grid-column: 2;
