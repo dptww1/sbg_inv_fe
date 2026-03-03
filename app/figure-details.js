@@ -242,11 +242,15 @@ export const FigureDetails = {
       m(Nav, { selected: "Figure Details" }),
       m("div.main-content.figure-details-main-content", [
         m(Filters, { activeFilters: "Book" }),
-        m(".page-title", figure.name),
-        Credentials.isAdmin() ? m("button",
-                                  { onclick: () => m.route.set("/figure-edit/" + figure.id) },
-                                  "Edit Figure")
-                              : null,
+        m(".page-title",
+          figure.name,
+          Credentials.isAdmin()
+            ? m("span.action",
+                {
+                  onclick: () => m.route.set("/figure-edit/" + figure.id)
+                },
+                K.ICON_STRINGS.edit)
+            : null),
         domSilhouette(),
         domInventory(total),
         domArmyLists(),
