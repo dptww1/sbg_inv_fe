@@ -6,18 +6,10 @@ let selectedRange = "month";
 export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
   let customMode = false;
 
-  //------------------------------------------------------------------------
-  const pad = s => s.length > 1 ? s : "0" + s;
+  //========================================================================
+  const formatDate = dateObj => dateObj.toISOString().substring(0, 10);
 
-  //------------------------------------------------------------------------
-  const formatDate = dateObj =>
-      dateObj.getFullYear() +
-      "-" +
-      pad(String(dateObj.getMonth() + 1)) +
-      "-" +
-      pad(String(dateObj.getDate()));
-
-  //------------------------------------------------------------------------
+  //========================================================================
   const prevMonthFromDate = () => {
     const now = new Date();
     let mm = now.getMonth() - 1;
@@ -29,7 +21,7 @@ export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
     return formatDate(new Date(yyyy, mm, 1));
   };
 
-  //------------------------------------------------------------------------
+  //========================================================================
   const prevMonthToDate = () => {
     const now = new Date();
     const yyyy = now.getFullYear();
@@ -45,7 +37,7 @@ export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
     return formatDate(new Date(yyyy, mm, dd));
   };
 
-  //------------------------------------------------------------------------
+  //========================================================================
   const updateDateRange = ev => {
     const now = new Date();
     range.toDate = formatDate(new Date());
