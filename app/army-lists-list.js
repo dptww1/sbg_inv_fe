@@ -5,7 +5,6 @@ import m from "mithril";
 import { ArmyListFilter      } from "./components/army-list-filter.js";
 import * as ArmyListUtils      from "./army-list-utils.js";
 import { Credentials         } from "./credentials.js";
-import { EditDialog          } from "./components/edit-dialog.js";
 import { Header              } from "./header.js";
 import * as K                  from "./constants.js";
 import { Nav                 } from "./nav.js";
@@ -124,8 +123,7 @@ export const ArmyListsList = {
       m(Header),
       m(Nav, { selected: "Figures" }),
       m("div.main-content figure-list-main-content",
-        domArmyLists()),
-        m(EditDialog)
+        domArmyLists())
     ];
   }
 };
