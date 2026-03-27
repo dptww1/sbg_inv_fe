@@ -1,4 +1,8 @@
-
+/**
+ * Constants for inventory management actions. Values
+ * are the English labels for the keys.
+ * @constants
+ */
 export const USER_FIGURE_OPS = {
   buy_unpainted:  "Bought Unpainted",
   sell_unpainted: "Sell Unpainted",
@@ -7,8 +11,13 @@ export const USER_FIGURE_OPS = {
   paint:          "Painted"
 };
 
+/**
+ * Constants for UTF-8 icons.
+ *
+ * @constants
+ */
 export const ICON_STRINGS = {
-  // Tab Icons
+  // Nav Bar Icons
   about:        "\uea09",
   account:      "\ue902",
   back:         "\ue968", // NB: same as log_out
@@ -39,12 +48,23 @@ export const ICON_STRINGS = {
   open:   "\u25bc"
 };
 
+/**
+ * Constants for Image URLs.
+ *
+ * @constants
+ */
 export const IMAGE_STRINGS = {
   // Figure Resource Icons
   analysis:       "<img src='/images/icons/analysis.svg', width='16', height='16'>",
   painting_guide: "<img src='/images/icons/painting_guide.svg' width='16' height='16'>"
 };
 
+/**
+ * Constants for scenario locations. Values are the
+ * English labels for the keys.
+ *
+ * @constants
+ */
 export const LOCATIONS = {
   amon_hen:     "Amon Hen",
   arnor:        "Arnor",
@@ -78,6 +98,11 @@ export const LOCATIONS = {
   orthanc:      "Orthanc"
 };
 
+/**
+ * Constants for the scenario resource types.
+ *
+ * @constants
+ */
 export const RESOURCE_TYPE_MAP = {
   source:           "0",
   video_replay:     "1",

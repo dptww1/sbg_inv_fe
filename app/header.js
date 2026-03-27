@@ -27,8 +27,13 @@ const getLastUpdateDate = () => {
 };
 
 //======================================================================
+/**
+ * Mithril component for the page header.
+ *
+ * @component
+ */
 export const Header = {
-  view: function() {
+  view() {
     const updateDate = getLastUpdateDate();
 
     return m(".page-header",

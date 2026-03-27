@@ -4,19 +4,25 @@ import * as K          from "../constants.js";
 import { Credentials } from "../credentials.js";
 
 /**
- * @module admin-components/editable-text
+ * Mithril component for text which can be edited.
+ *
+ * @component
+ *
+ * @vattr {string} text - the text to show
+ * @vattr {function(newText:string)} commit - callback when editing is complete
  *
  * @example
- * const model = { text: "Example text" };
- * m(EditableText, { text: model.text, commit: newText => model.text = newText });
+ *   const model = { text: "Example text" };
+ *   m(EditableText, { text: model.text, commit: newText => model.text = newText });
+ *
+ * @todo should probably use a Mithril stream as parameter, move to FormField?
  */
-export const EditableText = ({ attrs: createAttrs }) => {
+export const EditableText = () => {
 
-  const commitFn = createAttrs.commit;
-
-  let editMode = false;
-  let originalText = createAttrs.text;
-  let text = createAttrs.text;
+  let commitFn;
+  let editMode;
+  let originalText;
+  let text;
 
   //========================================================================
   const domEditMode = () => [
@@ -68,6 +74,13 @@ export const EditableText = ({ attrs: createAttrs }) => {
 
   //========================================================================
   return {
+    oninit: ({ attrs: createAttrs }) => {
+      editMode = false;
+      commitFn = createAttrs.commit;
+      originalText = createAttrs.text;
+      text = createAttrs.text;
+    },
+
     view: () => m(".editable-text-container", editMode ? domEditMode() : domTextMode())
   };
 };

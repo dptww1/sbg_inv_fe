@@ -50,6 +50,9 @@ const propCookie = (cookieName) => {
 };
 
 //===========================================================================
+/**
+ * Namespace for user account utilities.
+ */
 export const Credentials = {
   name: propCookie("name"),
   email: prop(),
@@ -65,10 +68,22 @@ export const Credentials = {
     Credentials.userId(undefined);
   },
 
+  /**
+   * Slightly more idiomatic way to check if the user is an administrator.
+   * You can hack this on the front-end, but, barring bugs, the back end
+   * will not believe you.
+   *
+   * @return {boolean} `true` if the BE reported the user as an admin, else `false`
+   */
   isAdmin() {
     return Credentials.admin();
   },
 
+  /**
+   * Determines if the user is logged in.
+   *
+   * @return {boolean} `true` if the user has logged in, or `false` if they are anonymous
+   */
   isLoggedIn() {
     return Credentials.token();
   }

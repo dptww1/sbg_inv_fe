@@ -22,30 +22,37 @@ const decoratedName = s =>
       : m("span.searchCategoryLabel", s.name);
 
 //========================================================================
-// Usage: m(Typeahead, {opts})
-// Options:
-//   - onItemSelect (function(target))
-//       Callback when user selects a choice. `target` will be the selected
-//       DOM element, with `data-x` attribute for each field returned by the
-//       `findMatches` callback.  For example, if `findMatches` populates
-//       the suggestions array with `{id: 12, name: "abc"}` and the user
-//       selects that choice, then `target.dataset.id === 12` and
-//       `target.dataset.name === "abc"`.
-//       If the user cancels the search, `target` == `null`.
-//
-//   - placeholder (string)
-//       Optional placeholder text for the input widget
-//
-//   - findMatches (function(searchString, data)
-//       callback function to get suggestions with parameters:
-//         - searchString: string to search for
-//         - data: object of form { suggestions: [] }; `findMatches` should
-//             populate the `suggestions` array with objects with at least
-//             the following fields:
-//               . name  - text to show
-//               . start - 0-based starting position of the match of `searchString` within `name`
-//               . len   - length of `searchString`
-//------------------------------------------------------------------------
+/**
+ * Mithril component for a text box with typeahead functionality.  The client
+ * is responsible for providing the suggestions via the `findMatches` vnode attribute.
+ * The return value from that function should conform to the following data
+ * structure:
+ *
+ * ```
+ * {
+ *   "suggestions": [
+ *     { "name": ..., "start": ..., "len": ... },
+ *     { "name": ..., "start": ..., "len": ... },
+ *   ]
+ * }
+ * ```
+ *
+ * - `name` is the suggestion to show the user
+ * - `start` is the 0-based starting position of the match of the search string within `name`
+ * - `len` is the length of the search string
+ *
+ * @component
+ *
+ * @vattr {function(target:DOMElement)} onItemSelect - Callback when user selects a choice.
+ *   `target` will be the selected DOM element, with `data-x` attribute for
+ *   each field returned by the `findMatches` callback.  For example, if `findMatches` populates
+ *   the suggestions array with `{id: 12, name: "abc"}` and the user selects that choice,
+ *   then `target.dataset.id === 12` and `target.dataset.name === "abc"`. If the user cancels
+ *   the search, `target` == `null`.
+ * @vattr {?string} placeholder - placeholder text for the input widget
+ * @vattr {function(searchString:string, data:Object)} findMatches -  callback function to
+ *   get suggestions
+ */
 export const Typeahead = vnode => {
 
   const { onItemSelect, findMatches } = vnode.attrs;

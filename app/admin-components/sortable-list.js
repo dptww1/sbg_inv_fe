@@ -2,25 +2,26 @@ import m from "mithril";
 
 import * as K from "../constants.js";
 
+//========================================================================
 /**
  * Mithril component to manage an sortable list of items.
  *
+ * @component
+ *
  * Caller is responsible for styling of the CSS columns, which
  * are contained within a `sortable-list-container` element:
+ *
  *   - `sortable-list-edit`
  *   - `sortable-list-up-arrow`
  *   - `sortable-list-down-arrow`
  *   - `sortable-list-delete`
  *
- * Required vnode attributes:
- *   - itemsProp a Mithril stream containing the array of items to manage
- *   - renderFn(elt, idx) function returning a Mithril-renderable object for the
+ * @vattr {stream} itemsProp - a Mithril stream containing the array of items to manage
+ * @vattr {function(elt, idx)} renderFn - function returning a Mithril-renderable object for the
  *       item `elt` at `idx` within `itemsProp`
- *
- * Optional vnode attributes:
- *   - editFn(idx) callback notifying client code to edit element at `idx` of `itemsProp`.
+ * @vattr {?function(idx:number)} editFn - callback notifying client code to edit element at `idx` of `itemsProp`.
  *       The edit icon is only shown if this attribute is provided.
- *   - suppressControls if `true`, the edit/move/delete controls are not rendered
+ * @vattr {?boolean} suppressControls - if `true`, the edit/move/delete controls are not rendered
  */
 export const SortableList = () => {
 

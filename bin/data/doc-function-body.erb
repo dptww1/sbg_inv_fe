@@ -1,0 +1,54 @@
+<div class="section description">
+  <%= @f.description %>
+</div>
+
+<% unless @f.code_params.empty? || @f.is_mithril_component %>
+  <div class='section function-parameters'>
+    Parameter<%= @f.code_params.size > 1 ? "s" : "" %>:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      <% @f.code_params.keys.each do |p| %>
+        <% param = @f.commented_param(p) %>
+        <tr><td><code><%= param.name %></code></td><td><code><%= param.type %></code></td><td><%= param.desc %></td></tr>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+
+<% if @f.is_mithril_component %>
+  <div class='section vnode-attrs'>
+    <% if @f.attrs.empty? %>
+      <span class='section-title'>No vnode attributes.</span>
+    <% else %>
+      <span class='section-title'>VNode Attribute<%= @f.attrs.size > 1 ? 's' : '' %>:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        <% @f.attrs.keys.sort.each do |p| %>
+          <% param = @f.attrs[p] %>
+          <tr><td><code><%= p %></code></td><td><code><%= param.type %></code></td><td><%= param.desc %></td></tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @f.return %>
+  <div class='section function-return'>
+    Returns: (<code><%= @f.return.type %></code>) - <%= @f.return.desc %>
+  </div>
+<% end %>
+
+<% if @f.examples.size > 0 %>
+  <div class='section examples'>
+    Example<%= @f.examples.size > 1 ? 's' : '' %>:
+    <% @f.examples.each do |ex| %>
+      <code><pre><%= ex %></pre></code>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @f.todo %>
+  <div class='section todo'>
+    TODO: <%= @f.todo %>
+  </div>
+<% end %>

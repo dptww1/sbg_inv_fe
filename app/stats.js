@@ -47,6 +47,11 @@ const domRecentlyPainted = figureList =>
           m("td.numeric", fig.amt.toLocaleString())))));
 
 //========================================================================
+/**
+ * Mithril component for the Statistics page.
+ *
+ * @component
+ */
 export const Stats = {
   oninit: (/*vnode*/) => {
     Request.get("/stats", resp => stats = resp.data);

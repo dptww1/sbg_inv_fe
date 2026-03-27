@@ -277,6 +277,11 @@ const tableSorter = list => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Scenario List page.
+ *
+ * @component
+ */
 export const ScenarioList = {
   oninit: (/*vnode*/) => {
     curSorter = localStorage.getItem(STORAGE_KEY_SORT) || "date";

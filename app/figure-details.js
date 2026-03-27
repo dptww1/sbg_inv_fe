@@ -228,6 +228,12 @@ const requestFigureModelData = figureId => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Figure Details page.  The ID of the figure to
+ * show is read from the number at the end of the URL.
+ *
+ * @component
+ */
 export const FigureDetails = {
   oninit: (/*vnode*/) => {
     initializeFigure();

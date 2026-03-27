@@ -43,6 +43,16 @@ const title = (pctPainted, pctOwned) => {
 };
 
 //========================================================================
+/**
+ * Mithril component for a pie chart.
+ *
+ * @component
+ *
+ * @vattr {number} size - diameter of the piechart in pixels
+ * @vattr {number} n - total amount represented by this pie chart
+ * @vattr {number} nPainted - number of painted figures (1..`nOwned`)
+ * @vattr {number} nOwned - number of owned figures (1..`n`)
+ */
 export const Pie = {
   view: function(vnode) {
     const { size, n, nPainted, nOwned } = vnode.attrs;

@@ -22,9 +22,34 @@ const labelToId = label => U.isBlank(label)
   : label.replaceAll(/\s+/g, "-").toLowerCase();
 
 //========================================================================
+/**
+ * Namespace for HTML form field management.  Methods generally take the
+ * following parameters:
+ *
+ * - `prop` - a Mithril steam giving the widget's initial value; this stream
+ *     is updated as the user interacts with the widget
+ * - `label` - text to display next to the widget, linked to the widget
+ *     so the user can click the label to activate the widget
+ * - `configProps` - an optional Object with widget-specific configuration.
+ *     All widgets accept an `id`-keyed value here which is used as the
+ *     HTML `id` attribute; if not provided, an id is generated from
+ *     the label; if none, a random UUID is used.
+ *
+ */
 export const FormField = {
 
   //========================================================================
+  /**
+   * Renders an HTML checkbox input with the given label.
+   *
+   * Config props:
+   *
+   * - {`?string`} id - widget id
+   *
+   * @param {stream} prop - value of the numeric widget (`true` or `false`)
+   * @param {?string} label - label for the numeric input
+   * @param {Object} configProps - widget configuration
+   */
   checkbox: (prop, label, configProps = {}) => {
     const fieldId = configProps["id"] || labelToId(label);
     return [
@@ -38,6 +63,13 @@ export const FormField = {
   },
 
   //========================================================================
+  /**
+   * Renders an HTML hidden "input".  There's no label parameter for this
+   * method for what I hope is obvious reasons.
+   *
+   * @param {stream} prop - value of the hidden widget
+   * @param {?string} name - name for the hidden input
+   */
   hidden: (prop, name) => {
     return m("input[type=hidden]",
       {
@@ -47,6 +79,22 @@ export const FormField = {
   },
 
   //========================================================================
+  /**
+   * Renders an HTML numeric input with the given optional label.
+   *
+   * Config props:
+   *
+   * - {`?string`} id - widget id
+   * - {`?numeric`} max - maximum value of the widget
+   * - {`?numeric`} min - minimum value of the widget
+   * - {`?boolean`} readOnly - if `true`, no widget is rendered, only the `prop`
+   *     value
+   * - {`?number`} size - width in characters of the widget
+   *
+   * @param {stream} prop - value of the numeric widget
+   * @param {?string} label - label for the numeric input
+   * @param {Object} configProps - widget configuration
+   */
   numeric: (prop, label, configProps = {}) => {
     if (configProps.readOnly) {
       return m(".form-field-numeric-wrapper", prop());
@@ -68,6 +116,22 @@ export const FormField = {
   },
 
   //========================================================================
+  /**
+   * Renders an HTML drop-down widget with the given label.
+   *
+   * Config props:
+   *
+   * - {`?string`} id - widget id
+   * - {`Array`} options - list of `"name"` and/or `"name=value"` strings
+   *     used as the drop-down choices; the name is used as the value if
+   *     no value is provided
+   * - {`?string`} valueType - if `"integer"`, the option values are converted
+   *     to integers; otherwise, the values are treated as strings
+   *
+   * @param {stream} prop - value of the drop-down
+   * @param {string} label - label for the dropdown (required!)
+   * @param {Object} configProps - dropdown configuration
+   */
   select: (prop, label, configProps = {}) => {
     const fieldId = configProps["id"] || labelToId(label);
     return [
@@ -88,16 +152,22 @@ export const FormField = {
   },
 
   /**========================================================================
-   * Renders a text input with the given optional `label`.
+   * Renders an HTML text input with the given optional `label`.
    *
-   * prop: Mithril stream with the current value of the text input, updated as the user interacts with the widget
-   * configProps: optional object with any/all of the following fields
-   *   - fieldNote:
-   *   - id: used as id for the text widget
-   *   - placeholder: used as widget placeholder or content if `readOnly` is `true` and `prop()` is empty
-   *   - readOnly: if `true`, no widget is rendered, only the `prop` value (or `placeholder` if none)
-   *   - size: width in characters of the widget (60 default)
-   *------------------------------------------------------------------------*/
+   * Config props:
+   *
+   * - {`?string`} fieldNote - optional note rendered above the input widget
+   * - {`?string`} id - widget id
+   * - {`?string`} placeholder - used as widget placeholder or content if
+   *     `readOnly` is `true` and `prop()` is empty
+   * - {`?boolean`} readOnly - if `true`, no widget is rendered, only the `prop`
+   *     value (or `placeholder` if none)
+   * - {`?number`} size - width in characters of the widget (default: 60)
+   *
+   * @param {stream} prop - value of the text widget
+   * @param {?string} label - label for the text input
+   * @param {Object} configProps - widget configuration
+   */
   text: (prop, label, configProps = {}) => {
     if (configProps.readOnly) {
       const content = prop() || configProps.placeholder || '';

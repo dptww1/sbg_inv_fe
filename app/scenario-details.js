@@ -249,6 +249,11 @@ const RatingBreakdown = {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Scenario Details page.
+ *
+ * @component
+ */
 export const ScenarioDetails = {
   oninit: function(/*vnode*/) {
     refresh();

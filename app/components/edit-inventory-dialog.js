@@ -59,22 +59,23 @@ const update = rec => {
 };
 
 //========================================================================
-// Wrapper around EditDialog, providing extra validation logic appropriate
-// to inventory editing but not history record editing.
-//
-// API:
-// - EditInventoryDialog.show(figure, op, callback)
-//   Entry point to show the editing dialog to adjust the user's inventory
-//   for a specific figure. Unlike EditDialog, when the user clicks [Save]
-//   their inventory is actually updated.
-//     figure: the figure being inventoried
-//     op: inventory options, per EditDialog#editInventory
-//     callback: no-parameter function called after the database update
-//       completes
-//
-// Client code must add the EditDialog markup to their page using
-// `m(EditDialog)`.
-//------------------------------------------------------------------------
+/**
+ * Static instance for managing the dialog allowing the user to
+ * change the amounts of owned/painted figures.  Reuses much logic
+ * in {@link EditDialog} but has extra validation logic to ensure
+ * a user doesn't e.g. paint more figures than they own.
+ *
+ * Pages using this must include the {@link EditDialog} Mithril
+ * component to incorporate the dialog markup.
+ *
+ * Usage:
+ *
+ *     EditInventoryDialog.show(figure:Object, op:string, callback:function)
+ * - `figure` - a figure structure from the back end services
+ * - `op` - one of the strings from {@link USER_FIGURE_OPS}
+ * - `callback` - function with no parameters called after the
+ *     inventory operation is submitted
+ */
 export const EditInventoryDialog = {
   show: (figure, op, callback) => {
     callbackFn = callback;

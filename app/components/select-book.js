@@ -7,12 +7,12 @@ import * as U from "../utils.js";
 /**
  * Mithril component showing an alphabetized dropdown list of books.
  *
- * Required vnode attributes:
- *   - callback(bookKey) function called when the selected book changes;
- *       note that the callback parameter is a book `key` rather than an `id`.
+ * @component
  *
- * Optional vnode attributes:
- *   - value key which should be used as the currently-selected book
+ * @vattr {function(bookKey)} callback - function called when the selected
+ *     book changes; note that the callback parameter is a book `key`
+ *     rather than an `id`.
+ * @vattr {?string} value - key which should be used as the currently-selected book
  */
 export const SelectBook = () => {
 

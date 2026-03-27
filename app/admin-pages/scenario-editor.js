@@ -9,7 +9,6 @@ import { Request                  } from "../request.js";
 import { ResourceEditor           } from "../admin-components/resource-editor.js";
 import * as U                       from "../utils.js";
 
-//========================================================================
 let scenario = {};
 let resourceType = null; // resource being edited
 let resourceIdx = 0;     // resource being edited
@@ -234,6 +233,12 @@ const saveResource = rsrc => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Scenario Editor page.
+ * For editing a scenario, the ID is read from the URL.
+ *
+ * @component
+ */
 export const ScenarioEditor = {
   oninit: () => {
     refresh();

@@ -19,12 +19,15 @@ let title = "Add New Resource";
  * Mithril component to create or edit a resource.  Since the caller provides
  * the options, it can handle scenario & character resources.
  *
- * Required vnode attributes:
- *   - commitFn(rsrc) callback when user finishes with the resource
- *   - options array of 'option name" or "option name=value" strings
+ * @component
  *
- * Optional vnode attributes:
- *   - initialData raw (not stream) initial values for the fields in the editor
+ * @vattr {function(resource:Object)} commitFn - callback when user finishes with
+ *     the resource (`null` if the user cancels)
+ * @vattr {string[]} options - array of `"name"` and/or `"name=value"` strings
+ *     to be used as the possible resource types
+ * @vattr {?Object} initialData - resource record from the back end containing
+ *     the initial data for the form fields; resource fields should be
+ *     primitive types, not Mithril streams
  */
 export const ResourceEditor = () => {
   let expanded = false;

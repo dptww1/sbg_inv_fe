@@ -29,8 +29,22 @@ const updateHistory = (hist, callbackFn) => {
   return true;
 };
 
-//========================================================================
-// caller must add m(Dialog) to its view nodes!
+/**=======================================================================
+ * Shows an editable list of user history records.
+ *
+ * Assumes the owning page has included `m(Dialog)` in its view.
+ *
+ * @component
+ *
+ * @vattr {Object[]} list - array of user_figure_history records from the back end
+ * @vattr {boolean} hideName - if `true`, the figure name is omitted from
+ *     the list; useful on the {@link FigureDetails} page where the records
+ *     are all referencing that current figure
+ * @vattr {function()} callbackFn - function called if any record in `list`
+ *     is edited or deleted
+ * @vattr {boolean} showTotals - if `true`, totals from `list` are shown
+ *     after the records themselves
+ */
 export const FigureHistoryList = {
   view: ({ attrs: { list, hideName, callbackFn, showTotals } }) => {
     if (!list || list.length === 0) {

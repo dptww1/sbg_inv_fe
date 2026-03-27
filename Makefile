@@ -33,3 +33,11 @@ production-build: lint
 
 lint:
 	npx eslint --c eslint.config.js app
+
+docs: FORCE
+	ruby ./bin/mkdocs
+
+showdocs:
+	open ./docs/index.html
+
+FORCE:

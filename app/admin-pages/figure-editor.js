@@ -145,6 +145,12 @@ const updateFactions = ev => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Figure Editor page.
+ * When editing a figure, the figure ID is read from the URL.
+ *
+ * @component
+ */
 export const FigureEditor = {
   oninit: (/*vnode*/) => {
     resetForm();

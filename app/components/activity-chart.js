@@ -6,6 +6,14 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale);
 import * as U from "../utils.js";
 
 //========================================================================
+/**
+ * Mithril component managing the user's activity graph.
+ *
+ * @component
+ *
+ * @vattr {Object[]} activityList - array of user figure history records
+ *     from the back end
+ */
 export const ActivityChart = () => {
 
   let chartObj = null;

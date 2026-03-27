@@ -104,6 +104,16 @@ const updateAccount = () => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Account page. The Account page
+ * includes a log out link, the {@link ActivityChart}, and
+ * a history of activity, and widgets to control the date range
+ * of the activity.
+ *
+ * @component
+ *
+ * @return {Object} Mithril component
+ */
 export const Account = {
   view: () => {
     const filteredActivityList = userHistory.filter(

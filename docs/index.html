@@ -1,0 +1,5102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SBG Inventory FE Docs</title>
+<style>
+body {
+  display: flex;
+  flex-direction: row;
+  font-family: 'Source Sans Pro', 'Roboto', sans-serif;
+  justify-content: flex-start;
+  line-height: 1.25em;
+  align-items: stretch;
+}
+.constants li {
+  font-family: Courier New;
+}
+content {
+  margin-left: 300px;
+  padding: 10px 0 10px 0;
+}
+.content-link {
+  color: #39f;
+  text-decoration: none;
+}
+.examples pre {
+  background-color: #eee;
+}
+nav {
+  height: 100%;
+  left: 0;
+  overflow: scroll;
+  position: fixed;
+  top: 0;
+  width: 300px;
+}
+nav .icon {
+  border-radius: 0.2em;
+  display: inline-block;
+  margin-bottom: 0.25em;
+  margin-left: 0.25em;
+  margin-top: 0.25em;
+  text-align: center;
+  width: 1.2em;
+}
+nav .object-type {
+}
+nav .is-component {
+  color: white;
+  background-color: purple;
+}
+nav .nav-row {
+}
+.nav-link {
+  color: #39f;
+  text-decoration: none;
+}
+.object-name {
+  font-weight: bold;
+  margin-top: 2em;
+  padding: 0.25em 0 0.25em 0.25em;
+}
+.object-type-f, .object-name-f {
+  background-color: darkblue;
+  color: white;
+}
+.object-type-o, .object-name-o {
+  background-color: darkgoldenrod;
+  color: white;
+}
+.object-type-s, .object-name-s {
+  background-color: lightsteelblue;
+}
+.object-type-v, .object-name-v {
+  background-color: #ddd;
+}
+.section {
+  margin-top: 1em;
+}
+.statics .object-name-s:first-child {
+  margin-top: 0.25em;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 0.25em
+}
+th {
+  text-align: left
+}
+.todo {
+  background-color: #fcc;
+}
+</style>
+</head>
+<body>
+<nav>
+  
+    <h3></h3>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#About">About</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Account">Account</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#alphabetizedOptionsByValue">alphabetizedOptionsByValue</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ArmyListDetails">ArmyListDetails</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ArmyListsList">ArmyListsList</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#asLabel">asLabel</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#asNormalized">asNormalized</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#cmp">cmp</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#computeTotals">computeTotals</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Credentials">Credentials</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#currentDate">currentDate</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#daysInRange">daysInRange</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#emptyOutObject">emptyOutObject</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#FigureDetails">FigureDetails</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ForgotPassword">ForgotPassword</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#formatNumber">formatNumber</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#getByPath">getByPath</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#getLocalStorageBoolean">getLocalStorageBoolean</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Header">Header</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ICON_STRINGS">ICON_STRINGS</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#IMAGE_STRINGS">IMAGE_STRINGS</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#isBlank">isBlank</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#isNoneBlank">isNoneBlank</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#isNotBlank">isNotBlank</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#LOCATIONS">LOCATIONS</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Login">Login</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Nav">Nav</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#newTotalsStruct">newTotalsStruct</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Page404">Page404</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#pluralName">pluralName</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#propertize">propertize</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Register">Register</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Request">Request</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#RESOURCE_TYPE_MAP">RESOURCE_TYPE_MAP</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#resourceIcon">resourceIcon</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#resourceLabel">resourceLabel</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#resourceReference">resourceReference</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ScenarioDetails">ScenarioDetails</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ScenarioList">ScenarioList</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#scenarioSource">scenarioSource</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ScenarioUpdater">ScenarioUpdater</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#shortResourceLabel">shortResourceLabel</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#silhouetteUrl">silhouetteUrl</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Stats">Stats</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#strCmp">strCmp</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#tallyStats">tallyStats</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#unpropertize">unpropertize</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#USER_FIGURE_OPS">USER_FIGURE_OPS</a></span>
+      </div>
+    
+  
+    <h3>admin-components</h3>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#BookFormatResourceEditor">BookFormatResourceEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#EditableText">EditableText</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#FigureListEditor">FigureListEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ProfileEditor">ProfileEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ResourceEditor">ResourceEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#RoleListEditor">RoleListEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#SortableList">SortableList</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#UrlFormatResourceEditor">UrlFormatResourceEditor</a></span>
+      </div>
+    
+  
+    <h3>admin-pages</h3>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ArmyListEditor">ArmyListEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#CharacterEditor">CharacterEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#FigureEditor">FigureEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ScenarioEditor">ScenarioEditor</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ScenarioFactionEditor">ScenarioFactionEditor</a></span>
+      </div>
+    
+  
+    <h3>components</h3>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ActivityChart">ActivityChart</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ArmyListFilter">ArmyListFilter</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#DateRangePicker">DateRangePicker</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#EditDialog">EditDialog</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#EditInventoryDialog">EditInventoryDialog</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#FigureHistoryList">FigureHistoryList</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Filters">Filters</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon'>&nbsp; </span>
+        
+        <span class='nav-name'><a class='nav-link' href="#FormField">FormField</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Pie">Pie</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#SelectBook">SelectBook</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#ShowMoreList">ShowMoreList</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#StarRating">StarRating</a></span>
+      </div>
+    
+      <div class='nav-row'>
+        <span class='icon object-type object-type-f'>F</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#Typeahead">Typeahead</a></span>
+      </div>
+    
+  
+</nav>
+<content>
+  
+
+    
+      <div class="object-name object-name-f" id="About">About</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the About page. The About page includes
+news, recent battle reports and character resources, a welcome message,
+and FAQs.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/about.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Account">Account</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Account page. The Account page
+includes a log out link, the <a class='content-link' href='#ActivityChart'>ActivityChart</a>, and
+a history of activity, and widgets to control the date range
+of the activity.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>Object</code>) - Mithril component
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/account.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="ActivityChart">ActivityChart</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component managing the user&#39;s activity graph.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attribute:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>activityList</code></td><td><code>Object[]</code></td><td>array of user figure history records    from the back end</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/activity-chart.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="alphabetizedOptionsByValue">alphabetizedOptionsByValue(hash)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Massages the key/value pairs in the <code>hash</code> parameter
+into an array of strings suitable for passing to
+<a class='content-link' href='#FormField#select'>FormField#select</a>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>hash</code></td><td><code>Object</code></td><td>object with key/value pairs</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string[]</code>) - Array of of <code>&quot;string=value&quot;</code> strings
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="ArmyListDetails">ArmyListDetails</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Army List Details page.
+For edit operations, the ID of the army list is read from the URL.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/army-list-details.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="ArmyListEditor">ArmyListEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Army List Editor page.
+For edit operations, the army list ID is read from the URL.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-pages/army-list-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="ArmyListFilter">ArmyListFilter</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithil component for managing the filters on the Army Lists List page.</p>
+
+<p>Static methods that ESDoc doesn&#39;t expose:
+- {boolean} <code>ArmyListFilter.isFilterActive()</code>
+- {boolean} <code>ArmyListFilter.shouldShowArmyListName(factionAbbrev:string)</code>
+- {boolean} <code>ArmyListFilter.usingAllegianceMode()</code></p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+      <div class='section statics'>
+        Static Functions:
+        
+
+          
+            <div class="object-name object-name-s" id="ArmyListFilter.isFilterActive">ArmyListFilter.isFilterActive()</div>
+
+              
+              <div class="section description">
+  <p>Determines if the user is currently filtering the list of armies.</p>
+
+</div>
+
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if filtering is active, else <code>false</code>
+  </div>
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="ArmyListFilter.shouldShowArmyListName">ArmyListFilter.shouldShowArmyListName(factionAbbrev)</div>
+
+              
+              <div class="section description">
+  <p>Determines if an army list name should be shown based on mode and filtering.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>factionAbbrev</code></td><td><code>string</code></td><td>faction to check</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if the faction name should be visible, <code>false</code> if not
+  </div>
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="ArmyListFilter.usingAllegianceMode">ArmyListFilter.usingAllegianceMode()</div>
+
+              
+              <div class="section description">
+  <p>Determines if the user wants to see actual army lists or allegiances.</p>
+
+</div>
+
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> for allegiance mode, <code>false</code> for army list mode.
+  </div>
+
+
+
+
+
+
+        
+      </div>
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/army-list-filter.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ArmyListsList">ArmyListsList</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the List of Army Lists page. Yeah, the name is
+    awkward.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/army-lists-list.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="asLabel">asLabel(s)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Converts a string in <code>snake_case</code> to <code>Snake Case</code>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>s</code></td><td><code>string</code></td><td>string to convert</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the converted string
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="asNormalized">asNormalized(s)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Normalizes a string to a form suitable for title sorting.
+Removes initial articles (A, The) and accents.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>s</code></td><td><code>string</code></td><td>string to convert</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the normalized string
+  </div>
+
+
+
+  <div class='section examples'>
+    Examples:
+    
+      <code><pre>  asNormalized("The Hobbit") // => "Hobbit"
+</pre></code>
+    
+      <code><pre>  asNormalized("Éomer") // "Eomer"
+</pre></code>
+    
+  </div>
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="BookFormatResourceEditor">BookFormatResourceEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for handling creating &amp; editing of book resources.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>commitFn </code></td><td><code>function({book:string, issue:string, page:string})</code></td><td>called    when the user submits the form.  The parameters will be <code>null</code> if the user
+    cancels. Must be provided unless <code>embedded: true</code>, in which case this
+    parameter is ignored.</td></tr>
+        
+          
+          <tr><td><code>embedded</code></td><td><code>?boolean</code></td><td>if <code>true</code>, buttons are disabled and the caller&#39;s    fields are edited directly; if <code>false</code> or omitted, they aren&#39;t</td></tr>
+        
+          
+          <tr><td><code>fieldsOnly</code></td><td><code>?boolean</code></td><td>if <code>true</code>, the enclosing <code>div.book-resource-editor-form</code>    and form control buttons are omitted</td></tr>
+        
+          
+          <tr><td><code>initialData</code></td><td><code>?Object</code></td><td>contains the original <code>book</code>, <code>issue</code>, and <code>page</code> keys    which are the values of those fields in the form. If <code>embedded: true</code>, those fields
+    are assumed to be Mithril streams, otherwise they are assumed to be primitive types.</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+  <div class='section todo'>
+    TODO: handle sort_order, id attributes?
+  </div>
+
+
+
+    
+      <div class='section statics'>
+        Static Functions:
+        
+
+          
+            <div class="object-name object-name-s" id="BookFormatResourceEditor.isValid">BookFormatResourceEditor.isValid(resource)</div>
+
+              
+              <div class="section description">
+  <p>Determines whether the given resource is a complete book reference.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>resource</code></td><td><code>Object</code></td><td>a resource record from the back end</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if the resource is valid, or <code>false</code> if it isn&#39;t
+  </div>
+
+
+
+
+
+
+        
+      </div>
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/book-format-resource-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="CharacterEditor">CharacterEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Character Editor page.
+For edit operations, the character ID is read from the URL.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-pages/character-editor.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="cmp">cmp(a, b)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Compares two values, suitable for using with <code>Array.sort</code>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>a</code></td><td><code>number|string</code></td><td>first value</td></tr>
+      
+        
+        <tr><td><code>b</code></td><td><code>number|string</code></td><td>second value</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>number</code>) - -1 (<code>a</code> &lt; <code>b</code>), 0 (<code>a</code> == <code>b</code>), or 1 (<code>a</code> &gt; <code>b</code>)
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="computeTotals">computeTotals(figureList)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Compute the totals of needed/collected/painted models for a user
+    within a army list.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>figureList</code></td><td><code>Object[]</code></td><td>army list structure returned from the    back end, where figures are sorted into type-specific lists</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>Object</code>) - totals structure (see <a class='content-link' href='#newTotalsStruct'>newTotalsStruct</a>)
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/army-list-utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Credentials">Credentials</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Namespace for user account utilities.</p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <div class='section statics'>
+        Static Functions:
+        
+
+          
+            <div class="object-name object-name-s" id="Credentials.isAdmin">Credentials.isAdmin()</div>
+
+              
+              <div class="section description">
+  <p>Slightly more idiomatic way to check if the user is an administrator.
+You can hack this on the front-end, but, barring bugs, the back end
+will not believe you.</p>
+
+</div>
+
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if the BE reported the user as an admin, else <code>false</code>
+  </div>
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="Credentials.isLoggedIn">Credentials.isLoggedIn()</div>
+
+              
+              <div class="section description">
+  <p>Determines if the user is logged in.</p>
+
+</div>
+
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if the user has logged in, or <code>false</code> if they are anonymous
+  </div>
+
+
+
+
+
+
+        
+      </div>
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/credentials.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="currentDate">currentDate()</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Gets the current date, taking the user&#39;s timezone into account.</p>
+
+</div>
+
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the current date in <code>YYYY-MM-DD</code> format
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="DateRangePicker">DateRangePicker</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component managing the date filters on the Account page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>callbackFn</code></td><td><code>function(range:{fromDate:string, toDate:string)</code></td><td>    function called when the date widgets here are updated
+</td></tr>
+        
+          
+          <tr><td><code>range</code></td><td><code>Object</code></td><td>object with two fields, <code>fromDate</code> and <code>toDate</code>    with date strings in <code>YYYY-MM-DD</code> format</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/date-range-picker.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="daysInRange">daysInRange(d1, d2)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Computes the number of days between two dates, inclusive.
+It doesn&#39;t matter which date is earlier nor which is later.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>d1</code></td><td><code>string</code></td><td>first date, in <code>YYYY-MM-DD</code> format</td></tr>
+      
+        
+        <tr><td><code>d2</code></td><td><code>string</code></td><td>second date, in <code>YYYY-MM-DD</code> format</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>number</code>) - the number of days
+  </div>
+
+
+
+  <div class='section examples'>
+    Examples:
+    
+      <code><pre>  daysInRange("2026-02-05", "2026-02-07") // => 3
+</pre></code>
+    
+      <code><pre>  daysInRange("2026-03-10", "2026-03-10") // => 1
+</pre></code>
+    
+  </div>
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="EditableText">EditableText</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for text which can be edited.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>commit</code></td><td><code>function(newText:string)</code></td><td>callback when editing is complete</td></tr>
+        
+          
+          <tr><td><code>text</code></td><td><code>string</code></td><td>the text to show</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+  <div class='section examples'>
+    Example:
+    
+      <code><pre>  const model = { text: "Example text" };
+  m(EditableText, { text: model.text, commit: newText => model.text = newText });
+</pre></code>
+    
+  </div>
+
+
+
+  <div class='section todo'>
+    TODO: should probably use a Mithril stream as parameter, move to FormField?
+  </div>
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/editable-text.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="EditDialog">EditDialog</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for editing inventory.</p>
+
+<p>Must be included as the final component in the page markup
+for those pages supporting inventory editing.  But the styling
+ordinarily hides this dialog.</p>
+
+<p>To show the dialog to edit a user history record, call the
+<code>editHistory</code> function:</p>
+
+<pre><code>EditDialog.editHistory(historyRec:Object, callback:function)
+</code></pre>
+
+<ul>
+<li>{Object} <code>historyRec</code> - a history record from the back end, which
+will not be modified</li>
+<li>{function} <code>callback</code> - a function passing a new history record
+with updated fields as its sole parameter</li>
+</ul>
+
+<p>The other functions exposed here are for the use of
+ <a class='content-link' href='#EditInventoryDialog'>EditInventoryDialog</a>.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/edit-dialog.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="EditInventoryDialog">EditInventoryDialog</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Static instance for managing the dialog allowing the user to
+change the amounts of owned/painted figures.  Reuses much logic
+in <a class='content-link' href='#EditDialog'>EditDialog</a> but has extra validation logic to ensure
+a user doesn&#39;t e.g. paint more figures than they own.</p>
+
+<p>Pages using this must include the <a class='content-link' href='#EditDialog'>EditDialog</a> Mithril
+component to incorporate the dialog markup.</p>
+
+<p>Usage:</p>
+
+<pre><code>EditInventoryDialog.show(figure:Object, op:string, callback:function)
+</code></pre>
+
+<ul>
+<li><code>figure</code> - a figure structure from the back end services</li>
+<li><code>op</code> - one of the strings from <a class='content-link' href='#USER_FIGURE_OPS'>USER<em>FIGURE</em>OPS</a></li>
+<li><code>callback</code> - function with no parameters called after the
+inventory operation is submitted</li>
+</ul>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/edit-inventory-dialog.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="emptyOutObject">emptyOutObject(obj, overrides)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Restores all non-null fields in an object to default values.</p>
+
+<ul>
+<li>Array fields are reset to <code>[]</code>.</li>
+<li>Object fields are reset to <code>{}</code>.</li>
+<li>Other fields are set to the empty string.</li>
+</ul>
+
+<p>These default values can be be overridden on a per-field basis by supplying
+key/value pairs in the optional <code>overrides</code> parameter, where the key is
+the field name, and the value is the default value which should be used.</p>
+
+<p>Function fields are assumed to be Mithril streams and will have their values
+reset, too, per the above.</p>
+
+<p>Fields with <code>null</code> values will remain <code>null</code>.</p>
+
+<p><strong>IMPORTANT!</strong> This function modifies the object!</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>obj</code></td><td><code>Object</code></td><td>the object to reset</td></tr>
+      
+        
+        <tr><td><code>overrides</code></td><td><code>?Object</code></td><td>key/value pairs to use as non-standard defaults</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+  <div class='section examples'>
+    Examples:
+    
+      <code><pre>  emptyOutObject({"a": "x", "b": [123], "c": {"z": 456}))
+  // => {"a": "", "b": [], "c": {}}
+</pre></code>
+    
+      <code><pre>  emptyOutObject({"n": 123, "p": "foo", "q": null}, {"n": 0}
+  // => {"n": 0, "p": "", "q": null}
+</pre></code>
+    
+  </div>
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="FigureDetails">FigureDetails</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Figure Details page.  The ID of the figure to
+show is read from the number at the end of the URL.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/figure-details.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="FigureEditor">FigureEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Figure Editor page.
+When editing a figure, the figure ID is read from the URL.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-pages/figure-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="FigureHistoryList">FigureHistoryList</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Shows an editable list of user history records.</p>
+
+<p>Assumes the owning page has included <code>m(Dialog)</code> in its view.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>callbackFn</code></td><td><code>function()</code></td><td>function called if any record in <code>list</code>    is edited or deleted</td></tr>
+        
+          
+          <tr><td><code>hideName</code></td><td><code>boolean</code></td><td>if <code>true</code>, the figure name is omitted from    the list; useful on the <a class='content-link' href='#FigureDetails'>FigureDetails</a> page where the records
+    are all referencing that current figure</td></tr>
+        
+          
+          <tr><td><code>list</code></td><td><code>Object[]</code></td><td>array of user<em>figure</em>history records from the back end</td></tr>
+        
+          
+          <tr><td><code>showTotals</code></td><td><code>boolean</code></td><td>if <code>true</code>, totals from <code>list</code> are shown    after the records themselves</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/figure-history-list.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="FigureListEditor">FigureListEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for editing a list of figures, providing a typeahead
+to make assigning figures easy.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>exclusions</code></td><td><code>?number[]</code></td><td>array of figure IDs to filter out from    the typeahead, presumably because they&#39;ve already been selected.</td></tr>
+        
+          
+          <tr><td><code>onItemSelect</code></td><td><code>function({target:Object})</code></td><td>callback when a figure    is selected, with the parameter being a DOM object containing the
+    selected figure&#39;s info. See <a class='content-link' href='#Typeahead'>Typeahead</a> for the details.</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+  <div class='section todo'>
+    TODO: shouldn't use DOM in the callback
+  </div>
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/figure-list-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Filters">Filters</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the scenario filters.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attribute:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>activeFilters</code></td><td><code>string</code></td><td>string containing filter names which    should be shown; if none, all filters are shown.  Possibly filter
+    names: <code>Location</code>, <code>Book</code>, <code>Models</code>, <code>Map Size</code>, <code>Resources</code>, <code>Ownership</code></td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+      <div class='section statics'>
+        Static Functions:
+        
+
+          
+            <div class="object-name object-name-s" id="Filters.filter">Filters.filter(rec)</div>
+
+              
+              <div class="section description">
+  <p>Determines if a given scenario should be shown based on the active filters.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>rec</code></td><td><code>Object</code></td><td>the scenario to check</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if the scenario should be shown, else <code>false</code>
+  </div>
+
+
+
+
+
+
+        
+      </div>
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/filters.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ForgotPassword">ForgotPassword</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Forget Password page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/forgot-password.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="formatNumber">formatNumber(n)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Formats a number with guaranteed 2 digits after the decimal point,
+rounding if necessary.</p>
+
+<p>Uses US conventions, so the decimal point is <code>.</code> not <code>,</code>. Sorry.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>n</code></td><td><code>number</code></td><td>number to format</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the formatted number
+  </div>
+
+
+
+  <div class='section examples'>
+    Examples:
+    
+      <code><pre>  formatNumber(12) // => 12.00
+</pre></code>
+    
+      <code><pre>  formatNumber(1.187) // => 1.19
+</pre></code>
+    
+  </div>
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="FormField">FormField</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Namespace for HTML form field management.  Methods generally take the
+following parameters:</p>
+
+<ul>
+<li><code>prop</code> - a Mithril steam giving the widget&#39;s initial value; this stream
+is updated as the user interacts with the widget</li>
+<li><code>label</code> - text to display next to the widget, linked to the widget
+so the user can click the label to activate the widget</li>
+<li><code>configProps</code> - an optional Object with widget-specific configuration.
+All widgets accept an <code>id</code>-keyed value here which is used as the
+HTML <code>id</code> attribute; if not provided, an id is generated from
+the label; if none, a random UUID is used.</li>
+</ul>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <div class='section statics'>
+        Static Functions:
+        
+
+          
+            <div class="object-name object-name-s" id="FormField.checkbox">FormField.checkbox(prop, label, configProps)</div>
+
+              
+              <div class="section description">
+  <p>Renders an HTML checkbox input with the given label.</p>
+
+<p>Config props:</p>
+
+<ul>
+<li>{<code>?string</code>} id - widget id</li>
+</ul>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>prop</code></td><td><code>stream</code></td><td>value of the numeric widget (<code>true</code> or <code>false</code>)</td></tr>
+      
+        
+        <tr><td><code>label</code></td><td><code>?string</code></td><td>label for the numeric input</td></tr>
+      
+        
+        <tr><td><code>configProps</code></td><td><code>Object</code></td><td>widget configuration</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="FormField.hidden">FormField.hidden(prop, name)</div>
+
+              
+              <div class="section description">
+  <p>Renders an HTML hidden &quot;input&quot;.  There&#39;s no label parameter for this
+method for what I hope is obvious reasons.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>prop</code></td><td><code>stream</code></td><td>value of the hidden widget</td></tr>
+      
+        
+        <tr><td><code>name</code></td><td><code>?string</code></td><td>name for the hidden input</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="FormField.numeric">FormField.numeric(prop, label, configProps)</div>
+
+              
+              <div class="section description">
+  <p>Renders an HTML numeric input with the given optional label.</p>
+
+<p>Config props:</p>
+
+<ul>
+<li>{<code>?string</code>} id - widget id</li>
+<li>{<code>?numeric</code>} max - maximum value of the widget</li>
+<li>{<code>?numeric</code>} min - minimum value of the widget</li>
+<li>{<code>?boolean</code>} readOnly - if <code>true</code>, no widget is rendered, only the <code>prop</code>
+value</li>
+<li>{<code>?number</code>} size - width in characters of the widget</li>
+</ul>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>prop</code></td><td><code>stream</code></td><td>value of the numeric widget</td></tr>
+      
+        
+        <tr><td><code>label</code></td><td><code>?string</code></td><td>label for the numeric input</td></tr>
+      
+        
+        <tr><td><code>configProps</code></td><td><code>Object</code></td><td>widget configuration</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="FormField.select">FormField.select(prop, label, configProps)</div>
+
+              
+              <div class="section description">
+  <p>Renders an HTML drop-down widget with the given label.</p>
+
+<p>Config props:</p>
+
+<ul>
+<li>{<code>?string</code>} id - widget id</li>
+<li>{<code>Array</code>} options - list of <code>&quot;name&quot;</code> and/or <code>&quot;name=value&quot;</code> strings
+used as the drop-down choices; the name is used as the value if
+no value is provided</li>
+<li>{<code>?string</code>} valueType - if <code>&quot;integer&quot;</code>, the option values are converted
+to integers; otherwise, the values are treated as strings</li>
+</ul>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>prop</code></td><td><code>stream</code></td><td>value of the drop-down</td></tr>
+      
+        
+        <tr><td><code>label</code></td><td><code>string</code></td><td>label for the dropdown (required!)</td></tr>
+      
+        
+        <tr><td><code>configProps</code></td><td><code>Object</code></td><td>dropdown configuration</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="FormField.text">FormField.text(prop, label, configProps)</div>
+
+              
+              <div class="section description">
+  <p>Renders an HTML text input with the given optional <code>label</code>.</p>
+
+<p>Config props:</p>
+
+<ul>
+<li>{<code>?string</code>} fieldNote - optional note rendered above the input widget</li>
+<li>{<code>?string</code>} id - widget id</li>
+<li>{<code>?string</code>} placeholder - used as widget placeholder or content if
+<code>readOnly</code> is <code>true</code> and <code>prop()</code> is empty</li>
+<li>{<code>?boolean</code>} readOnly - if <code>true</code>, no widget is rendered, only the <code>prop</code>
+value (or <code>placeholder</code> if none)</li>
+<li>{<code>?number</code>} size - width in characters of the widget (default: 60)</li>
+</ul>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>prop</code></td><td><code>stream</code></td><td>value of the text widget</td></tr>
+      
+        
+        <tr><td><code>label</code></td><td><code>?string</code></td><td>label for the text input</td></tr>
+      
+        
+        <tr><td><code>configProps</code></td><td><code>Object</code></td><td>widget configuration</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/form-field.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="getByPath">getByPath(object, path)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Returns a possibly deeply-nested field from a data structure. The <code>path</code>
+parameter is a series of field names separated by slashes, each element
+digging a level down into the object.  Both Objects and Arrays are
+supported in any combination.</p>
+
+<p>If the path specifies a field with a <code>null</code> value, there&#39;s no way
+to tell if this function succeeded or not.</p>
+
+<p>Fields which are functions are assumed to be Mithril streams,
+and should be handled correctly.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>object</code></td><td><code>?Object</code></td><td>the object to get the field value for</td></tr>
+      
+        
+        <tr><td><code>path</code></td><td><code>?string</code></td><td>field names separated by <code>/</code></td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>Object|number|string|Array</code>) - whatever data is at the given path,    or <code>null</code> if either parameter is <code>null</code> or <code>path</code> contains a
+    field name not in the object
+  </div>
+
+
+
+  <div class='section examples'>
+    Example:
+    
+      <code><pre>  getByPath({"a": {"b": 1, "c": {"d": 3}}}, "a/c/d") // => 3
+</pre></code>
+    
+  </div>
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="getLocalStorageBoolean">getLocalStorageBoolean(keyName)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Gets a true/false value from local storage.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>keyName</code></td><td><code>string</code></td><td>the local storage key</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - the value of the local storage key
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Header">Header</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the page header.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/header.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ICON_STRINGS">ICON_STRINGS</div>
+    
+
+    
+      <div class='section constants'>
+        Constants:
+        <ul>
+          
+            <li class="object-name-c">about</li>
+          
+            <li class="object-name-c">account</li>
+          
+            <li class="object-name-c">back</li>
+          
+            <li class="object-name-c">figures</li>
+          
+            <li class="object-name-c">log_in</li>
+          
+            <li class="object-name-c">log_out</li>
+          
+            <li class="object-name-c">minus</li>
+          
+            <li class="object-name-c">paint_figure</li>
+          
+            <li class="object-name-c">plus</li>
+          
+            <li class="object-name-c">register</li>
+          
+            <li class="object-name-c">search</li>
+          
+            <li class="object-name-c">scenarios</li>
+          
+            <li class="object-name-c">stats</li>
+          
+            <li class="object-name-c">cheatsheet</li>
+          
+            <li class="object-name-c">magazine_replay</li>
+          
+            <li class="object-name-c">podcast</li>
+          
+            <li class="object-name-c">video_replay</li>
+          
+            <li class="object-name-c">web_replay</li>
+          
+            <li class="object-name-c">down</li>
+          
+            <li class="object-name-c">edit</li>
+          
+            <li class="object-name-c">remove</li>
+          
+            <li class="object-name-c">up</li>
+          
+            <li class="object-name-c">closed</li>
+          
+            <li class="object-name-c">open</li>
+          
+        </ul>
+      </div>
+      
+
+    
+      <div class="object-name object-name-o" id="IMAGE_STRINGS">IMAGE_STRINGS</div>
+    
+
+    
+      <div class='section constants'>
+        Constants:
+        <ul>
+          
+            <li class="object-name-c">analysis</li>
+          
+            <li class="object-name-c">painting_guide</li>
+          
+        </ul>
+      </div>
+      
+
+    
+      
+      <div class="object-name object-name-f" id="isBlank">isBlank(o)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Determines if a thing has no content.</p>
+
+<p>See also <a class='content-link' href='#isNotBlank'>isNotBlank</a>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>o</code></td><td><code>Array|string</code></td><td>the thing to test</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if the thing is <code>null</code>, <code>undefined</code>,    or an empty array or string
+  </div>
+
+
+
+
+
+  <div class='section todo'>
+    TODO: handle `Object`s
+  </div>
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="isNoneBlank">isNoneBlank(...args)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Checks that none of the arguments are blank, per <a class='content-link' href='#isBlank'>isBlank</a>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code></code></td><td><code></code></td><td></td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>false</code> if any argument was blank, else <code>true</code>
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="isNotBlank">isNotBlank(o)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Determines if a thing has content.</p>
+
+<p>See also <a class='content-link' href='#isBlank'>isBlank</a>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>o</code></td><td><code>Array|Object|string|number</code></td><td>the thing to test</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>boolean</code>) - <code>true</code> if <code>o</code> is any number or object, or a non-empty string or array
+  </div>
+
+
+
+
+
+  <div class='section todo'>
+    TODO: empty objects return `true`
+  </div>
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="LOCATIONS">LOCATIONS</div>
+    
+
+    
+      <div class='section constants'>
+        Constants:
+        <ul>
+          
+            <li class="object-name-c">amon_hen</li>
+          
+            <li class="object-name-c">arnor</li>
+          
+            <li class="object-name-c">dale</li>
+          
+            <li class="object-name-c">dol_guldur</li>
+          
+            <li class="object-name-c">erebor</li>
+          
+            <li class="object-name-c">eriador</li>
+          
+            <li class="object-name-c">fangorn</li>
+          
+            <li class="object-name-c">fornost</li>
+          
+            <li class="object-name-c">goblintown</li>
+          
+            <li class="object-name-c">gondor</li>
+          
+            <li class="object-name-c">harad</li>
+          
+            <li class="object-name-c">harondor</li>
+          
+            <li class="object-name-c">helms_deep</li>
+          
+            <li class="object-name-c">isengard</li>
+          
+            <li class="object-name-c">ithilien</li>
+          
+            <li class="object-name-c">laketown</li>
+          
+            <li class="object-name-c">lothlorien</li>
+          
+            <li class="object-name-c">minas_morgul</li>
+          
+            <li class="object-name-c">minas_tirith</li>
+          
+            <li class="object-name-c">mirkwood</li>
+          
+            <li class="object-name-c">mordor</li>
+          
+            <li class="object-name-c">moria</li>
+          
+            <li class="object-name-c">morannon</li>
+          
+            <li class="object-name-c">osgiliath</li>
+          
+            <li class="object-name-c">rhovanion</li>
+          
+            <li class="object-name-c">rhun</li>
+          
+            <li class="object-name-c">rohan</li>
+          
+            <li class="object-name-c">the_shire</li>
+          
+            <li class="object-name-c">weathertop</li>
+          
+            <li class="object-name-c">orthanc</li>
+          
+        </ul>
+      </div>
+      
+
+    
+      <div class="object-name object-name-o" id="Login">Login</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Login page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/login.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Nav">Nav</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the header&#39;s navigation bar.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/nav.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="newTotalsStruct">newTotalsStruct()</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Creates a new structure for tallying the models needed for an army list.</p>
+
+<p>Fields:</p>
+
+<table><thead>
+<tr>
+<th>Field Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>needed</code></td>
+<td># of figures of this type needed by the scenario</td>
+</tr>
+<tr>
+<td><code>owned</code></td>
+<td># of figures of this type owned by the user</td>
+</tr>
+<tr>
+<td><code>painted</code></td>
+<td># of figures of this type painted by the user</td>
+</tr>
+<tr>
+<td><code>neededOwned</code></td>
+<td><code>0..min(needed,owned)</code></td>
+</tr>
+<tr>
+<td><code>neededPainted</code></td>
+<td><code>0..min(needed,painted)</code></td>
+</tr>
+</tbody></table>
+
+</div>
+
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>Object</code>) - the initialized structure
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/army-list-utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Page404">Page404</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Page404 (Not Found) page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/page-404.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Pie">Pie</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for a pie chart.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>n</code></td><td><code>number</code></td><td>total amount represented by this pie chart</td></tr>
+        
+          
+          <tr><td><code>nOwned</code></td><td><code>number</code></td><td>number of owned figures (1..<code>n</code>)</td></tr>
+        
+          
+          <tr><td><code>nPainted</code></td><td><code>number</code></td><td>number of painted figures (1..<code>nOwned</code>)</td></tr>
+        
+          
+          <tr><td><code>size</code></td><td><code>number</code></td><td>diameter of the piechart in pixels</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/pie.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="pluralName">pluralName(figure)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Returns the plural name for figure, or the singular name if none.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>figure</code></td><td><code>Object</code></td><td>a figure structure as returned from the    back end APIs.</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the plural name
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="ProfileEditor">ProfileEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for editing a character&#39;s profile reference.</p>
+
+<p>A profile object has the following fields:</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>name_override</code></td>
+<td><code>string</code></td>
+<td>optional profile name; character name is used if not provided</td>
+</tr>
+<tr>
+<td><code>book</code></td>
+<td><code>string</code></td>
+<td>book key</td>
+</tr>
+<tr>
+<td><code>issue</code></td>
+<td><code>string</code></td>
+<td>optional issue identifier</td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td><code>string</code></td>
+<td>- page number</td>
+</tr>
+<tr>
+<td><code>obsolete</code></td>
+<td><code>boolean</code></td>
+<td>if <code>true</code>, this is an old profile for historical interest</td>
+</tr>
+</tbody></table>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>commitFn</code></td><td><code>function(profile:Object)</code></td><td>called when the user submits the data;    the profile parameter will be <code>null</code> if the user cancels the form</td></tr>
+        
+          
+          <tr><td><code>initialData</code></td><td><code>?Object</code></td><td>optional initial data for the component</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/profile-editor.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="propertize">propertize(obj)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Convert the fields of the given object from primitive types to
+Mithril streams.</p>
+
+<p>See also <a class='content-link' href='#unpropertize'>unpropertize</a>.</p>
+
+<p><strong>IMPORTANT!</strong> This function modifies the input object!</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>obj</code></td><td><code>Object</code></td><td>the object to instantiate streams for</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>Object</code>) - the input object; this is a bit useless as the caller    can just continue to use the input object since it&#39;s been
+    modified.
+  </div>
+
+
+
+
+
+  <div class='section todo'>
+    TODO: this function isn't recursive and probably should be
+  </div>
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Register">Register</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Registration page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/register.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Request">Request</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Namespace for HTTP request methods. If there is an authorization token
+available in <a class='content-link' href='#Credentials'>Credentials</a>, the token is automatically added
+to the request.</p>
+
+<p>For all methods, the <code>url</code> parameter should be relative to the host
+<code>.../api</code> URL.  The methods do not return data directly; clients should
+instead rely on the <code>successFn</code> parameter to provide a callback on
+successful request.  For failed requests, the <code>error</code> variable will
+be filled in automatically.</p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <div class='section statics'>
+        Static Functions:
+        
+
+          
+            <div class="object-name object-name-s" id="Request.delete">Request.delete(url, successFn)</div>
+
+              
+              <div class="section description">
+  <p>Perform an HTTP <code>DELETE</code> request.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>url</code></td><td><code>string</code></td><td>the URL to get data from</td></tr>
+      
+        
+        <tr><td><code>successFn</code></td><td><code>function(response:Object)</code></td><td>function called on    successful HTTP call</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="Request.get">Request.get(url, successFn)</div>
+
+              
+              <div class="section description">
+  <p>Perform an HTTP <code>GET</code> request.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>url</code></td><td><code>string</code></td><td>the URL to get data from</td></tr>
+      
+        
+        <tr><td><code>successFn</code></td><td><code>function(response:Object)</code></td><td>function called on    successful HTTP call</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="Request.post">Request.post(url, data, successFn)</div>
+
+              
+              <div class="section description">
+  <p>Perform an HTTP <code>POST</code> request.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>url</code></td><td><code>string</code></td><td>the URL to get data from</td></tr>
+      
+        
+        <tr><td><code>data</code></td><td><code>?Object</code></td><td>request data</td></tr>
+      
+        
+        <tr><td><code>successFn</code></td><td><code>function(response:Object)</code></td><td>function called on    successful HTTP call</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="Request.put">Request.put(url, data, successFn)</div>
+
+              
+              <div class="section description">
+  <p>Perform an HTTP <code>PUT</code> request.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>url</code></td><td><code>string</code></td><td>the URL to get data from</td></tr>
+      
+        
+        <tr><td><code>data</code></td><td><code>?Object</code></td><td>request data</td></tr>
+      
+        
+        <tr><td><code>successFn</code></td><td><code>function(response:Object)</code></td><td>function called on    successful HTTP call</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="Request.putOrPost">Request.putOrPost(url, id, data, successFn)</div>
+
+              
+              <div class="section description">
+  <p>Perform an HTTP <code>PUT</code> or <code>POST</code> request.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>url</code></td><td><code>string</code></td><td>the URL to get data from</td></tr>
+      
+        
+        <tr><td><code>id</code></td><td><code>?number</code></td><td>if present, perform a <code>PUT</code> request for this    object id; otherwise perform a <code>POST</code> request</td></tr>
+      
+        
+        <tr><td><code>data</code></td><td><code>?Object</code></td><td>request data</td></tr>
+      
+        
+        <tr><td><code>successFn</code></td><td><code>function(response:Object)</code></td><td>function called on    successful HTTP call</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    
+
+    
+      <div class='section vars'>
+        Variables:
+          
+            <div class="object-name object-name-v" id="Request.errors">Request.errors</div>
+            <div class="description"><p>Mithril stream containing an error message string, or an object with
+an <code>&quot;errors&quot;</code> key containing the message. Intended to be used for
+error messages such as form validation errors.</p>
+
+<p>The multiple allowable types is unfortunate.</p>
+</div>
+          
+            <div class="object-name object-name-v" id="Request.messages">Request.messages</div>
+            <div class="description"><p>Mithril stream containing a message string. Intended to be used for regular
+notifications, such as successful saves.</p>
+
+<p>The plural name is unfortunate.</p>
+</div>
+          
+          </div>
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/request.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="RESOURCE_TYPE_MAP">RESOURCE_TYPE_MAP</div>
+    
+
+    
+      <div class='section constants'>
+        Constants:
+        <ul>
+          
+            <li class="object-name-c">source</li>
+          
+            <li class="object-name-c">video_replay</li>
+          
+            <li class="object-name-c">web_replay</li>
+          
+            <li class="object-name-c">terrain_building</li>
+          
+            <li class="object-name-c">podcast</li>
+          
+            <li class="object-name-c">magazine_replay</li>
+          
+            <li class="object-name-c">cheatsheet</li>
+          
+        </ul>
+      </div>
+      
+
+    
+      <div class="object-name object-name-f" id="ResourceEditor">ResourceEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component to create or edit a resource.  Since the caller provides
+the options, it can handle scenario &amp; character resources.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>commitFn</code></td><td><code>function(resource:Object)</code></td><td>callback when user finishes with    the resource (<code>null</code> if the user cancels)</td></tr>
+        
+          
+          <tr><td><code>initialData</code></td><td><code>?Object</code></td><td>resource record from the back end containing    the initial data for the form fields; resource fields should be
+    primitive types, not Mithril streams</td></tr>
+        
+          
+          <tr><td><code>options</code></td><td><code>string[]</code></td><td>array of <code>&quot;name&quot;</code> and/or <code>&quot;name=value&quot;</code> strings    to be used as the possible resource types</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/resource-editor.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="resourceIcon">resourceIcon(res)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Returns the string for the given scenario resource icon.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>res</code></td><td><code>Object</code></td><td>scenario resource structure as returned    from the back end</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the icon string, or the empty string for unknown types
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="resourceLabel">resourceLabel(res)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Constructs the label for a book resource.</p>
+
+<p>See also <a class='content-link' href='#shortResourceLabel'>shortResourceLabel</a>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>res</code></td><td><code>Object</code></td><td>resource object as returned from the back end,    containing <code>book</code> field with a book abbreviation</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the full name of the book (with issue number if present)
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="resourceReference">resourceReference(res)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Construct the markup appropriate for a reference to the location
+of rules or a scenario.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>res</code></td><td><code>?Object</code></td><td>resource object as returned by the back end</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string|Object</code>) - string or Mithril markup for the reference,    or <code>null</code> if <code>res</code> is <code>null</code> or an invalid resource
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="RoleListEditor">RoleListEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for managing a list of roles, such as make up one of
+the sides in a scenario.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attribute:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>roles</code></td><td><code>Object[]</code></td><td>list of roles from the back end; fields for each    role should be Mithril streams</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/role-list-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ScenarioDetails">ScenarioDetails</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Scenario Details page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/scenario-details.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ScenarioEditor">ScenarioEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Scenario Editor page.
+For editing a scenario, the ID is read from the URL.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-pages/scenario-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ScenarioFactionEditor">ScenarioFactionEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Manages the points and roles/figures with a scenario faction.
+For edit operations, the faction ID is read from the URL.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-pages/scenario-faction-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ScenarioList">ScenarioList</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Scenario List page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/scenario-list.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="scenarioSource">scenarioSource(rec)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Finds the source object for the given scenario or figure.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>rec</code></td><td><code>Object</code></td><td>a figure or scenario record from the back end API</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>Object</code>) - the source object, or <code>null</code> if there is none
+  </div>
+
+
+
+
+
+  <div class='section todo'>
+    TODO: scenarios and figures have different source formats; should    fix the API
+
+  </div>
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="ScenarioUpdater">ScenarioUpdater</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Namespace for methods coordinating the <a class='content-link' href='#ScenarioDetails'>ScenarioDetails</a> and
+<a class='content-link' href='#ScenarioList'>ScenarioList</a> pages.</p>
+
+<p>Without using these methods, updating scenario ratings on one page
+wasn&#39;t propagating to the other.  There&#39;s probably a better way to do
+this, but this was one of the first bits of the site that I wrote.</p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      <div class='section statics'>
+        Static Functions:
+        
+
+          
+            <div class="object-name object-name-s" id="ScenarioUpdater.addObserver">ScenarioUpdater.addObserver(fn)</div>
+
+              
+              <div class="section description">
+  <p>Adds a method called back when <code>update</code> is called.</p>
+
+<p>return {void}</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>fn</code></td><td><code>function(id:number, newAvgRating:float, userRating:number, newNumVotes:number)</code></td><td>the callback function    where <code>id</code> is the scenario id, and the other parameters should be self-explanatory</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+
+          
+            <div class="object-name object-name-s" id="ScenarioUpdater.update">ScenarioUpdater.update(id, userRating)</div>
+
+              
+              <div class="section description">
+  <p>Updates the observers added from <code>addObserver</code> with new scenario ratings.</p>
+
+<p>return {void}</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>id</code></td><td><code>number</code></td><td>the scenario id</td></tr>
+      
+        
+        <tr><td><code>userRating</code></td><td><code>number</code></td><td>1..5 or <code>null</code></td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/scenario-updater.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="SelectBook">SelectBook</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component showing an alphabetized dropdown list of books.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>callback</code></td><td><code>function(bookKey)</code></td><td>function called when the selected    book changes; note that the callback parameter is a book <code>key</code>
+    rather than an <code>id</code>.</td></tr>
+        
+          
+          <tr><td><code>value</code></td><td><code>?string</code></td><td>key which should be used as the currently-selected book</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/select-book.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="shortResourceLabel">shortResourceLabel(res)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Constructs a shortened label for a book resource.</p>
+
+<p>See also <a class='content-link' href='#resourceLabel'>resourceLabel</a></p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>res</code></td><td><code>Object</code></td><td>resource object as returned from the back end</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the short name of the book (with issue number if present)
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="ShowMoreList">ShowMoreList</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for a partial list of items which can be expanded.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>buttonText</code></td><td><code>string</code></td><td>text for the button to reveal more items</td></tr>
+        
+          
+          <tr><td><code>items</code></td><td><code>Object[]</code></td><td>initial list of items to show</td></tr>
+        
+          
+          <tr><td><code>refresher</code></td><td><code>function(numItems:number)</code></td><td>function for client to    increase the size of <code>items</code></td></tr>
+        
+          
+          <tr><td><code>renderer</code></td><td><code>function(obj:Object)</code></td><td>function to return the Mithril/DOM    elements needed to render <code>obj</code></td></tr>
+        
+          
+          <tr><td><code>wrapperClasses</code></td><td><code>string</code></td><td>additional cloasses to apply to the <code>div</code>    container in addition to the default <code>show-more-list</code></td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+  <div class='section todo'>
+    TODO: The "more" button shows even when there are no more items to show.   Should probably be smarter.
+
+  </div>
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/show-more.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="silhouetteUrl">silhouetteUrl(slug)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Constructs the complete relative URL for a figure silhouette.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>slug</code></td><td><code>string</code></td><td>the <code>slug</code> field from a figure</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>string</code>) - the full relative URL
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="SortableList">SortableList</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component to manage an sortable list of items.</p>
+
+<p>Caller is responsible for styling of the CSS columns, which
+are contained within a <code>sortable-list-container</code> element:</p>
+
+<ul>
+<li><code>sortable-list-edit</code></li>
+<li><code>sortable-list-up-arrow</code></li>
+<li><code>sortable-list-down-arrow</code></li>
+<li><code>sortable-list-delete</code></li>
+</ul>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>editFn</code></td><td><code>?function(idx:number)</code></td><td>callback notifying client code to edit element at <code>idx</code> of <code>itemsProp</code>.      The edit icon is only shown if this attribute is provided.</td></tr>
+        
+          
+          <tr><td><code>itemsProp</code></td><td><code>stream</code></td><td>a Mithril stream containing the array of items to manage</td></tr>
+        
+          
+          <tr><td><code>renderFn</code></td><td><code>function(elt, idx)</code></td><td>function returning a Mithril-renderable object for the      item <code>elt</code> at <code>idx</code> within <code>itemsProp</code></td></tr>
+        
+          
+          <tr><td><code>suppressControls</code></td><td><code>?boolean</code></td><td>if <code>true</code>, the edit/move/delete controls are not rendered</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/sortable-list.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="StarRating">StarRating</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for rendering and interacting with ratings stars.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>active</code></td><td><code>boolean</code></td><td>if <code>true</code>, user can click on a star to invoke <code>callback</code></td></tr>
+        
+          
+          <tr><td><code>callback</code></td><td><code>function(id:string, newRating:number)</code></td><td>function called  when user interacts with the stars</td></tr>
+        
+          
+          <tr><td><code>id</code></td><td><code>string</code></td><td>unique id passed back in <code>callback</code></td></tr>
+        
+          
+          <tr><td><code>rating</code></td><td><code>number</code></td><td>floating point # rating average among all users</td></tr>
+        
+          
+          <tr><td><code>userRating</code></td><td><code>number</code></td><td>user&#39;s rating for item <code>id</code>, 0 if none or 1..5</td></tr>
+        
+          
+          <tr><td><code>votes</code></td><td><code>number</code></td><td># of votes cast for `id`</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/star-rating.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="Stats">Stats</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Statistics page.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/stats.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="strCmp">strCmp(a, b)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Compares two strings after normalizing them.  This make this a suitable
+function for alphabetic sorting aimed at humans.</p>
+
+<p>See also <a class='content-link' href='#cmp'>cmp</a>, <a class='content-link' href='#asNormalized'>asNormalized</a>.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>a</code></td><td><code>string</code></td><td>first string</td></tr>
+      
+        
+        <tr><td><code>b</code></td><td><code>string</code></td><td>second string</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>number</code>) - -1 (<code>a</code> &lt; <code>b</code>), 0 (<code>a</code> == <code>b</code>), or 1 (<code>a</code> &gt; <code>b</code>)
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="tallyStats">tallyStats(acc, val)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Accumulate counts from a totals structure. This is helpful for rolling
+up the stats for an army list.</p>
+
+<p>This assumes that any capping of amounts to the <code>needed</code> field has
+already been accounted for in the passed-in parameters.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameters:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>acc</code></td><td><code>Object</code></td><td>existing counts; fields will be updated</td></tr>
+      
+        
+        <tr><td><code>val</code></td><td><code>Object</code></td><td>new totals struct to add to the existing counts</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+  <div class='section function-return'>
+    Returns: (<code>Object</code>) - the <code>acc</code> parameter
+  </div>
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/army-list-utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="Typeahead">Typeahead</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for a text box with typeahead functionality.  The client
+is responsible for providing the suggestions via the <code>findMatches</code> vnode attribute.
+The return value from that function should conform to the following data
+structure:</p>
+
+<pre><code>{
+  &quot;suggestions&quot;: [
+    { &quot;name&quot;: ..., &quot;start&quot;: ..., &quot;len&quot;: ... },
+    { &quot;name&quot;: ..., &quot;start&quot;: ..., &quot;len&quot;: ... },
+  ]
+}
+</code></pre>
+
+<ul>
+<li><code>name</code> is the suggestion to show the user</li>
+<li><code>start</code> is the 0-based starting position of the match of the search string within <code>name</code></li>
+<li><code>len</code> is the length of the search string</li>
+</ul>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>findMatches</code></td><td><code>function(searchString:string, data:Object)</code></td><td>callback function to  get suggestions</td></tr>
+        
+          
+          <tr><td><code>onItemSelect</code></td><td><code>function(target:DOMElement)</code></td><td>Callback when user selects a choice.  <code>target</code> will be the selected DOM element, with <code>data-x</code> attribute for
+  each field returned by the <code>findMatches</code> callback.  For example, if <code>findMatches</code> populates
+  the suggestions array with <code>{id: 12, name: &quot;abc&quot;}</code> and the user selects that choice,
+  then <code>target.dataset.id === 12</code> and <code>target.dataset.name === &quot;abc&quot;</code>. If the user cancels
+  the search, <code>target</code> == <code>null</code>.</td></tr>
+        
+          
+          <tr><td><code>placeholder</code></td><td><code>?string</code></td><td>placeholder text for the input widget</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/components/typeahead.js</a>
+    </div>
+  
+
+    
+      
+      <div class="object-name object-name-f" id="unpropertize">unpropertize(o)</div>
+
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Converts the Mithril stream fields in the given object to their
+primitive values, recursively.</p>
+
+<p>See also <a class='content-link' href='#propertize'>propertize</a>.  Note that unlike that function,
+this one returns a <em>copy</em> and leaves the parameter unmodified.</p>
+
+</div>
+
+
+  <div class='section function-parameters'>
+    Parameter:
+    <table>
+      <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+      
+        
+        <tr><td><code>o</code></td><td><code>Object</code></td><td>the object to unpropertize</td></tr>
+      
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/utils.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-f" id="UrlFormatResourceEditor">UrlFormatResourceEditor</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for creating and editing URL-format resources.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>VNode Attributes:</span>
+      <table>
+        <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+        
+          
+          <tr><td><code>commitFn </code></td><td><code>function({book: string, issue: string, page: string})</code></td><td>called    when the user submits the form.  The parameters will be <code>null</code> if the user
+    cancels. Must be provided unless <code>embedded: true</code>, in which case this
+    parameter is ignored.</td></tr>
+        
+          
+          <tr><td><code>embedded</code></td><td><code>?boolean</code></td><td>if <code>true</code>, buttons are disabled and the caller&#39;s    fields are edited directly; if <code>false</code> or omitted, they aren&#39;t</td></tr>
+        
+          
+          <tr><td><code>fieldsOnly</code></td><td><code>?boolean</code></td><td>if <code>true</code>, the enclosing <code>div.url-resource-editor-form</code>    and form control buttons are omitted</td></tr>
+        
+          
+          <tr><td><code>initialData</code></td><td><code>?Object</code></td><td>contains the original <code>title</code>, and <code>url</code> keys    which are the values of those fields in the form. If <code>embedded: true</code>, those fields
+    are assumed to be Mithril streams, otherwise they are assumed to be primitive types.</td></tr>
+        
+      </table>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/admin-components/url-format-resource-editor.js</a>
+    </div>
+  
+
+    
+      <div class="object-name object-name-o" id="USER_FIGURE_OPS">USER_FIGURE_OPS</div>
+    
+
+    
+      <div class='section constants'>
+        Constants:
+        <ul>
+          
+            <li class="object-name-c">buy_unpainted</li>
+          
+            <li class="object-name-c">sell_unpainted</li>
+          
+            <li class="object-name-c">buy_painted</li>
+          
+            <li class="object-name-c">sell_painted</li>
+          
+            <li class="object-name-c">paint</li>
+          
+        </ul>
+      </div>
+      
+</content>
+</body>
+</html>

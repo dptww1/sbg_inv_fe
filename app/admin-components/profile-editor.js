@@ -7,6 +7,25 @@ import * as K                       from "../constants.js";
 import * as U                       from "../utils.js";
 
 //========================================================================
+/**
+ * Mithril component for editing a character's profile reference.
+ *
+ * @component
+ *
+ * A profile object has the following fields:
+ *
+ * | Name | Type | Description |
+ * | ---- | ---- | ----------- |
+ * | `name_override` | `string` | optional profile name; character name is used if not provided
+ * | `book` | `string` | book key
+ * | `issue` | `string` | optional issue identifier
+ * | `page` | `string` |- page number
+ * | `obsolete` | `boolean` | if `true`, this is an old profile for historical interest
+ *
+ * @vattr {function(profile:Object)} commitFn - called when the user submits the data;
+ *     the profile parameter will be `null` if the user cancels the form
+ * @vattr {?Object} initialData - optional initial data for the component
+ */
 export const ProfileEditor = () => {
   let expanded = false;
 

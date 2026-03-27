@@ -17,6 +17,11 @@ const reset_password = () => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Forget Password page.
+ *
+ * @component
+ */
 export const ForgotPassword = {
   view() {
     Request.errors({errors: "Automatic password reset isn't working at the moment. Send email to dave@davetownsend.org and I'll reset your password manually."});

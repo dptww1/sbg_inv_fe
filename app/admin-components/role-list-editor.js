@@ -94,6 +94,15 @@ const domRole = (role, idx) => [
 ];
 
 //========================================================================
+/**
+ * Mithril component for managing a list of roles, such as make up one of
+ * the sides in a scenario.
+ *
+ * @component
+ *
+ * @vattr {Object[]} roles - list of roles from the back end; fields for each
+ *     role should be Mithril streams
+ */
 export const RoleListEditor = {
   computePlaceholder: computePlaceholder,
 

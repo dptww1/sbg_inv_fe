@@ -19,13 +19,20 @@ const findMatches = (searchString, typeahead) => {
 }
 
 //========================================================================
-// Usage: m(FigureListEditor, {opts})
-// Options:
-//   - onItemSelect
-//       callback; same interface as Typeahead component's `onItemSelect`
-//   - exclusions:
-//       array of figure IDs
-//------------------------------------------------------------------------
+/**
+ * Mithril component for editing a list of figures, providing a typeahead
+ * to make assigning figures easy.
+ *
+ * @component
+ *
+ * @vattr {function({target:Object})} onItemSelect - callback when a figure
+ *     is selected, with the parameter being a DOM object containing the
+ *     selected figure's info. See {@link Typeahead} for the details.
+ * @vattr {?number[]} exclusions - array of figure IDs to filter out from
+ *     the typeahead, presumably because they've already been selected.
+ *
+ * @todo shouldn't use DOM in the callback
+ */
 export const FigureListEditor = {
   view: ({ attrs }) => {
     exclusions = attrs.exclusions;

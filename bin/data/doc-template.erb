@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SBG Inventory FE Docs</title>
+<style>
+body {
+  display: flex;
+  flex-direction: row;
+  font-family: 'Source Sans Pro', 'Roboto', sans-serif;
+  justify-content: flex-start;
+  line-height: 1.25em;
+  align-items: stretch;
+}
+.constants li {
+  font-family: Courier New;
+}
+content {
+  margin-left: 300px;
+  padding: 10px 0 10px 0;
+}
+.content-link {
+  color: #39f;
+  text-decoration: none;
+}
+.examples pre {
+  background-color: #eee;
+}
+nav {
+  height: 100%;
+  left: 0;
+  overflow: scroll;
+  position: fixed;
+  top: 0;
+  width: 300px;
+}
+nav .icon {
+  border-radius: 0.2em;
+  display: inline-block;
+  margin-bottom: 0.25em;
+  margin-left: 0.25em;
+  margin-top: 0.25em;
+  text-align: center;
+  width: 1.2em;
+}
+nav .object-type {
+}
+nav .is-component {
+  color: white;
+  background-color: purple;
+}
+nav .nav-row {
+}
+.nav-link {
+  color: #39f;
+  text-decoration: none;
+}
+.object-name {
+  font-weight: bold;
+  margin-top: 2em;
+  padding: 0.25em 0 0.25em 0.25em;
+}
+.object-type-f, .object-name-f {
+  background-color: darkblue;
+  color: white;
+}
+.object-type-o, .object-name-o {
+  background-color: darkgoldenrod;
+  color: white;
+}
+.object-type-s, .object-name-s {
+  background-color: lightsteelblue;
+}
+.object-type-v, .object-name-v {
+  background-color: #ddd;
+}
+.section {
+  margin-top: 1em;
+}
+.statics .object-name-s:first-child {
+  margin-top: 0.25em;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 0.25em
+}
+th {
+  text-align: left
+}
+.todo {
+  background-color: #fcc;
+}
+</style>
+</head>
+<body>
+<nav>
+  <% @doc_objects_by_src.each do |doc_hash| %>
+    <h3><%= doc_hash["src_file"].src_dir %></h3>
+    <% doc_hash["doc_objects"].each do |o| %>
+      <div class='nav-row'>
+        <span class='icon object-type object-type-<%=o.type.downcase() %>'><%= o.type %></span>
+        <% if o.is_mithril_component %>
+          <span class='icon is-component'>M</span>
+        <% else %>
+          <span class='icon'>&nbsp; </span>
+        <% end %>
+        <span class='nav-name'><a class='nav-link' href="#<%= o.name %>"><%= o.name %></a></span>
+      </div>
+    <% end %>
+  <% end %>
+</nav>
+<content>
+  <% @doc_objects.each do |o| %>
+
+    <% if o.type == 'F' && !o.is_mithril_component %>
+      <% @params = o.code_params.keys.sort { |a,b| o.code_params[a] <=> o.code_params[b] }.join(", ") %>
+      <div class="object-name object-name-f" id="<%= o.name %>"><%= o.name %>(<%= @params %>)</div>
+
+    <% else %>
+      <div class="object-name object-name-<%= o.type.downcase()%>" id="<%= o.name %>"><%= o.name %></div>
+    <% end %>
+
+    <% if o.is_constants %>
+      <div class='section constants'>
+        Constants:
+        <ul>
+          <% o.constants.each do |c| %>
+            <li class="object-name-c"><%= c %></li>
+          <% end %>
+        </ul>
+      </div>
+      <% next %><%# done with this object, no need for further processing %>
+    <% end %>
+
+    <% @f = o %>
+    <%= render "doc-function-body.erb" %>
+
+    <% unless o.statics.empty? %>
+      <div class='section statics'>
+        Static Functions:
+        <% o.statics.keys.sort.each do |st_name| %>
+
+          <% @params = o.statics[st_name].code_params.keys.sort { |a,b| o.statics[st_name].code_params[a] <=> o.statics[st_name].code_params[b] }.join(", ") %>
+            <div class="object-name object-name-s" id="<%= st_name %>"><%= st_name %>(<%= @params %>)</div>
+
+              <% @f = o.statics[st_name] %>
+              <%= render "doc-function-body.erb" %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% unless o.vars.empty? %>
+      <div class='section vars'>
+        Variables:
+          <% o.vars.keys.sort.each do |vname| %>
+            <div class="object-name object-name-v" id="<%= vname %>"><%= vname %></div>
+            <div class="description"><%= o.vars[vname].description %></div>
+          <% end %>
+          </div>
+    <% end %>
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}"><%= o.src_file.path %></a>
+    </div>
+  <% end %>
+</content>
+</body>
+</html>

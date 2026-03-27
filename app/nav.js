@@ -142,6 +142,11 @@ const stringify = obj => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the header's navigation bar.
+ *
+ * @component
+ */
 export const Nav = {
 
   view(vnode) {

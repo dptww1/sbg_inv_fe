@@ -19,6 +19,11 @@ const login = () => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Login page.
+ *
+ * @component
+ */
 export const Login = {
   view: (/*vnode*/) => {
     return [
@@ -49,7 +54,7 @@ export const Login = {
 
           m("tr",
             m("td", ""),
-            m("td", m("button[value=Sign In][name=signin]", { onclick: () => login() }, "Sign In!")))
+            m("td", m("button[value=Sign In][name=signin]", { onclick: login }, "Sign In!")))
          ))
     ];
   }

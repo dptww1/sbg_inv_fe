@@ -4,10 +4,34 @@
  */
 
 //========================================================================
+/**
+ * Compute the totals of needed/collected/painted models for a user
+ *     within a army list.
+ *
+ * @param {Object[]} figureList - army list structure returned from the
+ *     back end, where figures are sorted into type-specific lists
+ *
+ * @return {Object} totals structure (see {@link newTotalsStruct})
+ */
 export const computeTotals = figureList =>
   figureList.reduce(tallySubListStats, newTotalsStruct());
 
 //========================================================================
+/**
+ * Creates a new structure for tallying the models needed for an army list.
+ *
+ * Fields:
+ *
+ * | Field Name | Description |
+ * | ---------- | ----------- |
+ * | `needed`   | # of figures of this type needed by the scenario |
+ * | `owned`    | # of figures of this type owned by the user |
+ * |  `painted` | # of figures of this type painted by the user |
+ * |  `neededOwned` | `0..min(needed,owned)` |
+ * |  `neededPainted` | `0..min(needed,painted)` |
+ *
+ * @return {Object} the initialized structure
+ */
 export const newTotalsStruct = () => {
   return {
     needed: 0,
@@ -19,9 +43,18 @@ export const newTotalsStruct = () => {
 };
 
 //========================================================================
-// Tallies the counts from tallySubListStats().  Since sublist needed
-// values have already been capped, we can just do straight addition here.
-//------------------------------------------------------------------------
+/**
+ * Accumulate counts from a totals structure. This is helpful for rolling
+ * up the stats for an army list.
+ *
+ * This assumes that any capping of amounts to the `needed` field has
+ * already been accounted for in the passed-in parameters.
+ *
+ * @param {Object} acc - existing counts; fields will be updated
+ * @param {Object} val - new totals struct to add to the existing counts
+ *
+ * @return {Object} the `acc` parameter
+ */
 export const tallyStats = (acc, val) => {
   acc.needed += val.needed;
   acc.owned += val.owned;

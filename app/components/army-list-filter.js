@@ -16,10 +16,16 @@ const keywordToLabel = kwd =>
            .replaceAll(/(And|Of|The)/g, s => s.toLowerCase());
 
 //========================================================================
-// m(ArmyListFilter)
-// ArmyListFilter.shouldShowArmyListName(factionAbbrev) => boolean
-// ArmyListFilter.isFilterActive() => boolean
-//------------------------------------------------------------------------
+/**
+ * Mithil component for managing the filters on the Army Lists List page.
+ *
+ * @component
+ *
+ * Static methods that ESDoc doesn't expose:
+ * - {boolean} `ArmyListFilter.isFilterActive()`
+ * - {boolean} `ArmyListFilter.shouldShowArmyListName(factionAbbrev:string)`
+ * - {boolean} `ArmyListFilter.usingAllegianceMode()`
+ */
 export const ArmyListFilter = () => {
 
   selectedTypeFilter = localStorage.getItem(STORAGE_KEY_FACTION_TYPE_PREF) || "armyLists";
@@ -95,12 +101,29 @@ export const ArmyListFilter = () => {
 };
 
 //========================================================================
+/**
+ * Determines if the user is currently filtering the list of armies.
+ *
+ * @return {boolean} `true` if filtering is active, else `false`
+ */
 ArmyListFilter.isFilterActive = () => Boolean(selectedArmyListFilter);
 
 //========================================================================
+/**
+ * Determines if the user wants to see actual army lists or allegiances.
+ *
+ * @return {boolean} `true` for allegiance mode, `false` for army list mode.
+ */
 ArmyListFilter.usingAllegianceMode = () => selectedTypeFilter === "allegiances";
 
 //========================================================================
+/**
+ * Determines if an army list name should be shown based on mode and filtering.
+ *
+ * @param {string} factionAbbrev - faction to check
+ *
+ * @return {boolean} `true` if the faction name should be visible, `false` if not
+ */
 ArmyListFilter.shouldShowArmyListName = factionAbbrev => {
   const info = factionAbbrev ? FACTION_INFO.byAbbrev(factionAbbrev) : null;
 

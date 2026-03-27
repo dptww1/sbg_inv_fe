@@ -220,6 +220,12 @@ const saveCharacter = () => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Character Editor page.
+ * For edit operations, the character ID is read from the URL.
+ *
+ * @component
+ */
 export const CharacterEditor = () => {
   let lastId = null;
 

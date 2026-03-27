@@ -94,6 +94,12 @@ const save = () => {
 };
 
 //========================================================================
+/**
+ * Manages the points and roles/figures with a scenario faction.
+ * For edit operations, the faction ID is read from the URL.
+ *
+ * @component
+ */
 export const ScenarioFactionEditor = {
   oninit: () => {
     refresh();

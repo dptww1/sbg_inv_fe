@@ -48,7 +48,13 @@ const stageNewsItemForEditing = item => {
   newsItemEditBuffer.item_text = item.item_text;
 };
 
-//========================================================================
+/**
+ * Mithril component for the About page. The About page includes
+ * news, recent battle reports and character resources, a welcome message,
+ * and FAQs.
+ *
+ * @component
+ */
 export const About = () => {
   let aboutModel = {};
   let characterResources = [];

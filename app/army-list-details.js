@@ -13,6 +13,12 @@ import { Pie                 } from "./components/pie.js";
 import { Request             } from "./request.js";
 import * as U                  from "./utils.js";
 
+/**
+ * Mithril component for the Army List Details page.
+ * For edit operations, the ID of the army list is read from the URL.
+ *
+ * @component
+ */
 export const ArmyListDetails = () => {
 
   let armyListId;

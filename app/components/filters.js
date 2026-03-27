@@ -201,7 +201,24 @@ const numFiltersSet = ()=> filters.filter(f => f.active).reduce((sum, filter) =>
 const unsetAllFilters = () => filters.forEach(f => f.clearActiveFilters());
 
 //========================================================================
+/**
+ * Mithril component for the scenario filters.
+ *
+ * @component
+ *
+ * @vattr {string} activeFilters - string containing filter names which
+ *     should be shown; if none, all filters are shown.  Possibly filter
+ *     names: `Location`, `Book`, `Models`, `Map Size`, `Resources`, `Ownership`
+ *
+ */
 export const Filters = {
+  /**
+   * Determines if a given scenario should be shown based on the active filters.
+   *
+   * @param {Object} rec - the scenario to check
+   *
+   * @return {boolean} `true` if the scenario should be shown, else `false`
+   */
   filter: rec => filters.every(filter => !filter.active || filter.matches(rec)),
 
   oninit: ({ attrs: { activeFilters } }) => filters.forEach(f => {

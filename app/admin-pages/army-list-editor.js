@@ -14,6 +14,12 @@ import { SortableList             } from "../admin-components/sortable-list.js"
 import * as U                       from "../utils.js";
 
 //========================================================================
+/**
+ * Mithril component for the Army List Editor page.
+ * For edit operations, the army list ID is read from the URL.
+ *
+ * @component
+ */
 export const ArmyListEditor = () => {
   const armyList = {
     id:        prop(null),

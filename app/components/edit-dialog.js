@@ -1,6 +1,6 @@
 import m from "mithril";
 
-import * as U      from "../utils.js";
+import * as U from "../utils.js";
 
 let callbackFn;
 let curPrompt;
@@ -103,44 +103,28 @@ const validate = () => {
 };
 
 //========================================================================
-// Markup and basic validation logic needed to edit inventory records
-// and history records.
-//
-// The callback parameter (function(rec) => boolean) in the methods below
-// receives the edited .amount, .date, and .notes values in the `rec`
-// parameter when the dialog's [Save] button is clicked.  It can then do
-// additional validation if desired, and should return `true` if processing
-// should continue normally, or `false` if invalid data is detected.
-//
-// No methods here actually store any data. That's what the callback
-// methods are for.
-//
-// To use the API methods, clients must add this module's markup to their
-// page code using `m(EditDialog)`.
-//
-// API:
-//
-// - EditDialog.addError(msg)
-//   Utility method for callback functions to add an error message
-//
-// - EditDialog.editHistory(historyRec, callback)
-//   Shows the editing dialog for a history record.
-//     historyRec: history record as returned from the history APIs; passed
-//         on to the callback method.  Will not be modified if the dialog is
-//         cancelled.
-//     callback: function per above
-//
-// - EditDialog.editInventory(figure, op, callback)
-//   Shows the editing dialog for a specific figure/op combination.
-//     figure: figure record, having .id, .name, and .plural_name
-//     op: inventory operation as returned from the services
-//         . "buy_unpainted"
-//         . "sell_unpainted"
-//         . "buy_painted"
-//         . "sell_painted"
-//         . "paint"
-//     callback: function per above
-//------------------------------------------------------------------------
+/**
+ * Mithril component for editing inventory.
+ *
+ * Must be included as the final component in the page markup
+ * for those pages supporting inventory editing.  But the styling
+ * ordinarily hides this dialog.
+ *
+ * @component
+ *
+ * To show the dialog to edit a user history record, call the
+ * `editHistory` function:
+ *
+ *     EditDialog.editHistory(historyRec:Object, callback:function)
+ *
+ * - {Object} `historyRec` - a history record from the back end, which
+ *     will not be modified
+ * - {function} `callback` - a function passing a new history record
+ *     with updated fields as its sole parameter
+ *
+ * The other functions exposed here are for the use of
+ *  {@link EditInventoryDialog}.
+ */
 export const EditDialog = {
   addError: msg => errors.push(msg),
 

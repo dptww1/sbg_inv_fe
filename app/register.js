@@ -36,6 +36,11 @@ const register = () => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Registration page.
+ *
+ * @component
+ */
 export const Register = {
   view: (/*vnode*/) => {
     return [

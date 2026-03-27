@@ -1,10 +1,20 @@
 import m from "mithril";
 
-let selectedRange = "month";
-
 //========================================================================
-export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
-  let customMode = false;
+/**
+ * Mithril component managing the date filters on the Account page.
+ *
+ * @component
+ *
+ * @vattr {Object} range - object with two fields, `fromDate` and `toDate`
+ *     with date strings in `YYYY-MM-DD` format
+ * @vattr {function(range:{fromDate:string, toDate:string)} callbackFn -
+ *     function called when the date widgets here are updated
+ */
+export const DateRangePicker = () => {
+  let callback;
+  let selectedRangeName;
+  let customMode;
 
   //========================================================================
   const formatDate = dateObj => dateObj.toISOString().substring(0, 10);
@@ -38,37 +48,37 @@ export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
   };
 
   //========================================================================
-  const updateDateRange = ev => {
+  const updateDateRange = (newRangeName, range) => {
     const now = new Date();
     range.toDate = formatDate(new Date());
     customMode = false;
 
-    switch (selectedRange = ev.target.value) {
+    switch (selectedRangeName = newRangeName) {
     case "all":
       range.fromDate = formatDate(new Date(1999, 0, 1));
-      callbackFn(range);
+      callback(range);
       break;
 
     case "lastmonth":
       range.fromDate = prevMonthFromDate();
       range.toDate = prevMonthToDate();
-      callbackFn(range);
+      callback(range);
       break;
 
     case "lastyear":
       range.fromDate = formatDate(new Date(now.getFullYear() - 1, 0, 1));
       range.toDate = formatDate(new Date(now.getFullYear() - 1, 11, 31));
-      callbackFn(range);
+      callback(range);
       break;
 
     case "month":
       range.fromDate = formatDate(new Date(now.getFullYear(), now.getMonth(), 1));
-      callbackFn(range);
+      callback(range);
       break;
 
     case "year":
       range.fromDate = formatDate(new Date(now.getFullYear(), 0, 1));
-      callbackFn(range);
+      callback(range);
       break;
 
     case "custom":
@@ -78,23 +88,28 @@ export const DateRangePicker = ({ attrs: { range, callbackFn } }) => {
   };
 
   return {
-    oninit: () => {
+    oninit: ({ attrs: { range, callbackFn } }) => {
+      selectedRangeName = "month";
+      customMode = false;
       let now = new Date();
       range.fromDate = range.fromDate || formatDate(new Date(now.getFullYear(), now.getMonth(), 1));
       range.toDate = range.toDate || formatDate(now);
-      callbackFn(range);
+      callback = callbackFn;
+      callback(range);
     },
 
-    view: () => {
+    view: ({ attrs: { range, callbackFn } }) => {
       return [
         m("select.date-range-picker-select",
-          { onchange: updateDateRange },
-          m("option[value=all]",       { selected: selectedRange == "all"       }, "All Time"),
-          m("option[value=year]",      { selected: selectedRange == "year"      }, "This Year"),
-          m("option[value=lastyear]",  { selected: selectedRange == "lastyear"  }, "Last Year"),
-          m("option[value=month]",     { selected: selectedRange == "month"     }, "This Month"),
-          m("option[value=lastmonth]", { selected: selectedRange == "lastmonth" }, "Last Month"),
-          m("option[value=custom]",    { selected: selectedRange == "custom"    }, "Custom")
+          {
+            onchange: ev => updateDateRange(ev.target.value, range)
+          },
+          m("option[value=all]",       { selected: selectedRangeName == "all"       }, "All Time"),
+          m("option[value=year]",      { selected: selectedRangeName == "year"      }, "This Year"),
+          m("option[value=lastyear]",  { selected: selectedRangeName == "lastyear"  }, "Last Year"),
+          m("option[value=month]",     { selected: selectedRangeName == "month"     }, "This Month"),
+          m("option[value=lastmonth]", { selected: selectedRangeName == "lastmonth" }, "Last Month"),
+          m("option[value=custom]",    { selected: selectedRangeName == "custom"    }, "Custom")
           ),
         m("span.date-range-picker-from",
           customMode

@@ -31,15 +31,19 @@ const domStar = (starType, isUserRating, activeFn, partialVal) => {
 };
 
 //========================================================================
-// m(StarRating, {
-//     id: <val>,        // unique id passed back in `callback`
-//     active: <bool>,   // if true, user can click on a star to invoke `callback`
-//     votes: <n>,       // number of votes cast for `id`
-//     rating: <n>,      // rating average (float, not int)
-//     userRating: <n>,  // user's current rating for item `id`, 0 if none or 1..5
-//     callback: fn(id, newRating)
-//   })
-//------------------------------------------------------------------------
+/**
+ * Mithril component for rendering and interacting with ratings stars.
+ *
+ * @component
+ *
+ * @vattr {string} id - unique id passed back in `callback`
+ * @vattr {boolean} active - if `true`, user can click on a star to invoke `callback`
+ * @vattr {number} votes - # of votes cast for `id`
+ * @vattr {number} rating - floating point # rating average among all users
+ * @vattr {number} userRating - user's rating for item `id`, 0 if none or 1..5
+ * @vattr {function(id:string, newRating:number)} callback - function called
+ *   when user interacts with the stars
+ */
 export const StarRating = {
   view: vnode => {
     const { id, active, votes, callback } = vnode.attrs;

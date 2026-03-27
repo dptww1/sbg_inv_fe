@@ -1,0 +1,408 @@
+#!ruby
+#
+# Like JSDoc/ESDoc/etc but geared toward this project's needs.
+# The Mithril framework uses components with parameters passed
+# as attributes, which the documentation systems that I experimented
+# with don't handle particularly well.  So I rolled my own.  There's
+# no actual parsing happening, just heuristics reflecting my coding
+# style. Error checking is extremely minimal.  Organization reflects
+# the incremental nature of development.
+
+
+require 'erb'
+require 'find'
+require 'redcarpet'
+
+# Parsing variables
+@last_comment         # doc comment being parsed
+@last_namespace       # last namespace-looking name parsed
+@parse_state = :text
+
+@doc_objects = []     # list of documented objects
+
+$md_parser = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(),
+                                     autolink: true,
+                                     fenced_code_blocks: true,
+                                     tables: true)
+
+#========================================================================
+# Convert the given (presumed Markdown) text to HTML.
+#
+# RedCarpet wraps text fragments in paragraph tags, which we don't want,
+# so this method then removes.
+#------------------------------------------------------------------------
+def make_html(text)
+  if text
+    rendered_text = $md_parser.render(text)
+    # Courtesy: https://github.com/vmg/redcarpet/issues/92#issuecomment-35462000
+    Regexp.new(/\A<p>(.*)<\/p>\Z/m).match(rendered_text)[1] rescue text
+  else
+    text
+  end
+end
+
+#========================================================================
+class CommentParam
+  attr_reader :name, :type, :desc
+
+  def initialize(name="", type="", desc="")
+    @name = name
+    @type = type
+    @desc = desc
+  end
+
+  def htmlify
+    @desc = make_html(@desc)
+  end
+
+  def <<(text)
+    @desc << text
+  end
+
+  def inspect
+    "CommentParam: name=#{@name} type=#{@type} desc=#{@desc}"
+  end
+end
+
+#========================================================================
+class CommentReturn
+  attr_reader :type, :desc
+
+  def initialize(type, desc)
+    @type = type
+    @desc = desc
+  end
+
+  def htmlify
+    @desc = make_html(@desc)
+  end
+
+  def <<(text)
+    @desc << text
+  end
+end
+
+#========================================================================
+class CommentBlock
+  attr_reader :body, :constants, :doc_params, :doc_attrs, :doc_return
+  attr_reader :examples, :is_constants, :is_mithril_component, :todo
+
+  def initialize
+    @body = ""
+    @constants = []
+    @doc_params = {}
+    @doc_attrs = {}
+    @doc_return = nil
+    @examples = []
+    @is_constants = false
+    @is_mithril_component = false
+    @todo = nil
+
+    @state = :normal
+    @cur_text_blob = nil
+  end
+
+  def htmlify
+    unless @body.empty?
+      @body = $md_parser.render(@body)
+    end
+
+    @doc_params.each_value do |p|
+      p.htmlify
+    end
+
+    @doc_attrs.each_value do |a|
+      a.htmlify
+    end
+
+    if @doc_return
+      @doc_return.htmlify
+    end
+  end
+
+  def <<(text)
+    if @state == :check_for_continuation
+      # indented text means we're continuing the description from the tag
+      # on the previous line
+      if text =~ /^\s{2,}/
+        @cur_text_blob << text
+        return
+
+      else
+        @state = :normal
+      end
+    end
+
+    @state = :check_for_continuation
+
+    if text =~ /^@component/
+      @is_mithril_component = true
+      @state = :normal
+
+    elsif text =~ /^@example\s+(.*)/
+      i = @examples.size
+      @examples[i] = $1
+      @cur_text_blob = @examples[i]
+
+    elsif text =~ /^@param\s+{(.*)}\s+(.*)\s+-\s+(.*)$/
+      @cur_text_blob = CommentParam.new($2, $1, $3)
+      @doc_params[$2] = @cur_text_blob
+
+    elsif text =~ /^@return\s+{(.*)}\s+(.*)$/
+      @doc_return = CommentReturn.new($1, $2)
+      @cur_text_blob = @doc_return
+
+    elsif text =~ /^@todo\s+(.*)$/
+      @todo = $1
+      @cur_text_blob = @todo
+
+    elsif text =~ /^@vattr\s+{(.*)}\s+(.*)\s+-\s+(.*)$/
+      @cur_text_blob = CommentParam.new($2, $1, $3)
+      @doc_attrs[$2] = @cur_text_blob
+
+    elsif text =~ /^@constants/
+      @is_constants = true
+
+    else
+      @body << text
+      @state = :normal
+    end
+  end
+end
+
+#========================================================================
+class DocObject
+  attr_reader :name, :code_params, :comment_block, :constants
+  attr_reader :src_file, :statics, :type, :vars
+
+  def initialize(name, comment, src_file, type, params=nil)
+    @name = name
+    @code_params = {}
+    unless params.nil? || params.empty?
+      params.sub(/^\s*\(\s*/, "") # remove leading '('
+        .sub(/\s*\)\s*/, "")      # remove trailing ')'
+        .split(/\s*,\s*/)
+        .each_with_index { |p,i| @code_params[p.sub(/\s*=.*$/, '')] = i }
+    end
+    @comment_block = comment
+    @src_file = src_file
+    @statics = {} # key: name, value: CommentBlock
+    @vars = {} # key: name, value: CommentBlock
+    @type = type
+  end
+
+  def add_var(name, comment)
+    @vars[name] = DocObject.new(name, comment, src_file, 'V')
+  end
+
+  def add_static(name, comment, params=nil)
+    @statics[name] = DocObject.new(name, comment, 'S', src_file, params)
+  end
+
+  def commented_param(param_name)
+    p = @comment_block.doc_params[param_name]
+    if p.nil?
+      CommentParam.new
+    else
+      p
+    end
+  end
+
+  def attrs
+    @comment_block.doc_attrs
+  end
+
+  def constants
+    @comment_block.constants
+  end
+
+  def description
+    @comment_block.body
+  end
+
+  def examples
+    @comment_block.examples
+  end
+
+  def is_constants
+    @comment_block.is_constants
+  end
+
+  def htmlify
+    if @comment_block
+      @comment_block.htmlify
+    end
+
+    @statics.each_value do |comment_block|
+      comment_block.htmlify
+    end
+
+    @vars.each_value do |comment_block|
+      comment_block.htmlify
+    end
+  end
+
+  def is_mithril_component
+    @comment_block.is_mithril_component
+  end
+
+  def return
+    @comment_block.doc_return
+  end
+
+  def todo
+    @comment_block.todo
+  end
+
+  def <=>(other)
+    @name.downcase <=> other.name.downcase
+  end
+end
+
+#========================================================================
+class SrcFile
+  attr_reader :path, :src_dir, :filename
+
+  def initialize(path)
+    @path = path
+    @src_dir = File.dirname(path).sub(/^app\/?/, '')
+    @filename = File.basename(path)
+  end
+end
+
+#========================================================================
+def create_doc_object(line, comment, src_file)
+  # Exported top-level function
+  if line =~ /^export\s+const\s+(.*?)\s*=\s*(.*?)\s*=>/
+    @doc_objects << DocObject.new($1, comment, src_file, 'F', $2)
+    @last_namespace = $1
+
+  # Exported top-level static method directly applied to type
+  elsif line =~ /^(\w+)\.(\w+)\s+=\s*(.*?)\s*=>/
+    docobj = @doc_objects.find { |o| o.name == $1 }
+    docobj.add_static("#{$1}.#{$2}", comment, $3)
+
+  # Exported top-level object/namespace
+  elsif line =~ /^export\s+const\s+(.*?)\s*=\s*{/
+    @doc_objects << DocObject.new($1, comment, src_file, 'O')
+    @last_namespace = $1
+
+  # Function within a namespace
+  elsif line =~ /^\s+([a-z]\w*):\s+(.*?)\s*=>/ ||
+        line =~ /^\s+([a-z]\w*)(.*?)\s*{/
+    docobj = @doc_objects.find { |o| o.name == @last_namespace }
+    docobj.add_static("#{@last_namespace}.#{$1}", comment, $2)
+
+  # Stream variable within a namespace
+  elsif line =~ /\s+([a-z]\w*):\s+prop\w*()/
+    docobj = @doc_objects.find { |o| o.name == @last_namespace }
+    docobj.add_var("#{@last_namespace}.#{$1}", comment)
+  end
+end
+
+#========================================================================
+def parse_comment(line)
+  if line =~ /^\s*\*\//
+    @parse_state = @last_comment.is_constants ? :parse_constants : :require_doc_object
+
+  else
+    line.sub!(/^\s*\*/, '')
+    @last_comment << (line.chomp.empty? ? line : line.sub!(/^\s/, ''))
+  end
+end
+
+#========================================================================
+def parse_constants(line, src_file)
+  if line =~ /^};/
+    @parse_state = :text
+
+  elsif line =~ /^\s*(\w+):/
+    @last_comment.constants << $1
+
+  elsif line =~ /^export\s+const\s+(\w|_)+\s*=\s*{/
+    create_doc_object(line, @last_comment, src_file)
+
+  else
+    # nothing to do
+  end
+end
+
+#========================================================================
+def parse_text(line)
+  if line =~ /^\s*\/\*\*/
+    @parse_state = :comment
+    @last_comment = CommentBlock.new
+
+  elsif /^export\s+const\s+([^ ]*)\s*=/.match(line)
+    puts "    [#{$1}] is undocumented"
+  end
+end
+
+#========================================================================
+def render(path)
+  ERB.new(File.read("#{__dir__}/data/#{path}")).result(binding)
+end
+
+#========================================================================
+# Main Program
+#------------------------------------------------------------------------
+Find.find('app') do |path|
+  if path.end_with?('.js')
+    puts "...#{path}"
+
+    @last_namespace = nil
+    src_file = SrcFile.new(path)
+
+    File.new(path).each_line do |line|
+
+      line.gsub!(/{@link\s+(.*?)}/, "<a class='content-link' href='#\\1'>\\1</a>")
+
+      case @parse_state
+      when :text
+        parse_text(line)
+
+      when :comment
+        parse_comment(line)
+
+      when :parse_constants
+        parse_constants(line, src_file)
+
+      when :require_doc_object
+        create_doc_object(line, @last_comment, src_file)
+        @parse_state = :text
+      end
+    end
+  end
+end
+
+# Now that all input has been processed, convert all text fields to HTML
+@doc_objects.each do |docobj|
+  docobj.htmlify
+end
+
+@doc_objects.sort!
+
+@cmp_src_then_name = ->(a,b) do
+  i = a.src_file.src_dir <=> b.src_file.src_dir
+  i == 0 ? a <=> b : i  # 0 isn't false in Ruby, so can't make this a concise one-liner with ||
+end
+
+# now fill in @doc_objects_by_src
+#
+# list of { src_file: SrcFile, doc_objects: DocObject[] }
+# where the DocObject[] array is sorted by name
+@doc_objects_by_src = []
+
+@doc_objects.sort(&@cmp_src_then_name).each do |o|
+  this_entry = @doc_objects_by_src.find { |entry| entry["src_file"].src_dir == o.src_file.src_dir }
+  unless this_entry
+    this_entry = { "src_file" => o.src_file, "doc_objects" => [] }
+    @doc_objects_by_src << this_entry
+  end
+
+  this_entry["doc_objects"] << o
+end
+
+# Now generate the doc page
+Dir.mkdir('docs') unless File.exist?('docs')
+File.write('docs/index.html', ERB.new(File.read("#{__dir__}/data/doc-template.erb")).result(binding))

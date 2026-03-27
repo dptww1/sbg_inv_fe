@@ -8,18 +8,23 @@ import { SelectBook } from "../components/select-book.js";
 import * as U         from "../utils.js";
 
 /**
- * Mithril component for handling creating & editing of Book resources.
+ * Mithril component for handling creating & editing of book resources.
  *
- * Optional vnode attributes:
- *   - commitFn({ book: <string>, issue: <string>, page: <string> }) called when user submits the form.
- *       The parameter will be `null` if the user cancels.  Must be provided unless `embedded: true`,
- *       in which case this parameter is ignored.
- *   - embedded if `true`, buttons are disabled and the caller's fields are edited directly
- *   - initialData value is object with optional `book`, `issue`, and `page` keys, which are the initial
- *       values of those fields in the form.  If `embedded: true`, those fields are assumed to be
- *       `prop()`s, otherwise they are assumed *not* to be `prop()`s.
+ * @component
  *
- * TODO: handle sort_order, id attributes?
+ * @vattr {function({book:string, issue:string, page:string})} commitFn  - called
+ *     when the user submits the form.  The parameters will be `null` if the user
+ *     cancels. Must be provided unless `embedded: true`, in which case this
+ *     parameter is ignored.
+ * @vattr {?boolean} embedded - if `true`, buttons are disabled and the caller's
+ *     fields are edited directly; if `false` or omitted, they aren't
+ * @vattr {?boolean} fieldsOnly - if `true`, the enclosing `div.book-resource-editor-form`
+ *     and form control buttons are omitted
+ * @vattr {?Object} initialData - contains the original `book`, `issue`, and `page` keys
+ *     which are the values of those fields in the form. If `embedded: true`, those fields
+ *     are assumed to be Mithril streams, otherwise they are assumed to be primitive types.
+ *
+ * @todo handle sort_order, id attributes?
  */
 export const BookFormatResourceEditor = () => {
   const PARAMS = [ "book", "issue", "prop" ];
@@ -107,6 +112,13 @@ export const BookFormatResourceEditor = () => {
 };
 
 //========================================================================
+/**
+ * Determines whether the given resource is a complete book reference.
+ *
+ * @param {Object} resource - a resource record from the back end
+ *
+ * @return {boolean} `true` if the resource is valid, or `false` if it isn't
+ */
 BookFormatResourceEditor.isValid = resource =>
   U.isNotBlank(U.getByPath(resource, "book"))
     && U.isNotBlank(U.getByPath(resource, "page"));

@@ -94,6 +94,12 @@ const domArmyLists = () => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the List of Army Lists page. Yeah, the name is
+ *     awkward.
+ *
+ * @component
+ */
 export const ArmyListsList = {
   oninit: () => {
     if (Credentials.isLoggedIn()) {
