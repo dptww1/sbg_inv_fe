@@ -39,7 +39,7 @@ export const Header = {
     return m(".page-header",
       m(".title", "Middle Earth SBG Inventory", Request.curApi().name === "local" ? "(LOCAL)" : ""),
       m(".last-update",
-        "Support the Site on ",
+        "Please support this site on ",
         m("a", { href: "https://www.patreon.com/SBGInventory" }, "Patreon"),
         " | ",
         updateDate
