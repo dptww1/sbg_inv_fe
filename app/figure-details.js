@@ -57,7 +57,7 @@ const domHistory = () => {
            m(".section-header", "Activity"),
            m(FigureHistoryList,
              {
-               list: figure.history.map(rec => Object.assign(rec, { name: figure.name, plural_name: figure.plural_name})),
+               list: figure.history,
                hideName: true,
                callbackFn: () => requestFigureModelData(figure.id)
              }));
