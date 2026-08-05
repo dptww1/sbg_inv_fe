@@ -3,7 +3,6 @@ import m         from "mithril";
 import { ActivityChart     } from "./components/activity-chart.js";
 import { Credentials       } from "./credentials.js";
 import { DateRangePicker   } from "./components/date-range-picker.js";
-import { EditDialog        } from "./components/edit-dialog.js";
 import { FigureHistoryList } from "./components/figure-history-list.js";
 import { Header            } from "./header.js";
 import * as K                from "./constants.js";
@@ -186,9 +185,7 @@ export const Account = {
             m("tr",
               m("td", ""),
               m("td", m("button[value=Update][name=update]", { onclick: updateAccount }, "Update My Account")))))
-       ),
-
-      m(EditDialog),
+       )
     ];
   }
 };
