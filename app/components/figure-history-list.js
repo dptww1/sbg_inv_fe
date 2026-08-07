@@ -1,7 +1,6 @@
 import m from "mithril";
 
 import * as K         from "../constants.js";
-import { EditDialog } from "./edit-dialog.js";
 import { Request }    from "../request.js";
 import * as U         from "../utils.js";
 
@@ -14,19 +13,6 @@ const removeHistory = (rec, callbackFn) => {
                      callbackFn();
                    });
   }
-};
-
-//========================================================================
-const updateHistory = (hist, callbackFn) => {
-  Request.put("/userhistory/" + hist.id,
-              {
-                history: hist
-              },
-              () => {
-                Request.messages("Record updated");
-                callbackFn();
-              });
-  return true;
 };
 
 /**=======================================================================
