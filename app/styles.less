@@ -92,6 +92,25 @@ div.stacked-column {
   margin-right: 0.75em;
 }
 
+form.two-column-grid {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: min-content max-content;
+}
+
+form.two-column-grid label {
+  grid-column-start: 1;
+  padding-right: 1em;
+}
+
+form.two-column-grid .form-field-text-wrapper {
+  grid-column-start: 2;
+}
+
+form.two-column-grid .grid-column-2 {
+  grid-column-start: 2;
+}
+
 input[type=email],
 input[type=password],
 input[type=search],

@@ -13,6 +13,7 @@ import { ForgotPassword        } from "./forgot-password.js";
 import { Login                 } from "./login.js";
 import { Page404               } from "./page-404.js";
 import { Register              } from "./register.js";
+import { ResetPassword         } from "./reset-password.js";
 import { ScenarioDetails       } from "./scenario-details.js";
 import { ScenarioEditor        } from "./admin-pages/scenario-editor.js";
 import { ScenarioFactionEditor } from "./admin-pages/scenario-faction-editor.js";
@@ -53,6 +54,7 @@ m.route(document.getElementById("mainDiv"), "/scenarios", {
   "/figure-edit/:id"        : AuthenticatingResolver(FigureEditor),
   "/figure-edit"            : AuthenticatingResolver(FigureEditor),
   "/figures"                : ArmyListsList,
+  "/reset-password"         : ResetPassword,
   "/scenarios/:key"         : ScenarioDetails,
   "/scenarios"              : ScenarioList,
   "/scenario-edit/:id"      : AuthenticatingResolver(ScenarioEditor),

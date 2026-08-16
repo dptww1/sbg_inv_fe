@@ -85,17 +85,26 @@ const refreshHistory = () => {
 
 //========================================================================
 const updateAccount = () => {
-  const paramMap = {};
+  const paramMap = { id: 0 };
 
-  if (Credentials.email()) {
-    paramMap["email"] = Credentials.email();
+  // If the URL contains a token, we're doing a reset password operation.
+  if (m.route.param("token")) {
+    paramMap["token"] = m.route.param("token");
+
+    // Someone who forgot their password might still have lingering cookies.
+    // Delete them here.  It won't affect legitimate uses, and if someone is
+    // being squirrelly and trying to affect someone else and this messes
+    // them up, well, so be it.
+    Credentials.clear();
+
+  } else { // otherwise, a logged-in user is editing their own email and/or password
+    paramMap["id"] = Credentials.userId();
   }
 
-  if (Credentials.password()) {
-    paramMap["password"] = Credentials.password();
-  }
+  paramMap["email"] = Credentials.email();
+  paramMap["password"] = Credentials.password();
 
-  Request.put("/users/" + Credentials.userId(),
+  Request.put("/users/" + paramMap.id,
               { user: paramMap },
               () => {
                 Request.messages("Account updated.");
@@ -125,37 +134,40 @@ export const Account = {
 
         Credentials.isAdmin() ? domBackEndAdmin() : null,
 
-        m(m.route.Link,
-          { href: "/scenarios", onclick: () => { Credentials.clear(); } },
-          m("span.action", K.ICON_STRINGS.log_out),
-          "Log Out"),
+        Credentials.isLoggedIn()
+          ? [
+              m(m.route.Link,
+                { href: "/scenarios", onclick: () => Credentials.clear() },
+                m("span.action", K.ICON_STRINGS.log_out),
+                "Log Out"),
 
-        m(".section-header", "Activity"),
+              m(".section-header", "Activity"),
 
-        m("p",
-          domHistoryTypeFilter()),
+              m("p", domHistoryTypeFilter()),
 
-        m("p",
-          m(DateRangePicker,
-            {
-              callbackFn: refreshHistory,
-              range: dateRange,
-            })),
+              m("p",
+                m(DateRangePicker,
+                  {
+                    callbackFn: refreshHistory,
+                    range: dateRange,
+                  })),
 
-        m(".chartContainer",
-          m(ActivityChart,
-            {
-              activityList: filteredActivityList,
-            })),
+              m(".chartContainer",
+                m(ActivityChart,
+                  {
+                    activityList: filteredActivityList,
+                  })),
 
-        m("p",
-          m(FigureHistoryList,
-            {
-              list: filteredActivityList,
-              hideName: false,
-              callbackFn: refreshHistory,
-              showTotals: historyFilters.length
-            })),
+              m("p",
+                m(FigureHistoryList,
+                  {
+                    list: filteredActivityList,
+                    hideName: false,
+                    callbackFn: refreshHistory,
+                    showTotals: historyFilters.length
+                  }))
+            ]
+          : null,
 
         m(".section-header", "Account Admin"),
 
@@ -164,9 +176,13 @@ export const Account = {
         m("p",
           m("table",
 
-            m("tr",
-              m("td", "Name"),
-              m("td", Credentials.name())),
+            Credentials.isLoggedIn()
+              ? [
+                  m("tr",
+                    m("td", "Name"),
+                    m("td", Credentials.name()))
+                ]
+              : null,
 
             m("tr",
               m("td", "Email"),

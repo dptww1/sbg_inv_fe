@@ -12,7 +12,7 @@ const reset_password = () => {
   Request.post("/reset-password",
                { user: { email: email() } },
                () => {
-                 Request.messages({errors: "Your password has been reset.  You should receive an email with your new password shortly."});
+                 Request.messages("You should receive an email shortly with a link to reset your password.");
                });
 };
 
@@ -24,8 +24,6 @@ const reset_password = () => {
  */
 export const ForgotPassword = {
   view() {
-    Request.errors({errors: "Automatic password reset isn't working at the moment. Send email to dave@davetownsend.org and I'll reset your password manually."});
-
     return [
       m(Header),
       m(Nav, { selected: "Login" }),
@@ -34,7 +32,8 @@ export const ForgotPassword = {
         m("div", [
           m("p.text", "Enter your email address to reset your password:"),
           m("p.text", m("input.email[type=email][size=40]", { onchange: ev => email(ev.target.value) })),
-          m("p.text", m("button", { onclick: () => reset_password() }, "Reset"))
+          m("p.text", m("button", { onclick: () => reset_password() }, "Reset")),
+          m("p.text", "If you have difficulties, please email me at ", m("a[href=mailto:dave@davetownsend.org]", "dave@davetownsend.org"), ".")
         ])
       ])
     ];
