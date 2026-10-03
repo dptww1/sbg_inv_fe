@@ -22,13 +22,12 @@ const resetPassword = () => {
   }
 
   if (U.isNoneBlank(urlParams.email(), urlParams.password())) {
-
-  Request.post("/reset-password",
-    { user: U.unpropertize(urlParams) },
-    () => {
-      Request.messages("Your password has been reset.")
-      m.route.set("/login");
-    });
+    Request.post("/reset-password",
+      { user: U.unpropertize(urlParams) },
+      () => {
+        Request.messages("Your password has been reset.")
+        m.route.set("/login");
+      });
 
   } else {
     Request.errors("Please enter both your email and a new password");
