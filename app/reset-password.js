@@ -15,10 +15,11 @@ const urlParams = {
 }
 
 //========================================================================
-const resetPassword = () => {
+const resetPassword = ev => {
   if (U.isBlank(urlParams.token())) {
     Request.errors("You are missing the reset token needed to reset your password. Please use the link supplied in the email to reset your password");
-    return;
+    ev.preventDefault();
+    return false;
   }
 
   if (U.isNoneBlank(urlParams.email(), urlParams.password())) {
@@ -32,6 +33,9 @@ const resetPassword = () => {
   } else {
     Request.errors("Please enter both your email and a new password");
   }
+
+  ev.preventDefault();
+  return false;
 };
 
 //========================================================================
@@ -50,7 +54,7 @@ export const ResetPassword = {
         m("form.two-column-grid",
           FormField.text(urlParams.email, "Email", { placeholder: "abc@example.com" }),
           FormField.text(urlParams.password, "Password", { placeholder: "********" }),
-          m(".grid-column-2", m("button", { onclick: resetPassword }, "Reset Password"))))
+          m(".grid-column-2", m("button[type=button]", { onclick: resetPassword }, "Reset Password"))))
     ];
   }
 };
