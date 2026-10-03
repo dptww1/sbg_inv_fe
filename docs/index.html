@@ -196,6 +196,14 @@ th {
       </div>
     
       <div class='nav-row'>
+        <span class='icon object-type object-type-o'>O</span>
+        
+          <span class='icon is-component'>M</span>
+        
+        <span class='nav-name'><a class='nav-link' href="#EmailSent">EmailSent</a></span>
+      </div>
+    
+      <div class='nav-row'>
         <span class='icon object-type object-type-f'>F</span>
         
           <span class='icon'>&nbsp; </span>
@@ -1900,6 +1908,46 @@ inventory operation is submitted</li>
   
 
     
+      <div class="object-name object-name-o" id="EmailSent">EmailSent</div>
+    
+
+    
+
+    
+    <div class="section description">
+  <p>Mithril component for the Email Sent page.</p>
+
+<p>Shown after a user submits the <a class='content-link' href='#ForgotPassword'>ForgotPassword</a>a form.</p>
+
+</div>
+
+
+
+
+  <div class='section vnode-attrs'>
+    
+      <span class='section-title'>No vnode attributes.</span>
+    
+  </div>
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    <div class='section source-file'>
+      Source: <a href="../#{entry.path}">app/email-sent.js</a>
+    </div>
+  
+
+    
       
       <div class="object-name object-name-f" id="emptyOutObject">emptyOutObject(obj, overrides)</div>
 
@@ -2063,7 +2111,20 @@ When editing a figure, the figure ID is read from the URL.</p>
 
     
     <div class="section description">
-  <p>Shows an editable list of user history records.</p>
+  <p>Shows a list of user history records.  Only the last record is
+editable, and then only if all the records pertain to a single figure.</p>
+
+<p>The edit limitation is to facilitate &quot;undo&quot; functionality on the back end,
+where allowing arbitrary editing could result in nonsensical results.
+Consider a figure with only the following two records:
+   2026-04-02 Bought Unpainted 4
+   2025-10-20 Painted 4
+If the user deletes the first record, the back end undoes his/her inventory
+and resets the amount back to 0.  But then the second record makes no sense.
+More complicated cases are possible.  It seems easier just to disallow
+editing of any but the last record in the list.</p>
+
+<p>Note that the back end doesn&#39;t enforce the only-edit-last-record rule!</p>
 
 <p>Assumes the owning page has included <code>m(Dialog)</code> in its view.</p>
 
@@ -2082,8 +2143,9 @@ When editing a figure, the figure ID is read from the URL.</p>
           <tr><td><code>callbackFn</code></td><td><code>function()</code></td><td>function called if any record in <code>list</code>    is edited or deleted</td></tr>
         
           
-          <tr><td><code>hideName</code></td><td><code>boolean</code></td><td>if <code>true</code>, the figure name is omitted from    the list; useful on the <a class='content-link' href='#FigureDetails'>FigureDetails</a> page where the records
-    are all referencing that current figure</td></tr>
+          <tr><td><code>hideName</code></td><td><code>boolean</code></td><td>if <code>true</code>, the figure name is omitted from    the list; used on the <a class='content-link' href='#FigureDetails'>FigureDetails</a> page where the records
+    are all referencing that current figure. Edit tools are only available
+    when this flag is <code>true</code></td></tr>
         
           
           <tr><td><code>list</code></td><td><code>Object[]</code></td><td>array of user<em>figure</em>history records from the back end</td></tr>
