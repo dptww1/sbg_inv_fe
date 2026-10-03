@@ -31,31 +31,22 @@ export const Login = {
       m(Nav, { selected: "Login" }),
       m("div.main-content forgot-password",
 
+        m("p", "Log in using your email and password. Both are ", m("b", "case-sensitive!")),
+
+        m("form.two-column-grid",
+          m("label[for=email]", "Email"),
+          m("input[type=email][name=email][size=40]", { onchange: ev => Credentials.email(ev.target.value) }),
+
+          m("label[for=password]", "Password"),
+          m("input[type=password][name=password][size=40]", { onchange: ev => Credentials.password(ev.target.value) }),
+
+          m(".grid-column-2",
+            m("button[type=button][value=Sign In][name=signin]", { onclick: login }, "Sign In!"))),
+
         m("p",
-          "Log in using your email and password. Both are case-sensitive!  New user? ",
-          m(m.route.Link, { href: "/register" }, "Sign up!")
-         ),
+          "New User? ", m(m.route.Link, { href: "/register" }, "Sign up!")),
 
-        m("table",
-          m("tr",
-            m("td", "Email"),
-            m("td",
-              m("input[type=email][name=email][size=40]", { onchange: ev => Credentials.email(ev.target.value) }))),
-
-          m("tr",
-            m("td", "Password"),
-            m("td",
-              m("input[type=password][name=password][size=40]", { onchange: ev => Credentials.password(ev.target.value) }))),
-
-          m("tr.field-note",
-            m("td", ""),
-            m("td",
-              m(m.route.Link, { class: "forgot-pw", href: "/forgot-pw" }, "Forgot your password?"))),
-
-          m("tr",
-            m("td", ""),
-            m("td", m("button[value=Sign In][name=signin]", { onclick: login }, "Sign In!")))
-         ))
+        m("p", m(m.route.Link, { class: "forgot-pw", href: "/forgot-pw" }, "Forgot your password?")))
     ];
   }
 };
