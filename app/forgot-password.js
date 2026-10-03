@@ -12,7 +12,7 @@ const reset_password = () => {
   Request.post("/reset-password",
                { user: { email: email() } },
                () => {
-                 Request.messages("You should receive an email shortly with a link to reset your password.");
+                 m.route.set("/email-sent");
                });
 };
 
