@@ -76,7 +76,7 @@ export const ArmyListEditor = () => {
   const formIsValid = () =>
     armyList.name() !== ""
       && armyList.abbrev() !== ""
-      && armyList.sources().length > 0
+      && (armyList.legacy() || armyList.sources().length > 0) // only true army lists actually require sources
       && armyList.figures().length > 0
 
   //========================================================================
