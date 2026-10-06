@@ -184,13 +184,7 @@ const loadCharacter = () => {
   Request.get("/character/" + id,
     resp => {
       if (U.isNotBlank(resp.data.id)) {
-        character.id(resp.data.id);
-        character.name(resp.data.name);
-        character.figure_ids(resp.data.figures.map(f => f.id));
-        character.resources(resp.data.resources);
-        character.rules(resp.data.rules);
-
-        resp.data.figures.forEach(f => figures.push({id: f.id, name: f.name }));
+        syncLocalVarsWithApiResponse(resp.data);
       }
     });
 };
@@ -214,9 +208,21 @@ const saveCharacter = () => {
     {
       character: U.unpropertize(character)
     },
-    () => {
+    resp => {
+      syncLocalVarsWithApiResponse(resp.data);
       Request.messages("Saved " + character.name());
     });
+};
+
+//========================================================================
+const syncLocalVarsWithApiResponse = respData => {
+  character.id(respData.id);
+  character.name(respData.name);
+  character.figure_ids(respData.figures.map(f => f.id));
+  character.resources(respData.resources);
+  character.rules(respData.rules);
+
+  respData.figures.forEach(f => figures.push({id: f.id, name: f.name }));
 };
 
 //========================================================================
