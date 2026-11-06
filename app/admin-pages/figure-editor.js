@@ -115,6 +115,7 @@ const resetForm = () => {
     create_char: false
   });
   editMode = false;
+  cancelSameAs();
 }
 
 //========================================================================
