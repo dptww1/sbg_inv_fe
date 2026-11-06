@@ -39,6 +39,13 @@ const resetPassword = ev => {
 };
 
 //========================================================================
+/**
+ * Mithril component for the Reset Password page
+ *
+ * No vnode attributes.
+ *
+ * @component
+ */
 export const ResetPassword = {
   oninit() {
     U.emptyOutObject(urlParams);

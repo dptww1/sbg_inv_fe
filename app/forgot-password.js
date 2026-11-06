@@ -20,6 +20,8 @@ const reset_password = () => {
 /**
  * Mithril component for the Forget Password page.
  *
+ * No vnode attributes.
+ *
  * @component
  */
 export const ForgotPassword = {
