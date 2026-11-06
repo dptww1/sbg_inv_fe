@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+#MISE description="Build dependency graph of Javascript modules"
+./node_modules/madge/bin/cli.js --image modules.svg app
+open -a "Firefox" modules.svg

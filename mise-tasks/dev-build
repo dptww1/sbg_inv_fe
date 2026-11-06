@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+#MISE description="(default) Build Local Dev index.html and start FE server"
+#MISE alias="default"
+date
+BACKEND=1 rollup -c
+cp -r app/assets/* public
+minify --type css app/styles.css --output public/app.min.css
+touch public/app.min.css
+sed -e 's/GLOBALS_URL/http:\/\/localhost:4000\/js\/globals/' app/assets/index.html >public/index.html
+pushd public && python3 -m http.server 3333
+popd

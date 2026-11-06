@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+#MISE description="Show Javascript docs"
+open ./docs/index.html

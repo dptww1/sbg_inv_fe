@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+#MISE description="Make Javascript docs"
+ruby ./bin/mkdocs

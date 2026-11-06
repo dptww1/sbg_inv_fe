@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+#MISE description="Check Javascript for style errors"
+eslint --c eslint.config.js app

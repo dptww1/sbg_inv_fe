@@ -1,0 +1,11 @@
+[tools]
+"gem:redcarpet" = "latest"
+minify = "latest"
+node = "25.8.0"
+"npm:eslint" = "latest"
+"npm:rollup" = "latest"
+ruby = "3.3.11"
+
+[tasks.hello]
+description = "Test"
+run = "echo hello from mise"
