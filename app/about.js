@@ -193,6 +193,13 @@ export const About = () => {
   ];
 
   //========================================================================
+  const domSupporters = () => [
+    m("div.section-header", "SBG Supporters"),
+    m(".supporter", "Dave Townsend"),
+    m(".supporter", "LordImrahil")
+  ];
+
+  //========================================================================
   const saveAboutAndFAQs = () => {
     Request.put("/about/-1",
                 { "about": aboutModel },
@@ -227,6 +234,8 @@ export const About = () => {
         m(".main-content",
 
           domNews(),
+
+          domSupporters(),
 
           domScenarioResources(),
 
