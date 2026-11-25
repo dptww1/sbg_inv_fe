@@ -195,6 +195,9 @@ export const About = () => {
   //========================================================================
   const domSupporters = () => [
     m("div.section-header", "SBG Supporters"),
+    m(".supporter-appeal",
+      "Please help keep SBG Inventory running by becoming a supporter on ",
+      m("a", { href: "https://www.patreon.com/SBGInventory" }, "Patreon")),
     m(".supporter", "Dave Townsend"),
     m(".supporter", "LordImrahil")
   ];

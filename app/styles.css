@@ -768,6 +768,11 @@ span.star-partial.clickable:hover::before {
   }
 }
 
+.supporter-appeal {
+  font-style: italic;
+  font-size: small;
+}
+
 /* ===== AddResourceEditor ===== */
 
 .add-resource-editor-expanded {
